@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Gitlab自建仓库服务器</title>
+    <url>/2019/11/03/Gitlab%E8%87%AA%E5%BB%BA%E4%BB%93%E5%BA%93%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="Gitlab-自建服务器仓库"><a href="#Gitlab-自建服务器仓库" class="headerlink" title="Gitlab 自建服务器仓库"></a>Gitlab 自建服务器仓库</h2><h4 id="所需操作系统"><a href="#所需操作系统" class="headerlink" title="所需操作系统"></a>所需操作系统</h4><ul>
+<li>在教程开始之前，是不是很多人搜索过：Windows下GitLab服务器搭建？答案是没有，GitLab只针对Unix类系统做了开发。</li>
+<li>当然，GitLab本身就是Git的衍生品，如果你非要在Windows下搭建Git服务器，那么Git的其他衍生品如Gitblit是可以完成的。</li>
+</ul><a id="more"></a>
+<h4 id="Git的优点和缺点介绍"><a href="#Git的优点和缺点介绍" class="headerlink" title="Git的优点和缺点介绍"></a>Git的优点和缺点介绍</h4><ul>
+<li>优点<ul>
+<li>适合分布式开发，强调个体</li>
+<li>公共服务器压力和数据量都不会太大</li>
+<li>速度快、灵活</li>
+<li>任意两个开发者之间可以很容易的解决冲突</li>
+<li>离线可以正常提交代码和工作</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>学习周期相对而言比较长</li>
+<li>不符合常规思维</li>
+<li>代码保密性差，一旦开发者把整个库克隆下来就可以完全公开所有代码和版本信息</li>
+</ul>
+</li>
+</ul>
+<h4 id="Gitlab-安装"><a href="#Gitlab-安装" class="headerlink" title="Gitlab 安装"></a>Gitlab 安装</h4><ul>
+<li>Git 安装<ul>
+<li>$ apt update </li>
+<li>$ apt install git </li>
+</ul>
+</li>
+<li>安装依赖包<ul>
+<li>$ sudo apt-get install curl openssh-server ca-certificates postfix</li>
+<li>OK—-&gt;InternetSite—-&gt;OK, 默认就行</li>
+<li></li>
+</ul>
+</li>
+<li>安装主程序<ul>
+<li>利用<a href="https://mirror.tuna.tsinghua.edu.cn/help/gitlab-ce" target="_blank" rel="noopener">清华大学的镜像</a>，来进行主程序的安装</li>
+<li>首先信任 GitLab 的 GPG 公钥<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl https://packages.gitlab.com/gpg.key 2&gt; /dev/null | sudo apt-key add - &amp;&gt;/dev/null</span><br></pre></td></tr></table></figure></li>
+<li>Ubuntu 18.04 LTS, 添加安装包地址<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;deb http://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/debian stretch main&quot; &gt;&gt; /etc/apt/sources.list.d/gitlab-ce.list</span><br></pre></td></tr></table></figure></li>
+<li>安装 gitlab-ce<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install gitlab-ce</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>修改配置  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/gitlab/gitlab.rb</span><br><span class="line">更改 external_url=http://47.244.126.85 (IP换成你本机的IP地址，内网和外网都可以)</span><br></pre></td></tr></table></figure></li>
+<li>启动sshd和postfix服务  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">service sshd start</span><br><span class="line">service postfix start</span><br></pre></td></tr></table></figure></li>
+<li>添加防火墙规则  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</span><br></pre></td></tr></table></figure></li>
+<li>启动各项服务  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure></li>
+<li>查看gitlab状态  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo gitlab-ctl status</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Gitlab-Usage"><a href="#Gitlab-Usage" class="headerlink" title="Gitlab Usage"></a>Gitlab Usage</h4><ul>
+<li>打开浏览器访问 <a href="http://47.244.126.85" target="_blank" rel="noopener">http://47.244.126.85</a></li>
+<li>默认第一访问需要修改初始密码</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+        <tag>Gitlab</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VMware安装Ubuntu18.04虚拟机</title>
+    <url>/2019/11/03/VMware%E5%AE%89%E8%A3%85Ubuntu18-04%E8%99%9A%E6%8B%9F%E6%9C%BA/</url>
+    <content><![CDATA[<h2 id="VMware本地部署Ubuntu虚拟机集群"><a href="#VMware本地部署Ubuntu虚拟机集群" class="headerlink" title="VMware本地部署Ubuntu虚拟机集群"></a>VMware本地部署Ubuntu虚拟机集群</h2><h4 id="VMware-For-Mac"><a href="#VMware-For-Mac" class="headerlink" title="VMware For Mac"></a>VMware For Mac</h4><ul>
+<li>打开浏览器，进入 <a href="https://www.vmware.com/cn.html" target="_blank" rel="noopener">VMare官网</a></li>
+<li>点击产品，个人桌面，<a href="https://www.vmware.com/cn/products/fusion.html" target="_blank" rel="noopener">Fusion For Mac</a></li>
+<li>点击 <a href="https://www.vmware.com/cn/products/fusion/fusion-evaluation.html" target="_blank" rel="noopener">立即下载</a></li>
+<li>点击 <a href="https://www.vmware.com/go/getfusion" target="_blank" rel="noopener">立即下载</a></li>
+<li>如果需要登录，请注册登陆后进行下载</li>
+</ul><h4 id="VMware-For-Windows"><a href="#VMware-For-Windows" class="headerlink" title="VMware For Windows"></a>VMware For Windows</h4><ul>
+<li>打开浏览器，进入 <a href="https://www.vmware.com/cn.html" target="_blank" rel="noopener">VMare官网</a></li>
+<li>点击下载，选择 <a href="https://my.vmware.com/cn/web/vmware/info/slug/desktop_end_user_computing/vmware_workstation_pro/15_0" target="_blank" rel="noopener">Workstation Pro</a></li>
+<li>选择<br>VMware Workstation 15.5.0 Pro for Windows 转至下载</li>
+<li>如果需要登录，请注册登陆后进行下载</li>
+<li>可以装在D盘，如果C盘容量小的话</li>
+</ul><a id="more"></a>
+
+<h4 id="Ubuntu-18-04"><a href="#Ubuntu-18-04" class="headerlink" title="Ubuntu-18.04"></a>Ubuntu-18.04</h4><ul>
+<li>进入 <a href="https://ubuntu.com" target="_blank" rel="noopener">Ubuntu官网</a></li>
+<li>点击Download，选择 <a href="https://ubuntu.com/download/server" target="_blank" rel="noopener">Ubuntu Server</a></li>
+<li>选择Ubuntu Server 18.04.3 LTS，点击Download</li>
+<li>下载完成后，可以移动到D盘中，如果是Windows系统</li>
+</ul>
+<h4 id="新建虚拟机"><a href="#新建虚拟机" class="headerlink" title="新建虚拟机"></a>新建虚拟机</h4><ul>
+<li>打开VMware新建虚拟机，有普通配置和自定义高级配置两种方式</li>
+<li>对于不太熟悉的开发者，普通配置即可</li>
+<li>Full-Name 就是面板上的虚拟机名称</li>
+<li>Server-Name 为你在服务器中登陆的名字</li>
+<li>密码和确认密码 为你在服务器中登录的密码</li>
+<li>其他的配置一路默认即可</li>
+</ul>
+<h4 id="运行虚拟机"><a href="#运行虚拟机" class="headerlink" title="运行虚拟机"></a>运行虚拟机</h4><ul>
+<li>选中控制面板上的虚拟机，点击Start Up Guest</li>
+<li>其中你可以设置Proxy-Url，这个为你在服务器中使用Curl, Wget等，可以进行网络加速</li>
+<li>Apt-Origin-Repository-Url，为你提供一个安装Linux工具的镜像库，可以更快速的下载库文件</li>
+<li>配置登录用户名，登录密码，确认登陆密码</li>
+<li>配置中有一个暴漏给，其他主机访问的名字，建议以负载的形式进行命名</li>
+</ul>
+<h4 id="配置虚拟机"><a href="#配置虚拟机" class="headerlink" title="配置虚拟机"></a>配置虚拟机</h4><ul>
+<li>使用配置的用户名登陆成功后，切换到root用户，sudo -i</li>
+<li>更新镜像库， apt update和apt upgrade</li>
+<li>安装远程登录工具ssh<ul>
+<li>ps -ef | grep ssh</li>
+<li>apt-get install openssh-server</li>
+<li>ps -ef | grep ssh</li>
+<li>service sshd stop</li>
+<li>service sshd start</li>
+<li>ifconfig</li>
+<li>接下来就可以使用内网地址和配置中的用户名，密码登录了</li>
+</ul>
+</li>
+</ul>
+<h4 id="虚拟机内网测试"><a href="#虚拟机内网测试" class="headerlink" title="虚拟机内网测试"></a>虚拟机内网测试</h4><ul>
+<li>在第一台服务器中输入，nc -lp 80</li>
+<li>在第二胎服务器中输入，telnet 192.168.75.131 80</li>
+<li>如果连接成功，说明内网可用，服务器是可以连接的</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Ubuntu</category>
+      </categories>
+      <tags>
+        <tag>VMware</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+</search>

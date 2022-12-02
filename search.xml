@@ -286,6 +286,217 @@
       </tags>
   </entry>
   <entry>
+    <title>MySQL 出现死锁情况</title>
+    <url>/2016/07/ecshop-mysql-lock/</url>
+    <content><![CDATA[<h2 id="MySQL-死锁问题解决"><a href="#MySQL-死锁问题解决" class="headerlink" title="MySQL 死锁问题解决"></a>MySQL 死锁问题解决</h2><p>这个问题烦心一星期啦，也真是操蛋！ 问题描述 ECShop 连接本地 MySQL 数据库刚刚的，链接阿里云就出现错误！ </p>
+<p>一， 出现 500 错误是因为阿里云没有添加白名单</p>
+<span id="more"></span>
+
+<p>二， 出现 504 错误是因为 MySQL 上锁的问题， <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvemhhbmdob25nemhlbmczMjEzL2FydGljbGUvZGV0YWlscy81MTc1MzE4OQ==">具体详解见<i class="fa fa-external-link-alt"></i></span></p>
+<p>阿里云和本地具体区别，阿里云是 innodb 数据库引擎，事务隔离是 Read committed，而本地数据库引擎默认是是 myisam 引擎，事务隔离级别是 Repeatable read。</p>
+<p>本地和阿里云 MySQL 具体参数配置不同的地方太多，导致程序运行到一个点时出现 MySQL 死锁的情况，具体可以用 show engine innodb status 来查看当前死锁的线程，可以用 kill ID 来删除线程！</p>
+<p>后来仔细看聊文档，死活找不见问题，最后使出绝招更换数据库，把 MySQL5.6 更换成 5.5，问题彻底解决，再也找不见 MySQL 上锁的问题啦！</p>
+]]></content>
+      <categories>
+        <category>Mysql</category>
+      </categories>
+      <tags>
+        <tag>ECShop</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MYSQL 分组语句</title>
+    <url>/2016/07/mysql-group/</url>
+    <content><![CDATA[<h2 id="MYSQL-分组语句"><a href="#MYSQL-分组语句" class="headerlink" title="MYSQL 分组语句"></a>MYSQL 分组语句</h2><p>标准的分组 Mysql，取的分组所有数据</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> id = id <span class="keyword">group</span> <span class="keyword">by</span> id <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span> <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>当使用分组取数量时，先取的所有分组，然后取数量</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> count () <span class="keyword">from</span> (<span class="keyword">select</span> count() <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> id = id <span class="keyword">group</span> <span class="keyword">by</span> id <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span> <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">1</span>) <span class="keyword">as</span> g;</span><br></pre></td></tr></table></figure>
+
+<p>当对分组组内内容排序时，先对数据排序，然后分组取的排序后的数据</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span>) <span class="keyword">as</span> g <span class="keyword">where</span> id = id <span class="keyword">group</span> <span class="keyword">by</span> id <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>当对分组组内内容排序和分组排序使用，各自排序</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span>) <span class="keyword">as</span> g <span class="keyword">where</span> id = id <span class="keyword">group</span> <span class="keyword">by</span> id <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span> <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Mysql</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Php 框架</title>
+    <url>/2016/07/php-framework/</url>
+    <content><![CDATA[<h2 id="个人对-Php-框架的见解"><a href="#个人对-Php-框架的见解" class="headerlink" title="个人对 Php 框架的见解"></a>个人对 Php 框架的见解</h2><p>本文章是对问题 <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3F1ZXN0aW9uLzI3MzM0OTU5">如何评价源生Php和框架下Php的效率 ？<i class="fa fa-external-link-alt"></i></span> 的个人见解， 用框架和不用框架，完全两个概念！</p>
+<p>框架就像一个运钞车，他相对来说是安全的，避免了大量重复的，危险的操作。</p>
+<span id="more"></span>
+
+<p>虽然减少部分性能，但用框架开发项目或者模块，效率快，能够轻松实现各种功能，非常适合创业公司和外包人员开发项目。</p>
+<p>而不使用框架就需要一点点实现功能，开发项目，耗时耗力，做一些特殊模块和要求特别高的项目可以！</p>
+<p>我总是纠结于学习哪个框架开发项目，结果我发现，有的企业招聘里面直接有一个要求就是懂 Php 框架，也就是说不管什么框架，什么语言都是为项目需求的，而需求直接和利益挂钩！ </p>
+<p>我现在明白为啥 Php 语言和 Php 框架这么流行啦！</p>
+<ol>
+<li>第一开源免费，除了给程序员开工资和一些房租，虚拟主机的费用，几乎不用其他额外费用。</li>
+<li>第二开发速度快节约程序员大部分时间精力，为公司节省相对多的资源。</li>
+</ol>
+<p>就像这句话说得，原生和框架，只能说使用场合不一样。源生 Php 输出 hello world 比用框架快几百倍，但框架不是用来写 hello word 的。</p>
+<p>徒手打蚊子肯定比高射炮效率高几百上千倍。 但高射炮是用来打蚊子的吗？</p>
+]]></content>
+      <categories>
+        <category>Php</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Http 劫持</title>
+    <url>/2016/07/http-https-fiddler/</url>
+    <content><![CDATA[<h2 id="使用-Fiddler-对数据进行拦截"><a href="#使用-Fiddler-对数据进行拦截" class="headerlink" title="使用 Fiddler 对数据进行拦截"></a>使用 Fiddler 对数据进行拦截</h2><p>首先 Fiddler 截获客户端浏览器发送给服务器的 https 请求， 此时还未建立握手。</p>
+<p>第一步， Fiddler 向服务器发送请求进行握手， 获取到服务器的 CA 证书， 用根证书公钥进行解密， 验证服务器数据签名， 获取到服务器 CA 证书公钥。</p>
+<span id="more"></span>
+
+<p>第二步， Fiddler 伪造自己的 CA 证书， 冒充服务器证书传递给客户端浏览器， 客户端浏览器做跟 Fiddler 一样的事。</p>
+<p>第三步， 客户端浏览器生成 https 通信用的对称密钥， 用 Fiddler 伪造的证书公钥加密后传递给服务器， 被 Fiddler 截获。</p>
+<p>第四步， Fiddler 将截获的密文用自己伪造证书的私钥解开， 获得 https 通信用的对称密钥。</p>
+<p>第五步， Fiddler 将对称密钥用服务器证书公钥加密传递给服务器， 服务器用私钥解开后建立信任， 握手完成， 用对称密钥加密消息， 开始通信。</p>
+<p>第六步， Fiddler 接收到服务器发送的密文， 用对称密钥解开， 获得服务器发送的明文。再次加密， 发送给客户端浏览器。</p>
+<p>第七步， 客户端向服务器发送消息， 用对称密钥加密， 被 fidller 截获后， 解密获得明文。</p>
+<p>由于 Fiddler 一直拥有通信用对称密钥， 所以在整个 https 通信过程中信息对其透明。</p>
+<h2 id="HTTPS-能否避免流量劫持？"><a href="#HTTPS-能否避免流量劫持？" class="headerlink" title="HTTPS 能否避免流量劫持？"></a>HTTPS 能否避免流量劫持？</h2><p>近日，看了一篇关于流量劫持的文章《安全科普：流量劫持能有多大危害？》，作者 EtherDream 以图文并茂的形式详细讲解了流量劫持及相关知识。“在如今这个讲究跨平台、体验好，并有云端支持的年代，WebApp 越来越火热。各种应用纷纷移植成网页版，一些甚至替代了客户端。同时，也造就了流量劫持前所未有的势头。” 小编总结，这里提到的流量劫持危害，大多跟 Http 明文传输协议的薄弱有关系。</p>
+<p>我们来看看流量劫持会带来什么危害？</p>
+<p>不同的劫持方式，获得的流量也有所差异。DNS 劫持，只能截获通过域名发起的流量，直接使用 IP 地址的通信则不受影响；CDN 入侵，只有浏览网页或下载时才有风险，其他场合则毫无问题；而网关被劫持，用户所有流量都难逃魔掌。</p>
+<p>1、http 易致在线应用被劫持</p>
+<p>网页技术在近些年里有了很大的发展，但其底层协议始终没有太大的改进 —— HTTP，一种使用了 20 多年古老协议。在 HTTP 里，一切都是明文传输的，流量在途中可随心所欲的被控制。而在线使用的 WebApp，流量里既有通信数据，又有程序的界面和代码，劫持简直轻而易举。因此，劫持网页流量成了各路黑客们的钟爱，一种可在任意网页发起 XSS 的入侵方式。</p>
+<p>2、公共场合使用 http，不登陆也会被劫持</p>
+<p>在自己的设备上，大家都会记住各种账号的登录状态，反正只有自己用，也没什么大不了的。然而，在被劫持的网络里，即使浏览再平常不过的网页，或许一个悄无声息的间谍脚本已暗藏其中，正偷偷访问你那登录着的网页，操控起你的账号了。</p>
+<p>3、http 状态下，Cookie 记录或浏览器自动填表单，都会导致账号密码被截获</p>
+<p>http 状态下，cookie 记录的都是明文的账号密码，被劫持泄露后，即使数量不多，也能通过社工获取到用户的更多信息，最终导致更严重的泄露。</p>
+<p>4、HTTP 缓存投毒</p>
+<p>HTTP 这种简单的纯文本协议，几乎没有一种签名机制，来验证内容的真实性。即使页面被篡改了，浏览器也完全无法得知，甚至连同注入的脚本也一块缓存起来。但凡具备可执行的资源，都可以通过预加载带毒的版本，将其提前缓存起来。</p>
+<p>5、Https 能避免劫持吗？</p>
+<p>能！但前提是必须用受信任的 SSL 证书。</p>
+<p>不同于简单的 Http 代理，HTTPS 服务需要权威 CA 机构颁发的 SSL 证书才算有效。自签证书浏览器不认，而且会给予严重的警告提示。而遇到 “此网站安全证书存在问题” 的警告时，大多用户不明白是什么情况，就点了继续，导致允许了黑客的伪证书，HTTPS 流量因此遭到劫持。</p>
+<p>如果重要的账户网站遇到这种情况，无论如何都不该点击继续，否则大门钥匙或许就落入黑客之手。</p>
+<p>这里所说的权威 CA 机构是指已经通过 WebTrust 国际认证，根证书由微软预置，受微软等各类操作系统、主流移动设备和浏览器信任的 CA 机构；在中国还要附加一项，就是要拿到工信部许可的 CA 牌照；这样的 CA 机构，才有权利签发各类数字证书，比如 wosign（沃通）。</p>
+<p>自签证书是指不受信任的任意机构或个人，自己随意签发的证书，容易被黑客伪造替换。</p>
+<p>6、全站 Https 的重要性</p>
+<p>情况一：从 http 页面跳转访问 https 页面</p>
+<p>事实上，在 PC 端上网很少有直接进入 HTTPS 网站的。例如支付宝网站，大多是从淘宝跳转过来，而淘宝使用的仍是不安全的 HTTP 协议。如果在淘宝网的页面里注入 XSS，屏蔽跳转到 HTTPS 的页面访问，用 HTTP 取而代之，那么用户也就永远无法进入安全站点了。</p>
+<p>尽管地址栏里没有出现 HTTPS 的字样，但域名看起来也是正确的，大多用户都会认为不是钓鱼网站，因此也就忽视了。</p>
+<p>因此，只要入口页是不安全的，那么之后的页面再安全也无济于事。</p>
+<p>情况二：http 页面重定向到 https 页面</p>
+<p>有一些用户通过输网址访问的，他们输入了 <span class="exturl" data-url="aHR0cDovL3d3dy5hbGlwYWx5LmNvbS8=">http://www.alipaly.com<i class="fa fa-external-link-alt"></i></span> 就敲回车进入了。然而，浏览器并不知道这是一个 HTTPS 的站点，于是使用默认的 HTTP 去访问。不过这个 HTTP 版的支付宝的确也存在，其唯一功能就是重定向到自己 HTTPS 站点上。</p>
+<p>劫持流量的中间人一旦发现有重定向到 HTTPS 站点的，于是拦下重定向的命令，自己去获取重定向后的站点内容，然后再回复给用户。于是，用户始终都是在 HTTP 站点上访问，自然就可以无限劫持了。</p>
+<p>国外各大知名网站（PayPal,Twitter,Facebook,Gmail,Hotmail 等）都通过 Always on SSL（全站 https）技术措施来保证用户机密信息和交易安全，防止会话攻击和中间人攻击。</p>
+<p>7、搜索引擎劫持</p>
+<p>事实上，HTTPS 站点还有个很大的来源 —— 搜索引擎。遗憾的是，国产搜索引擎几乎都不提供 HTTPS 服务。</p>
+<p>谷歌已开始提供 https 加密搜索方式。Google 在官方博客介绍说，普通的 HTTP 浏览是不安全的，用户和服务器之间的通讯会被第三方监听和干扰，对于 Google 来说，你在 Google 搜索的词语会被第三方截获，如果第三方不希望你在 Google 搜索这个词语，还可以通过技术手段阻止用户的搜索行为。使用 HTTPS 的 Google 搜索中，用户搜索的信息将无法被第三方获取，也不会出现数据泄漏的问题，搜索结果页面也不会被干扰或篡改。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>从上面的各类劫持案例中，我们可以看出，Https 是很有效的流量劫持防范措施，无论是网络服务提供商还是广大网民，为咱自己的帐户安全和权益，都要形成使用 https 访问网站的习惯和意识，重要的网站必定使用 HTTPS 协议，登陆时需格外留意！</p>
+]]></content>
+      <categories>
+        <category>Http</category>
+      </categories>
+      <tags>
+        <tag>Fiddler</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Php 多语言</title>
+    <url>/2016/07/php-i18n/</url>
+    <content><![CDATA[<h2 id="Php-多语言"><a href="#Php-多语言" class="headerlink" title="Php 多语言"></a>Php 多语言</h2><p>本文章是对问题 <span class="exturl" data-url="aHR0cDovL2Jicy5jc2RuLm5ldC90b3BpY3MvMzkwODY3MDEz">多语言系统的数据库设计问题<i class="fa fa-external-link-alt"></i></span> 的个人见解，处理的思路简单粗暴。</p>
+<p>鉴于网络上沸沸扬扬的数据库多语言包功能无非就是两种。</p>
+<span id="more"></span>
+
+<h2 id="数据库多语言的实现"><a href="#数据库多语言的实现" class="headerlink" title="数据库多语言的实现"></a>数据库多语言的实现</h2><p>一种就是加字段的做法，只要是涉及到中文的字段，新增对应的英文的字段，这样中文网站用中文的地段，英文网站用英文的字段！ </p>
+<p>一种就是加记录的方法，新增相同的英文记录，并且标记为英文，调取时中文网站调用标记为中文的记录，英文网站调用英文的记录！</p>
+<p>这是数据库多语言的实现，强烈推荐第一种，易于维护和开发，第二种会照成数据冗余，数据库的庞大，</p>
+<h2 id="页面的多语言实现"><a href="#页面的多语言实现" class="headerlink" title="页面的多语言实现"></a>页面的多语言实现</h2><p>而后就是页面的多语言咯，一般网站和 Php 框架都有这个功能，网上有很多教程和框架对应的说明。</p>
+<p>就是在页面右上角，点击简体中文，整个页面用的都是网站提前设置好的简体中文语言包，点击英文，整个页面用的都是网站提前设置好的英文语言包！</p>
+]]></content>
+      <categories>
+        <category>Php</category>
+      </categories>
+      <tags>
+        <tag>I18n</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Lnmp 运维味道</title>
+    <url>/2016/07/php-lnmp/</url>
+    <content><![CDATA[<h2 id="Lnmp-运维味道"><a href="#Lnmp-运维味道" class="headerlink" title="Lnmp 运维味道"></a>Lnmp 运维味道</h2><p>购买域名，备案（可选），域名绑定 DNS 地址，DNS 地址解析域名，指定 IP 地址，购买 VPS，获取 IP 地址，部署 WEB 网站到 VPS，这里用的 WEB 网站使用 LnmpWEB 环境！</p>
+<span id="more"></span>
+
+<p>具体步骤详解不诉说，这里之讲解运维部分要点，不足之处请指点！</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">ulimit</span> -n</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">fdisk /dev/sdb1</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mke2fs -t ext4 /dev/sdb1</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">blkid</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&quot;UUID=83d101b0-85de-42c3-b95e-7aca7b2d1396 /home ext4 defaults 0 0&quot;</span> &gt;&gt;/etc/fstab</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mount /dev/sdb1 /home</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&quot;* soft nofile 65536 \n hard nofile 65536&quot;</span> &gt;&gt; /etc/security/limits.conf</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yum install -y wget</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yum install -y unzip</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yum install -y vim</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&quot;set tabstop=4 set softtabstop=4 set shiftwidth=4&quot;</span> &gt;&gt; /etc/vimrc</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">reboot</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yum install -y screen</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">screen -S lnmp</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget -c http://soft.vpser.net/lnmp/lnmp1.3-full.tar.gz &amp;&amp; tar zxf lnmp1.3-full.tar.gz &amp;&amp; <span class="built_in">cd</span> lnmp1.3-full &amp;&amp; ./install.sh lnmp</span></span><br></pre></td></tr></table></figure>
+
+<p>至此安装完成</p>
+<figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">service</span></span> vhost add ......</span><br></pre></td></tr></table></figure>
+
+<h2 id="具体详细-shell-命令就这些，大概内容如下"><a href="#具体详细-shell-命令就这些，大概内容如下" class="headerlink" title="具体详细 shell 命令就这些，大概内容如下"></a>具体详细 shell 命令就这些，大概内容如下</h2><ol>
+<li>一，更改文件内容限制为 65536 </li>
+<li>二，挂载磁盘到网站目录</li>
+<li>三，安装网站常用的命令</li>
+<li>四，安装 LNMPWEB 服务器环境</li>
+<li>五，添加域名到虚拟主机 <code>OKOKOKOKOKOK</code>，网站正常运营</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Php</category>
+      </categories>
+      <tags>
+        <tag>Lnmp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vim 显示目录树</title>
+    <url>/2016/07/vim-folder-tree/</url>
+    <content><![CDATA[<h2 id="Vim-显示目录树"><a href="#Vim-显示目录树" class="headerlink" title="Vim 显示目录树"></a>Vim 显示目录树</h2><p>在 vim 如果查看目录结构，或者当前文件夹下面的文件，就需要从编辑模式跳到命令模式，运行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">!<span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>觉得很不方便，如果想看上层的目录，或者上层下面的另外一个目录，需要多次进行上面的操作，但是如果你可以直接显示目录树该有多爽啊。</p>
+<p>这就是本文要介绍的 vim 插件 - <code>nerdtree</code></p>
+<p>你可以从 vim 的网站下载到它：</p>
+<p><span class="exturl" data-url="aHR0cDovL3d3dy52aW0ub3JnL3NjcmlwdHMvc2NyaXB0LnBocD9zY3JpcHRfaWQ9MTY1OA==">http://www.vim.org/scripts/script.php?script_id=1658<i class="fa fa-external-link-alt"></i></span></p>
+<p>下载后，解压到</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">~/.vim</span><br></pre></td></tr></table></figure>
+
+<p>目录，然后打开 <code>～/.vimrc</code> 文件，添加下面一行：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">nmap &lt;silent&gt; &lt;c-n&gt; <span class="symbol">:NERDTreeToggle&lt;CR&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此时进入 vim，然后 ctrl + n 就会在 vim 的左边打开目录树，其实使用了 vim 的切分窗口，你可以使用移动键，和回车键来切换到不同的目录和文件。如果想隐藏目录树，再按一次</p>
+<p>ctrl + n 就可以。</p>
+<p>打开目录树的同时，光标会自动移动到目录树，可以使用 hjkl 来控制光标的移动，然后回车就能打开对应的文件，这种打开方式是在当前窗口中打开，也就是你当前窗口的内容暂时看不见。</p>
+<p>只有关掉新打开的这个文件，才可以看到原有的文件窗口，或者你用:buffer 命令来切换到你原有的文件。如果想把这个文件在新开的 tab 中打开，使用 shift 和 t 组合键。</p>
+<p>有个关于目录树操作的教程，大家可以看这个 <span class="exturl" data-url="aHR0cDovL3d3dy55b3V0dWJlLmNvbS93YXRjaD9mZWF0dXJlPXBsYXllcl9lbWJlZGRlZCZ2PThqV0wzd1pTT2tZ">视频<i class="fa fa-external-link-alt"></i></span></p>
+<p>这个功能太酷了！！！</p>
+]]></content>
+      <categories>
+        <category>DevTools</category>
+      </categories>
+      <tags>
+        <tag>Vim</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ECShop 电商系统对接阿里云 RDS 数据库</title>
+    <url>/2016/06/ecshop-aliyun-mysql/</url>
+    <content><![CDATA[<h2 id="配置阿里云-RDS-数据库"><a href="#配置阿里云-RDS-数据库" class="headerlink" title="配置阿里云 RDS 数据库"></a>配置阿里云 RDS 数据库</h2><p>（一），找到阿里云的 RDS，数据安全性里面的白名单设置里面添加白名单 IP 地址</p>
+<p>（二），更改系统或者项目下的数据库配置文件，链接地址，端口号，数据库，数据库名字，数据库密码</p>
+<span id="more"></span>
+
+<p>（三），停止当前环境的 MySQL 数据库</p>
+<p>最后就可以进行测试，访问啦，可以用 SHOW PROCESSLIST； </p>
+<p>来查看当前访问的链接信息！</p>
+]]></content>
+      <categories>
+        <category>Mysql</category>
+      </categories>
+      <tags>
+        <tag>ECShop</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ionCube Php 解密</title>
     <url>/2016/06/ioncube-crypto-php/</url>
     <content><![CDATA[<h2 id="工具说明"><a href="#工具说明" class="headerlink" title="工具说明"></a>工具说明</h2><p>ionCube 是一款 Php 加密的工具。由于 Php 代码属于开源 WEB 代码，不同用户很容易看到使用 Php 语言所篇写的源程序，对源程序进行分析，很容易的得到数据连接，处理流程，甚至服务器名等。因此为了我们的 Web 数据等信息的安全。我们就必须对 Php 进行加密。</p>
@@ -376,43 +587,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ECShop 电商系统对接阿里云 RDS 数据库</title>
-    <url>/2016/06/ecshop-aliyun-mysql/</url>
-    <content><![CDATA[<h2 id="配置阿里云-RDS-数据库"><a href="#配置阿里云-RDS-数据库" class="headerlink" title="配置阿里云 RDS 数据库"></a>配置阿里云 RDS 数据库</h2><p>（一），找到阿里云的 RDS，数据安全性里面的白名单设置里面添加白名单 IP 地址</p>
-<p>（二），更改系统或者项目下的数据库配置文件，链接地址，端口号，数据库，数据库名字，数据库密码</p>
-<span id="more"></span>
-
-<p>（三），停止当前环境的 MySQL 数据库</p>
-<p>最后就可以进行测试，访问啦，可以用 SHOW PROCESSLIST； </p>
-<p>来查看当前访问的链接信息！</p>
-]]></content>
-      <categories>
-        <category>Mysql</category>
-      </categories>
-      <tags>
-        <tag>ECShop</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MySQL 出现死锁情况</title>
-    <url>/2016/07/ecshop-mysql-lock/</url>
-    <content><![CDATA[<h2 id="MySQL-死锁问题解决"><a href="#MySQL-死锁问题解决" class="headerlink" title="MySQL 死锁问题解决"></a>MySQL 死锁问题解决</h2><p>这个问题烦心一星期啦，也真是操蛋！ 问题描述 ECShop 连接本地 MySQL 数据库刚刚的，链接阿里云就出现错误！ </p>
-<p>一， 出现 500 错误是因为阿里云没有添加白名单</p>
-<span id="more"></span>
-
-<p>二， 出现 504 错误是因为 MySQL 上锁的问题， <span class="exturl" data-url="aHR0cDovL2Jsb2cuY3Nkbi5uZXQvemhhbmdob25nemhlbmczMjEzL2FydGljbGUvZGV0YWlscy81MTc1MzE4OQ==">具体详解见<i class="fa fa-external-link-alt"></i></span></p>
-<p>阿里云和本地具体区别，阿里云是 innodb 数据库引擎，事务隔离是 Read committed，而本地数据库引擎默认是是 myisam 引擎，事务隔离级别是 Repeatable read。</p>
-<p>本地和阿里云 MySQL 具体参数配置不同的地方太多，导致程序运行到一个点时出现 MySQL 死锁的情况，具体可以用 show engine innodb status 来查看当前死锁的线程，可以用 kill ID 来删除线程！</p>
-<p>后来仔细看聊文档，死活找不见问题，最后使出绝招更换数据库，把 MySQL5.6 更换成 5.5，问题彻底解决，再也找不见 MySQL 上锁的问题啦！</p>
-]]></content>
-      <categories>
-        <category>Mysql</category>
-      </categories>
-      <tags>
-        <tag>ECShop</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>PhpStorm 调试详解（包含命令行以及浏览器）</title>
     <url>/2016/06/phpstorm-debug-detail/</url>
     <content><![CDATA[<h2 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h2><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">Php 版本：<span class="number">5.5</span>.<span class="number">12</span></span><br><span class="line">PhpStorm : 9.0.2 </span><br><span class="line">Xdebug : 2.2.5    下载地址，请下载与当前 <span class="type">PHP</span> 版本对应的版本</span><br><span class="line">系统平台：Windows <span class="number">7</span></span><br></pre></td></tr></table></figure>
@@ -472,180 +646,6 @@
       <tags>
         <tag>PhpStorm</tag>
         <tag>Xdebug</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Http 劫持</title>
-    <url>/2016/07/http-https-fiddler/</url>
-    <content><![CDATA[<h2 id="使用-Fiddler-对数据进行拦截"><a href="#使用-Fiddler-对数据进行拦截" class="headerlink" title="使用 Fiddler 对数据进行拦截"></a>使用 Fiddler 对数据进行拦截</h2><p>首先 Fiddler 截获客户端浏览器发送给服务器的 https 请求， 此时还未建立握手。</p>
-<p>第一步， Fiddler 向服务器发送请求进行握手， 获取到服务器的 CA 证书， 用根证书公钥进行解密， 验证服务器数据签名， 获取到服务器 CA 证书公钥。</p>
-<span id="more"></span>
-
-<p>第二步， Fiddler 伪造自己的 CA 证书， 冒充服务器证书传递给客户端浏览器， 客户端浏览器做跟 Fiddler 一样的事。</p>
-<p>第三步， 客户端浏览器生成 https 通信用的对称密钥， 用 Fiddler 伪造的证书公钥加密后传递给服务器， 被 Fiddler 截获。</p>
-<p>第四步， Fiddler 将截获的密文用自己伪造证书的私钥解开， 获得 https 通信用的对称密钥。</p>
-<p>第五步， Fiddler 将对称密钥用服务器证书公钥加密传递给服务器， 服务器用私钥解开后建立信任， 握手完成， 用对称密钥加密消息， 开始通信。</p>
-<p>第六步， Fiddler 接收到服务器发送的密文， 用对称密钥解开， 获得服务器发送的明文。再次加密， 发送给客户端浏览器。</p>
-<p>第七步， 客户端向服务器发送消息， 用对称密钥加密， 被 fidller 截获后， 解密获得明文。</p>
-<p>由于 Fiddler 一直拥有通信用对称密钥， 所以在整个 https 通信过程中信息对其透明。</p>
-<h2 id="HTTPS-能否避免流量劫持？"><a href="#HTTPS-能否避免流量劫持？" class="headerlink" title="HTTPS 能否避免流量劫持？"></a>HTTPS 能否避免流量劫持？</h2><p>近日，看了一篇关于流量劫持的文章《安全科普：流量劫持能有多大危害？》，作者 EtherDream 以图文并茂的形式详细讲解了流量劫持及相关知识。“在如今这个讲究跨平台、体验好，并有云端支持的年代，WebApp 越来越火热。各种应用纷纷移植成网页版，一些甚至替代了客户端。同时，也造就了流量劫持前所未有的势头。” 小编总结，这里提到的流量劫持危害，大多跟 Http 明文传输协议的薄弱有关系。</p>
-<p>我们来看看流量劫持会带来什么危害？</p>
-<p>不同的劫持方式，获得的流量也有所差异。DNS 劫持，只能截获通过域名发起的流量，直接使用 IP 地址的通信则不受影响；CDN 入侵，只有浏览网页或下载时才有风险，其他场合则毫无问题；而网关被劫持，用户所有流量都难逃魔掌。</p>
-<p>1、http 易致在线应用被劫持</p>
-<p>网页技术在近些年里有了很大的发展，但其底层协议始终没有太大的改进 —— HTTP，一种使用了 20 多年古老协议。在 HTTP 里，一切都是明文传输的，流量在途中可随心所欲的被控制。而在线使用的 WebApp，流量里既有通信数据，又有程序的界面和代码，劫持简直轻而易举。因此，劫持网页流量成了各路黑客们的钟爱，一种可在任意网页发起 XSS 的入侵方式。</p>
-<p>2、公共场合使用 http，不登陆也会被劫持</p>
-<p>在自己的设备上，大家都会记住各种账号的登录状态，反正只有自己用，也没什么大不了的。然而，在被劫持的网络里，即使浏览再平常不过的网页，或许一个悄无声息的间谍脚本已暗藏其中，正偷偷访问你那登录着的网页，操控起你的账号了。</p>
-<p>3、http 状态下，Cookie 记录或浏览器自动填表单，都会导致账号密码被截获</p>
-<p>http 状态下，cookie 记录的都是明文的账号密码，被劫持泄露后，即使数量不多，也能通过社工获取到用户的更多信息，最终导致更严重的泄露。</p>
-<p>4、HTTP 缓存投毒</p>
-<p>HTTP 这种简单的纯文本协议，几乎没有一种签名机制，来验证内容的真实性。即使页面被篡改了，浏览器也完全无法得知，甚至连同注入的脚本也一块缓存起来。但凡具备可执行的资源，都可以通过预加载带毒的版本，将其提前缓存起来。</p>
-<p>5、Https 能避免劫持吗？</p>
-<p>能！但前提是必须用受信任的 SSL 证书。</p>
-<p>不同于简单的 Http 代理，HTTPS 服务需要权威 CA 机构颁发的 SSL 证书才算有效。自签证书浏览器不认，而且会给予严重的警告提示。而遇到 “此网站安全证书存在问题” 的警告时，大多用户不明白是什么情况，就点了继续，导致允许了黑客的伪证书，HTTPS 流量因此遭到劫持。</p>
-<p>如果重要的账户网站遇到这种情况，无论如何都不该点击继续，否则大门钥匙或许就落入黑客之手。</p>
-<p>这里所说的权威 CA 机构是指已经通过 WebTrust 国际认证，根证书由微软预置，受微软等各类操作系统、主流移动设备和浏览器信任的 CA 机构；在中国还要附加一项，就是要拿到工信部许可的 CA 牌照；这样的 CA 机构，才有权利签发各类数字证书，比如 wosign（沃通）。</p>
-<p>自签证书是指不受信任的任意机构或个人，自己随意签发的证书，容易被黑客伪造替换。</p>
-<p>6、全站 Https 的重要性</p>
-<p>情况一：从 http 页面跳转访问 https 页面</p>
-<p>事实上，在 PC 端上网很少有直接进入 HTTPS 网站的。例如支付宝网站，大多是从淘宝跳转过来，而淘宝使用的仍是不安全的 HTTP 协议。如果在淘宝网的页面里注入 XSS，屏蔽跳转到 HTTPS 的页面访问，用 HTTP 取而代之，那么用户也就永远无法进入安全站点了。</p>
-<p>尽管地址栏里没有出现 HTTPS 的字样，但域名看起来也是正确的，大多用户都会认为不是钓鱼网站，因此也就忽视了。</p>
-<p>因此，只要入口页是不安全的，那么之后的页面再安全也无济于事。</p>
-<p>情况二：http 页面重定向到 https 页面</p>
-<p>有一些用户通过输网址访问的，他们输入了 <span class="exturl" data-url="aHR0cDovL3d3dy5hbGlwYWx5LmNvbS8=">http://www.alipaly.com<i class="fa fa-external-link-alt"></i></span> 就敲回车进入了。然而，浏览器并不知道这是一个 HTTPS 的站点，于是使用默认的 HTTP 去访问。不过这个 HTTP 版的支付宝的确也存在，其唯一功能就是重定向到自己 HTTPS 站点上。</p>
-<p>劫持流量的中间人一旦发现有重定向到 HTTPS 站点的，于是拦下重定向的命令，自己去获取重定向后的站点内容，然后再回复给用户。于是，用户始终都是在 HTTP 站点上访问，自然就可以无限劫持了。</p>
-<p>国外各大知名网站（PayPal,Twitter,Facebook,Gmail,Hotmail 等）都通过 Always on SSL（全站 https）技术措施来保证用户机密信息和交易安全，防止会话攻击和中间人攻击。</p>
-<p>7、搜索引擎劫持</p>
-<p>事实上，HTTPS 站点还有个很大的来源 —— 搜索引擎。遗憾的是，国产搜索引擎几乎都不提供 HTTPS 服务。</p>
-<p>谷歌已开始提供 https 加密搜索方式。Google 在官方博客介绍说，普通的 HTTP 浏览是不安全的，用户和服务器之间的通讯会被第三方监听和干扰，对于 Google 来说，你在 Google 搜索的词语会被第三方截获，如果第三方不希望你在 Google 搜索这个词语，还可以通过技术手段阻止用户的搜索行为。使用 HTTPS 的 Google 搜索中，用户搜索的信息将无法被第三方获取，也不会出现数据泄漏的问题，搜索结果页面也不会被干扰或篡改。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>从上面的各类劫持案例中，我们可以看出，Https 是很有效的流量劫持防范措施，无论是网络服务提供商还是广大网民，为咱自己的帐户安全和权益，都要形成使用 https 访问网站的习惯和意识，重要的网站必定使用 HTTPS 协议，登陆时需格外留意！</p>
-]]></content>
-      <categories>
-        <category>Http</category>
-      </categories>
-      <tags>
-        <tag>Fiddler</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MYSQL 分组语句</title>
-    <url>/2016/07/mysql-group/</url>
-    <content><![CDATA[<h2 id="MYSQL-分组语句"><a href="#MYSQL-分组语句" class="headerlink" title="MYSQL 分组语句"></a>MYSQL 分组语句</h2><p>标准的分组 Mysql，取的分组所有数据</p>
-<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> id = id <span class="keyword">group</span> <span class="keyword">by</span> id <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span> <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<p>当使用分组取数量时，先取的所有分组，然后取数量</p>
-<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> count () <span class="keyword">from</span> (<span class="keyword">select</span> count() <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> id = id <span class="keyword">group</span> <span class="keyword">by</span> id <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span> <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">1</span>) <span class="keyword">as</span> g;</span><br></pre></td></tr></table></figure>
-
-<p>当对分组组内内容排序时，先对数据排序，然后分组取的排序后的数据</p>
-<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span>) <span class="keyword">as</span> g <span class="keyword">where</span> id = id <span class="keyword">group</span> <span class="keyword">by</span> id <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<p>当对分组组内内容排序和分组排序使用，各自排序</p>
-<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span>) <span class="keyword">as</span> g <span class="keyword">where</span> id = id <span class="keyword">group</span> <span class="keyword">by</span> id <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span> <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Mysql</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Php 框架</title>
-    <url>/2016/07/php-framework/</url>
-    <content><![CDATA[<h2 id="个人对-Php-框架的见解"><a href="#个人对-Php-框架的见解" class="headerlink" title="个人对 Php 框架的见解"></a>个人对 Php 框架的见解</h2><p>本文章是对问题 <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3F1ZXN0aW9uLzI3MzM0OTU5">如何评价源生Php和框架下Php的效率 ？<i class="fa fa-external-link-alt"></i></span> 的个人见解， 用框架和不用框架，完全两个概念！</p>
-<p>框架就像一个运钞车，他相对来说是安全的，避免了大量重复的，危险的操作。</p>
-<span id="more"></span>
-
-<p>虽然减少部分性能，但用框架开发项目或者模块，效率快，能够轻松实现各种功能，非常适合创业公司和外包人员开发项目。</p>
-<p>而不使用框架就需要一点点实现功能，开发项目，耗时耗力，做一些特殊模块和要求特别高的项目可以！</p>
-<p>我总是纠结于学习哪个框架开发项目，结果我发现，有的企业招聘里面直接有一个要求就是懂 Php 框架，也就是说不管什么框架，什么语言都是为项目需求的，而需求直接和利益挂钩！ </p>
-<p>我现在明白为啥 Php 语言和 Php 框架这么流行啦！</p>
-<ol>
-<li>第一开源免费，除了给程序员开工资和一些房租，虚拟主机的费用，几乎不用其他额外费用。</li>
-<li>第二开发速度快节约程序员大部分时间精力，为公司节省相对多的资源。</li>
-</ol>
-<p>就像这句话说得，原生和框架，只能说使用场合不一样。源生 Php 输出 hello world 比用框架快几百倍，但框架不是用来写 hello word 的。</p>
-<p>徒手打蚊子肯定比高射炮效率高几百上千倍。 但高射炮是用来打蚊子的吗？</p>
-]]></content>
-      <categories>
-        <category>Php</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Lnmp 运维味道</title>
-    <url>/2016/07/php-lnmp/</url>
-    <content><![CDATA[<h2 id="Lnmp-运维味道"><a href="#Lnmp-运维味道" class="headerlink" title="Lnmp 运维味道"></a>Lnmp 运维味道</h2><p>购买域名，备案（可选），域名绑定 DNS 地址，DNS 地址解析域名，指定 IP 地址，购买 VPS，获取 IP 地址，部署 WEB 网站到 VPS，这里用的 WEB 网站使用 LnmpWEB 环境！</p>
-<span id="more"></span>
-
-<p>具体步骤详解不诉说，这里之讲解运维部分要点，不足之处请指点！</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">ulimit</span> -n</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">fdisk /dev/sdb1</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mke2fs -t ext4 /dev/sdb1</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">blkid</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&quot;UUID=83d101b0-85de-42c3-b95e-7aca7b2d1396 /home ext4 defaults 0 0&quot;</span> &gt;&gt;/etc/fstab</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mount /dev/sdb1 /home</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&quot;* soft nofile 65536 \n hard nofile 65536&quot;</span> &gt;&gt; /etc/security/limits.conf</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yum install -y wget</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yum install -y unzip</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yum install -y vim</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&quot;set tabstop=4 set softtabstop=4 set shiftwidth=4&quot;</span> &gt;&gt; /etc/vimrc</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">reboot</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yum install -y screen</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">screen -S lnmp</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget -c http://soft.vpser.net/lnmp/lnmp1.3-full.tar.gz &amp;&amp; tar zxf lnmp1.3-full.tar.gz &amp;&amp; <span class="built_in">cd</span> lnmp1.3-full &amp;&amp; ./install.sh lnmp</span></span><br></pre></td></tr></table></figure>
-
-<p>至此安装完成</p>
-<figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">service</span></span> vhost add ......</span><br></pre></td></tr></table></figure>
-
-<h2 id="具体详细-shell-命令就这些，大概内容如下"><a href="#具体详细-shell-命令就这些，大概内容如下" class="headerlink" title="具体详细 shell 命令就这些，大概内容如下"></a>具体详细 shell 命令就这些，大概内容如下</h2><ol>
-<li>一，更改文件内容限制为 65536 </li>
-<li>二，挂载磁盘到网站目录</li>
-<li>三，安装网站常用的命令</li>
-<li>四，安装 LNMPWEB 服务器环境</li>
-<li>五，添加域名到虚拟主机 <code>OKOKOKOKOKOK</code>，网站正常运营</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Php</category>
-      </categories>
-      <tags>
-        <tag>Lnmp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vim 显示目录树</title>
-    <url>/2016/07/vim-folder-tree/</url>
-    <content><![CDATA[<h2 id="Vim-显示目录树"><a href="#Vim-显示目录树" class="headerlink" title="Vim 显示目录树"></a>Vim 显示目录树</h2><p>在 vim 如果查看目录结构，或者当前文件夹下面的文件，就需要从编辑模式跳到命令模式，运行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">!<span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<p>觉得很不方便，如果想看上层的目录，或者上层下面的另外一个目录，需要多次进行上面的操作，但是如果你可以直接显示目录树该有多爽啊。</p>
-<p>这就是本文要介绍的 vim 插件 - <code>nerdtree</code></p>
-<p>你可以从 vim 的网站下载到它：</p>
-<p><span class="exturl" data-url="aHR0cDovL3d3dy52aW0ub3JnL3NjcmlwdHMvc2NyaXB0LnBocD9zY3JpcHRfaWQ9MTY1OA==">http://www.vim.org/scripts/script.php?script_id=1658<i class="fa fa-external-link-alt"></i></span></p>
-<p>下载后，解压到</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">~/.vim</span><br></pre></td></tr></table></figure>
-
-<p>目录，然后打开 <code>～/.vimrc</code> 文件，添加下面一行：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">nmap &lt;silent&gt; &lt;c-n&gt; <span class="symbol">:NERDTreeToggle&lt;CR&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>此时进入 vim，然后 ctrl + n 就会在 vim 的左边打开目录树，其实使用了 vim 的切分窗口，你可以使用移动键，和回车键来切换到不同的目录和文件。如果想隐藏目录树，再按一次</p>
-<p>ctrl + n 就可以。</p>
-<p>打开目录树的同时，光标会自动移动到目录树，可以使用 hjkl 来控制光标的移动，然后回车就能打开对应的文件，这种打开方式是在当前窗口中打开，也就是你当前窗口的内容暂时看不见。</p>
-<p>只有关掉新打开的这个文件，才可以看到原有的文件窗口，或者你用:buffer 命令来切换到你原有的文件。如果想把这个文件在新开的 tab 中打开，使用 shift 和 t 组合键。</p>
-<p>有个关于目录树操作的教程，大家可以看这个 <span class="exturl" data-url="aHR0cDovL3d3dy55b3V0dWJlLmNvbS93YXRjaD9mZWF0dXJlPXBsYXllcl9lbWJlZGRlZCZ2PThqV0wzd1pTT2tZ">视频<i class="fa fa-external-link-alt"></i></span></p>
-<p>这个功能太酷了！！！</p>
-]]></content>
-      <categories>
-        <category>DevTools</category>
-      </categories>
-      <tags>
-        <tag>Vim</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Php 多语言</title>
-    <url>/2016/07/php-i18n/</url>
-    <content><![CDATA[<h2 id="Php-多语言"><a href="#Php-多语言" class="headerlink" title="Php 多语言"></a>Php 多语言</h2><p>本文章是对问题 <span class="exturl" data-url="aHR0cDovL2Jicy5jc2RuLm5ldC90b3BpY3MvMzkwODY3MDEz">多语言系统的数据库设计问题<i class="fa fa-external-link-alt"></i></span> 的个人见解，处理的思路简单粗暴。</p>
-<p>鉴于网络上沸沸扬扬的数据库多语言包功能无非就是两种。</p>
-<span id="more"></span>
-
-<h2 id="数据库多语言的实现"><a href="#数据库多语言的实现" class="headerlink" title="数据库多语言的实现"></a>数据库多语言的实现</h2><p>一种就是加字段的做法，只要是涉及到中文的字段，新增对应的英文的字段，这样中文网站用中文的地段，英文网站用英文的字段！ </p>
-<p>一种就是加记录的方法，新增相同的英文记录，并且标记为英文，调取时中文网站调用标记为中文的记录，英文网站调用英文的记录！</p>
-<p>这是数据库多语言的实现，强烈推荐第一种，易于维护和开发，第二种会照成数据冗余，数据库的庞大，</p>
-<h2 id="页面的多语言实现"><a href="#页面的多语言实现" class="headerlink" title="页面的多语言实现"></a>页面的多语言实现</h2><p>而后就是页面的多语言咯，一般网站和 Php 框架都有这个功能，网上有很多教程和框架对应的说明。</p>
-<p>就是在页面右上角，点击简体中文，整个页面用的都是网站提前设置好的简体中文语言包，点击英文，整个页面用的都是网站提前设置好的英文语言包！</p>
-]]></content>
-      <categories>
-        <category>Php</category>
-      </categories>
-      <tags>
-        <tag>I18n</tag>
       </tags>
   </entry>
   <entry>
@@ -872,56 +872,6 @@
       </tags>
   </entry>
   <entry>
-    <title>开源观点</title>
-    <url>/2016/08/open-source/</url>
-    <content><![CDATA[<h2 id="开源观点"><a href="#开源观点" class="headerlink" title="开源观点"></a>开源观点</h2><p>上次博客写道 <code>Vim</code> 的折腾和 <code>PhpStorm</code> 的好处，决定好好里用 <code>PhpStorm</code> 开发 <code>laravel</code> 项目！</p>
-<p>之前不知道就听说 <code>PhpStorm</code> 能打开远程项目，一直没试过今天仔细瞅瞅，发现不但能打开局域网内项目，还能代开 <code>Linux</code> 上的项目！</p>
-<span id="more"></span>
-
-<p>局域网类这样打开项目，<code>Windows</code> 资源管理器里有个映射网络驱动器的功能，将你这个共享地址映射为一个磁盘，就可以当作本地打开了</p>
-<p><code>Linux</code> 项目这样打开和编辑远程项目，<span class="exturl" data-url="aHR0cDovL2ppbmd5YW4uYmFpZHUuY29tL2FydGljbGUvODZmNGE3M2U4MzcyNGEzN2Q3NTI2OTdkLmh0bWw=">FTP项目<i class="fa fa-external-link-alt"></i></span> <span class="exturl" data-url="aHR0cDovL3d3dy5jbmJsb2dzLmNvbS9zaGFveWlrYWkvcC80MzgxNjQyLmh0bWw=">远程项目<i class="fa fa-external-link-alt"></i></span></p>
-<p>至此我想起来开源的好处，操作系统有 <code>Windows Linux Unix</code> 等，WEB 服务器有 <code>Tomcat Nginx Apache IIS</code> 等，数据库有 <code>Oracle Redis Mysql SqlServer</code> 等，编程语言有 <code>JAVA Ruby PHP Python</code> 等。</p>
-<p>每个程序员都可以自由选择操作系统和 <code>WEB</code> 服务器，数据库，编程语言等，因为 <code>MySQL</code> 和 <code>PHP</code> 相互支持较好，所以导致 <code>PHP</code> 越来越流行的原因吧！ </p>
-<p>这些开源工具可以自由组合，自由结合，自由匹配，比较有名的如 <code>wamp lamp wnmp lnmp xampp</code> 等等，充分说明一点开源的东西是最经得起打击的，生命力最强的。</p>
-]]></content>
-      <categories>
-        <category>OpenSource</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用 PhpStorm+Composer 快速初始化项目</title>
-    <url>/2016/08/phpstorm-composer/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>PhpStorm 是一款非常出色的 Php IDE；vim 的忠实拥泵，可以添加一个 <code>IdeaVim</code> 的插件，继续使用 vim 的功能。二者结合，当属神器。</p>
-<p>当然，我还希望能更先进点，Composer 的出现，使得 Php 项目的代码组织和包依赖变的比以前简单了。三者的结合会如何？</p>
-<span id="more"></span>
-
-<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>使用 PhpStorm 创建项目，这个我就不再废话了。 无论你是通过版本控制系统 checkout 一个项目；</p>
-<p>还是直接 create 一个本地项目；或者 create 一个远程项目 … … 俺都不 care。Just do it。 </p>
-<h2 id="创建项目组织结构"><a href="#创建项目组织结构" class="headerlink" title="创建项目组织结构"></a>创建项目组织结构</h2><p>所谓项目组织结构，最主要的就是目录结构了，我个人的习惯是 <code>project_root -webroot</code>。</p>
-<p>nginx 或者 apache 或者 iis 的 root 目录 -js -css -img -index.php 项目入口文件 -vendor composer 管理的包，库所在目录 -composer.json - 依赖的库，包等等。</p>
-<p>使用 composer 管理 -apps 自己根据情况设定或者根据使用的框架来设定子目录 -data 一些数据 -docs 一些文档 复制代码 可根据个人情况自由设定。</p>
-<p>但是使用 composer 一定会有 vendor 目录，vendor 目录也不需要你手动创建，使用 composer 的时候会自动创建 使用 composer 初始化项目。</p>
-<p>直接下载 composer.phar 包 (phar 包类似 java 的 jar 包), 放在项目根目录下 当你的工作目录是 workspace, 项目目录为 <code>workspace/project_name</code>。</p>
-<p>其实你可以直接把 composer.phar 放在 workspace 目录下 在 <code>workspace/project_name</code> 目录下，执行 <code>php ../composer.phar command</code> 即可 (command 可替换为任何可用命令)</p>
-<p>运行 PhpStorm 的 Terminal 工具，执行 composer 相关命令 当然你也可以 win+r 键，输入 cmd，进入 dos 命令行，然后切换目录到当前项目根目录执行命令</p>
-<p>php composer.phar init 初始化 composer.json 文件，运行命令会要求你输入一些信息，根据提示做吧 一直到 Define your dependencies 这一步，就是引入外部依赖</p>
-<p>php composer.phar install 安装依赖包到 vendor 目录下，如果没有 vendor 目录会自动创建 当然你也可以在项目根目录下手动创建 <code>composer.json</code>。</p>
-<p>然后再 php composer.phpar install 如果想删除对某个包的依赖，只能是手动删除 vendor 目录下的包，然后 <code>php composer.phar update</code> 顺带说下，</p>
-<p>PhpStorm 里面新建项目可选择创建 composer 项目，那为什么要使用命令行？</p>
-<p>原因就是 composer 的库，一直在加载的路上 不知道 <code>gfw</code> 弄的还是怎么搞的，命令行虽然慢点一定能成功。</p>
-<h2 id="composer-常用命令"><a href="#composer-常用命令" class="headerlink" title="composer 常用命令"></a>composer 常用命令</h2><figure class="highlight autohotkey"><table><tr><td class="code"><pre><span class="line">`composer list` 列出所有可用的命令。</span><br><span class="line"></span><br><span class="line">`composer init` 初始化 composer.json 文件 (就不劳我们自己费力创建啦)。会要求输入一些信息来描述我们当前的项目，还会要求输入依赖包。</span><br><span class="line"></span><br><span class="line">`composer install` 读取 composer.json 内容，解析依赖关系。安装依赖包到 vendor 目录下。</span><br><span class="line"></span><br><span class="line">`composer update` 更新最新的依赖关系到 compsoer.lock 文件，解析最新的依赖关系并且写入 composer.lock 文件。</span><br><span class="line"></span><br><span class="line">`composer search packagename` 搜索包，packagename 替换为你想查找的包名称。</span><br><span class="line"></span><br><span class="line">`composer require packagename` 添加对 packagename 的依赖，packagename 可修改为你想要的包名称</span><br><span class="line"></span><br><span class="line">`composer show packagename`</span><br><span class="line"></span><br><span class="line">`composer self-update` 更新 composer.phar 文件自身</span><br><span class="line"></span><br><span class="line">`composer command --help` 以上所有命令都可以添加 --help 选项查看帮助信息 </span><br></pre></td></tr></table></figure>
-
-<p>更详细准确的命令信息，请访问 <span class="exturl" data-url="aHR0cHM6Ly93d3cucGhwY29tcG9zZXIuY29tLw==">phpcomposer<i class="fa fa-external-link-alt"></i></span> 进行查看。</p>
-]]></content>
-      <categories>
-        <category>Php</category>
-      </categories>
-      <tags>
-        <tag>PhpStorm</tag>
-        <tag>Composer</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Lnmp 架设 Laravel 框架</title>
     <url>/2016/08/lnmp-laravel/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>这个问题耗费我三天时间和精力，刚开始出现 <code>php -r</code> 错误和 PHP 的一些命令错误。</p>
@@ -951,51 +901,21 @@
       </tags>
   </entry>
   <entry>
-    <title>PhpStorm 常用配置和常用快捷键</title>
-    <url>/2016/08/phpstorm-setting/</url>
-    <content><![CDATA[<h2 id="PhpStorm-常用配置"><a href="#PhpStorm-常用配置" class="headerlink" title="PhpStorm 常用配置"></a>PhpStorm 常用配置</h2><ol>
-<li>从版本控制系统创建项目:<figure class="highlight clean"><table><tr><td class="code"><pre><span class="line">CVS -&gt; Checkout <span class="keyword">from</span> Version Control</span><br></pre></td></tr></table></figure></li>
-</ol>
+    <title>开源观点</title>
+    <url>/2016/08/open-source/</url>
+    <content><![CDATA[<h2 id="开源观点"><a href="#开源观点" class="headerlink" title="开源观点"></a>开源观点</h2><p>上次博客写道 <code>Vim</code> 的折腾和 <code>PhpStorm</code> 的好处，决定好好里用 <code>PhpStorm</code> 开发 <code>laravel</code> 项目！</p>
+<p>之前不知道就听说 <code>PhpStorm</code> 能打开远程项目，一直没试过今天仔细瞅瞅，发现不但能打开局域网内项目，还能代开 <code>Linux</code> 上的项目！</p>
 <span id="more"></span>
 
-<ol start="2">
-<li><p>关联 DOC 文档（右键）: </p>
-<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">External</span> Librariese -&gt; Configure PHP <span class="keyword">include</span> paths</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>去掉波浪线:</p>
-<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">settings</span> -&gt;</span> E<span class="function"><span class="title">ditor</span> -&gt;</span> C<span class="function"><span class="title">olors</span> &amp; Fonts -&gt;</span> G<span class="function"><span class="title">eneral</span> -&gt;</span> TYPO-&gt;Effects</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>显示行号:</p>
-<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">settings</span> -&gt;</span> E<span class="function"><span class="title">ditor</span>-&gt;</span>A<span class="function"><span class="title">ppearance</span>-&gt;</span>Show line numbers </span><br></pre></td></tr></table></figure>
-</li>
-<li><p>远程或本地同步文件:</p>
-<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line">T<span class="function"><span class="title">ools</span> -&gt;</span> D<span class="function"><span class="title">eploments</span> -&gt;</span> Configuration</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>去掉右上角浏览器图标:</p>
-<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">settings</span> -&gt;</span> <span class="function"><span class="title">tools</span> -&gt;</span> WebBrowsers</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>添加 VIM 插件:</p>
-<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">settings</span>-&gt;</span><span class="function"><span class="title">editor</span> -&gt;</span><span class="function"><span class="title">plugins</span>-&gt;</span><span class="function"><span class="title">browse</span> repositories -&gt;</span> 搜索 VIM</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>启动的时候不打开工程文件</p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">Settings-&gt;General 去掉 Reopen last <span class="keyword">project</span> <span class="keyword">on</span> startup.</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>取消自动保存</p>
-<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">appearance</span> -&gt;</span> <span class="function"><span class="title">system</span> settings -&gt;</span> save file 的两个选项 去掉</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将编辑的文件加星号标识:</p>
-<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">settings</span> -&gt;</span> <span class="function"><span class="title">editor</span> -&gt;</span> <span class="function"><span class="title">editor</span> tabs -&gt;</span> 勾选 mark modifed tabs…</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>添加扩展名高亮显示:</p>
-<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">settings</span> -&gt;</span> <span class="function"><span class="title">editor</span> -&gt;</span> file types  </span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="PhpStorm-常用快捷键"><a href="#PhpStorm-常用快捷键" class="headerlink" title="PhpStorm 常用快捷键"></a>PhpStorm 常用快捷键</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">command</span> + option + l                        将代码格式化</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> + <span class="built_in">shift</span> + u                         切换大小写</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> + <span class="built_in">shift</span> + + /command + <span class="built_in">shift</span> + -    折叠 / 展开所有区块</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> + e                                 列出最后打开的文件</span><br><span class="line"></span><br><span class="line">control + tab  /control + <span class="built_in">shift</span> + tab       切换打开的文件</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> + /                                 行注释</span><br><span class="line"></span><br><span class="line">ctrl + <span class="built_in">shift</span> + /                            块注释</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> + b                                 函数追踪，同 <span class="built_in">command</span> + 单击</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> + alt + &lt; or &gt;                      操作动作前进 / 回退</span><br><span class="line"></span><br><span class="line"><span class="built_in">shift</span> + <span class="built_in">command</span> + r                         按文件名搜索对应文件所在路径</span><br><span class="line"></span><br><span class="line"><span class="built_in">shift</span> + <span class="built_in">command</span> + t                         按类名搜索对应文件所在路径</span><br><span class="line"></span><br><span class="line"><span class="built_in">shift</span> + <span class="built_in">command</span> + c                         复制当前文件所在路径</span><br><span class="line"></span><br><span class="line">Command + Shift + O                         打开文件</span><br><span class="line"></span><br><span class="line">Command + O                                 打开类</span><br><span class="line"></span><br><span class="line">alt + F1                                    定位编辑文件所在位置:</span><br><span class="line"></span><br><span class="line">alt + F12                                   打开命令行栏</span><br></pre></td></tr></table></figure>]]></content>
+<p>局域网类这样打开项目，<code>Windows</code> 资源管理器里有个映射网络驱动器的功能，将你这个共享地址映射为一个磁盘，就可以当作本地打开了</p>
+<p><code>Linux</code> 项目这样打开和编辑远程项目，<span class="exturl" data-url="aHR0cDovL2ppbmd5YW4uYmFpZHUuY29tL2FydGljbGUvODZmNGE3M2U4MzcyNGEzN2Q3NTI2OTdkLmh0bWw=">FTP项目<i class="fa fa-external-link-alt"></i></span> <span class="exturl" data-url="aHR0cDovL3d3dy5jbmJsb2dzLmNvbS9zaGFveWlrYWkvcC80MzgxNjQyLmh0bWw=">远程项目<i class="fa fa-external-link-alt"></i></span></p>
+<p>至此我想起来开源的好处，操作系统有 <code>Windows Linux Unix</code> 等，WEB 服务器有 <code>Tomcat Nginx Apache IIS</code> 等，数据库有 <code>Oracle Redis Mysql SqlServer</code> 等，编程语言有 <code>JAVA Ruby PHP Python</code> 等。</p>
+<p>每个程序员都可以自由选择操作系统和 <code>WEB</code> 服务器，数据库，编程语言等，因为 <code>MySQL</code> 和 <code>PHP</code> 相互支持较好，所以导致 <code>PHP</code> 越来越流行的原因吧！ </p>
+<p>这些开源工具可以自由组合，自由结合，自由匹配，比较有名的如 <code>wamp lamp wnmp lnmp xampp</code> 等等，充分说明一点开源的东西是最经得起打击的，生命力最强的。</p>
+]]></content>
       <categories>
-        <category>Php</category>
+        <category>OpenSource</category>
       </categories>
-      <tags>
-        <tag>PhpStorm</tag>
-      </tags>
   </entry>
   <entry>
     <title>为什么 Laravel 会成为最成功的 PHP 框架</title>
@@ -1052,6 +972,86 @@
       </categories>
       <tags>
         <tag>Laravel</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PhpStorm 常用配置和常用快捷键</title>
+    <url>/2016/08/phpstorm-setting/</url>
+    <content><![CDATA[<h2 id="PhpStorm-常用配置"><a href="#PhpStorm-常用配置" class="headerlink" title="PhpStorm 常用配置"></a>PhpStorm 常用配置</h2><ol>
+<li>从版本控制系统创建项目:<figure class="highlight clean"><table><tr><td class="code"><pre><span class="line">CVS -&gt; Checkout <span class="keyword">from</span> Version Control</span><br></pre></td></tr></table></figure></li>
+</ol>
+<span id="more"></span>
+
+<ol start="2">
+<li><p>关联 DOC 文档（右键）: </p>
+<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">External</span> Librariese -&gt; Configure PHP <span class="keyword">include</span> paths</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>去掉波浪线:</p>
+<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">settings</span> -&gt;</span> E<span class="function"><span class="title">ditor</span> -&gt;</span> C<span class="function"><span class="title">olors</span> &amp; Fonts -&gt;</span> G<span class="function"><span class="title">eneral</span> -&gt;</span> TYPO-&gt;Effects</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示行号:</p>
+<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">settings</span> -&gt;</span> E<span class="function"><span class="title">ditor</span>-&gt;</span>A<span class="function"><span class="title">ppearance</span>-&gt;</span>Show line numbers </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>远程或本地同步文件:</p>
+<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line">T<span class="function"><span class="title">ools</span> -&gt;</span> D<span class="function"><span class="title">eploments</span> -&gt;</span> Configuration</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>去掉右上角浏览器图标:</p>
+<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">settings</span> -&gt;</span> <span class="function"><span class="title">tools</span> -&gt;</span> WebBrowsers</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加 VIM 插件:</p>
+<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">settings</span>-&gt;</span><span class="function"><span class="title">editor</span> -&gt;</span><span class="function"><span class="title">plugins</span>-&gt;</span><span class="function"><span class="title">browse</span> repositories -&gt;</span> 搜索 VIM</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动的时候不打开工程文件</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">Settings-&gt;General 去掉 Reopen last <span class="keyword">project</span> <span class="keyword">on</span> startup.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>取消自动保存</p>
+<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">appearance</span> -&gt;</span> <span class="function"><span class="title">system</span> settings -&gt;</span> save file 的两个选项 去掉</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将编辑的文件加星号标识:</p>
+<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">settings</span> -&gt;</span> <span class="function"><span class="title">editor</span> -&gt;</span> <span class="function"><span class="title">editor</span> tabs -&gt;</span> 勾选 mark modifed tabs…</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加扩展名高亮显示:</p>
+<figure class="highlight xl"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">settings</span> -&gt;</span> <span class="function"><span class="title">editor</span> -&gt;</span> file types  </span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="PhpStorm-常用快捷键"><a href="#PhpStorm-常用快捷键" class="headerlink" title="PhpStorm 常用快捷键"></a>PhpStorm 常用快捷键</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">command</span> + option + l                        将代码格式化</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> + <span class="built_in">shift</span> + u                         切换大小写</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> + <span class="built_in">shift</span> + + /command + <span class="built_in">shift</span> + -    折叠 / 展开所有区块</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> + e                                 列出最后打开的文件</span><br><span class="line"></span><br><span class="line">control + tab  /control + <span class="built_in">shift</span> + tab       切换打开的文件</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> + /                                 行注释</span><br><span class="line"></span><br><span class="line">ctrl + <span class="built_in">shift</span> + /                            块注释</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> + b                                 函数追踪，同 <span class="built_in">command</span> + 单击</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> + alt + &lt; or &gt;                      操作动作前进 / 回退</span><br><span class="line"></span><br><span class="line"><span class="built_in">shift</span> + <span class="built_in">command</span> + r                         按文件名搜索对应文件所在路径</span><br><span class="line"></span><br><span class="line"><span class="built_in">shift</span> + <span class="built_in">command</span> + t                         按类名搜索对应文件所在路径</span><br><span class="line"></span><br><span class="line"><span class="built_in">shift</span> + <span class="built_in">command</span> + c                         复制当前文件所在路径</span><br><span class="line"></span><br><span class="line">Command + Shift + O                         打开文件</span><br><span class="line"></span><br><span class="line">Command + O                                 打开类</span><br><span class="line"></span><br><span class="line">alt + F1                                    定位编辑文件所在位置:</span><br><span class="line"></span><br><span class="line">alt + F12                                   打开命令行栏</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Php</category>
+      </categories>
+      <tags>
+        <tag>PhpStorm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用 PhpStorm+Composer 快速初始化项目</title>
+    <url>/2016/08/phpstorm-composer/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>PhpStorm 是一款非常出色的 Php IDE；vim 的忠实拥泵，可以添加一个 <code>IdeaVim</code> 的插件，继续使用 vim 的功能。二者结合，当属神器。</p>
+<p>当然，我还希望能更先进点，Composer 的出现，使得 Php 项目的代码组织和包依赖变的比以前简单了。三者的结合会如何？</p>
+<span id="more"></span>
+
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>使用 PhpStorm 创建项目，这个我就不再废话了。 无论你是通过版本控制系统 checkout 一个项目；</p>
+<p>还是直接 create 一个本地项目；或者 create 一个远程项目 … … 俺都不 care。Just do it。 </p>
+<h2 id="创建项目组织结构"><a href="#创建项目组织结构" class="headerlink" title="创建项目组织结构"></a>创建项目组织结构</h2><p>所谓项目组织结构，最主要的就是目录结构了，我个人的习惯是 <code>project_root -webroot</code>。</p>
+<p>nginx 或者 apache 或者 iis 的 root 目录 -js -css -img -index.php 项目入口文件 -vendor composer 管理的包，库所在目录 -composer.json - 依赖的库，包等等。</p>
+<p>使用 composer 管理 -apps 自己根据情况设定或者根据使用的框架来设定子目录 -data 一些数据 -docs 一些文档 复制代码 可根据个人情况自由设定。</p>
+<p>但是使用 composer 一定会有 vendor 目录，vendor 目录也不需要你手动创建，使用 composer 的时候会自动创建 使用 composer 初始化项目。</p>
+<p>直接下载 composer.phar 包 (phar 包类似 java 的 jar 包), 放在项目根目录下 当你的工作目录是 workspace, 项目目录为 <code>workspace/project_name</code>。</p>
+<p>其实你可以直接把 composer.phar 放在 workspace 目录下 在 <code>workspace/project_name</code> 目录下，执行 <code>php ../composer.phar command</code> 即可 (command 可替换为任何可用命令)</p>
+<p>运行 PhpStorm 的 Terminal 工具，执行 composer 相关命令 当然你也可以 win+r 键，输入 cmd，进入 dos 命令行，然后切换目录到当前项目根目录执行命令</p>
+<p>php composer.phar init 初始化 composer.json 文件，运行命令会要求你输入一些信息，根据提示做吧 一直到 Define your dependencies 这一步，就是引入外部依赖</p>
+<p>php composer.phar install 安装依赖包到 vendor 目录下，如果没有 vendor 目录会自动创建 当然你也可以在项目根目录下手动创建 <code>composer.json</code>。</p>
+<p>然后再 php composer.phpar install 如果想删除对某个包的依赖，只能是手动删除 vendor 目录下的包，然后 <code>php composer.phar update</code> 顺带说下，</p>
+<p>PhpStorm 里面新建项目可选择创建 composer 项目，那为什么要使用命令行？</p>
+<p>原因就是 composer 的库，一直在加载的路上 不知道 <code>gfw</code> 弄的还是怎么搞的，命令行虽然慢点一定能成功。</p>
+<h2 id="composer-常用命令"><a href="#composer-常用命令" class="headerlink" title="composer 常用命令"></a>composer 常用命令</h2><figure class="highlight autohotkey"><table><tr><td class="code"><pre><span class="line">`composer list` 列出所有可用的命令。</span><br><span class="line"></span><br><span class="line">`composer init` 初始化 composer.json 文件 (就不劳我们自己费力创建啦)。会要求输入一些信息来描述我们当前的项目，还会要求输入依赖包。</span><br><span class="line"></span><br><span class="line">`composer install` 读取 composer.json 内容，解析依赖关系。安装依赖包到 vendor 目录下。</span><br><span class="line"></span><br><span class="line">`composer update` 更新最新的依赖关系到 compsoer.lock 文件，解析最新的依赖关系并且写入 composer.lock 文件。</span><br><span class="line"></span><br><span class="line">`composer search packagename` 搜索包，packagename 替换为你想查找的包名称。</span><br><span class="line"></span><br><span class="line">`composer require packagename` 添加对 packagename 的依赖，packagename 可修改为你想要的包名称</span><br><span class="line"></span><br><span class="line">`composer show packagename`</span><br><span class="line"></span><br><span class="line">`composer self-update` 更新 composer.phar 文件自身</span><br><span class="line"></span><br><span class="line">`composer command --help` 以上所有命令都可以添加 --help 选项查看帮助信息 </span><br></pre></td></tr></table></figure>
+
+<p>更详细准确的命令信息，请访问 <span class="exturl" data-url="aHR0cHM6Ly93d3cucGhwY29tcG9zZXIuY29tLw==">phpcomposer<i class="fa fa-external-link-alt"></i></span> 进行查看。</p>
+]]></content>
+      <categories>
+        <category>Php</category>
+      </categories>
+      <tags>
+        <tag>PhpStorm</tag>
+        <tag>Composer</tag>
       </tags>
   </entry>
   <entry>
@@ -1163,8 +1163,8 @@
         <category>DevTools</category>
       </categories>
       <tags>
-        <tag>PhpStorm</tag>
         <tag>Vim</tag>
+        <tag>PhpStorm</tag>
       </tags>
   </entry>
 </search>

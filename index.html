@@ -90,7 +90,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">27</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">26</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">74</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">44</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">16</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -161,18 +161,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -504,6 +504,99 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2020/10/algorithm-rsa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宿命">
+      <meta itemprop="description" content="宿命 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 宿命">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/algorithm-rsa/" class="post-title-link" itemprop="url">RSA 算法原理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-18 00:56:30" itemprop="dateCreated datePublished" datetime="2020-10-18T00:56:30+08:00">2020-10-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-03 16:23:47" itemprop="dateModified" datetime="2022-12-03T16:23:47+08:00">2022-12-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="一、什么是-RSA-算法"><a href="#一、什么是-RSA-算法" class="headerlink" title="一、什么是 RSA 算法"></a>一、什么是 RSA 算法</h2><p>1977 年，三位数学家 Rivest、Shamir 和 Adleman 设计了一种算法，可以实现非对称加密。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">（1）甲方选择某一种加密规则，对信息进行加密；</span><br><span class="line">（2）乙方使用同一种规则，对信息进行解密。</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/algorithm-rsa/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://slagga.top/2019/gitlab-build-repository/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -697,7 +790,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2016/08/phpstorm-setting/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/11/php-use/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -715,7 +808,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2016/08/phpstorm-setting/" class="post-title-link" itemprop="url">PhpStorm 常用配置和常用快捷键</a>
+          <a href="/2017/11/php-use/" class="post-title-link" itemprop="url">关于 php 匿名函数中的 use</a>
         </h2>
 
         <div class="post-meta-container">
@@ -726,14 +819,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2016-08-31 20:03:30" itemprop="dateCreated datePublished" datetime="2016-08-31T20:03:30+08:00">2016-08-31</time>
+      <time title="创建时间：2017-11-28 17:49:30" itemprop="dateCreated datePublished" datetime="2017-11-28T17:49:30+08:00">2017-11-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-02 23:28:37" itemprop="dateModified" datetime="2022-12-02T23:28:37+08:00">2022-12-02</time>
+      <time title="修改时间：2022-12-04 00:10:43" itemprop="dateModified" datetime="2022-12-04T00:10:43+08:00">2022-12-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -755,12 +848,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="PhpStorm-常用配置"><a href="#PhpStorm-常用配置" class="headerlink" title="PhpStorm 常用配置"></a>PhpStorm 常用配置</h2><ol>
-<li>从版本控制系统创建项目:<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CVS -&gt; Checkout <span class="keyword">from</span> Version Control</span><br></pre></td></tr></table></figure></li>
-</ol>
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>匿名函数中的 use，其作用就是从父作用域继承变量。 </p>
+<p>下例是最常见的用法，如果不使用 use，函数中将找不到变量 $msg。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2016/08/phpstorm-setting/#more" rel="contents">
+              <a class="btn" href="/2017/11/php-use/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -791,7 +883,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2016/08/phpstorm-svn/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/11/php-event/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -809,7 +901,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2016/08/phpstorm-svn/" class="post-title-link" itemprop="url">PhpStorm 中如何配置 SVN，详细操作方法</a>
+          <a href="/2017/11/php-event/" class="post-title-link" itemprop="url">Php7 下安装 event 扩展</a>
         </h2>
 
         <div class="post-meta-container">
@@ -820,200 +912,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2016-08-31 16:52:30" itemprop="dateCreated datePublished" datetime="2016-08-31T16:52:30+08:00">2016-08-31</time>
+      <time title="创建时间：2017-11-25 18:00:30" itemprop="dateCreated datePublished" datetime="2017-11-25T18:00:30+08:00">2017-11-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-02 23:32:24" itemprop="dateModified" datetime="2022-12-02T23:32:24+08:00">2022-12-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Svn/" itemprop="url" rel="index"><span itemprop="name">Svn</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><p>PhpStorm 是一个轻量级且便捷的 PHP IDE，其提供的智能代码补全，快速导航以及即时错误检查等功能大大提高了编码效率。</p>
-<p>它是一款商业的 PHP 集成开发工具，以其独特的开发便利性，短时间内赢得了大量 PHPer 的青睐。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/08/phpstorm-svn/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2016/08/html5-app/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
-      <meta itemprop="name" content="Slagga">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="宿命">
-      <meta itemprop="description" content="宿命 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 宿命">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2016/08/html5-app/" class="post-title-link" itemprop="url">为什么 HTML5 APP 能在 2015 年火起来？</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2016-08-20 18:24:30" itemprop="dateCreated datePublished" datetime="2016-08-20T18:24:30+08:00">2016-08-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-02 18:37:59" itemprop="dateModified" datetime="2022-12-02T18:37:59+08:00">2022-12-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Html5/" itemprop="url" rel="index"><span itemprop="name">Html5</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>HTML5做跨平台的APP，在大多数人的脑子里没有什么好感，我身边的朋友也这么说。Anyway，我用完以后得出这样的结论：HTML5跨平台APP开发，在2015年以后会越来越火。</p>
-<p>在2014年以前，HTML5的性能和能力都不够充足。特别是性能，因为Android4.4以下版本不能支持webGL技术，所以大部分低端Android手机无法流畅运行手机APP。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/08/html5-app/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2016/08/php-laravel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
-      <meta itemprop="name" content="Slagga">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="宿命">
-      <meta itemprop="description" content="宿命 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 宿命">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2016/08/php-laravel/" class="post-title-link" itemprop="url">为什么 Laravel 会成为最成功的 PHP 框架</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2016-08-14 01:25:30" itemprop="dateCreated datePublished" datetime="2016-08-14T01:25:30+08:00">2016-08-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-02 18:35:53" itemprop="dateModified" datetime="2022-12-02T18:35:53+08:00">2022-12-02</time>
+      <time title="修改时间：2022-12-04 00:06:32" itemprop="dateModified" datetime="2022-12-04T00:06:32+08:00">2022-12-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1035,11 +941,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="模块化和可扩展性"><a href="#模块化和可扩展性" class="headerlink" title="模块化和可扩展性"></a>模块化和可扩展性</h2><p>Laravel 注重代码的模块化和可扩展性。你可以在包含超过 5500 个程序包的 Packalyst 目录中找到你想要添加的任何文件。</p>
-<p>Laravel 的目标是让你能够找到任何想要的文件。</p>
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>有效安排 I&#x2F;O，时间和信号的扩展 使用可用于特定平台的最佳 I&#x2F;O 通知机制的事件，是 PHP 基础设施的 libevent 端口。 </p>
+<p>下载地址：<span class="exturl" data-url="aHR0cDovL3BlY2wucGhwLm5ldC9wYWNrYWdlL2V2ZW50">http://pecl.php.net/package/event<i class="fa fa-external-link-alt"></i></span></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2016/08/php-laravel/#more" rel="contents">
+              <a class="btn" href="/2017/11/php-event/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1070,7 +976,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2016/08/apache-concurrency/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/11/linux-vpn/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -1088,7 +994,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2016/08/apache-concurrency/" class="post-title-link" itemprop="url">apache 中 MaxClients 与 MaxRequestsPerChild 并发数</a>
+          <a href="/2017/11/linux-vpn/" class="post-title-link" itemprop="url">Linux 安装配置 VPN 服务器</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1099,14 +1005,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2016-08-12 16:11:30" itemprop="dateCreated datePublished" datetime="2016-08-12T16:11:30+08:00">2016-08-12</time>
+      <time title="创建时间：2017-11-22 01:13:30" itemprop="dateCreated datePublished" datetime="2017-11-22T01:13:30+08:00">2017-11-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-02 21:03:26" itemprop="dateModified" datetime="2022-12-02T21:03:26+08:00">2022-12-02</time>
+      <time title="修改时间：2022-12-04 00:04:38" itemprop="dateModified" datetime="2022-12-04T00:04:38+08:00">2022-12-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1114,7 +1020,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Apache/" itemprop="url" rel="index"><span itemprop="name">Apache</span></a>
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
         </span>
     </span>
 
@@ -1128,11 +1034,103 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>因近期服务不稳定，根据现象来对 APACHE 调优，以前用 MAXCLIENTS 3000, 砖家建议后，改为 1500。</p>
-<p>MaxClients 要加到多少？ 连接数理论上当然是支持越大越好，但要在服务器的能力范围内，这跟服务器的 CPU、内存、带宽等都有关系。 </p>
+          <h2 id="常见的-VPN-软件介绍"><a href="#常见的-VPN-软件介绍" class="headerlink" title="常见的 VPN 软件介绍"></a>常见的 VPN 软件介绍</h2><h4 id="OpenVPN"><a href="#OpenVPN" class="headerlink" title="OpenVPN"></a>OpenVPN</h4>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2016/08/apache-concurrency/#more" rel="contents">
+              <a class="btn" href="/2017/11/linux-vpn/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/11/nginx-https/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宿命">
+      <meta itemprop="description" content="宿命 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 宿命">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2017/11/nginx-https/" class="post-title-link" itemprop="url">Nginx 301 重定向配置方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-11-22 00:58:30" itemprop="dateCreated datePublished" datetime="2017-11-22T00:58:30+08:00">2017-11-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-04 00:04:44" itemprop="dateModified" datetime="2022-12-04T00:04:44+08:00">2022-12-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Nginx/" itemprop="url" rel="index"><span itemprop="name">Nginx</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>最近博客启用了 https，为了实现 <span class="exturl" data-url="aHR0cDovL3NsYWdnYS50b3DjgIFodHRwLy93d3cuc2xhZ2dhLnRvcCVFMyU4MCU4MWh0dHBzOi8vc2xhZ2dhLnRvcA==">http://slagga.top、http://www.slagga.top、https://slagga.top<i class="fa fa-external-link-alt"></i></span> 用 301 重定向 <span class="exturl" data-url="aHR0cHM6Ly93d3cuc2xhZ2dhLnRvcC8=">https://www.slagga.top<i class="fa fa-external-link-alt"></i></span></p>
+<p>查了很多资料 ，没有找到完美的解决方案，最终自己摸索出方案，废话少说，直接上 conf 配置代码。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/11/nginx-https/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1156,7 +1154,7 @@
 
 
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

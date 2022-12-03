@@ -28,22 +28,12 @@
 <meta property="og:site_name" content="宿命">
 <meta property="og:description" content="运行环境1234Php 版本：5.5.12PhpStorm : 9.0.2 Xdebug : 2.2.5    下载地址，请下载与当前 PHP 版本对应的版本系统平台：Windows 7">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://slagga.top/images/2016/phpinfo.png">
-<meta property="og:image" content="https://slagga.top/images/2016/php_debug.png">
-<meta property="og:image" content="https://slagga.top/images/2016/dbgp_proxy.png">
-<meta property="og:image" content="https://slagga.top/images/2016/settings_servers.png">
-<meta property="og:image" content="https://slagga.top/images/2016/run_debug.png">
-<meta property="og:image" content="https://slagga.top/images/2016/debugphp.png">
-<meta property="og:image" content="https://slagga.top/images/2016/breakpoint.png">
-<meta property="og:image" content="https://slagga.top/images/2016/implement.png">
-<meta property="og:image" content="https://slagga.top/images/2016/capture.png">
 <meta property="article:published_time" content="2016-06-21T06:38:30.000Z">
-<meta property="article:modified_time" content="2022-12-02T15:36:37.851Z">
+<meta property="article:modified_time" content="2022-12-03T11:56:51.436Z">
 <meta property="article:author" content="Slagga">
 <meta property="article:tag" content="PhpStorm">
 <meta property="article:tag" content="Xdebug">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://slagga.top/images/2016/phpinfo.png">
 
 
 <link rel="canonical" href="https://slagga.top/2016/06/phpstorm-debug-detail/">
@@ -103,7 +93,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">27</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">26</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">74</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">44</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">16</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -175,18 +165,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -271,7 +261,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-02 23:36:37" itemprop="dateModified" datetime="2022-12-02T23:36:37+08:00">2022-12-02</time>
+      <time title="修改时间：2022-12-03 19:56:51" itemprop="dateModified" datetime="2022-12-03T19:56:51+08:00">2022-12-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -307,41 +297,28 @@
 <li><p>通过访问 phpinfo, 查看是否配置正确</p>
 </li>
 </ol>
-<p><img src="/images/2016/phpinfo.png" alt="phpinfo"></p>
 <h2 id="二-PhpStorm-的相关配置"><a href="#二-PhpStorm-的相关配置" class="headerlink" title="二. PhpStorm 的相关配置"></a>二. PhpStorm 的相关配置</h2><ol>
 <li><p>基本 debug 设定，点击菜单栏 File-&gt;Settings, 打开对话框，左侧的下拉菜单 Languages &amp; Frameworks -&gt; PHP -&gt; Debug 设定</p>
 <p> 主要是配置 Debug port ：9001 ，选用 9001, 防止 9000 端口被占用。</p>
-<p> <img src="/images/2016/php_debug.png" alt="php_debug"></p>
 </li>
 <li><p>打开 Debug-&gt;DBGp proxy, 在这里补充在 php.ini 的配置项。</p>
-<p> <img src="/images/2016/dbgp_proxy.png" alt="dbgp_proxy"></p>
 </li>
 <li><p>新建一个 php 的 servers,name 修改为 test，Host：localhost，port：80，Debugger：Xdebug，保存。</p>
 <p> 这个 server 是留到后来配置具体的 debug 是要用的。</p>
-<p> <img src="/images/2016/settings_servers.png" alt="settings_servers"></p>
 </li>
 <li><p>针对项目的 Debug 设定，点击菜单栏的 Run-&gt;Edit configurations..，打开对话框</p>
 <p> 添加新的 debug 配置，当前针对 php 的项目选择新的 server,（步骤 3 中配置过的 server 即可）</p>
-<p> <img src="/images/2016/run_debug.png" alt="run_debug"></p>
 <p> 新的 debug 可以命名为 name:debugphp，</p>
 <p> server: 选择我们刚刚配置的 server</p>
 <p> start Url ： 默认就是什么目录下，当然你可以随意添加</p>
 <p> Browser : 选择你认为合适的浏览器即可了</p>
-<p> <img src="/images/2016/debugphp.png" alt="debugphp"></p>
 </li>
 </ol>
 <h2 id="三-开始调试"><a href="#三-开始调试" class="headerlink" title="三. 开始调试"></a>三. 开始调试</h2><ol>
 <li>添加断点，打开一个在 root 目录下的 PHP 文件，选择 php 文件中的任意一行右键添加断点，或者在该行头部点击。</li>
-</ol>
-<p><img src="/images/2016/breakpoint.png" alt="breakpoint"></p>
-<ol start="2">
 <li>shift+F9 或者点击菜单栏右边的蜘蛛</li>
-</ol>
-<p><img src="/images/2016/implement.png" alt="implement"></p>
-<ol start="3">
 <li>PhpStorm 会打开浏览器，并且执行程序，捕捉到调试点。回到 debug 界面了</li>
 </ol>
-<p><img src="/images/2016/capture.png" alt="capture"></p>
 <p>以上就完成了对浏览器的调试支持。</p>
 
     </div>

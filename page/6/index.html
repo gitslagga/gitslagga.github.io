@@ -90,7 +90,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">119</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">58</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">22</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">134</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">64</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">23</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -161,18 +161,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">134</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">58</span>
+        <span class="site-state-item-count">64</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -220,7 +220,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/12/http_protocol/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/03/websocket-description/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -238,7 +238,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/12/http_protocol/" class="post-title-link" itemprop="url">理解 HTTP，TCP，UDP，Socket，WebSocket</a>
+          <a href="/2018/03/websocket-description/" class="post-title-link" itemprop="url">我见过的最好的 WebSocket 介绍</a>
         </h2>
 
         <div class="post-meta-container">
@@ -249,14 +249,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2017-12-02 15:37:30" itemprop="dateCreated datePublished" datetime="2017-12-02T15:37:30+08:00">2017-12-02</time>
+      <time title="创建时间：2018-03-16 17:44:30" itemprop="dateCreated datePublished" datetime="2018-03-16T17:44:30+08:00">2018-03-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 18:51:59" itemprop="dateModified" datetime="2022-12-04T18:51:59+08:00">2022-12-04</time>
+      <time title="修改时间：2022-12-04 23:07:30" itemprop="dateModified" datetime="2022-12-04T23:07:30+08:00">2022-12-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -278,11 +278,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>谨以此文总结我站在iOS开发者角度对于以上关键词的形象理解，至于底层抽象的概念，别人用啥TCP&#x2F;IP详解：卷一、卷二、卷三都讲不清楚，我也懒得浪费时间。</p>
-<p>前人栽树，后人乘凉，一个道理。</p>
+          <h2 id="一、WebSocket是HTML5出的东西（协议）"><a href="#一、WebSocket是HTML5出的东西（协议）" class="headerlink" title="一、WebSocket是HTML5出的东西（协议）"></a>一、WebSocket是HTML5出的东西（协议）</h2><p>也就是说HTTP协议没有变化，或者说没关系，但HTTP是不支持持久连接的（长连接，循环连接的不算）</p>
+<p>首先HTTP有1.1和1.0之说，也就是所谓的keep-alive，把多个HTTP请求合并为一个，但是Websocket其实是一个新协议，跟HTTP协议基本没有关系。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/12/http_protocol/#more" rel="contents">
+              <a class="btn" href="/2018/03/websocket-description/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -313,7 +313,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/11/php-use/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/03/php-performance/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -331,7 +331,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/11/php-use/" class="post-title-link" itemprop="url">关于 php 匿名函数中的 use</a>
+          <a href="/2018/03/php-performance/" class="post-title-link" itemprop="url">PHP 解决网站大数据大流量与高并发</a>
         </h2>
 
         <div class="post-meta-container">
@@ -342,14 +342,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2017-11-28 17:49:30" itemprop="dateCreated datePublished" datetime="2017-11-28T17:49:30+08:00">2017-11-28</time>
+      <time title="创建时间：2018-03-10 08:57:30" itemprop="dateCreated datePublished" datetime="2018-03-10T08:57:30+08:00">2018-03-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 00:10:43" itemprop="dateModified" datetime="2022-12-04T00:10:43+08:00">2022-12-04</time>
+      <time title="修改时间：2022-12-04 23:15:30" itemprop="dateModified" datetime="2022-12-04T23:15:30+08:00">2022-12-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -371,11 +371,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>匿名函数中的 use，其作用就是从父作用域继承变量。 </p>
-<p>下例是最常见的用法，如果不使用 use，函数中将找不到变量 $msg。</p>
+          <h2 id="第一，硬件方面"><a href="#第一，硬件方面" class="headerlink" title="第一，硬件方面"></a>第一，硬件方面</h2><p>普通的一个 p4 的服务器每天最多能支持大约 10 万左右的 IP，如果访问量超过 10W 那么需要专用的服务器才能解决，如果硬件不给力 软件怎么优化都是于事无补的。</p>
+<p>主要影响服务器的速度</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/11/php-use/#more" rel="contents">
+              <a class="btn" href="/2018/03/php-performance/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -406,7 +406,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/11/php-event/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/03/mysql-performance/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -424,7 +424,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/11/php-event/" class="post-title-link" itemprop="url">Php7 下安装 event 扩展</a>
+          <a href="/2018/03/mysql-performance/" class="post-title-link" itemprop="url">MySQL 大表优化方案</a>
         </h2>
 
         <div class="post-meta-container">
@@ -435,14 +435,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2017-11-25 18:00:30" itemprop="dateCreated datePublished" datetime="2017-11-25T18:00:30+08:00">2017-11-25</time>
+      <time title="创建时间：2018-03-10 08:46:30" itemprop="dateCreated datePublished" datetime="2018-03-10T08:46:30+08:00">2018-03-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 00:06:32" itemprop="dateModified" datetime="2022-12-04T00:06:32+08:00">2022-12-04</time>
+      <time title="修改时间：2022-12-04 22:28:45" itemprop="dateModified" datetime="2022-12-04T22:28:45+08:00">2022-12-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -450,7 +450,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Php/" itemprop="url" rel="index"><span itemprop="name">Php</span></a>
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
         </span>
     </span>
 
@@ -464,11 +464,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>有效安排 I&#x2F;O，时间和信号的扩展 使用可用于特定平台的最佳 I&#x2F;O 通知机制的事件，是 PHP 基础设施的 libevent 端口。 </p>
-<p>下载地址：<span class="exturl" data-url="aHR0cDovL3BlY2wucGhwLm5ldC9wYWNrYWdlL2V2ZW50">http://pecl.php.net/package/event<i class="fa fa-external-link-alt"></i></span></p>
+          <h2 id="垂直拆分"><a href="#垂直拆分" class="headerlink" title="垂直拆分"></a>垂直拆分</h2><p>垂直分库是根据数据库里面的数据表的相关性进行拆分，比如：一个数据库里面既存在用户数据，又存在订单数据，那么垂直拆分可以把用户数据放到用户库、把订单数据放到订单库。</p>
+<p>垂直分表是对数据表进行垂直拆分的一种方式，常见的是把一个多字段的大表按常用字段和非常用字段进行拆分，每个表里面的数据记录数一般情况下是相同的，只是字段不一样，使用主键关联</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/11/php-event/#more" rel="contents">
+              <a class="btn" href="/2018/03/mysql-performance/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -499,7 +499,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/11/linux-vpn/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/03/mysql-transaction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -517,7 +517,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/11/linux-vpn/" class="post-title-link" itemprop="url">Linux 安装配置 VPN 服务器</a>
+          <a href="/2018/03/mysql-transaction/" class="post-title-link" itemprop="url">MySQL 中的锁（表锁、行锁）</a>
         </h2>
 
         <div class="post-meta-container">
@@ -528,14 +528,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2017-11-22 01:13:30" itemprop="dateCreated datePublished" datetime="2017-11-22T01:13:30+08:00">2017-11-22</time>
+      <time title="创建时间：2018-03-03 13:00:30" itemprop="dateCreated datePublished" datetime="2018-03-03T13:00:30+08:00">2018-03-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 00:04:38" itemprop="dateModified" datetime="2022-12-04T00:04:38+08:00">2022-12-04</time>
+      <time title="修改时间：2022-12-04 22:20:14" itemprop="dateModified" datetime="2022-12-04T22:20:14+08:00">2022-12-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -543,7 +543,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
         </span>
     </span>
 
@@ -557,10 +557,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="常见的-VPN-软件介绍"><a href="#常见的-VPN-软件介绍" class="headerlink" title="常见的 VPN 软件介绍"></a>常见的 VPN 软件介绍</h2><h4 id="OpenVPN"><a href="#OpenVPN" class="headerlink" title="OpenVPN"></a>OpenVPN</h4>
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p><strong>锁是计算机协调多个进程或纯线程并发访问某一资源的机制。</strong>在数据库中，除传统的计算资源（CPU、RAM、I&#x2F;O）的争用以外，数据也是一种供许多用户共享的资源。</p>
+<p>如何保证数据并发访问的一致性、有效性是所在有数据库必须解决的一个问题，锁冲突也是影响数据库并发访问性能的一个重要因素。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/11/linux-vpn/#more" rel="contents">
+              <a class="btn" href="/2018/03/mysql-transaction/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -591,7 +592,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/11/nginx-https/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/03/redis-queue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -609,7 +610,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/11/nginx-https/" class="post-title-link" itemprop="url">Nginx 301 重定向配置方法</a>
+          <a href="/2018/03/redis-queue/" class="post-title-link" itemprop="url">Redis 队列功能</a>
         </h2>
 
         <div class="post-meta-container">
@@ -620,14 +621,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2017-11-22 00:58:30" itemprop="dateCreated datePublished" datetime="2017-11-22T00:58:30+08:00">2017-11-22</time>
+      <time title="创建时间：2018-03-02 16:57:30" itemprop="dateCreated datePublished" datetime="2018-03-02T16:57:30+08:00">2018-03-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 00:04:44" itemprop="dateModified" datetime="2022-12-04T00:04:44+08:00">2022-12-04</time>
+      <time title="修改时间：2022-12-06 00:24:58" itemprop="dateModified" datetime="2022-12-06T00:24:58+08:00">2022-12-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -635,7 +636,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Nginx/" itemprop="url" rel="index"><span itemprop="name">Nginx</span></a>
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
         </span>
     </span>
 
@@ -649,11 +650,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>最近博客启用了 https，为了实现 <span class="exturl" data-url="aHR0cDovL3NsYWdnYS50b3DjgIFodHRwLy93d3cuc2xhZ2dhLnRvcCVFMyU4MCU4MWh0dHBzOi8vc2xhZ2dhLnRvcA==">http://slagga.top、http://www.slagga.top、https://slagga.top<i class="fa fa-external-link-alt"></i></span> 用 301 重定向 <span class="exturl" data-url="aHR0cHM6Ly93d3cuc2xhZ2dhLnRvcC8=">https://www.slagga.top<i class="fa fa-external-link-alt"></i></span></p>
-<p>查了很多资料 ，没有找到完美的解决方案，最终自己摸索出方案，废话少说，直接上 conf 配置代码。</p>
+          <h2 id="List-常用命令"><a href="#List-常用命令" class="headerlink" title="List 常用命令"></a>List 常用命令</h2><p>Blpop 删除，并获得该列表中的第一元素，或阻塞，直到有一个可用</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/11/nginx-https/#more" rel="contents">
+              <a class="btn" href="/2018/03/redis-queue/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -684,7 +684,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/11/uml-design2/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/03/git-revert/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -702,7 +702,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/11/uml-design2/" class="post-title-link" itemprop="url">设计模式（三），结构型模式</a>
+          <a href="/2018/03/git-revert/" class="post-title-link" itemprop="url">Git 各种状态下撤销修改的方法</a>
         </h2>
 
         <div class="post-meta-container">
@@ -713,14 +713,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2017-11-12 01:17:30" itemprop="dateCreated datePublished" datetime="2017-11-12T01:17:30+08:00">2017-11-12</time>
+      <time title="创建时间：2018-03-02 14:08:30" itemprop="dateCreated datePublished" datetime="2018-03-02T14:08:30+08:00">2018-03-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 22:31:19" itemprop="dateModified" datetime="2022-12-04T22:31:19+08:00">2022-12-04</time>
+      <time title="修改时间：2022-12-04 21:18:54" itemprop="dateModified" datetime="2022-12-04T21:18:54+08:00">2022-12-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -728,7 +728,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DataStructure/" itemprop="url" rel="index"><span itemprop="name">DataStructure</span></a>
+          <a href="/categories/DevTools/" itemprop="url" rel="index"><span itemprop="name">DevTools</span></a>
         </span>
     </span>
 
@@ -742,11 +742,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="外观模式"><a href="#外观模式" class="headerlink" title="外观模式"></a>外观模式</h2><p>外观模式 (Facade Pattern)：外部与一个子系统的通信必须通过一个统一的外观对象进行，为子系统中的一组接口提供一个一致的界面。</p>
-<p>外观模式定义了一个高层接口，这个接口使得这一子系统更加容易使用。外观模式又称为门面模式，它是一种对象结构型模式。</p>
+          <h2 id="使用git时会出现各种各样的问题，下面是几种情况下怎么反悔的操作"><a href="#使用git时会出现各种各样的问题，下面是几种情况下怎么反悔的操作" class="headerlink" title="使用git时会出现各种各样的问题，下面是几种情况下怎么反悔的操作"></a>使用git时会出现各种各样的问题，下面是几种情况下怎么反悔的操作</h2><p>一，未加入缓存区，撤销文件修改</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">$</span> git checkout -- <span class="keyword">file</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/11/uml-design2/#more" rel="contents">
+              <a class="btn" href="/2018/03/git-revert/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -777,7 +777,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/11/uml-design1/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/03/network-api/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -795,7 +795,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/11/uml-design1/" class="post-title-link" itemprop="url">设计模式（二），设计模式详解</a>
+          <a href="/2018/03/network-api/" class="post-title-link" itemprop="url">WEB 开发中，使用 JSON-RPC 好，还是 RESTful 好？</a>
         </h2>
 
         <div class="post-meta-container">
@@ -806,14 +806,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2017-11-12 01:11:30" itemprop="dateCreated datePublished" datetime="2017-11-12T01:11:30+08:00">2017-11-12</time>
+      <time title="创建时间：2018-03-01 15:21:30" itemprop="dateCreated datePublished" datetime="2018-03-01T15:21:30+08:00">2018-03-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 22:31:28" itemprop="dateModified" datetime="2022-12-04T22:31:28+08:00">2022-12-04</time>
+      <time title="修改时间：2022-12-04 21:02:00" itemprop="dateModified" datetime="2022-12-04T21:02:00+08:00">2022-12-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -821,7 +821,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DataStructure/" itemprop="url" rel="index"><span itemprop="name">DataStructure</span></a>
+          <a href="/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
         </span>
     </span>
 
@@ -835,11 +835,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="设计模式详解（1-8）"><a href="#设计模式详解（1-8）" class="headerlink" title="设计模式详解（1-8）"></a>设计模式详解（1-8）</h2><p>工厂模式</p>
-<p>工厂模式具体可分为三类模式：简单工厂模式，工厂方法模式，抽象工厂模式；</p>
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>两者没有高下之分，无非是一种约定俗成的标准。习惯用 RPC 就用 RPC，能理解 REST 就用 REST。</p>
+<p>JSON-RPC 比较符合直观，格式也相对宽松；</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/11/uml-design1/#more" rel="contents">
+              <a class="btn" href="/2018/03/network-api/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -870,7 +870,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/11/uml-design/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/02/github-atom/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -888,7 +888,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/11/uml-design/" class="post-title-link" itemprop="url">设计模式（一），UML 类图设计</a>
+          <a href="/2018/02/github-atom/" class="post-title-link" itemprop="url">Atom的插件必备</a>
         </h2>
 
         <div class="post-meta-container">
@@ -899,14 +899,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2017-11-12 01:05:30" itemprop="dateCreated datePublished" datetime="2017-11-12T01:05:30+08:00">2017-11-12</time>
+      <time title="创建时间：2018-02-02 15:52:30" itemprop="dateCreated datePublished" datetime="2018-02-02T15:52:30+08:00">2018-02-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 22:31:08" itemprop="dateModified" datetime="2022-12-04T22:31:08+08:00">2022-12-04</time>
+      <time title="修改时间：2022-12-04 20:55:41" itemprop="dateModified" datetime="2022-12-04T20:55:41+08:00">2022-12-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -914,7 +914,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DataStructure/" itemprop="url" rel="index"><span itemprop="name">DataStructure</span></a>
+          <a href="/categories/DevTools/" itemprop="url" rel="index"><span itemprop="name">DevTools</span></a>
         </span>
     </span>
 
@@ -928,10 +928,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="设计模式背景"><a href="#设计模式背景" class="headerlink" title="设计模式背景"></a>设计模式背景</h2><p>开始实验之前，有必要先了解一些背景信息和相关基础知识。</p>
+          <h2 id="ATOM常用插件推荐"><a href="#ATOM常用插件推荐" class="headerlink" title="ATOM常用插件推荐"></a>ATOM常用插件推荐</h2><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9hdG9tLmlvL3BhY2thZ2VzL3NpbXBsaWZpZWQtY2hpbmVzZS1tZW51">simplified-chinese-menu<i class="fa fa-external-link-alt"></i></span> ATOM的汉化插件</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9hdG9tLmlvL3BhY2thZ2VzL2ZpbGUtaWNvbnM=">file-icons<i class="fa fa-external-link-alt"></i></span> 文件图标美化</li>
+</ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/11/uml-design/#more" rel="contents">
+              <a class="btn" href="/2018/02/github-atom/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -962,7 +965,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/10/php-session-redis/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/01/mysql-transaction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -980,7 +983,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/10/php-session-redis/" class="post-title-link" itemprop="url">配置 Php 的 Session 存储到 Redis</a>
+          <a href="/2018/01/mysql-transaction/" class="post-title-link" itemprop="url">事务隔离性和锁的区别和联系</a>
         </h2>
 
         <div class="post-meta-container">
@@ -991,14 +994,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2017-10-31 15:26:30" itemprop="dateCreated datePublished" datetime="2017-10-31T15:26:30+08:00">2017-10-31</time>
+      <time title="创建时间：2018-01-31 14:10:30" itemprop="dateCreated datePublished" datetime="2018-01-31T14:10:30+08:00">2018-01-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-06 00:27:15" itemprop="dateModified" datetime="2022-12-06T00:27:15+08:00">2022-12-06</time>
+      <time title="修改时间：2022-12-04 20:51:16" itemprop="dateModified" datetime="2022-12-04T20:51:16+08:00">2022-12-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1006,7 +1009,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Php/" itemprop="url" rel="index"><span itemprop="name">Php</span></a>
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
         </span>
     </span>
 
@@ -1020,11 +1023,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>PHP 的会话默认是以文件的形式存在的，可以配置到 NoSQL 中。即提高了访问速度，又能很好地实现会话共享，爽歪歪！</p>
-<p>配置方式如下</p>
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>事务隔离级别是并发控制的整体解决方案，其实际上是综合利用各种类型的锁和行版本控制，来解决并发问题。</p>
+<p>锁是数据库并发控制的内部机制，是基础。当然，数据库同时还会利用行版本控制（SQL Server 2005 及以上）来进行并发控制；在数据库内部还使用闩（latch），互斥（mutex）等机制处理内部资源（如，缓存）的并发访问。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/10/php-session-redis/#more" rel="contents">
+              <a class="btn" href="/2018/01/mysql-transaction/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1055,7 +1058,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/07/open-source/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/01/concurrency/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -1073,7 +1076,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/07/open-source/" class="post-title-link" itemprop="url">利益至上，开源也不免于此</a>
+          <a href="/2018/01/concurrency/" class="post-title-link" itemprop="url">线程和进程的区别是什么？</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1084,14 +1087,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2017-07-25 15:04:30" itemprop="dateCreated datePublished" datetime="2017-07-25T15:04:30+08:00">2017-07-25</time>
+      <time title="创建时间：2018-01-24 16:20:30" itemprop="dateCreated datePublished" datetime="2018-01-24T16:20:30+08:00">2018-01-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-06 00:12:51" itemprop="dateModified" datetime="2022-12-06T00:12:51+08:00">2022-12-06</time>
+      <time title="修改时间：2022-12-06 00:14:03" itemprop="dateModified" datetime="2022-12-06T00:14:03+08:00">2022-12-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1099,7 +1102,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/OpenSource/" itemprop="url" rel="index"><span itemprop="name">OpenSource</span></a>
+          <a href="/categories/Concurrency/" itemprop="url" rel="index"><span itemprop="name">Concurrency</span></a>
         </span>
     </span>
 
@@ -1113,10 +1116,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>摘要：在刚刚诞生的初级阶段，开源软件就像是公益之心带给这个世界的一份圣洁礼物。然而随着低成本营销、讨价还价、对竞争对手展开阻击 —— 开源行业不再只与 “免费” 挂钩，暴利已经随处可见。企业如何利用开源来赚取利润？ </p>
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>首先来一句概括的总论：进程和线程都是一个时间段的描述，是 CPU 工作时间段的描述。</p>
+<p>下面细说背景：</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/07/open-source/#more" rel="contents">
+              <a class="btn" href="/2018/01/concurrency/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1140,7 +1144,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

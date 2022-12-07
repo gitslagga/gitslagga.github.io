@@ -21,29 +21,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.2","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.13.2/config.min.js"></script>
 
-    <meta name="description" content="所需操作系统 在教程开始之前，是不是很多人搜索过：Windows下GitLab服务器搭建？答案是没有，GitLab只针对Unix类系统做了开发。 当然，GitLab本身就是Git的衍生品，如果你非要在Windows下搭建Git服务器，那么Git的其他衍生品如Gitblit是可以完成的。">
+    <meta name="description" content="使用域名登陆 Cookie 失效 ？框架使用 Cookie_Only 或者 Cookie_Secure 后，域名登陆的时候必须加入 SSL 证书，使用 Https。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Gitlab 自建服务器仓库">
-<meta property="og:url" content="https://slagga.top/2019/gitlab-build-repository/index.html">
+<meta property="og:title" content="认证 Cookie 失效问题">
+<meta property="og:url" content="https://slagga.top/2019/04/auth-cookie/index.html">
 <meta property="og:site_name" content="宿命">
-<meta property="og:description" content="所需操作系统 在教程开始之前，是不是很多人搜索过：Windows下GitLab服务器搭建？答案是没有，GitLab只针对Unix类系统做了开发。 当然，GitLab本身就是Git的衍生品，如果你非要在Windows下搭建Git服务器，那么Git的其他衍生品如Gitblit是可以完成的。">
+<meta property="og:description" content="使用域名登陆 Cookie 失效 ？框架使用 Cookie_Only 或者 Cookie_Secure 后，域名登陆的时候必须加入 SSL 证书，使用 Https。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2019-11-03T06:10:03.000Z">
-<meta property="article:modified_time" content="2022-12-04T13:18:34.444Z">
+<meta property="article:published_time" content="2019-04-12T07:03:37.000Z">
+<meta property="article:modified_time" content="2022-12-07T10:33:23.881Z">
 <meta property="article:author" content="Slagga">
-<meta property="article:tag" content="Git">
-<meta property="article:tag" content="Gitlab">
+<meta property="article:tag" content="Blog, HTML, CSS, JavaScript, Python, PHP, Java, Go, Redis, MySQL, Node.js, React, Vuejs, Git, Programming, Web Development, Blockchain">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://slagga.top/2019/gitlab-build-repository/">
+<link rel="canonical" href="https://slagga.top/2019/04/auth-cookie/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2019/gitlab-build-repository/","path":"2019/gitlab-build-repository/","title":"Gitlab 自建服务器仓库"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2019/04/auth-cookie/","path":"2019/04/auth-cookie/","title":"认证 Cookie 失效问题"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Gitlab 自建服务器仓库 | 宿命</title>
+<title>认证 Cookie 失效问题 | 宿命</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
   <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false}</script>
@@ -93,7 +92,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">119</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">58</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">22</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">134</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">64</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">23</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -150,7 +149,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%80%E9%9C%80%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">所需操作系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git%E7%9A%84%E4%BC%98%E7%82%B9%E5%92%8C%E7%BC%BA%E7%82%B9%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">Git的优点和缺点介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gitlab-%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">Gitlab 安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gitlab-Usage"><span class="nav-number">4.</span> <span class="nav-text">Gitlab Usage</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9F%9F%E5%90%8D%E7%99%BB%E9%99%86-Cookie-%E5%A4%B1%E6%95%88-%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">使用域名登陆 Cookie 失效 ？</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -165,18 +164,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">134</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">58</span>
+        <span class="site-state-item-count">64</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -225,7 +224,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2019/gitlab-build-repository/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2019/04/auth-cookie/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -238,12 +237,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Gitlab 自建服务器仓库 | 宿命">
+      <meta itemprop="name" content="认证 Cookie 失效问题 | 宿命">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Gitlab 自建服务器仓库
+          认证 Cookie 失效问题
         </h1>
 
         <div class="post-meta-container">
@@ -254,14 +253,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2019-11-03 14:10:03" itemprop="dateCreated datePublished" datetime="2019-11-03T14:10:03+08:00">2019-11-03</time>
+      <time title="创建时间：2019-04-12 15:03:37" itemprop="dateCreated datePublished" datetime="2019-04-12T15:03:37+08:00">2019-04-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 21:18:34" itemprop="dateModified" datetime="2022-12-04T21:18:34+08:00">2022-12-04</time>
+      <time title="修改时间：2022-12-07 18:33:23" itemprop="dateModified" datetime="2022-12-07T18:33:23+08:00">2022-12-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -269,7 +268,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DevTools/" itemprop="url" rel="index"><span itemprop="name">DevTools</span></a>
+          <a href="/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
         </span>
     </span>
 
@@ -283,57 +282,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h4 id="所需操作系统"><a href="#所需操作系统" class="headerlink" title="所需操作系统"></a>所需操作系统</h4><ul>
-<li>在教程开始之前，是不是很多人搜索过：Windows下GitLab服务器搭建？答案是没有，GitLab只针对Unix类系统做了开发。</li>
-<li>当然，GitLab本身就是Git的衍生品，如果你非要在Windows下搭建Git服务器，那么Git的其他衍生品如Gitblit是可以完成的。</li>
-</ul>
+        <h2 id="使用域名登陆-Cookie-失效-？"><a href="#使用域名登陆-Cookie-失效-？" class="headerlink" title="使用域名登陆 Cookie 失效 ？"></a>使用域名登陆 Cookie 失效 ？</h2><p>框架使用 Cookie_Only 或者 Cookie_Secure 后，域名登陆的时候必须加入 SSL 证书，使用 Https。</p>
 <span id="more"></span>
 
-<h4 id="Git的优点和缺点介绍"><a href="#Git的优点和缺点介绍" class="headerlink" title="Git的优点和缺点介绍"></a>Git的优点和缺点介绍</h4><ul>
-<li>优点<ul>
-<li>适合分布式开发，强调个体</li>
-<li>公共服务器压力和数据量都不会太大</li>
-<li>速度快、灵活</li>
-<li>任意两个开发者之间可以很容易的解决冲突</li>
-<li>离线可以正常提交代码和工作</li>
-</ul>
-</li>
-<li>缺点<ul>
-<li>学习周期相对而言比较长</li>
-<li>不符合常规思维</li>
-<li>代码保密性差，一旦开发者把整个库克隆下来就可以完全公开所有代码和版本信息</li>
-</ul>
-</li>
-</ul>
-<h4 id="Gitlab-安装"><a href="#Gitlab-安装" class="headerlink" title="Gitlab 安装"></a>Gitlab 安装</h4><ul>
-<li>Git 安装<ul>
-<li>$ apt update </li>
-<li>$ apt install git</li>
-</ul>
-</li>
-<li>安装依赖包<ul>
-<li>$ sudo apt-get install curl openssh-server ca-certificates postfix</li>
-<li>OK—&gt;InternetSite—&gt;OK, 默认就行</li>
-</ul>
-</li>
-<li>安装主程序<ul>
-<li>利用<span class="exturl" data-url="aHR0cHM6Ly9taXJyb3IudHVuYS50c2luZ2h1YS5lZHUuY24vaGVscC9naXRsYWItY2U=">清华大学的镜像<i class="fa fa-external-link-alt"></i></span>，来进行主程序的安装</li>
-<li>首先信任 GitLab 的 GPG 公钥  <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl https:<span class="regexp">//</span>packages.gitlab.com<span class="regexp">/gpg.key 2&gt; /</span>dev<span class="regexp">/null | sudo apt-key add - &amp;&gt;/</span>dev/null</span><br></pre></td></tr></table></figure></li>
-<li>Ubuntu 18.04 LTS, 添加安装包地址  <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo <span class="string">&quot;deb http://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/debian stretch main&quot;</span> &gt;&gt; <span class="regexp">/etc/</span>apt<span class="regexp">/sources.list.d/gi</span>tlab-ce.list</span><br></pre></td></tr></table></figure></li>
-<li>安装 gitlab-ce  <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-<span class="built_in">get</span> update</span><br><span class="line">$ sudo apt-<span class="built_in">get</span> install gitlab-ce</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>修改配置  <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim <span class="regexp">/etc/gi</span>tlab/gitlab.rb</span><br></pre></td></tr></table></figure>
-  更改 external_url&#x3D;<span class="exturl" data-url="aHR0cDovLzQ3LjI0NC4xMjYuODUv">http://47.244.126.85<i class="fa fa-external-link-alt"></i></span> (IP换成你本机的IP地址，内网和外网都可以)</li>
-<li>启动sshd和postfix服务  <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> service sshd <span class="built_in">start</span></span><br><span class="line"><span class="variable">$</span> service postfix <span class="built_in">start</span></span><br></pre></td></tr></table></figure></li>
-<li>添加防火墙规则  <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo iptables -A <span class="keyword">INPUT</span> -p tcp -m tcp <span class="comment">--dport 80 -j ACCEPT</span></span><br></pre></td></tr></table></figure></li>
-<li>启动各项服务  <figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>sudo gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure></li>
-<li>查看gitlab状态  <figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>sudo gitlab-ctl status</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="Gitlab-Usage"><a href="#Gitlab-Usage" class="headerlink" title="Gitlab Usage"></a>Gitlab Usage</h4><ul>
-<li>打开浏览器访问 <code>http://your-ip-address</code></li>
-<li>默认第一访问需要修改初始密码</li>
-</ul>
+<p>双重 Cookie 的情况是因为，<span class="exturl" data-url="aHR0cDovL3d3dy5leGFtcGxlLmNvbS8=">www.example.com<i class="fa fa-external-link-alt"></i></span> 生成了一次 Cookie, .example.com 又生成一次 Cookie ?</p>
+<p>框架在使用 Cookie_Path 之后，必须加入 Cookie_Domain 才能生成一次 Cookie。</p>
 
     </div>
 
@@ -342,22 +295,18 @@
     
 
     <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Git/" rel="tag"># Git</a>
-              <a href="/tags/Gitlab/" rel="tag"># Gitlab</a>
-          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2019/vmware-deploy-ubuntu/" rel="prev" title="VMware本地部署Ubuntu虚拟机集群">
-                  <i class="fa fa-chevron-left"></i> VMware本地部署Ubuntu虚拟机集群
+                <a href="/2019/04/nginx-cerbot/" rel="prev" title="Cerbot 在 Ubuntu 上，自动生成 Https 证书">
+                  <i class="fa fa-chevron-left"></i> Cerbot 在 Ubuntu 上，自动生成 Https 证书
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/10/algorithm-rsa/" rel="next" title="RSA 算法原理">
-                  RSA 算法原理 <i class="fa fa-chevron-right"></i>
+                <a href="/2019/06/java-class/" rel="next" title="JAVA 内部类作用">
+                  JAVA 内部类作用 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -416,7 +365,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"1c5f03b2c7914e461807280d16578c4a"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"d7f8b9b9546f3049119ccc65cde65883"}</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.13.2/third-party/comments/gitalk.min.js"></script>
 
 </body>

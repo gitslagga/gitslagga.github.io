@@ -90,7 +90,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">158</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">73</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">26</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">168</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">74</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -161,18 +161,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-count">168</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-count">74</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -220,7 +220,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2020/03/go-select/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2019/10/go-maps-looping/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -238,7 +238,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/03/go-select/" class="post-title-link" itemprop="url">一文掌握 Go 语言 Select 的四大用法</a>
+          <a href="/2019/10/go-maps-looping/" class="post-title-link" itemprop="url">遍历map时的key随机化问题及解决方法</a>
         </h2>
 
         <div class="post-meta-container">
@@ -249,14 +249,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2019-03-10 23:12:37" itemprop="dateCreated datePublished" datetime="2019-03-10T23:12:37+08:00">2019-03-10</time>
+      <time title="创建时间：2019-10-11 18:02:37" itemprop="dateCreated datePublished" datetime="2019-10-11T18:02:37+08:00">2019-10-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-08 12:17:28" itemprop="dateModified" datetime="2022-12-08T12:17:28+08:00">2022-12-08</time>
+      <time title="修改时间：2022-12-08 11:00:49" itemprop="dateModified" datetime="2022-12-08T11:00:49+08:00">2022-12-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -278,11 +278,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>本文带大家认识 Go 语言的 Select 用法，相信大家对于 switch 并不陌生，然而 select 跟 switch 有个共同特性就是都通过 case 的方式来处理，但是 select 跟 switch 处理的事情完全不同，也完全不相容。</p>
-<p>来看看 switch 有什么特性: 各种类型及型别操作，接口 interface{} 型别判断 variable.(type)，重点是会依照 case 顺序依序执行。</p>
+          <h2 id="Go的map在底层是用hashmap实现的"><a href="#Go的map在底层是用hashmap实现的" class="headerlink" title="Go的map在底层是用hashmap实现的"></a>Go的map在底层是用hashmap实现的</h2><p>由于高效的hash函数肯定不是对key做顺序散列的，所以与其它语言实现的hashmap类似，在使用Go语言map过程中，key-value的插入顺序与遍历map时key的访问顺序是不相同的。</p>
+<p>熟悉hashmap的同学对这个情况应该非常清楚。  </p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/go-select/#more" rel="contents">
+              <a class="btn" href="/2019/10/go-maps-looping/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -313,7 +313,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2020/03/go-goroutines/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2019/10/golang-channels/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -331,7 +331,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/03/go-goroutines/" class="post-title-link" itemprop="url">深入研究 goroutine 并发控制与通信</a>
+          <a href="/2019/10/golang-channels/" class="post-title-link" itemprop="url">golang channel 有缓冲 与 无缓冲 的重要区别</a>
         </h2>
 
         <div class="post-meta-container">
@@ -342,14 +342,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2019-03-08 11:42:37" itemprop="dateCreated datePublished" datetime="2019-03-08T11:42:37+08:00">2019-03-08</time>
+      <time title="创建时间：2019-10-11 12:35:37" itemprop="dateCreated datePublished" datetime="2019-10-11T12:35:37+08:00">2019-10-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-08 12:55:20" itemprop="dateModified" datetime="2022-12-08T12:55:20+08:00">2022-12-08</time>
+      <time title="修改时间：2022-12-08 11:00:59" itemprop="dateModified" datetime="2022-12-08T11:00:59+08:00">2022-12-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -371,11 +371,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="深入研究-goroutine-并发控制与通信"><a href="#深入研究-goroutine-并发控制与通信" class="headerlink" title="深入研究 goroutine 并发控制与通信"></a>深入研究 goroutine 并发控制与通信</h2><p>开发go程序的时候，时常需要使用goroutine并发处理任务，有时候这些goroutine是相互独立的，而有的时候，多个goroutine之间常常是需要同步与通信的。</p>
-<p>另一种情况，主goroutine需要控制它所属的子goroutine，总结起来，实现多个goroutine间的同步与通信大致有</p>
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>golang channel 有缓冲 与 无缓冲 是有重要区别的</p>
+<p>我之前天真的认为 有缓冲与无缓冲的区别 只是 无缓冲的 是 默认 缓冲 为 1 的缓冲式</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/go-goroutines/#more" rel="contents">
+              <a class="btn" href="/2019/10/golang-channels/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -406,7 +406,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2020/03/github-operate/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2019/10/go-channels/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -424,7 +424,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/03/github-operate/" class="post-title-link" itemprop="url">原来 GitHub 还有这种骚操作？</a>
+          <a href="/2019/10/go-channels/" class="post-title-link" itemprop="url">channel 基本使用</a>
         </h2>
 
         <div class="post-meta-container">
@@ -435,111 +435,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2019-03-08 00:14:37" itemprop="dateCreated datePublished" datetime="2019-03-08T00:14:37+08:00">2019-03-08</time>
+      <time title="创建时间：2019-10-09 22:04:37" itemprop="dateCreated datePublished" datetime="2019-10-09T22:04:37+08:00">2019-10-09</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-08 11:20:22" itemprop="dateModified" datetime="2022-12-08T11:20:22+08:00">2022-12-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DevTools/" itemprop="url" rel="index"><span itemprop="name">DevTools</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>相信大家进入 GitHub 搜索一些资料时，都是下面的步骤</p>
-<ol>
-<li>进入网页</li>
-<li>搜索栏输入关键字</li>
-<li>搜索得到结果</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/github-operate/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2020/03/go-programer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
-      <meta itemprop="name" content="Slagga">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="宿命">
-      <meta itemprop="description" content="宿命 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 宿命">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/03/go-programer/" class="post-title-link" itemprop="url">Go 程序员的演变</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-03-04 17:12:37" itemprop="dateCreated datePublished" datetime="2019-03-04T17:12:37+08:00">2019-03-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-08 11:06:49" itemprop="dateModified" datetime="2022-12-08T11:06:49+08:00">2022-12-08</time>
+      <time title="修改时间：2022-12-08 11:00:41" itemprop="dateModified" datetime="2022-12-08T11:00:41+08:00">2022-12-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -561,10 +464,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="通过一个阶乘函数的不同写法将-Go-程序员进行划分。"><a href="#通过一个阶乘函数的不同写法将-Go-程序员进行划分。" class="headerlink" title="通过一个阶乘函数的不同写法将 Go 程序员进行划分。"></a>通过一个阶乘函数的不同写法将 Go 程序员进行划分。</h2><h2 id="初级-Go-程序员"><a href="#初级-Go-程序员" class="headerlink" title="初级 Go 程序员"></a>初级 Go 程序员</h2>
+          <h2 id="channel"><a href="#channel" class="headerlink" title="channel"></a>channel</h2><p>channel 是有类型的管道，可以用 channel 操作符 &lt;- 对其发送或者接收值。</p>
+<h2 id="创建-channel"><a href="#创建-channel" class="headerlink" title="创建 channel"></a>创建 channel</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/go-programer/#more" rel="contents">
+              <a class="btn" href="/2019/10/go-channels/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -595,7 +499,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/11/nodejs-async/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2019/09/go-channels/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -613,7 +517,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/11/nodejs-async/" class="post-title-link" itemprop="url">Nodejs 中使用 Async/Await</a>
+          <a href="/2019/09/go-channels/" class="post-title-link" itemprop="url">一个协程中 Go 无缓冲的通道会产生僵局</a>
         </h2>
 
         <div class="post-meta-container">
@@ -624,14 +528,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2018-11-26 20:56:30" itemprop="dateCreated datePublished" datetime="2018-11-26T20:56:30+08:00">2018-11-26</time>
+      <time title="创建时间：2019-09-27 23:36:37" itemprop="dateCreated datePublished" datetime="2019-09-27T23:36:37+08:00">2019-09-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-07 18:21:51" itemprop="dateModified" datetime="2022-12-07T18:21:51+08:00">2022-12-07</time>
+      <time title="修改时间：2022-12-08 11:00:40" itemprop="dateModified" datetime="2022-12-08T11:00:40+08:00">2022-12-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -639,7 +543,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Node-js/" itemprop="url" rel="index"><span itemprop="name">Node.js</span></a>
+          <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
         </span>
     </span>
 
@@ -653,10 +557,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">rejectionWithReturn</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>())</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Saved&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">rejectionWithReturn</span>().<span class="title function_">then</span>(<span class="function">(<span class="params">ret</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(ret)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>我相信这是一个简单的解释，这个微不足道的情况，但我是新来的并发模型。</p>
+<p>当我运行这个例子</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/nodejs-async/#more" rel="contents">
+              <a class="btn" href="/2019/09/go-channels/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -687,7 +592,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/11/nginx-502/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2020/08/golang-cache/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -705,7 +610,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/11/nginx-502/" class="post-title-link" itemprop="url">网站出现 502 BAD GATEWAY 的解决办法</a>
+          <a href="/2020/08/golang-cache/" class="post-title-link" itemprop="url">Golang 实现缓存系统</a>
         </h2>
 
         <div class="post-meta-container">
@@ -716,14 +621,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2018-11-09 23:25:30" itemprop="dateCreated datePublished" datetime="2018-11-09T23:25:30+08:00">2018-11-09</time>
+      <time title="创建时间：2019-08-09 15:03:37" itemprop="dateCreated datePublished" datetime="2019-08-09T15:03:37+08:00">2019-08-09</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-07 18:03:45" itemprop="dateModified" datetime="2022-12-07T18:03:45+08:00">2022-12-07</time>
+      <time title="修改时间：2022-12-08 11:16:29" itemprop="dateModified" datetime="2022-12-08T11:16:29+08:00">2022-12-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -731,7 +636,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Nginx/" itemprop="url" rel="index"><span itemprop="name">Nginx</span></a>
+          <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
         </span>
     </span>
 
@@ -745,10 +650,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="出现-502-bad-gateway-错误的原因"><a href="#出现-502-bad-gateway-错误的原因" class="headerlink" title="出现 502 bad gateway 错误的原因"></a>出现 502 bad gateway 错误的原因</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1.</span> php-fpm 进程数不够用</span><br><span class="line"><span class="bullet">2.</span> Linux 内核打开文件数量小</span><br><span class="line"><span class="bullet">3.</span> 脚本执行时间超时</span><br><span class="line"><span class="bullet">4.</span> 缓存设置比较小</span><br></pre></td></tr></table></figure>
+          <h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>缓存（Cache）在计算机硬件中普遍存在。比如在 CPU 中就有一级缓存，二级缓存，甚至三级缓存。缓存的工作原理一般是 CPU 需要读取数据时，会首先从缓存中查找需要的数据，如果找到了就直接进行处理，如果没有找到则从内存中读取数据。由于 CPU 中的缓存工作速度比内存还要快，所以缓存的使用能加快 CPU 处理速度。缓存不仅仅存在于硬件中，在各种软件系统中也处处可见。比如在 Web 系统中，缓存存在于服务器端，客户端或者代理服务器中。广泛使用的 CDN 网络，也可以看作一个巨大的缓存系统。缓存在 Web 系统中的使用有很多好处，不仅可以减少网络流量，降低客户访问延迟，还可以减轻服务器负载。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/nginx-502/#more" rel="contents">
+              <a class="btn" href="/2020/08/golang-cache/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -779,7 +684,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/11/php-object-array/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2019/06/java-class/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -797,7 +702,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/11/php-object-array/" class="post-title-link" itemprop="url">PHP 简单对象与数组的转换</a>
+          <a href="/2019/06/java-class/" class="post-title-link" itemprop="url">JAVA 内部类作用</a>
         </h2>
 
         <div class="post-meta-container">
@@ -808,14 +713,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2018-11-09 23:23:30" itemprop="dateCreated datePublished" datetime="2018-11-09T23:23:30+08:00">2018-11-09</time>
+      <time title="创建时间：2019-06-03 12:27:37" itemprop="dateCreated datePublished" datetime="2019-06-03T12:27:37+08:00">2019-06-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-07 18:00:15" itemprop="dateModified" datetime="2022-12-07T18:00:15+08:00">2022-12-07</time>
+      <time title="修改时间：2022-12-07 18:35:16" itemprop="dateModified" datetime="2022-12-07T18:35:16+08:00">2022-12-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -823,7 +728,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Php/" itemprop="url" rel="index"><span itemprop="name">Php</span></a>
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
         </span>
     </span>
 
@@ -837,10 +742,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="PHP-简单-对象-object-与-数组-array-的转换"><a href="#PHP-简单-对象-object-与-数组-array-的转换" class="headerlink" title="PHP 简单 对象 (object) 与 数组 (array) 的转换"></a>PHP 简单 对象 (object) 与 数组 (array) 的转换</h2><p>Talk is cheap, show me the code. </p>
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>推荐一、 定义</p>
+<p>    放在一个类的内部的类我们就叫内部类。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/php-object-array/#more" rel="contents">
+              <a class="btn" href="/2019/06/java-class/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -871,7 +777,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/11/devtools-atom/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2020/04/apache-zookeeper/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -889,7 +795,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/11/devtools-atom/" class="post-title-link" itemprop="url">我的 Atom 开发工具</a>
+          <a href="/2020/04/apache-zookeeper/" class="post-title-link" itemprop="url">ZooKeeper 都有哪些使用场景？</a>
         </h2>
 
         <div class="post-meta-container">
@@ -900,14 +806,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2018-11-09 23:21:30" itemprop="dateCreated datePublished" datetime="2018-11-09T23:21:30+08:00">2018-11-09</time>
+      <time title="创建时间：2019-04-15 21:16:37" itemprop="dateCreated datePublished" datetime="2019-04-15T21:16:37+08:00">2019-04-15</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-07 17:57:24" itemprop="dateModified" datetime="2022-12-07T17:57:24+08:00">2022-12-07</time>
+      <time title="修改时间：2022-12-09 00:16:11" itemprop="dateModified" datetime="2022-12-09T00:16:11+08:00">2022-12-09</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -915,7 +821,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DevTools/" itemprop="url" rel="index"><span itemprop="name">DevTools</span></a>
+          <a href="/categories/Apache/" itemprop="url" rel="index"><span itemprop="name">Apache</span></a>
         </span>
     </span>
 
@@ -929,10 +835,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h4 id="不知不觉折腾-Atom-已经两个星期了，主要被他漂亮简介的主题所吸引，还有会震动的效果。"><a href="#不知不觉折腾-Atom-已经两个星期了，主要被他漂亮简介的主题所吸引，还有会震动的效果。" class="headerlink" title="不知不觉折腾 Atom 已经两个星期了，主要被他漂亮简介的主题所吸引，还有会震动的效果。"></a>不知不觉折腾 Atom 已经两个星期了，主要被他漂亮简介的主题所吸引，还有会震动的效果。</h4><h4 id="下面我详细介绍下我的-Atom-插件配置和说明"><a href="#下面我详细介绍下我的-Atom-插件配置和说明" class="headerlink" title="下面我详细介绍下我的 Atom 插件配置和说明"></a>下面我详细介绍下我的 Atom 插件配置和说明</h4>
+          <h2 id="面试官心理分析"><a href="#面试官心理分析" class="headerlink" title="面试官心理分析"></a>面试官心理分析</h2><p>现在聊的 topic 是分布式系统，面试官跟你聊完了 dubbo 相关的一些问题之后，已经确认你对分布式服务框架&#x2F;RPC框架基本都有一些认知了。那么他可能开始要跟你聊分布式相关的其它问题了。</p>
+<p>分布式锁这个东西，很常用的，你做 Java系统开发，分布式系统，可能会有一些场景会用到。最常用的分布式锁就是基于 zookeeper 来实现的。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/devtools-atom/#more" rel="contents">
+              <a class="btn" href="/2020/04/apache-zookeeper/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -963,7 +870,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/11/php-restful/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2019/04/auth-cookie/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -981,7 +888,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/11/php-restful/" class="post-title-link" itemprop="url">PHP 实例 RESTful</a>
+          <a href="/2019/04/auth-cookie/" class="post-title-link" itemprop="url">认证 Cookie 失效问题</a>
         </h2>
 
         <div class="post-meta-container">
@@ -992,14 +899,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2018-11-09 23:18:30" itemprop="dateCreated datePublished" datetime="2018-11-09T23:18:30+08:00">2018-11-09</time>
+      <time title="创建时间：2019-04-12 15:03:37" itemprop="dateCreated datePublished" datetime="2019-04-12T15:03:37+08:00">2019-04-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-07 18:19:10" itemprop="dateModified" datetime="2022-12-07T18:19:10+08:00">2022-12-07</time>
+      <time title="修改时间：2022-12-07 18:33:23" itemprop="dateModified" datetime="2022-12-07T18:33:23+08:00">2022-12-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1007,7 +914,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Php/" itemprop="url" rel="index"><span itemprop="name">Php</span></a>
+          <a href="/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
         </span>
     </span>
 
@@ -1021,10 +928,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="这里简单介绍个接口实例。"><a href="#这里简单介绍个接口实例。" class="headerlink" title="这里简单介绍个接口实例。"></a>这里简单介绍个接口实例。</h2><p>以下代码是 RESTful 服务类 Site.php</p>
+          <h2 id="使用域名登陆-Cookie-失效-？"><a href="#使用域名登陆-Cookie-失效-？" class="headerlink" title="使用域名登陆 Cookie 失效 ？"></a>使用域名登陆 Cookie 失效 ？</h2><p>框架使用 Cookie_Only 或者 Cookie_Secure 后，域名登陆的时候必须加入 SSL 证书，使用 Https。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/php-restful/#more" rel="contents">
+              <a class="btn" href="/2019/04/auth-cookie/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1055,7 +962,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/11/php-shopnc/">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2019/04/nginx-cerbot/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
@@ -1073,7 +980,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/11/php-shopnc/" class="post-title-link" itemprop="url">Shopnc 奇妙的邀请机制</a>
+          <a href="/2019/04/nginx-cerbot/" class="post-title-link" itemprop="url">Cerbot 在 Ubuntu 上，自动生成 Https 证书</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1084,14 +991,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2018-11-09 23:14:30" itemprop="dateCreated datePublished" datetime="2018-11-09T23:14:30+08:00">2018-11-09</time>
+      <time title="创建时间：2019-04-12 14:36:37" itemprop="dateCreated datePublished" datetime="2019-04-12T14:36:37+08:00">2019-04-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-07 17:48:56" itemprop="dateModified" datetime="2022-12-07T17:48:56+08:00">2022-12-07</time>
+      <time title="修改时间：2022-12-07 18:28:38" itemprop="dateModified" datetime="2022-12-07T18:28:38+08:00">2022-12-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1099,7 +1006,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Php/" itemprop="url" rel="index"><span itemprop="name">Php</span></a>
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
         </span>
     </span>
 
@@ -1113,10 +1020,105 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="首先参考，URL-中-“-”-“？”-amp-“”-号的作用"><a href="#首先参考，URL-中-“-”-“？”-amp-“”-号的作用" class="headerlink" title="首先参考，URL 中 “#” “？” &amp;“” 号的作用"></a>首先参考，URL 中 “#” “？” &amp;“” 号的作用</h2><p>场景 用户登录后邀请好友返利，被邀请用户打开好友发送的邀请链接访问，进行注册后给邀请好友增加积分，就算被邀请用户切换页面，网站也能判断邀请用户是谁。</p>
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着互联网的发展，对网站数据的安全性要求越来越高。</p>
+<p>SSL 证书使用 RSA 协议，对数据做了一层加密。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/php-shopnc/#more" rel="contents">
+              <a class="btn" href="/2019/04/nginx-cerbot/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2020/04/java-hashmap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宿命">
+      <meta itemprop="description" content="宿命 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 宿命">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/04/java-hashmap/" class="post-title-link" itemprop="url">Java 集合之一 - HashMap</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-04-10 11:31:37" itemprop="dateCreated datePublished" datetime="2019-04-10T11:31:37+08:00">2019-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-09 00:17:03" itemprop="dateModified" datetime="2022-12-09T00:17:03+08:00">2022-12-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="深入浅出学Java——HashMap"><a href="#深入浅出学Java——HashMap" class="headerlink" title="深入浅出学Java——HashMap"></a>深入浅出学Java——HashMap</h2><blockquote>
+<p>哈希表（hash table）<br>也叫散列表，是一种非常重要的数据结构，应用场景及其丰富，许多缓存技术（比如memcached）的核心其实就是在内存中维护一张大的哈希表，本文会对java集合框架中HashMap的实现原理进行讲解，并对JDK7的HashMap源码进行分析。</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/04/java-hashmap/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1140,7 +1142,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

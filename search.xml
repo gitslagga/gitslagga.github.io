@@ -10151,4 +10151,60 @@ xdebug.remote_port = 9001
         <category>Career</category>
       </categories>
   </entry>
+  <entry>
+    <title>如何在 Windows 中安装和使用 make</title>
+    <url>/2023/04/install-make-windows/</url>
+    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>make 是执行 Makefile 的命令行实用程序。此命令行工具受 Unix、Linux 和 Windows 操作系统支持。shell命令支持的编程语言可以使用make命令。它主要用于重新编译和重新链接一段代码，也用于维护库。</p>
+<h2 id="如何在-Windows-上安装-make？"><a href="#如何在-Windows-上安装-make？" class="headerlink" title="如何在 Windows 上安装 make？"></a>如何在 Windows 上安装 make？</h2><span id="more"></span>
+
+<p>在这篇博客中，我们将演示如何在 Windows 上安装、使用和卸载 make 命令。</p>
+<p>本节将提供在 PowerShell 上使用 Chocolatey 包管理器安装 make 命令的最简单方法。</p>
+<h2 id="第-1-步：打开-PowerShell-命令提示符"><a href="#第-1-步：打开-PowerShell-命令提示符" class="headerlink" title="第 1 步：打开 PowerShell 命令提示符"></a>第 1 步：打开 PowerShell 命令提示符</h2><p>首先，按 <code>Window + X</code> 键访问高级用户菜单并以管理员身份运行 Windows PowerShell 命令提示符。</p>
+<h2 id="第-2-步：安装-Chocolatey-包管理器"><a href="#第-2-步：安装-Chocolatey-包管理器" class="headerlink" title="第 2 步：安装 Chocolatey 包管理器"></a>第 2 步：安装 Chocolatey 包管理器</h2><p>接下来，执行下面提供的 Chocolatey 包管理器安装命令：</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">&gt; <span class="keyword">Set</span>-ExecutionPolicy Bypass -Scope Process -Force; [<span class="keyword">System</span>.Net.ServicePointManager]::SecurityProtocol = [<span class="keyword">System</span>.Net.ServicePointManager]::SecurityProtocol -bor <span class="number">3072</span>; iex ((<span class="built_in">New</span>-<span class="keyword">Object</span> <span class="keyword">System</span>.Net.WebClient).DownloadString(<span class="string">&#x27;https://community.chocolatey.org/install.ps1&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>该命令来源于：<span class="exturl" data-url="aHR0cHM6Ly9jaG9jb2xhdGV5Lm9yZy9pbnN0YWxsI2luZGl2aWR1YWw=">chocolatey 官网<i class="fa fa-external-link-alt"></i></span>.</p>
+<p>通过运行 <code>choco</code> 命令确认 Chocolatey 包管理器的安装：</p>
+<figure class="highlight node-repl"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">choco</span></span><br></pre></td></tr></table></figure>
+
+<p>给定的输出表明我们已经在 Windows 系统上成功安装了 Chocolatey 版本 <code>v1.1.0</code>。</p>
+<h2 id="第-3-步：安装make"><a href="#第-3-步：安装make" class="headerlink" title="第 3 步：安装make"></a>第 3 步：安装make</h2><p>最后，在以下命令的帮助下使用 Chocolatey 安装 make 实用程序：</p>
+<figure class="highlight node-repl"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">choco install make</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="第-4-步：验证-make-版本"><a href="#第-4-步：验证-make-版本" class="headerlink" title="第 4 步：验证 make 版本"></a>第 4 步：验证 make 版本</h2><p>通过检查其版本来验证 make 实用程序安装：</p>
+<figure class="highlight node-repl"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">make --version</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到我们已经在 Windows 上成功安装了 <code>GNU Make 4.3</code>。让我们继续使用它。</p>
+<h2 id="如何在-Windows-上使用-make？"><a href="#如何在-Windows-上使用-make？" class="headerlink" title="如何在 Windows 上使用 make？"></a>如何在 Windows 上使用 make？</h2><p>make 命令的用途很多，但主要用于执行 Makefile 或描述文件。</p>
+<p>想知道使用 make 命令运行 Makefile 的过程吗？查看下面给出的步骤。</p>
+<h2 id="第-1-步：创建-Makefile"><a href="#第-1-步：创建-Makefile" class="headerlink" title="第 1 步：创建 Makefile"></a>第 1 步：创建 Makefile</h2><p>首先，我们将在我们的 <code>Myproject</code> 文件夹中创建一个名为 <code>Makefile</code> 的文本文件。</p>
+<p>粘贴下面提供的代码来测试 make 命令的工作，然后按 <code>CTRL+S</code> 保存它：</p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">hello:</span></span><br><span class="line">    echo <span class="string">&quot;hello world&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="第-2-步：删除-txt-扩展名"><a href="#第-2-步：删除-txt-扩展名" class="headerlink" title="第 2 步：删除 .txt 扩展名"></a>第 2 步：删除 .txt 扩展名</h2><p>在下一步中，从 Makefile 中删除 <code>.txt</code> 文件扩展名。为此，首先，选择菜单栏的 <code>查看</code> 选项并启用 <code>文件扩展名</code> 复选框。</p>
+<p>然后，删除 <code>.txt</code> 扩展名。请记住，您只需要删除文件扩展名而无需更改文件名。这样做后，屏幕上会出现一个警告框，您必须从那里点击 <code>是</code> 按钮。</p>
+<h2 id="第-3-步：运行-make-命令"><a href="#第-3-步：运行-make-命令" class="headerlink" title="第 3 步：运行 make 命令"></a>第 3 步：运行 make 命令</h2><p>之后，复制 <code>Makefile</code> 所在的路径。</p>
+<p>在“启动”菜单中搜索 <code>CMD</code> 打开命令提示符，打开。</p>
+<p>接下来，移动到保存 Makefile 的文件夹。使用 <code>cd</code> 命令并粘贴我们在下面提供的命令中指定的复制路径。</p>
+<figure class="highlight moonscript"><table><tr><td class="code"><pre><span class="line">&gt; cd <span class="name">C</span>:\Users\Admistrator\Desktop\Myproject</span><br></pre></td></tr></table></figure>
+
+<p>现在，在命令提示符下执行 <code>make</code> 命令编译 Makefile 代码：</p>
+<figure class="highlight node-repl"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">make</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到我们使用make命令成功编译并执行了Makefile。</p>
+<p>make 实用程序还支持许多可用于执行不同操作的选项。在make命令中指定 <code>-help</code> 选项可以查看其手册：</p>
+<figure class="highlight node-repl"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">make --help</span></span><br></pre></td></tr></table></figure>
+
+<p>让我们继续从 Windows 中卸载 make 实用程序的方法。</p>
+<h2 id="如何从-Windows-卸载-make？"><a href="#如何从-Windows-卸载-make？" class="headerlink" title="如何从 Windows 卸载 make？"></a>如何从 Windows 卸载 make？</h2><p>可以使用 choco 命令从 Windows 系统中卸载 make 实用程序：</p>
+<figure class="highlight node-repl"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">choco uninstall make</span></span><br></pre></td></tr></table></figure>
+
+<p>我们已经有效地阐述了在 Windows 上安装、使用和卸载 make 实用程序的方法。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>在 Windows 上安装 make 命令实用程序的最简单方法之一是在 PowerShell 上使用 <code>Chocolatey</code> 包管理器。为此，首先，打开 Windows PowerShell 并安装 Chocolatey 程序包管理器。之后，使用 <code>choco install make</code> 命令安装 make 实用程序。</p>
+<p>这篇博客讲解了 make 在 Windows 上的安装、使用和卸载相关的方法。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
 </search>

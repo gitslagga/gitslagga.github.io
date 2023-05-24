@@ -28,17 +28,17 @@
 <meta property="og:site_name" content="宿命">
 <meta property="og:description" content="【名词解释】Internet  因特网。专指从 ARPANET 发展而来的连接全球各广域网的唯一网络。 Internet Protocol  网际协议。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://slagga.oss-cn-shanghai.aliyuncs.com/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg">
-<meta property="og:image" content="https://slagga.oss-cn-shanghai.aliyuncs.com/2017/wKiom1XhdDOQ-grqAAmE0jtaxDQ090.jpeg">
-<meta property="og:image" content="https://slagga.oss-cn-shanghai.aliyuncs.com/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg">
-<meta property="og:image" content="https://slagga.oss-cn-shanghai.aliyuncs.com/2017/wKiom1Xh_mqgfopQABRkZFgr01s075.jpeg">
-<meta property="og:image" content="https://slagga.oss-cn-shanghai.aliyuncs.com/2017/wKioL1Xh6v-iOouMAATi4njrqUs470.jpeg">
+<meta property="og:image" content="https://slagga.top/images/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg">
+<meta property="og:image" content="https://slagga.top/images/2017/wKiom1XhdDOQ-grqAAmE0jtaxDQ090.jpeg">
+<meta property="og:image" content="https://slagga.top/images/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg">
+<meta property="og:image" content="https://slagga.top/images/2017/wKiom1Xh_mqgfopQABRkZFgr01s075.jpeg">
+<meta property="og:image" content="https://slagga.top/images/2017/wKioL1Xh6v-iOouMAATi4njrqUs470.jpeg">
 <meta property="article:published_time" content="2017-12-13T02:11:30.000Z">
-<meta property="article:modified_time" content="2022-12-10T08:21:34.475Z">
+<meta property="article:modified_time" content="2023-05-24T12:43:35.366Z">
 <meta property="article:author" content="Slagga">
 <meta property="article:tag" content="Socket">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://slagga.oss-cn-shanghai.aliyuncs.com/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg">
+<meta name="twitter:image" content="https://slagga.top/images/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg">
 
 
 <link rel="canonical" href="https://slagga.top/2017/12/network-socket/">
@@ -266,7 +266,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-10 16:21:34" itemprop="dateModified" datetime="2022-12-10T16:21:34+08:00">2022-12-10</time>
+      <time title="修改时间：2023-05-24 20:43:35" itemprop="dateModified" datetime="2023-05-24T20:43:35+08:00">2023-05-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -338,7 +338,7 @@
 <p>bind () 时候，绑定到监听套接字的本地套接字地址就是 0.0.0.0，表示在所有网卡的所有 IP 地址上监听连接请求，当实际的远程数据包到达时，从监听套接字复制创建的数据传输套接字的本地套接字地址 0.0.0.0 就会被替换成数据报文 IP 头部的目标地址字段，而数据传输套接字的 “远程套接字地址” 字段，将被替换为数据报文 IP 头部的 “源地址” 字段）</p>
 <p>例如我们在本机启动一个 apache httpd 进程（web 服务器），发现它的监听套接字为 0.0.0.0:80 ，这就表示 apache 的编程模型采用了处理本地所有网卡所有 IP 地址上的连接请求的策略。假设本机网卡有个 IP 为 192.168.1.2 ，那么我们在浏览器地址栏输入 192.168.1.2:80 这个请求包将被 httpd 进程处理（它监听所有网卡所有 IP 的 80 端口），此时，httpd 创建一个 0.0.0.0:80 套接字的副本，将其替换为</p>
 <p>192.168.1.2:80 ，然后远程套接字地址为浏览器所在的机器 IP 地址：浏览器动态端口。如下图所示：<br></font></p>
-<p><img src="https://slagga.oss-cn-shanghai.aliyuncs.com/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg"></p>
+<p><img src="/images/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg"></p>
 <font color='red'>
 上图的演示环境基于 2 台虚拟机：一台 192.168.3.57 运行 httpd 进程，一台 192.168.3.200 使用 web 浏览器对 httpd 发起 TCP 连接。
 
@@ -348,7 +348,7 @@
 <p>二个标识为 2 处的位置是在 cmd 命令行执行 netstat -ano 输出的相同结果，注意，如果没有通过浏览器与 httpd 建立连接，那么只会显示监听套接字，监听套接字是 httpd 父进程在启动时通过 socket () 系统调用对应的机器指令创建的（返回监听套接字描述符）；</p>
 <p>标识为 3 的位置处是在任务管理器列出的 httpd PID，与前面 2 个工具输出的相同。<br></font></p>
 <p>下面的客户 - 服务 TCP 连接时序图可以帮助你更清晰的理解上述过程，这张图来自计算机网络教程 —— 自顶向下方法，经过我略微修改以符合上述例子：</p>
-<p><img src="https://slagga.oss-cn-shanghai.aliyuncs.com/2017/wKiom1XhdDOQ-grqAAmE0jtaxDQ090.jpeg"></p>
+<p><img src="/images/2017/wKiom1XhdDOQ-grqAAmE0jtaxDQ090.jpeg"></p>
 <p>一般而言，web 服务器进程处理大量不同 IP 用户的并发连接时，在一套接字描述符表中，为每个用户维护单独的套接字描述符，总数可能高达成千上万，每个的本地套接字地址均相同（服务器 IP 地址与进程端口号）；但每个的远程套接字地址都不同，它们表示不同 IP 地址的客户端连接。</p>
 <p>套接字描述符：整型变量，用于关联（或者引用，绑定）到特定的套接字数据结构。</p>
 <p>套接字数据结构的地址：内存地址，用于寻址套接字数据结构。</p>
@@ -361,7 +361,7 @@
 <p>客户端应用程序（进程）通过向宿主操作系统维护的本地套接字数据结构发送请求，以及从本地套接字数据结构中接收响应，来与服务端应用程序（进程）进行逻辑通信。实际的物理通信由本地 TCP&#x2F;IP 协议堆栈的低 4 层（与对端的低 4 层）进行。</p>
 <p>服务端应用程序进程通过从宿主操作系统维护的本地套接字数据结构中接收请求，以及向本地套接字数据结构发送响应，来与客户端应用程序进程进行逻辑通信。实际的物理通信同样由本地 TCP&#x2F;IP 协议堆栈的低 4 层（与对端的低 4 层）进行。</p>
 <p>套接字，套接字描述符，套接字地址，应用缓冲区，内核缓冲区。。。的关系参考下图：</p>
-<p><img src="https://slagga.oss-cn-shanghai.aliyuncs.com/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg"></p>
+<p><img src="/images/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg"></p>
 <hr>
 <p>每当一个套接字 API 函数需要一个 “指向某特定类型套接字地址结构的 | 内存地址 | 的指针” 作为参数来调用时，该指针需要强制类型转换成 “指向通用类型套接字地址结构的 | 内存地址 | 的指针”，然后才能 | 作为该套接字 API 函数 | 的参数来调用。</p>
 <p>例如：</p>
@@ -388,7 +388,7 @@
 
 <p>上面代码中使用到的变量名虽然长了些，但是并不臭，反而很优雅。因为一眼就能看出变量的用途，不像某些变量名为 s，abc，n，ptr，buffer 等，完全没有任何存在的价值。</p>
 <p>由于我直接在代码内关键的逻辑处添加了注释，因此就不再详细解释每行语句的作用；你可以直接复制上面源码，然后在 visual studio 系列 IDE 中创建一个空白 cpp 文件，粘贴代码后直接 F5+F7 编译调试运行。下面是我在 visual studio 2010 中调试该程序的截图，为的是验证 htonl () 函数的作用：上面代码中使用到的变量名虽然长了些，但是并不臭，反而很优雅。因为一眼就能看出变量的用途，不像某些变量名为 s，abc，n，ptr，buffer 等，完全没有任何存在的价值。</p>
-<p><img src="https://slagga.oss-cn-shanghai.aliyuncs.com/2017/wKiom1Xh_mqgfopQABRkZFgr01s075.jpeg"></p>
+<p><img src="/images/2017/wKiom1Xh_mqgfopQABRkZFgr01s075.jpeg"></p>
 <p>最后，上面程序的精髓部分在 for 循环内嵌的 while 循环中，执行 recv () 系统调用从内核缓冲区复制远程主机发送的数据到用户空间的缓冲区所使用的算法，其实也没那么复杂，因为内核缓冲通常比应用程序缓冲区要大，一次 recv () 调用可能无法复制完所有的数据，特别是远程主机发送类似流媒体格式的数据流时，所以在 while 循环中计算并更新了 3 个局部变量（声明并初始化在 main 函数内）：</p>
 <p>用来追踪每次循环后应用程序缓冲区的使用情况（user_buffer_len）</p>
 <p>总共复制的字节数（the_total_bytes_to_send_back_to_client_each_call_send）</p>
@@ -396,7 +396,7 @@
 <p>当 recv () 返回 0，表明将所有内核接收到的数据复制到应用缓冲，此时满足循环退出条件，于是执行 send () 系统调用 “回送” 所有数据到发送端。</p>
 <p>整个算法的设计思路基于下面这张图（还是取自前面那本书，经过适当修改），由于 recv () 每次执行成功，都返回实际复制到用户缓冲的字节数，并且用变量（the_sucessful_copyed_bytes_to_user_buffer_from_client_each_call_recv）</p>
 <p>来保存，因此上面 3 个变量与该变量是紧密相关的：</p>
-<p><img src="https://slagga.oss-cn-shanghai.aliyuncs.com/2017/wKioL1Xh6v-iOouMAATi4njrqUs470.jpeg"></p>
+<p><img src="/images/2017/wKioL1Xh6v-iOouMAATi4njrqUs470.jpeg"></p>
 <hr>
 <h2 id="数据包在网络上传输的大小上限"><a href="#数据包在网络上传输的大小上限" class="headerlink" title="数据包在网络上传输的大小上限"></a>数据包在网络上传输的大小上限</h2><p>位于发送端操作系统 TCP&#x2F;IP 协议栈的传输层 (TCP)，把来自其上层 (应用层进程或程序) 产生的字节流数据，按顺序经分割后封装成各个 TCP 分段，并 (逻辑上的) 传送给接收端的传输层。</p>
 <p>字节流数据是指：由应用程序通过一次或多次 “输出” 操作，“写入” 到本地 (发送端) 传输层的套接字数据结构中的数据。该数据实际被存储在本地操作系统的缓冲区中。</p>

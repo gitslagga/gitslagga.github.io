@@ -25,7 +25,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="ZooKeeper 都有哪些使用场景？">
 <meta property="og:url" content="https://slagga.top/2020/04/apache-zookeeper/index.html">
-<meta property="og:site_name" content="宿命">
+<meta property="og:site_name" content="计算机那些事">
 <meta property="og:description" content="面试官心理分析现在聊的 topic 是分布式系统，面试官跟你聊完了 dubbo 相关的一些问题之后，已经确认你对分布式服务框架&#x2F;RPC框架基本都有一些认知了。那么他可能开始要跟你聊分布式相关的其它问题了。 分布式锁这个东西，很常用的，你做 Java系统开发，分布式系统，可能会有一些场景会用到。最常用的分布式锁就是基于 zookeeper 来实现的。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://slagga.top/images/2020/up-551a0f196e1f4c9fda9713c8e5f0752cf45.webp">
@@ -47,7 +47,7 @@
 <script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2020/04/apache-zookeeper/","path":"2020/04/apache-zookeeper/","title":"ZooKeeper 都有哪些使用场景？"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>ZooKeeper 都有哪些使用场景？ | 宿命</title>
+<title>ZooKeeper 都有哪些使用场景？ | 计算机那些事</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
   <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false}</script>
@@ -81,7 +81,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <p class="site-title">宿命</p>
+      <p class="site-title">计算机那些事</p>
       <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">如果它不应该发生，它就不会发生</p>
@@ -97,7 +97,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">189</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">77</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">190</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">77</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -163,13 +163,13 @@
     <img class="site-author-image" itemprop="image" alt="Slagga"
       src="https://avatars.githubusercontent.com/u/19620432">
   <p class="site-author-name" itemprop="name">Slagga</p>
-  <div class="site-description" itemprop="description">宿命 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">189</span>
+          <span class="site-state-item-count">190</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -237,12 +237,12 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="宿命">
-      <meta itemprop="description" content="宿命 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="ZooKeeper 都有哪些使用场景？ | 宿命">
+      <meta itemprop="name" content="ZooKeeper 都有哪些使用场景？ | 计算机那些事">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">

@@ -10736,7 +10736,7 @@ Swap: 1052248   104712   947536
 <p>请注意，不像Windows，其为每个存储设备都有一个单独的文件系统树，类Unix系统如Linux始终只有一个文件系统树，而不管连接到计算机的有多少驱动器或存储设备。存储设备会按照系统管理员（负责系统维护的人）的喜好连接（或更正式地说，挂载）到树的各个点。</p>
 <h3 id="当前工作目录"><a href="#当前工作目录" class="headerlink" title="当前工作目录"></a>当前工作目录</h3><p>大多数人可能都熟悉图形文件管理器，该文件管理器将文件系统树显示为图1所示。请注意，该树通常是倒立显示的，即根在顶部，各个分支向下延伸。</p>
 <p>但是，命令行中没有图片，因此为了浏览文件系统树，我们需要以不同的方式思考它。</p>
-<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/ETjDRRpUZUiaRvSetsguQWfwibtv27MIKmwsiaOc2jqXB6EXmC5I19002pMkkB4AicY0DK9fuEicMZ8SUqAbwjic9gKg/640"></p>
+<p><img src="/images/2024/Picture1.png"></p>
 <p><em>图1：由图形文件管理器显示的文件系统树</em></p>
 <p>想象一下，文件系统是一个倒置树形状的迷宫，我们可以站在其中间。在任何给定的时刻，我们都在一个单独的目录内，我们可以看到包含在该目录中的文件以及通向我们上面的目录（称为<em>父目录</em>）和我们下面的任何子目录的路径。我们站在的目录称为<em>当前工作目录</em>。要显示当前工作目录，我们使用<code>pwd</code>（打印当前工作目录）命令。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ pwd</span><br><span class="line">/home/me</span><br></pre></td></tr></table></figure>

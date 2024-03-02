@@ -10628,7 +10628,7 @@ xdebug.remote_port = 9001
 <h3 id="第五个网络版本"><a href="#第五个网络版本" class="headerlink" title="第五个网络版本"></a>第五个网络版本</h3><p>特别感谢以下提供宝贵反馈并纳入第五个网络版本的个人：John Burns、Paolo Casati、Waldo Ribeiro和Valter Wierzba。</p>
 <p>最后，衷心感谢LinuxCommand.org的众多读者，他们给我寄来了许多友好的电子邮件。他们的鼓励让我认为我确实找对了方向！</p>
 <p>需要您的反馈！</p>
-<p>这本书是一个持续进行的项目，就像许多开源软件项目一样。如果您发现技术错误，请给我发一封邮件：<span class="exturl" data-url="bWFpbHRvOiYjeDYyOyYjMTE1OyYjeDY4OyYjeDZmOyYjeDc0OyYjMTE2OyYjMTE1OyYjNjQ7JiN4NzU7JiMxMTU7JiMxMDE7JiMxMTQ7JiN4NzM7JiN4MmU7JiMxMTU7JiMxMTE7JiMxMTc7JiN4NzI7JiN4NjM7JiMxMDE7JiN4NjY7JiN4NmY7JiMxMTQ7JiMxMDM7JiMxMDE7JiN4MmU7JiN4NmU7JiMxMDE7JiN4NzQ7">&#x62;&#115;&#x68;&#x6f;&#x74;&#116;&#115;&#64;&#x75;&#115;&#101;&#114;&#x73;&#x2e;&#115;&#111;&#117;&#x72;&#x63;&#101;&#x66;&#x6f;&#114;&#103;&#101;&#x2e;&#x6e;&#101;&#x74;<i class="fa fa-external-link-alt"></i></span></p>
+<p>这本书是一个持续进行的项目，就像许多开源软件项目一样。如果您发现技术错误，请给我发一封邮件：<span class="exturl" data-url="bWFpbHRvOiYjOTg7JiN4NzM7JiN4Njg7JiN4NmY7JiN4NzQ7JiMxMTY7JiN4NzM7JiN4NDA7JiN4NzU7JiN4NzM7JiMxMDE7JiN4NzI7JiN4NzM7JiM0NjsmIzExNTsmIzExMTsmI3g3NTsmI3g3MjsmIzk5OyYjeDY1OyYjeDY2OyYjMTExOyYjeDcyOyYjeDY3OyYjeDY1OyYjeDJlOyYjeDZlOyYjMTAxOyYjeDc0Ow==">&#98;&#x73;&#x68;&#x6f;&#x74;&#116;&#x73;&#x40;&#x75;&#x73;&#101;&#x72;&#x73;&#46;&#115;&#111;&#x75;&#x72;&#99;&#x65;&#x66;&#111;&#x72;&#x67;&#x65;&#x2e;&#x6e;&#101;&#x74;<i class="fa fa-external-link-alt"></i></span></p>
 <p>请确保指明您正在阅读的确切版本。您的更改和建议可能会进入未来的版本。</p>
 <p>进一步阅读</p>
 <ul>
@@ -10638,6 +10638,84 @@ xdebug.remote_port = 9001
 </ul>
 <p>后记</p>
 <p>本书最初是使用OpenOffice.org Writer在Dell Inspiron 530N上以Liberation Serif和Sans字体编写的，工厂配置为Ubuntu 8.04。文本的PDF版本是由OpenOffice.org Writer直接生成的。第二个网络版本是在相同的计算机上使用LibreOffice Writer在Ubuntu 12.04上制作的。第三和第四个网络版本是在System76 Ratel Pro计算机上使用LibreOffice Writer制作的，该计算机工厂配置为Ubuntu 14.04。第五个网络版本是在相同的计算机上使用LibreOffice Writer和Ubuntu 18.04制作的。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux命令行</title>
+    <url>/2024/05/what-is-the-shell/</url>
+    <content><![CDATA[<h1 id="第一部分-学习Shell"><a href="#第一部分-学习Shell" class="headerlink" title="第一部分 - 学习Shell"></a>第一部分 - 学习Shell</h1><h2 id="1-什么是Shell？"><a href="#1-什么是Shell？" class="headerlink" title="1 - 什么是Shell？"></a>1 - 什么是Shell？</h2><p>当我们谈论命令行时，我们实际上是在提到<em>shell</em>。Shell是一个接收键盘命令并将它们传递给操作系统执行的程序。几乎所有的Linux发行版都提供了一个来自GNU项目的shell程序，名为bash。名称“bash”是“Bourne Again SHell”的首字母缩写，这是对bash是sh的增强替代的指称，而sh是由Steve Bourne编写的原始Unix shell程序。</p>
+<span id="more"></span>
+
+<h3 id="终端仿真器"><a href="#终端仿真器" class="headerlink" title="终端仿真器"></a>终端仿真器</h3><p>在使用图形用户界面（GUI）时，我们需要另一个名为<em>终端仿真器</em>的程序与shell进行交互。如果我们查看桌面菜单，可能会找到一个。KDE使用konsole，GNOME使用gnome-terminal，尽管在菜单上可能简称为“terminal”。对于Linux，还有许多其他终端仿真器可用，但它们基本上都执行相同的功能；为我们提供对shell的访问。你可能会根据它拥有的功能来偏好某个终端仿真器。</p>
+<h3 id="进行你的第一次按键"><a href="#进行你的第一次按键" class="headerlink" title="进行你的第一次按键"></a>进行你的第一次按键</h3><p>那么让我们开始吧。启动终端仿真器！一旦它启动，我们应该会看到类似于这样的东西：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$</span><br></pre></td></tr></table></figure>
+
+<p>这被称为<em>shell提示符</em>，当shell准备好接受输入时，它将出现。虽然它的外观可能因发行版而异，但通常会包括你的<em>用户名@机器名</em>，后面是当前工作目录（稍后会详细介绍）和一个美元符号。</p>
+<blockquote>
+<p>注意：如果提示符的最后一个字符是井号（“#”）而不是美元符号，则终端会话具有<em>超级用户</em>特权。这意味着我们要么以root用户登录，要么选择了一个提供超级用户（管理员）特权的终端仿真器。</p>
+</blockquote>
+<p>假设到目前为止一切都很顺利，让我们尝试一些输入。在提示符处输入一些无关紧要的内容，就像这样：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ kaekfjaeifj</span><br></pre></td></tr></table></figure>
+
+<p>因为这个命令毫无意义，shell告诉我们，并给了我们另一次机会。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bash: kaekfjaeifj: command not found [me@linuxbox ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="命令历史"><a href="#命令历史" class="headerlink" title="命令历史"></a>命令历史</h3><p>如果我们按向上箭头键，我们会看到先前的命令kaekfjaeifj重新出现在提示符后面。这就是<em>命令历史</em>。大多数Linux发行版默认记住最近的1000个命令。按向下箭头键，先前的命令会消失。</p>
+<h3 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h3><p>再次按向上箭头键召回前一个命令。如果我们尝试左右箭头键，我们将看到如何将光标定位在命令行的任何位置。这使得编辑命令变得很容易。</p>
+<h3 id="关于鼠标和焦点的一些建议"><a href="#关于鼠标和焦点的一些建议" class="headerlink" title="关于鼠标和焦点的一些建议"></a>关于鼠标和焦点的一些建议</h3><p>虽然shell主要是通过键盘完成的，但你也可以在终端仿真器中使用鼠标。X Window System（GUI的底层引擎）内置了一种支持快速复制和粘贴的机制。如果你通过按住左鼠标按钮并在文本上拖动鼠标（或双击一个单词）来突出显示一些文本，它将被复制到X维护的缓冲区中。按下中间鼠标按钮将导致文本被粘贴到光标位置。试一试。</p>
+<p><strong>注意</strong>：不要试图在终端窗口内使用Ctrl-c和Ctrl-v执行复制和粘贴。它们不起作用。这些控制代码对shell有不同的含义，并且在发布Microsoft Windows许多年之前被分配。</p>
+<p>你的图形桌面环境（很可能是KDE或GNOME），为了像Windows一样运行，可能将其<em>焦点策略</em>设置为“点击获取焦点”。这意味着要使窗口获得焦点（变为活动状态），你需要点击它。这与传统的X行为“焦点跟随鼠标”相反，这意味着窗口只需通过鼠标滑过即可获得焦点。窗口直到你点击它之前不会浮到最前面，但它将能够接收输入。将焦点策略设置为“焦点跟随鼠标”将使复制和粘贴技术更加有用。如果可能的话，请试试（某些桌面环境，如Ubuntu的Unity，不再支持它）。我认为如果你给它一个机会，你会喜欢它的。你会在你的窗口管理器的配置程序中找到这个设置。</p>
+<h3 id="尝试一些简单的命令"><a href="#尝试一些简单的命令" class="headerlink" title="尝试一些简单的命令"></a>尝试一些简单的命令</h3><p>现在我们已经学会在终端仿真器中输入文本，让我们尝试一些简单的命令。我们从<code>date</code>命令开始，它显示当前的时间和日期。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ date</span><br></pre></td></tr></table></figure>
+
+<p>显示结果可能类似于：</p>
+<pre><code>Thu Mar 8 15:09:41 EST 2018
+</code></pre>
+<p>一个相关的命令是<code>cal</code>，它默认显示当前月份的日历。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ cal</span><br></pre></td></tr></table></figure>
+
+<p>显示结果可能类似于：</p>
+<pre><code>   March 2018    
+Su Mo Tu We Th Fr Sa 
+                          1  2  3
+ 4 	5  6  7  8  9 10
+11 12 13 14 15 16 17
+18 19 20 21 22 23 24
+25 26 27 28 29 30 31
+</code></pre>
+<p>要查看磁盘驱动器上的当前可用空间量，请输入<code>df</code>。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ df</span><br></pre></td></tr></table></figure>
+
+<p>显示结果可能类似于：</p>
+<pre><code>Filesystem      1K-blocks   Used Available Use% Mounted on
+/dev/sda2       15115452  5012392  9949716 34% /
+/dev/sda5       59631908 26545424 30008432 47% /home 
+/dev/sda1       147764   17370  122765 13% /boot 
+tmpfs          	256856     0  256856  0% /dev/shm
+</code></pre>
+<p>同样，要显示可用内存的量，请输入<code>free</code>。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ free</span><br></pre></td></tr></table></figure>
+
+<p>显示结果可能类似于：</p>
+<pre><code>     total    used    free   shared  buffers   cached 
+Mem:  513712   503976    9736     0    5312   122916
+-/+ buffers/cache: 375748   137964
+Swap: 1052248   104712   947536
+</code></pre>
+<h3 id="结束终端会话"><a href="#结束终端会话" class="headerlink" title="结束终端会话"></a>结束终端会话</h3><p>我们可以通过关闭终端仿真器窗口、在shell提示符处输入<code>exit</code>命令或按Ctrl-d来结束终端会话。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ exit</span><br></pre></td></tr></table></figure>
+
+<h3 id="幕后的控制台"><a href="#幕后的控制台" class="headerlink" title="幕后的控制台"></a>幕后的控制台</h3><p>即使我们没有终端仿真器运行，许多终端会话仍在图形桌面的后面运行。我们可以通过在大多数Linux发行版上按Ctrl-Alt-F1到Ctrl-Alt-F6来访问这些会话，这些会话被称为<em>虚拟终端</em>或<em>虚拟控制台</em>。当访问一个会话时，它会呈现一个登录提示符，我们可以在其中输入用户名和密码。要从一个虚拟控制台切换到另一个虚拟控制台，请按Alt-F1到Alt-F6。在大多数系统上，我们可以通过按Alt-F7返回到图形桌面。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本章标志着我们进入Linux命令行的开始，介绍了shell并简要了解了命令行，以及如何启动和结束终端会话的方法。我们还学会了如何发出一些简单的命令并进行一些轻松的命令行编辑。这并不可怕，对吧？</p>
+<p>在下一章中，我们将学习一些更多的命令并在Linux文件系统中漫游。</p>
+<h3 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h3><ul>
+<li>要了解Bourne Shell之父Steve Bourne的更多信息，请参阅此Wikipedia文章：<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9TdGV2ZV9Cb3VybmU=">Steve Bourne<i class="fa fa-external-link-alt"></i></span></li>
+<li>这篇Wikipedia文章介绍了bash的原始作者Brian Fox：<span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQnJpYW5fRm94Xyhjb21wdXRlcl9wcm9ncmFtbWVyKQ==">Brian Fox (computer programmer)<i class="fa fa-external-link-alt"></i></span></li>
+<li>这篇文章介绍了计算机中关于shell概念的内容：<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9TaGVsbF8oY29tcHV0aW5nKQ==">Shell (computing)<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
 ]]></content>
       <categories>
         <category>Linux</category>

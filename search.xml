@@ -10628,7 +10628,7 @@ xdebug.remote_port = 9001
 <h3 id="第五个网络版本"><a href="#第五个网络版本" class="headerlink" title="第五个网络版本"></a>第五个网络版本</h3><p>特别感谢以下提供宝贵反馈并纳入第五个网络版本的个人：John Burns、Paolo Casati、Waldo Ribeiro和Valter Wierzba。</p>
 <p>最后，衷心感谢LinuxCommand.org的众多读者，他们给我寄来了许多友好的电子邮件。他们的鼓励让我认为我确实找对了方向！</p>
 <p>需要您的反馈！</p>
-<p>这本书是一个持续进行的项目，就像许多开源软件项目一样。如果您发现技术错误，请给我发一封邮件：<span class="exturl" data-url="bWFpbHRvOiYjOTg7JiN4NzM7JiN4Njg7JiN4NmY7JiN4NzQ7JiMxMTY7JiN4NzM7JiN4NDA7JiN4NzU7JiN4NzM7JiMxMDE7JiN4NzI7JiN4NzM7JiM0NjsmIzExNTsmIzExMTsmI3g3NTsmI3g3MjsmIzk5OyYjeDY1OyYjeDY2OyYjMTExOyYjeDcyOyYjeDY3OyYjeDY1OyYjeDJlOyYjeDZlOyYjMTAxOyYjeDc0Ow==">&#98;&#x73;&#x68;&#x6f;&#x74;&#116;&#x73;&#x40;&#x75;&#x73;&#101;&#x72;&#x73;&#46;&#115;&#111;&#x75;&#x72;&#99;&#x65;&#x66;&#111;&#x72;&#x67;&#x65;&#x2e;&#x6e;&#101;&#x74;<i class="fa fa-external-link-alt"></i></span></p>
+<p>这本书是一个持续进行的项目，就像许多开源软件项目一样。如果您发现技术错误，请给我发一封邮件：<span class="exturl" data-url="bWFpbHRvOiYjeDYyOyYjMTE1OyYjMTA0OyYjMTExOyYjMTE2OyYjMTE2OyYjMTE1OyYjNjQ7JiN4NzU7JiN4NzM7JiN4NjU7JiMxMTQ7JiMxMTU7JiN4MmU7JiMxMTU7JiN4NmY7JiN4NzU7JiMxMTQ7JiN4NjM7JiMxMDE7JiN4NjY7JiN4NmY7JiN4NzI7JiN4Njc7JiMxMDE7JiN4MmU7JiN4NmU7JiMxMDE7JiN4NzQ7">&#x62;&#115;&#104;&#111;&#116;&#116;&#115;&#64;&#x75;&#x73;&#x65;&#114;&#115;&#x2e;&#115;&#x6f;&#x75;&#114;&#x63;&#101;&#x66;&#x6f;&#x72;&#x67;&#101;&#x2e;&#x6e;&#101;&#x74;<i class="fa fa-external-link-alt"></i></span></p>
 <p>请确保指明您正在阅读的确切版本。您的更改和建议可能会进入未来的版本。</p>
 <p>进一步阅读</p>
 <ul>
@@ -10644,8 +10644,8 @@ xdebug.remote_port = 9001
       </categories>
   </entry>
   <entry>
-    <title>Linux命令行</title>
-    <url>/2024/05/what-is-the-shell/</url>
+    <title>什么是Shell？</title>
+    <url>/2024/05/1-what-is-the-shell/</url>
     <content><![CDATA[<h1 id="第一部分-学习Shell"><a href="#第一部分-学习Shell" class="headerlink" title="第一部分 - 学习Shell"></a>第一部分 - 学习Shell</h1><h2 id="1-什么是Shell？"><a href="#1-什么是Shell？" class="headerlink" title="1 - 什么是Shell？"></a>1 - 什么是Shell？</h2><p>当我们谈论命令行时，我们实际上是在提到<em>shell</em>。Shell是一个接收键盘命令并将它们传递给操作系统执行的程序。几乎所有的Linux发行版都提供了一个来自GNU项目的shell程序，名为bash。名称“bash”是“Bourne Again SHell”的首字母缩写，这是对bash是sh的增强替代的指称，而sh是由Steve Bourne编写的原始Unix shell程序。</p>
 <span id="more"></span>
 
@@ -10716,6 +10716,100 @@ Swap: 1052248   104712   947536
 <li>这篇Wikipedia文章介绍了bash的原始作者Brian Fox：<span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQnJpYW5fRm94Xyhjb21wdXRlcl9wcm9ncmFtbWVyKQ==">Brian Fox (computer programmer)<i class="fa fa-external-link-alt"></i></span></li>
 <li>这篇文章介绍了计算机中关于shell概念的内容：<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9TaGVsbF8oY29tcHV0aW5nKQ==">Shell (computing)<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>导航</title>
+    <url>/2024/05/2-navigation/</url>
+    <content><![CDATA[<h2 id="2-–-导航"><a href="#2-–-导航" class="headerlink" title="2 – 导航"></a>2 – 导航</h2><p>除了学会如何打字之外，我们需要学习的第一件事是如何在Linux系统上导航文件系统。在本章中，我们将介绍以下命令：</p>
+<ul>
+<li><code>pwd</code> – 打印当前工作目录的名称</li>
+<li><code>cd</code> – 切换目录</li>
+<li><code>ls</code> – 列出目录内容</li>
+</ul>
+<span id="more"></span>
+
+<h3 id="理解文件系统树"><a href="#理解文件系统树" class="headerlink" title="理解文件系统树"></a>理解文件系统树</h3><p>像Windows一样，类Unix操作系统（如Linux）以所谓的分层目录结构组织其文件。这意味着它们以目录树状的模式组织，这些目录（在其他系统中有时称为文件夹）可能包含文件和其他目录。文件系统中的第一个目录称为根目录。根目录包含文件和子目录，这些子目录又包含更多的文件和子目录，依此类推。</p>
+<p>请注意，不像Windows，其为每个存储设备都有一个单独的文件系统树，类Unix系统如Linux始终只有一个文件系统树，而不管连接到计算机的有多少驱动器或存储设备。存储设备会按照系统管理员（负责系统维护的人）的喜好连接（或更正式地说，挂载）到树的各个点。</p>
+<h3 id="当前工作目录"><a href="#当前工作目录" class="headerlink" title="当前工作目录"></a>当前工作目录</h3><p>大多数人可能都熟悉图形文件管理器，该文件管理器将文件系统树显示为图1所示。请注意，该树通常是倒立显示的，即根在顶部，各个分支向下延伸。</p>
+<p>但是，命令行中没有图片，因此为了浏览文件系统树，我们需要以不同的方式思考它。</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/ETjDRRpUZUiaRvSetsguQWfwibtv27MIKmwsiaOc2jqXB6EXmC5I19002pMkkB4AicY0DK9fuEicMZ8SUqAbwjic9gKg/640"></p>
+<p><em>图1：由图形文件管理器显示的文件系统树</em></p>
+<p>想象一下，文件系统是一个倒置树形状的迷宫，我们可以站在其中间。在任何给定的时刻，我们都在一个单独的目录内，我们可以看到包含在该目录中的文件以及通向我们上面的目录（称为<em>父目录</em>）和我们下面的任何子目录的路径。我们站在的目录称为<em>当前工作目录</em>。要显示当前工作目录，我们使用<code>pwd</code>（打印当前工作目录）命令。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ pwd</span><br><span class="line">/home/me</span><br></pre></td></tr></table></figure>
+
+<p>当我们首次登录系统时（或启动终端仿真器会话时），我们的当前工作目录被设置为我们的<em>主目录</em>。每个用户帐户都有其自己的主目录，这是普通用户被允许写入文件的唯一地方。</p>
+<h3 id="列出目录的内容"><a href="#列出目录的内容" class="headerlink" title="列出目录的内容"></a>列出目录的内容</h3><p>要列出当前工作目录中的文件和目录，我们使用<code>ls</code>命令。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls</span><br></pre></td></tr></table></figure>
+
+<p>列出目录的内容可能类似于：</p>
+<pre><code>Desktop Documents Music Pictures Public Templates Videos
+</code></pre>
+<p>实际上，我们可以使用<code>ls</code>命令列出任何目录的内容，而不仅仅是当前工作目录，并且它还有许多其他有趣的功能。我们将在下一章中更多地了解<code>ls</code>。</p>
+<h3 id="更改当前工作目录"><a href="#更改当前工作目录" class="headerlink" title="更改当前工作目录"></a>更改当前工作目录</h3><p>要更改我们的工作目录（我们站在树形迷宫中的位置），我们使用<code>cd</code>命令。为此，请输入<code>cd</code>，然后是所需工作目录的<em>路径名</em>。路径名是我们沿树的分支走到所需目录的路径。我们可以以两种不同的方式指定路径名；作为<em>绝对路径名</em>或<em>相对路径名</em>。首先处理绝对路径名。</p>
+<h4 id="绝对路径名"><a href="#绝对路径名" class="headerlink" title="绝对路径名"></a>绝对路径名</h4><p>绝对路径名以根目录开头，并按树的分支逐级跟随，直到完成到达所需目录或文件的路径。例如，在我们的系统上有一个目录，其中安装了大多数系统程序。该目录的路径名为<code>/usr/bin</code>。这意味着从根目录开始（由路径名中的前导斜杠表示），有一个名为 “usr” 的目录，其中包含一个名为 “bin” 的目录。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ cd /usr/bin</span><br><span class="line">[me@linuxbox bin]$ pwd</span><br><span class="line">/usr/bin</span><br><span class="line">[me@linuxbox bin]$ ls</span><br><span class="line">...（列出许多文件）...</span><br></pre></td></tr></table></figure>
+
+<p>现在我们可以看到，我们已将当前工作目录更改为<code>/usr/bin</code>，并且它充满了文件。注意shell提示符已经改变了吗？为了方便起见，通常会自动设置为显示工作目录的名称。</p>
+<h4 id="相对路径名"><a href="#相对路径名" class="headerlink" title="相对路径名"></a>相对路径名</h4><p>绝对路径名从根目录开始并导致其目标，而相对路径名则从工作目录开始。为此，它使用了一些特殊的符号来表示文件系统树中的相对位置。这些特殊的符号是 “.”（点）和 “..”（点 点）。</p>
+<p>“.” 符号指的是工作目录，而 “..” 符号指的是工作目录的父目录。以下是它的工作原理。让我们再次将工作目录更改为<code>/usr/bin</code>。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ cd /usr/bin</span><br><span class="line">[me@linuxbox bin]$ pwd</span><br><span class="line">/usr/bin</span><br></pre></td></tr></table></figure>
+
+<p>现在假设我们想将工作目录更改为<code>/usr/bin</code> 的上一级目录，即<code>/usr</code>。我们可以通过两种不同的方式来实现，即使用绝对路径名。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox bin]$ cd /usr</span><br><span class="line">[me@linuxbox usr]$ pwd</span><br><span class="line">/usr</span><br></pre></td></tr></table></figure>
+
+<p>或者，使用相对路径名。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox bin]$ cd ..</span><br><span class="line">[me@linuxbox usr]$ pwd</span><br><span class="line">/usr</span><br></pre></td></tr></table></figure>
+
+<p>两种不同的方法，相同的结果。我们应该使用哪一个？那个需要输入最少的那个！</p>
+<p>同样，我们可以以两种不同的方式从<code>/usr</code> 更改工作目录到 <code>/usr/bin</code>，即使用绝对路径名：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox usr]$ cd /usr/bin</span><br><span class="line">[me@linuxbox bin]$ pwd</span><br><span class="line">/usr/bin</span><br></pre></td></tr></table></figure>
+
+<p>或者，使用相对路径名。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox usr]$ cd ./bin</span><br><span class="line">[me@linuxbox bin]$ pwd</span><br><span class="line">/usr/bin</span><br></pre></td></tr></table></figure>
+
+<p>更改当前工作目录</p>
+<p>现在，在这里有一些重要的事情要指出。在几乎所有情况下，我们可以省略 “.&#x2F;“。它是隐含的。输入：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox usr]$ cd bin</span><br></pre></td></tr></table></figure>
+
+<p>执行相同的操作。通常，如果我们没有为某个内容指定路径名，将假定为当前工作目录。</p>
+<h4 id="一些有用的快捷方式"><a href="#一些有用的快捷方式" class="headerlink" title="一些有用的快捷方式"></a>一些有用的快捷方式</h4><p>在表 2-1 中，我们看到可以快速更改当前工作目录的一些有用方式。</p>
+<p><em>表 2-1：</em> <em>cd快捷方式</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>快捷键</strong></th>
+<th><strong>结果</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cd</td>
+<td>将工作目录更改为您的主目录。</td>
+</tr>
+<tr>
+<td>cd -</td>
+<td>将工作目录更改为以前的工作目录。</td>
+</tr>
+<tr>
+<td>cd ~<em>user_name</em></td>
+<td>将工作目录更改为<em>user_name</em>用户的主目录。例如，cd ~bob 将目录更改为用户“bob”的主目录。</td>
+</tr>
+</tbody></table>
+<h3 id="有关文件名的重要事实"><a href="#有关文件名的重要事实" class="headerlink" title="有关文件名的重要事实"></a>有关文件名的重要事实</h3><p>在 Linux 系统上，文件的命名方式与其他系统（如 Windows）类似，但有一些重要的区别。</p>
+<ol>
+<li><p>以句点字符开头的文件名是隐藏的。这只意味着 <code>ls</code> 不会列出它们，除非你使用 <code>ls -a</code>。在创建您的帐户时，在您的主目录中放置了几个隐藏文件，以配置您的帐户的设置。在第 11 章中，我们将更详细地查看其中一些文件，以了解如何自定义您的环境。此外，一些应用程序将它们的配置和设置文件作为隐藏文件放在您的主目录中。</p>
+</li>
+<li><p>在 Linux 中，与 Unix 一样，文件名和命令区分大小写。文件名“File1”和“file1”指的是不同的文件。</p>
+</li>
+<li><p>Linux 没有像其他一些操作系统那样的“文件扩展名”概念。您可以随意命名文件。文件的内容和&#x2F;或用途由其他方式确定。尽管类 Unix 操作系统不使用文件扩展名来确定文件的内容&#x2F;用途，但许多应用程序程序确实使用它们。</p>
+</li>
+<li><p>虽然 Linux 支持包含嵌入空格和标点字符的长文件名，但请将您创建的文件名称中的标点字符限制为句点、破折号和下划线。*最重要的是，不要在文件名中嵌入空格。*如果您想要表示文件名中单词之间的空格，请使用下划线字符。以后您会为此感到高兴。</p>
+</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本章解释了 shell 如何处理系统的目录结构。我们了解了绝对路径名和相对路径名以及我们用于在该结构中移动的基本命令。在下一章中，我们将利用这些知识对现代 Linux 系统进行一次导览。</p>
 ]]></content>
       <categories>
         <category>Linux</category>

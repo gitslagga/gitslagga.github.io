@@ -11182,7 +11182,7 @@ Swap: 1052248   104712   947536
   </entry>
   <entry>
     <title>操纵文件和目录</title>
-    <url>/2024/05/4-manipulating_files_directories/</url>
+    <url>/2024/05/4-manipulating-files-directories/</url>
     <content><![CDATA[<h2 id="4-–-操纵文件和目录"><a href="#4-–-操纵文件和目录" class="headerlink" title="4 – 操纵文件和目录"></a>4 – 操纵文件和目录</h2><p>到目前为止，我们已经准备好进行一些实际的工作了！本章将介绍以下命令：</p>
 <ul>
 <li><strong>cp</strong> – 复制文件和目录</li>
@@ -11652,6 +11652,406 @@ Swap: 1052248   104712   947536
 <ul>
 <li>有关符号链接的讨论：<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9TeW1ib2xpY19saW5r">Symbolic link - Wikipedia<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用命令</title>
+    <url>/2024/05/5-working-with-commands/</url>
+    <content><![CDATA[<h2 id="5-–-使用命令"><a href="#5-–-使用命令" class="headerlink" title="5 – 使用命令"></a>5 – 使用命令</h2><p>到目前为止，我们已经看到了一系列神秘的命令，每个命令都有其自己神秘的选项和参数。在这一章中，我们将尝试消除其中的一些神秘感，甚至创建我们自己的命令。本章介绍的命令包括：</p>
+<ul>
+<li>type – 指示如何解释命令名称</li>
+<li>which – 显示将要执行的可执行程序</li>
+<li>help – 获取shell内建命令的帮助</li>
+<li>man – 显示命令的手册页</li>
+<li>apropos – 显示适当命令的列表</li>
+<li>info – 显示命令的信息条目</li>
+<li>whatis – 显示一行手册页描述</li>
+<li>alias – 为命令创建一个别名</li>
+</ul>
+<span id="more"></span>
+
+<p><strong>命令到底是什么？</strong></p>
+<p>命令可以是以下四种不同的东西：</p>
+<ol>
+<li><strong>一个可执行程序</strong>，就像我们在 &#x2F;usr&#x2F;bin 中看到的所有文件。在这个类别内，程序可以是<em>编译的二进制文件</em>，例如用C和C++编写的程序，或者是用<em>脚本语言</em>（如shell、Perl、Python、Ruby等）编写的程序。</li>
+<li><strong>内建于shell本身的命令</strong>。bash支持许多内部称为<em>shell内建命令</em>的命令。例如，cd命令就是一个shell内建命令。</li>
+<li><strong>一个shell函数</strong>。shell函数是嵌入到<em>环境</em>中的迷你shell脚本。我们将在后面的章节中讨论配置环境和编写shell函数，但现在只需知道它们存在即可。</li>
+<li><strong>一个别名</strong>。别名是我们自己可以定义的命令，由其他命令构建而成。</li>
+</ol>
+<h3 id="识别命令"><a href="#识别命令" class="headerlink" title="识别命令"></a>识别命令</h3><p>知道正在使用哪种四种命令类型通常是有用的，Linux提供了几种方式来了解这一点。</p>
+<h4 id="type-–-显示命令类型"><a href="#type-–-显示命令类型" class="headerlink" title="type – 显示命令类型"></a>type – 显示命令类型</h4><p>type命令是一个shell内建命令，给定一个特定的命令名称，它会显示shell将执行的命令类型。它的使用方式如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">type command</span><br></pre></td></tr></table></figure>
+
+<p>其中“命令”是我们想要检查的命令的名称。以下是一些示例：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ type type</span><br><span class="line">type is a shell builtin</span><br><span class="line">[me@linuxbox ~]$ type ls</span><br><span class="line">ls is aliased to `ls --color=tty&#x27;</span><br><span class="line">[me@linuxbox ~]$ type cp</span><br><span class="line">cp is /bin/cp</span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们看到了三个不同命令的结果。请注意，其中一个是ls（来自Fedora系统），以及ls命令实际上是带有“–color&#x3D;tty”选项的ls命令的别名。现在我们知道为什么ls的输出是彩色的了！</p>
+<h4 id="which-–-显示可执行程序的位置"><a href="#which-–-显示可执行程序的位置" class="headerlink" title="which – 显示可执行程序的位置"></a>which – 显示可执行程序的位置</h4><p>有时，在系统上安装了一个可执行程序的多个版本。尽管这在桌面系统上不常见，但在大型服务器上并不少见。为了确定给定可执行程序的确切位置，可以使用which命令。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ which ls</span><br><span class="line">/bin/ls</span><br></pre></td></tr></table></figure>
+
+<p>which仅适用于可执行程序，不适用于内建命令或用作实际可执行程序替代品的别名。例如，当我们尝试在shell内建命令（如cd）上使用which时，要么没有响应，要么会收到错误消息：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ which cd</span><br><span class="line">/usr/bin/which: no cd in (/usr/local/bin:/usr/bin:/bin:/usr/local</span><br><span class="line">/games:/usr/games)</span><br></pre></td></tr></table></figure>
+
+<p>这个响应实际上是在说“命令未找到。”</p>
+<h3 id="获取命令文档"><a href="#获取命令文档" class="headerlink" title="获取命令文档"></a>获取命令文档</h3><p>有了对命令的这些了解，我们现在可以搜索每种命令可用的文档。</p>
+<h4 id="help-–-获取shell内建命令的帮助"><a href="#help-–-获取shell内建命令的帮助" class="headerlink" title="help – 获取shell内建命令的帮助"></a>help – 获取shell内建命令的帮助</h4><p>bash为每个shell内建命令提供了一个内建的帮助工具。要使用它，输入“help”后跟shell内建命令的名称。以下是一个示例：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ help cd</span><br><span class="line">cd: cd [-L|[-P [-e]] [-@]] [dir]</span><br><span class="line"> Change the shell working directory.</span><br><span class="line"> Change the current directory to DIR. The default DIR is the</span><br><span class="line"> value of the HOME shell variable.</span><br><span class="line"> The variable CDPATH defines the search path for the directory</span><br><span class="line"> containing DIR. Alternative directory names in CDPATH are</span><br><span class="line"> separated by a colon (:). A null directory name is the same as</span><br><span class="line"> the current directory. If DIR begins with a slash (/), then</span><br><span class="line"> CDPATH is not used.</span><br><span class="line"> If the directory is not found, and the shell option `cdable_vars&#x27;</span><br><span class="line"> is set, the word is assumed to be a variable name. If that</span><br><span class="line"> variable has a value, its value is used for DIR.</span><br><span class="line"> Options:</span><br><span class="line"> -L force symbolic links to be followed: resolve symbolic</span><br><span class="line"> links in DIR after processing instances of `..&#x27;</span><br><span class="line"> -P use the physical directory structure without following</span><br><span class="line"> symbolic links: resolve symbolic links in DIR before</span><br><span class="line"> processing instances of `..&#x27;</span><br><span class="line"> -e if the -P option is supplied, and the current working</span><br><span class="line"> directory cannot be determined successfully, exit with</span><br><span class="line"> a non-zero status</span><br><span class="line"> -@ on systems that support it, present a file with extended</span><br><span class="line"> attributes as a directory containing the file attributes</span><br><span class="line"> The default is to follow symbolic links, as if `-L&#x27; were</span><br><span class="line"> specified. `..&#x27; is processed by removing the immediately previous</span><br><span class="line"> pathname component back to a slash or the beginning of DIR.</span><br><span class="line"> Exit Status:</span><br><span class="line"> Returns 0 if the directory is changed, and if $PWD is set</span><br><span class="line"> successfully when -P is used; non-zero otherwise.</span><br></pre></td></tr></table></figure>
+
+<p><strong>关于符号表示法的说明：</strong> 当命令语法描述中出现方括号时，它们表示可选项。竖线字符表示互斥的选项。以上面的cd命令为例：</p>
+<p>cd [-L|[-P[-e]]] [dir]</p>
+<p>这个表示法表示cd命令后面可以选择加上“-L”或“-P”，如果指定了“-P”选项，还可以加上可选的“-e”选项，后跟可选的参数“dir”。</p>
+<p>虽然cd命令的帮助输出简洁准确，但它绝不是教程，而且如我们所见，它似乎还提到了许多我们尚未讨论的内容！不用担心，我们会慢慢了解的。</p>
+<h4 id="–help-–-显示使用信息"><a href="#–help-–-显示使用信息" class="headerlink" title="–help – 显示使用信息"></a>–help – 显示使用信息</h4><p>许多可执行程序支持“–help”选项，该选项显示命令支持的语法和选项的描述。例如：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ mkdir --help</span><br><span class="line">Usage: mkdir [OPTION] DIRECTORY...</span><br><span class="line">Create the DIRECTORY(ies), if they do not already exist.</span><br><span class="line"> -Z, --context=CONTEXT (SELinux) set security context to CONTEXT</span><br><span class="line">Mandatory arguments to long options are mandatory for short options</span><br><span class="line">too.</span><br><span class="line"> -m, --mode=MODE set file mode (as in chmod), not a=rwx – umask</span><br><span class="line"> -p, --parents no error if existing, make parent directories as</span><br><span class="line"> needed</span><br><span class="line"> -v, --verbose print a message for each created directory</span><br><span class="line"> --help display this help and exit</span><br><span class="line"> --version output version information and exit</span><br><span class="line">Report bugs to &lt;bug-coreutils@gnu.org&gt;.</span><br></pre></td></tr></table></figure>
+
+<p>有些程序不支持“–help”选项，但还是试一试。通常会出现一个错误消息，该消息会显示相同的使用信息。</p>
+<h4 id="man-–-显示程序的手册页"><a href="#man-–-显示程序的手册页" class="headerlink" title="man – 显示程序的手册页"></a>man – 显示程序的手册页</h4><p>大多数用于命令行的可执行程序都提供一份正式的文档，称为<em>手册</em>或<em>man页面</em>。我们使用一个名为man的特殊分页程序来查看它们。使用方法如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">man program</span><br></pre></td></tr></table></figure>
+
+<p>其中，“程序名”是您要查看的命令的名称。</p>
+<p>man页面在格式上有所不同，但通常包含以下内容：</p>
+<ul>
+<li>标题（页面的名称）</li>
+<li>命令语法的概要</li>
+<li>命令目的的描述</li>
+<li>命令选项的列表和描述</li>
+</ul>
+<p>然而，man页面通常不包括示例，并且旨在作为参考，而不是教程。例如，让我们尝试查看ls命令的man页面：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ man ls</span><br></pre></td></tr></table></figure>
+
+<p>在大多数Linux系统上，man使用less来显示手册页，因此在显示页面时，所有熟悉的less命令都可以使用。</p>
+<p>man显示的“手册”被分为几个部分，不仅涵盖用户命令，还包括系统管理命令、编程接口、文件格式等等。表5-1描述了手册的布局。</p>
+<p><em>表5-1：Man页面组织</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>章节</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>用户命令</td>
+</tr>
+<tr>
+<td>2</td>
+<td>内核系统调用的编程接口</td>
+</tr>
+<tr>
+<td>3</td>
+<td>C库的编程接口</td>
+</tr>
+<tr>
+<td>4</td>
+<td>特殊文件，如设备节点和驱动程序</td>
+</tr>
+<tr>
+<td>5</td>
+<td>文件格式</td>
+</tr>
+<tr>
+<td>6</td>
+<td>游戏和娱乐，如屏幕保护程序</td>
+</tr>
+<tr>
+<td>7</td>
+<td>杂项</td>
+</tr>
+<tr>
+<td>8</td>
+<td>系统管理命令</td>
+</tr>
+</tbody></table>
+<p>有时，我们需要引用手册的特定章节以找到我们正在寻找的内容。这在我们正在寻找一个既是命令名称又是文件格式的内容时尤其如此。如果不指定章节号，我们总是会得到匹配项的第一个实例，可能在第1章节中。要指定章节号，我们可以这样使用man：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">man section search_term</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个例子：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ man 5 passwd</span><br></pre></td></tr></table></figure>
+
+<p>这将显示描述<code>/etc/passwd</code>文件的文件格式的man页面。</p>
+<h4 id="apropos-–-显示适当的命令"><a href="#apropos-–-显示适当的命令" class="headerlink" title="apropos – 显示适当的命令"></a>apropos – 显示适当的命令</h4><p>还可以根据搜索词在man页面列表中搜索可能的匹配项。这种方法虽然简单，但有时很有帮助。以下是使用搜索词<em>partition</em>搜索man页面的示例：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ apropos partiton</span><br><span class="line">addpart (8) - simple wrapper around the &quot;add partition&quot;...</span><br><span class="line">all-swaps (7) - event signalling that all swap partitions...</span><br><span class="line">cfdisk (8) - display or manipulate disk partition table</span><br><span class="line">cgdisk (8) - Curses-based GUID partition table (GPT)...</span><br><span class="line">delpart (8) - simple wrapper around the &quot;del partition&quot;...</span><br><span class="line">fdisk (8) - manipulate disk partition table</span><br><span class="line">fixparts (8) - MBR partition table repair utility </span><br><span class="line">gdisk (8) - Interactive GUID partition table (GPT)...</span><br><span class="line">mpartition (1) - partition an MSDOS hard disk</span><br><span class="line">partprobe (8) - inform the OS of partition table changes</span><br><span class="line">partx (8) - tell the Linux kernel about the presence...</span><br><span class="line">resizepart (8) - simple wrapper around the &quot;resize partition...</span><br><span class="line">sfdisk (8) - partition table manipulator for Linux</span><br><span class="line">sgdisk (8) - Command-line GUID partition table (GPT)... </span><br></pre></td></tr></table></figure>
+
+<p>输出每行的第一个字段是man页面的名称，第二个字段显示其所在的章节。请注意，带有“-k”选项的man命令执行与<code>apropos</code>相同的功能。</p>
+<h4 id="whatis-–-显示一行的手册页描述"><a href="#whatis-–-显示一行的手册页描述" class="headerlink" title="whatis – 显示一行的手册页描述"></a>whatis – 显示一行的手册页描述</h4><p><code>whatis</code>程序显示与指定关键字匹配的man页面的名称和一行描述：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ whatis ls</span><br><span class="line">ls (1) - list directory contents</span><br></pre></td></tr></table></figure>
+
+<h3 id="最残酷的所有Man页面"><a href="#最残酷的所有Man页面" class="headerlink" title="最残酷的所有Man页面"></a>最残酷的所有Man页面</h3><p>正如我们所见，供Linux和其他类Unix系统使用的手册页面是作为参考文档提供的，而不是教程。许多man页面很难阅读，但我认为最难的要属于bash的man页面。在为这本书进行研究时，我仔细审查了bash的man页面，以确保我覆盖了其中的大部分主题。打印出来的页面超过80页，内容极为密集，对于新用户来说，其结构完全没有意义。</p>
+<p>另一方面，它非常准确和简洁，同时也非常完整。所以，如果你敢于尝试，可以查看一下，并期待有一天你能够理解它的所有内容。</p>
+<h4 id="info-–-显示程序的Info条目"><a href="#info-–-显示程序的Info条目" class="headerlink" title="info – 显示程序的Info条目"></a>info – 显示程序的Info条目</h4><p>GNU项目为其程序提供了一个替代man页面的选项，称为“info”。Info手册使用一个名为<code>info</code>的阅读程序显示，非常贴切地命名。Info页面像网页一样有<em>超链接</em>。以下是一个示例：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">File: coreutils.info, Node: ls invocation, Next: dir invocation,</span><br><span class="line">Up: Directory listing</span><br><span class="line">10.1 `ls&#x27;: List directory contents</span><br><span class="line">==================================</span><br><span class="line">The `ls&#x27; program lists information about files (of any type,</span><br><span class="line">including directories). Options and file arguments can be intermixed</span><br><span class="line">arbitrarily, as usual.</span><br><span class="line"> For non-option command-line arguments that are directories, by</span><br><span class="line">default `ls&#x27; lists the contents of directories, not recursively, and</span><br><span class="line">omitting files with names beginning with `.&#x27;. For other non-option</span><br><span class="line">arguments, by default `ls&#x27; lists just the filename. If no non-option</span><br><span class="line">argument is specified, `ls&#x27; operates on the current directory, acting</span><br><span class="line">as if it had been invoked with a single argument of `.&#x27;.</span><br><span class="line"> By default, the output is sorted alphabetically, according to the</span><br><span class="line">--zz-Info: (coreutils.info.gz)ls invocation, 63 lines --Top----------</span><br></pre></td></tr></table></figure>
+
+<p>info程序读取<em>info文件</em>，这些文件按树形结构划分为单独的<em>节点</em>，每个节点包含一个主题。Info文件包含可以将读者从一个节点移动到另一个节点的超链接。超链接可以通过其前导星号来识别，并通过将光标放在其上并按Enter键来激活它。</p>
+<p>要调用info，可以输入<code>info</code>，后面可以选择性地跟上程序的名称。表5-2描述了在显示info页面时用于控制阅读器的命令。</p>
+<p><em>表 5-2：</em> <em>info命令</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>操作</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>?</td>
+<td>显示命令帮助</td>
+</tr>
+<tr>
+<td>PgUp或Backspace</td>
+<td>显示上一页</td>
+</tr>
+<tr>
+<td>PgDn或Space</td>
+<td>显示下一页</td>
+</tr>
+<tr>
+<td>n</td>
+<td>下一个 - 显示下一个节点</td>
+</tr>
+<tr>
+<td>p</td>
+<td>上一个 - 显示前一个节点</td>
+</tr>
+<tr>
+<td>u</td>
+<td>上 - 显示当前显示节点的父节点，通常是一个菜单</td>
+</tr>
+<tr>
+<td>Enter</td>
+<td>在光标位置跟随超链接</td>
+</tr>
+<tr>
+<td>｜q</td>
+<td>退出</td>
+</tr>
+</tbody></table>
+<p>到目前为止，我们讨论的大多数命令行程序都是GNU项目的<em>coreutils</em>包的一部分，因此输入以下内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ info coreutils</span><br></pre></td></tr></table></figure>
+
+<p>会显示一个菜单页面，其中包含到coreutils包中每个程序的超链接。</p>
+<h4 id="README和其他程序文档文件"><a href="#README和其他程序文档文件" class="headerlink" title="README和其他程序文档文件"></a>README和其他程序文档文件</h4><p>我们系统上安装的许多软件包都有文档文件存放在<code>/usr/share/doc</code>目录中。其中大多数以纯文本格式存储，并可以使用<code>less</code>查看。其中一些文件以HTML格式存储，并可使用Web浏览器查看。我们可能会遇到一些以“.gz”扩展名结尾的文件。这表示它们已使用gzip压缩程序进行了压缩。gzip包包括一个名为<code>zless</code>的特殊版本的<code>less</code>，它将显示gzip压缩的文本文件的内容。</p>
+<h3 id="使用alias创建自己的命令"><a href="#使用alias创建自己的命令" class="headerlink" title="使用alias创建自己的命令"></a>使用alias创建自己的命令</h3><p>现在，我们将进行第一次编程体验！我们将使用<code>alias</code>命令创建自己的命令。但在开始之前，我们需要揭示一个小的命令行技巧。通过使用分号将每个命令分隔开，可以在一行上放置多个命令。它的工作方式如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">command1; command2; command3...</span><br></pre></td></tr></table></figure>
+
+<p>下面是我们要使用的示例：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ cd /usr; ls; cd -</span><br><span class="line">bin games include lib local sbin share src</span><br><span class="line">/home/me</span><br><span class="line">[me@linuxbox ~]$</span><br></pre></td></tr></table></figure>
+
+<p>如我们所见，我们在一行上组合了三个命令。首先，我们更改目录到<code>/usr</code>，然后列出该目录，最后返回到原始目录（通过使用<code>cd -</code>），这样我们最终回到了起始位置。现在，让我们使用<code>alias</code>将这个序列转化为一个新命令。首先，我们需要为新命令想一个名字。让我们尝试使用“test”。在这样做之前，了解“test”这个名称是否已经被使用是一个好主意。为了了解这一点，我们可以再次使用<code>type</code>命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ type test</span><br><span class="line">test is a shell builtin</span><br></pre></td></tr></table></figure>
+
+<p>哎呀！名称测试已被占用。让我们试试 foo：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ type foo</span><br><span class="line">bash: type: foo: not found</span><br></pre></td></tr></table></figure>
+
+<p>太好了 “foo “没有被使用。因此，让我们创建别名：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ alias foo=&#x27;cd /usr; ls; cd -&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>请注意此处显示的命令结构：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">alias name=&#x27;string&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>在别名命令之后，我们要给别名一个名称，紧接着（不允许使用空格不允许使用空格），紧接着是一个等号，然后是一个带引号的字符串，其中包含赋予该名称的含义。定义别名后，我们可以在 shell希望使用命令的地方。让我们试试看：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ foo</span><br><span class="line">bin games include lib local sbin share src</span><br><span class="line">/home/me</span><br><span class="line">[me@linuxbox ~]$</span><br></pre></td></tr></table></figure>
+
+<p>我们还可以再次使用 type 命令查看别名：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ type foo</span><br><span class="line">foo is aliased to `cd /usr; ls; cd -&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>要删除别名，可以使用 unalias 命令，如图所示：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ unalias foo</span><br><span class="line">[me@linuxbox ~]$ type foo</span><br><span class="line">bash: type: foo: not found</span><br></pre></td></tr></table></figure>
+
+<p>虽然我们有意避免使用现有命令名称来命名别名，但这种做法并不罕见。这样做并不罕见。这样做通常是为了在调用常用命令的每次调用一个常用命令时应用一个常用选项。例如，我们在前面已经看到 ls 命令是如何经常被别名以增加颜色支持：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ type ls</span><br><span class="line">ls is aliased to `ls --color=tty&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>要查看环境中定义的所有别名，请使用不带参数的别名命令。以下是 Fedora 系统默认定义的一些别名。试着找出它们都是做什么的：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ alias</span><br><span class="line">alias l.=&#x27;ls -d .* --color=tty&#x27;</span><br><span class="line">alias ll=&#x27;ls -l --color=tty&#x27;</span><br><span class="line">alias ls=&#x27;ls --color=tty&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>在命令行中定义别名有一个小问题。当 shell 会话结束时，别名就会消失。在第 11 章 “环境 “中，我们将看到如何在每次登录时建立环境的文件中添加我们自己的别名，但现在，请享受我们在 shell 编程世界中迈出的第一步，尽管只是很小的一步！</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>现在我们已经学习了如何查找命令的文档，去查找到目前为止我们遇到的所有命令的文档。研究哪些额外的选项是可用的，并尝试它们！</p>
+<h3 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h3><p>有许多在线资源提供Linux和命令行的文档。以下是一些最佳资源：</p>
+<ul>
+<li><p><strong>Bash 参考手册</strong> 是bash shell的参考指南。它仍然是一个参考工作，但包含示例并且比bash的man页面更容易阅读。</p>
+<p><span class="exturl" data-url="aHR0cDovL3d3dy5nbnUub3JnL3NvZnR3YXJlL2Jhc2gvbWFudWFsL2Jhc2hyZWYuaHRtbA==">http://www.gnu.org/software/bash/manual/bashref.html<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p><strong>Bash 常见问题解答</strong> 包含关于bash的常见问题的答案。这个列表针对中级到高级用户，但包含了大量的有用信息。</p>
+<p><span class="exturl" data-url="aHR0cDovL215d2lraS53b29sZWRnZS5vcmcvQmFzaEZBUQ==">http://mywiki.wooledge.org/BashFAQ<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>GNU项目为其程序提供了广泛的文档，这些程序构成了Linux命令行体验的核心。您可以在这里看到完整的列表：</p>
+<p><span class="exturl" data-url="aHR0cDovL3d3dy5nbnUub3JnL21hbnVhbC9tYW51YWwuaHRtbA==">http://www.gnu.org/manual/manual.html<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>维基百科有一篇关于man页面的有趣文章：</p>
+<p><span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9NYW5fcGFnZQ==">http://en.wikipedia.org/wiki/Man_page<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>重定向</title>
+    <url>/2024/05/6-redirection/</url>
+    <content><![CDATA[<h2 id="6-–-重定向"><a href="#6-–-重定向" class="headerlink" title="6 – 重定向"></a>6 – 重定向</h2><p>在这一课中，我们将介绍命令行可能最酷炫的功能，那就是<strong>I&#x2F;O重定向</strong>。这里的“I&#x2F;O”代表<strong>输入&#x2F;输出</strong>，通过这个功能，我们可以将命令的输入和输出重定向到文件，并将多个命令连接成强大的命令<strong>管道</strong>。为了展示这一功能，我们将介绍以下命令：</p>
+<ul>
+<li>cat – 连接文件</li>
+<li>sort – 对文本行进行排序</li>
+<li>uniq – 报告或省略重复行</li>
+<li>grep – 打印与模式匹配的行</li>
+<li>wc – 打印每个文件的换行符、单词和字节计数</li>
+<li>head – 输出文件的前部分</li>
+<li>tail – 输出文件的后部分</li>
+<li>tee – 从标准输入读取并写入标准输出和文件</li>
+</ul>
+<span id="more"></span>
+
+<h3 id="标准输入、输出和错误"><a href="#标准输入、输出和错误" class="headerlink" title="标准输入、输出和错误"></a>标准输入、输出和错误</h3><p>到目前为止，我们使用的许多程序都会产生某种形式的输出。这些输出通常包括两种类型：</p>
+<ul>
+<li>程序的结果，也就是程序设计要产生的数据</li>
+<li>状态和错误消息，告诉我们程序的执行情况</li>
+</ul>
+<p>如果我们查看像<code>ls</code>这样的命令，可以看到它在屏幕上显示其结果和错误消息。</p>
+<p>遵循“一切都是文件”的Unix主题，像<code>ls</code>这样的程序实际上会将它们的结果发送到一个称为<strong>标准输出</strong>（通常表示为<strong>stdout</strong>）的特殊文件，而将它们的状态消息发送到另一个称为<strong>标准错误</strong>（<strong>stderr</strong>）的文件。默认情况下，标准输出和标准错误都链接到屏幕，而不保存到磁盘文件中。</p>
+<p>此外，许多程序从一个称为<strong>标准输入</strong>（<strong>stdin</strong>）的设施中获取输入，默认情况下与键盘相连。</p>
+<p>I&#x2F;O重定向允许我们改变输出的目的地和输入的来源。通常，输出会显示在屏幕上，输入来自键盘，但通过I&#x2F;O重定向，我们可以改变这一点。</p>
+<h3 id="重定向标准输出"><a href="#重定向标准输出" class="headerlink" title="重定向标准输出"></a>重定向标准输出</h3><p>I&#x2F;O重定向允许我们重新定义标准输出的位置。要将标准输出重定向到另一个文件而不是屏幕，我们使用<code>&gt;</code>重定向操作符，后面跟着文件的名称。为什么我们要这么做呢？通常，将命令的输出存储在文件中是很有用的。例如，我们可以告诉shell将<code>ls</code>命令的输出发送到名为<code>ls-output.txt</code>的文件，而不是屏幕上：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l /usr/bin &gt; ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们创建了<code>/usr/bin</code>目录的长列表，并将结果发送到名为<code>ls-output.txt</code>的文件中。让我们检查这个命令的重定向输出，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l ls-output.txt</span><br><span class="line">-rw-rw-r-- 1 me me 167878 2018-02-01 15:07 ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>很好 — 一个很大的文本文件。如果我们用<code>less</code>查看这个文件，我们会看到<code>ls-output.txt</code>文件确实包含了我们<code>ls</code>命令的结果。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ less ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>现在，让我们重复我们的重定向测试，但这次有一个小变化。我们将更改目录的名称为一个不存在的名称：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l /bin/usr &gt; ls-output.txt</span><br><span class="line">ls: cannot access /bin/usr: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<p>我们收到了一个错误消息。这很有道理，因为我们指定了不存在的目录 <code>/bin/usr</code>，但为什么错误消息会显示在屏幕上，而不是被重定向到文件 <code>ls-output.txt</code> 呢？答案是 <code>ls</code> 程序并没有将其错误消息发送到标准输出。相反，像大多数编写良好的Unix程序一样，它将其错误消息发送到标准错误。因为我们只重定向了标准输出而没有重定向标准错误，所以错误消息仍然发送到了屏幕上。我们稍后将看到如何重定向标准错误，但首先让我们看看我们的输出文件发生了什么：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l ls-output.txt</span><br><span class="line">-rw-rw-r-- 1 me me 0 2018-02-01 15:08 ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>该文件现在长度为零！这是因为当我们使用“&gt;”重定向操作符重定向输出时，目标文件总是从开始处被重新写入。由于我们的 ls 命令没有生成任何结果，只有一个错误消息，重定向操作开始重新写入文件，然后因为错误而停止，导致其被截断。实际上，如果我们需要实际截断一个文件（或创建一个新的空文件），我们可以使用这样的技巧：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ &gt; ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>简单地使用重定向操作符而没有在其之前添加任何命令将截断一个现有的文件或创建一个新的空文件。</p>
+<p>那么，我们如何将重定向的输出追加到一个文件中，而不是从开始处覆盖文件呢？为此，我们使用<code>&gt;&gt;</code>重定向操作符，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l /usr/bin &gt;&gt; ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>&gt;&gt;</code>操作符会导致输出被追加到文件中。如果文件还不存在，它将会被创建，就像使用<code>&gt;</code>操作符一样。让我们进行测试：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l /usr/bin &gt;&gt; ls-output.txt</span><br><span class="line">[me@linuxbox ~]$ ls -l /usr/bin &gt;&gt; ls-output.txt</span><br><span class="line">[me@linuxbox ~]$ ls -l /usr/bin &gt;&gt; ls-output.txt</span><br><span class="line">[me@linuxbox ~]$ ls -l ls-output.txt</span><br><span class="line">-rw-rw-r-- 1 me me 503634 2018-02-01 15:45 ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>重复执行该命令三次，导致输出文件的大小增加了三倍。</p>
+<h3 id="重定向标准错误"><a href="#重定向标准错误" class="headerlink" title="重定向标准错误"></a>重定向标准错误</h3><p>重定向标准错误没有一个专用的重定向操作符那样简单。为了重定向标准错误，我们必须引用其<em>文件描述符</em>。一个程序可以在多个编号的文件流上产生输出。虽然我们已经提到这些文件流的前三个分别为标准输入、输出和错误，但shell在内部将它们称为文件描述符0、1和2。shell提供了一种使用文件描述符号码进行重定向的表示法。因为标准错误与文件描述符号码2相同，所以我们可以使用这种表示法来重定向标准错误：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l /bin/usr 2&gt; ls-error.txt</span><br></pre></td></tr></table></figure>
+
+<p>文件描述符“2”紧随重定向操作符之前，用于将标准错误重定向到文件ls-error.txt。</p>
+<h4 id="将标准输出和标准错误重定向到一个文件"><a href="#将标准输出和标准错误重定向到一个文件" class="headerlink" title="将标准输出和标准错误重定向到一个文件"></a>将标准输出和标准错误重定向到一个文件</h4><p>有些情况下，我们可能希望将一个命令的所有输出都捕获到一个单一的文件中。为了做到这一点，我们必须同时重定向标准输出和标准错误。有两种方法可以实现这一点。这里展示的是传统的方法，适用于旧版本的shell：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l /bin/usr &gt; ls-output.txt 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>使用这种方法，我们进行了两次重定向。首先，我们将标准输出重定向到文件ls-output.txt，然后使用符号2&gt;&amp;1将文件描述符2（标准错误）重定向到文件描述符1（标准输出）。</p>
+<p><strong>请注意，重定向的顺序很重要。</strong> 必须在重定向标准输出之后始终*重定向标准错误，否则它将不起作用。</p>
+<p>以下示例将标准错误重定向到文件ls-output.txt：</p>
+<p>&gt;ls-output.txt 2&gt;&amp;1</p>
+<p>然而，如果顺序改为以下方式，标准错误将被重定向到屏幕。</p>
+<p>2&gt;&amp;1 &gt;ls-output.txt</p>
+<p>最近的bash版本提供了一个更简洁的方法来执行这种组合重定向，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l /bin/usr &amp;&gt; ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们使用单一符号 &amp;&gt; 来将标准输出和标准错误都重定向到文件 ls-output.txt。我们还可以像这样将标准输出和标准错误流追加到一个单一文件中：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l /bin/usr &amp;&gt;&gt; ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<h4 id="处理不需要的输出"><a href="#处理不需要的输出" class="headerlink" title="处理不需要的输出"></a>处理不需要的输出</h4><p>有时，“沉默是金”，我们不希望从命令中得到输出，只是想将其丢弃。这特别适用于错误和状态消息。系统提供了一种方法来做到这一点，即通过将输出重定向到一个名为“&#x2F;dev&#x2F;null”的特殊文件。这个文件是一个系统设备，通常被称为“位桶”，它接受输入但不对其进行任何处理。为了抑制命令的错误消息，我们这样做：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l /bin/usr 2&gt; /dev/null</span><br></pre></td></tr></table></figure>
+
+<h3 id="在Unix文化中的-dev-null"><a href="#在Unix文化中的-dev-null" class="headerlink" title="在Unix文化中的&#x2F;dev&#x2F;null"></a>在Unix文化中的&#x2F;dev&#x2F;null</h3><p>位桶是一个古老的Unix概念，由于其普遍性，它已经出现在Unix文化的许多部分中。当有人说他&#x2F;她正在将您的评论发送到&#x2F;dev&#x2F;null时，现在您知道这意味着什么。有关更多示例，请参阅<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9kZXYvbnVsbA==">维基百科上的&#x2F;dev&#x2F;null文章<i class="fa fa-external-link-alt"></i></span>。</p>
+<h3 id="重定向标准输入"><a href="#重定向标准输入" class="headerlink" title="重定向标准输入"></a>重定向标准输入</h3><p>到目前为止，我们还没有遇到任何使用标准输入的命令（实际上我们有，但稍后我们将揭示这个惊喜），所以我们需要介绍一个。</p>
+<h4 id="cat-–-连接文件"><a href="#cat-–-连接文件" class="headerlink" title="cat – 连接文件"></a>cat – 连接文件</h4><p>cat命令读取一个或多个文件，并将它们复制到标准输出，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cat [file...]</span><br></pre></td></tr></table></figure>
+
+<p>在大多数情况下，我们可以认为cat类似于DOS中的TYPE命令。我们可以使用它来显示文件而不分页。例如，以下命令将显示文件ls-output.txt的内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ cat ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>cat经常用于显示短文本文件。由于cat可以接受多个文件作为参数，因此它也可以用来将文件连接在一起。假设我们下载了一个被分割成多个部分的大文件（在Usenet上，多媒体文件经常以这种方式被分割），我们想要将它们重新连接在一起。如果这些文件命名为：movie.mpeg.001、movie.mpeg.002 … movie.mpeg.099，我们可以使用以下命令将它们重新连接起来：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cat movie.mpeg.0* &gt; movie.mpeg</span><br></pre></td></tr></table></figure>
+
+<p>由于通配符总是按照排序顺序展开，所以参数会按正确的顺序排列。</p>
+<p>这都很好，但这与标准输入有什么关系呢？目前还没有关系，但让我们尝试另一件事情。如果我们不带任何参数输入cat会发生什么？</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ cat</span><br></pre></td></tr></table></figure>
+
+<p>什么也不会发生，它就像被挂起了一样静止不动。看起来可能是这样，但它实际上确实在按照它应该执行的方式进行操作。</p>
+<p>如果没有给cat提供任何参数，它会从标准输入读取数据，而标准输入默认是连接到键盘的，所以它在等待我们输入！尝试添加以下文本并按Enter键：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ cat</span><br><span class="line">The quick brown fox jumped over the lazy dog.</span><br></pre></td></tr></table></figure>
+
+<p>接下来，按下 Ctrl 键并同时按“d”键（即，Ctrl-d）告诉 cat 它已经在标准输入上达到了文件结束（EOF）：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ cat</span><br><span class="line">The quick brown fox jumped over the lazy dog.</span><br><span class="line">The quick brown fox jumped over the lazy dog.</span><br></pre></td></tr></table></figure>
+
+<p>在没有文件名参数的情况下，cat 将标准输入复制到标准输出，所以我们看到我们的文本行被重复显示。我们可以利用这种行为来创建短文本文件。假设我们想要创建一个名为 lazy_dog.txt 的文件，其中包含我们示例中的文本。我们会这样做：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ cat &gt; lazy_dog.txt</span><br><span class="line">The quick brown fox jumped over the lazy dog.</span><br></pre></td></tr></table></figure>
+
+<p>在命令后输入我们想要放入文件中的文本。记得在最后按下 Ctrl-d。使用命令行，我们实现了世界上最简单的文字处理器！为了查看我们的结果，我们可以使用 cat 再次将文件复制到 stdout。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ cat lazy_dog.txt</span><br><span class="line">The quick brown fox jumped over the lazy dog.</span><br></pre></td></tr></table></figure>
+
+<p>现在我们知道 cat 如何接受标准输入，除了文件名参数之外，让我们尝试重定向标准输入。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ cat &lt; lazy_dog.txt</span><br><span class="line">The quick brown fox jumped over the lazy dog.</span><br></pre></td></tr></table></figure>
+
+<p>使用 &lt; 重定向运算符，我们将标准输入的来源从键盘更改为文件 lazy_dog.txt。我们看到结果与传递单个文件名参数相同。与传递文件名参数相比，这并不特别有用，但它展示了如何使用文件作为标准输入的来源。其他命令更好地利用了标准输入，我们很快就会看到。</p>
+<p>在我们继续之前，查看一下 cat 的 man 页面，因为它有几个有趣的选项。</p>
+<h3 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h3><p>命令从标准输入读取数据并发送到标准输出的能力是由一个 shell 功能称为 <em>管道</em> 所利用的。使用管道运算符 |（竖线），一个命令的标准输出可以 <em>管道化</em> 到另一个命令的标准输入。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">command1 | command2</span><br></pre></td></tr></table></figure>
+
+<p>为了充分展示这一点，我们需要一些命令。还记得我们说过有一个我们已经知道接受标准输入的命令吗？那就是 <code>less</code>。我们可以使用 <code>less</code> 逐页显示任何将其结果发送到标准输出的命令的输出：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l /usr/bin | less</span><br></pre></td></tr></table></figure>
+
+<p>这非常方便！使用这种技术，我们可以方便地检查任何生成标准输出的命令的输出。</p>
+<p><strong>&gt; 和 | 之间的区别</strong>乍一看，可能很难理解管道运算符 | 与重定向运算符 &gt; 所执行的重定向之间的区别。简单地说，重定向运算符将一个命令与一个文件连接起来，而管道运算符将一个命令的输出与第二个命令的输入连接起来。<em>command1</em> &gt; <em>file1</em> 和 <em>command1</em> | <em>command2</em>。很多人在学习管道时会尝试以下操作，“只是为了看看会发生什么”：<em>command1</em> &gt; <em>command2</em>。答案：有时会发生非常糟糕的事情。</p>
+<p>这里有一个实际的例子，是一位管理员正在管理一个基于 Linux 的服务器设备。作为超级用户，他做了以下操作：</p>
+<p># cd &#x2F;usr&#x2F;bin</p>
+<p># ls &gt; less</p>
+<p>第一个命令将他放在了大多数程序存储的目录中，而第二个命令告诉 shell 用 <code>ls</code> 命令的输出覆盖 <code>less</code> 文件。由于 &#x2F;usr&#x2F;bin 目录已经包含了一个名为 <code>less</code> 的文件（即 <code>less</code> 程序），第二个命令用 <code>ls</code> 的文本覆盖了 <code>less</code> 程序文件，从而破坏了他系统上的 <code>less</code> 程序。</p>
+<p>这里的教训是，重定向运算符会默默地创建或覆盖文件，所以你需要非常尊重它。</p>
+<h4 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h4><p>管道经常被用来对数据执行复杂的操作。可以将多个命令组合成一个管道。经常这样使用的命令被称为 <em>过滤器</em>。过滤器接收输入，以某种方式更改它，然后输出它。我们首先尝试的是 <code>sort</code>。想象一下，如果我们想要制作 <code>/bin</code> 和 <code>/usr/bin</code> 中所有可执行程序的合并列表，并按排序顺序排列它们，然后查看结果列表：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls /bin /usr/bin | sort | less</span><br></pre></td></tr></table></figure>
+
+<p>由于我们指定了两个目录（&#x2F;bin 和 &#x2F;usr&#x2F;bin），<code>ls</code> 的输出本来会包含两个排序列表，每个目录一个。通过在我们的管道中包括 <code>sort</code>，我们改变了数据以生成一个单一的、排序过的列表。</p>
+<h4 id="uniq-报告或省略重复行"><a href="#uniq-报告或省略重复行" class="headerlink" title="uniq - 报告或省略重复行"></a>uniq - 报告或省略重复行</h4><p><code>uniq</code> 命令经常与 <code>sort</code> 一起使用。<code>uniq</code> 接受来自标准输入或单个文件名参数（有关详细信息，请参阅 <code>uniq</code> 手册页）的排序数据列表，并默认情况下从列表中删除任何重复项。因此，为了确保我们的列表没有重复项（也就是说，在 <code>/bin</code> 和 <code>/usr/bin</code> 目录中都出现的同名程序），我们将在我们的管道中添加 <code>uniq</code>。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls /bin /usr/bin | sort | uniq | less</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们使用 <code>uniq</code> 从 <code>sort</code> 命令的输出中删除任何重复项。如果我们想看到重复项的列表，我们可以像这样给 <code>uniq</code> 添加“-d”选项：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls /bin /usr/bin | sort | uniq -d | less</span><br></pre></td></tr></table></figure>
+
+<h4 id="wc-–-打印行、单词和字节计数"><a href="#wc-–-打印行、单词和字节计数" class="headerlink" title="wc – 打印行、单词和字节计数"></a>wc – 打印行、单词和字节计数</h4><p><code>wc</code>（word count）命令用于显示文件中包含的行数、单词数和字节数。以下是一个示例：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ wc ls-output.txt</span><br><span class="line"> 7902 64566 503634 ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>在这种情况下，它打印出三个数字：<code>ls-output.txt</code> 中包含的行数、单词数和字节数。与我们之前的命令一样，如果没有命令行参数执行它，<code>wc</code> 会接受标准输入。“-l”选项限制其输出只报告行数。将其添加到管道中是计数的一种方便方式。要查看我们排序列表中的项目数，我们可以这样做：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls /bin /usr/bin | sort | uniq | wc -l</span><br><span class="line">2728</span><br></pre></td></tr></table></figure>
+
+<h4 id="grep-–-打印匹配模式的行"><a href="#grep-–-打印匹配模式的行" class="headerlink" title="grep – 打印匹配模式的行"></a>grep – 打印匹配模式的行</h4><p><code>grep</code> 是一个强大的程序，用于在文件中查找文本模式。它的使用方式如下：</p>
+<p>当 <code>grep</code> 在文件中遇到一个“模式”时，它会打印出包含该模式的行。<code>grep</code> 可以匹配的模式可能非常复杂，但现在我们将集中关注简单的文本匹配。我们将在第19章中介绍称为 <em>正则表达式</em> 的高级模式。</p>
+<p>假设我们想在程序列表中找到所有名称中包含单词“zip”的文件。这样的搜索可能会让我们了解一些与文件压缩有关的系统程序。我们会这样做：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls /bin /usr/bin | sort | uniq | grep zip</span><br><span class="line">bunzip2</span><br><span class="line">bzip2</span><br><span class="line">gunzip</span><br><span class="line">gzip</span><br><span class="line">unzip</span><br><span class="line">zip</span><br><span class="line">zipcloak</span><br><span class="line">zipgrep</span><br><span class="line">zipinfo</span><br><span class="line">zipnote</span><br><span class="line">zipsplit</span><br></pre></td></tr></table></figure>
+
+<p><code>grep</code> 还有一些方便的选项：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">grep pattern [file...]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-i</code>，使 <code>grep</code> 在执行搜索时忽略大小写（通常搜索区分大小写）</li>
+<li><code>-v</code>，告诉 <code>grep</code> 只打印不匹配模式的那些行。</li>
+</ul>
+<h4 id="head-tail-–-打印文件的前部分-后部分"><a href="#head-tail-–-打印文件的前部分-后部分" class="headerlink" title="head &#x2F; tail – 打印文件的前部分 &#x2F; 后部分"></a>head &#x2F; tail – 打印文件的前部分 &#x2F; 后部分</h4><p>有时我们不希望从命令中得到所有输出。我们可能只想要前几行或后几行。<code>head</code> 命令打印文件的前十行，而 <code>tail</code> 命令打印文件的最后十行。默认情况下，这两个命令都会打印十行文本，但可以使用 <code>-n</code> 选项进行调整。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ head -n 5 ls-output.txt</span><br><span class="line">total 343496</span><br><span class="line">-rwxr-xr-x 1 root root 31316 2007-12-05 08:58 [</span><br><span class="line">-rwxr-xr-x 1 root root 8240 2007-12-09 13:39 411toppm</span><br><span class="line">-rwxr-xr-x 1 root root 111276 2007-11-26 14:27 a2p</span><br><span class="line">-rwxr-xr-x 1 root root 25368 2006-10-06 20:16 a52dec</span><br><span class="line">[me@linuxbox ~]$ tail -n 5 ls-output.txt</span><br><span class="line">-rwxr-xr-x 1 root root 5234 2007-06-27 10:56 znew</span><br><span class="line">-rwxr-xr-x 1 root root 691 2005-09-10 04:21 zonetab2pot.py</span><br><span class="line">-rw-r--r-- 1 root root 930 2007-11-01 12:23 zonetab2pot.pyc</span><br><span class="line">-rw-r--r-- 1 root root 930 2007-11-01 12:23 zonetab2pot.pyo</span><br><span class="line">lrwxrwxrwx 1 root root 6 2016-01-31 05:22 zsoelim -&gt; soelim</span><br></pre></td></tr></table></figure>
+
+<p>这些命令也可以在管道中使用：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls /usr/bin | tail -n 5</span><br><span class="line">znew</span><br><span class="line">zonetab2pot.py</span><br><span class="line">zonetab2pot.pyc</span><br><span class="line">zonetab2pot.pyo</span><br><span class="line">zsoelim</span><br></pre></td></tr></table></figure>
+
+<p>tail有一个选项，允许我们实时查看文件。这对于观察正在被写入的日志文件的进度非常有用。在下面的例子中，我们将查看<code>/var/log</code>中的<code>messages</code>文件（如果<code>messages</code>不存在，则查看<code>/var/log/syslog</code>文件）。在某些Linux发行版上，执行此操作需要超级用户权限，因为<code>/var/log/messages</code>文件可能包含安全信息：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ tail -f /var/log/messages</span><br><span class="line">Feb 8 13:40:05 twin4 dhclient: DHCPACK from 192.168.1.1</span><br><span class="line">Feb 8 13:40:05 twin4 dhclient: bound to 192.168.1.4 -- renewal in</span><br><span class="line">1652 seconds.</span><br><span class="line">Feb 8 13:55:32 twin4 mountd[3953]: /var/NFSv4/musicbox exported to</span><br><span class="line">both 192.168.1.0/24 and twin7.localdomain in</span><br><span class="line">192.168.1.0/24,twin7.localdomain</span><br><span class="line">Feb 8 14:07:37 twin4 dhclient: DHCPREQUEST on eth0 to 192.168.1.1</span><br><span class="line">port 67</span><br><span class="line">Feb 8 14:07:37 twin4 dhclient: DHCPACK from 192.168.1.1</span><br><span class="line">Feb 8 14:07:37 twin4 dhclient: bound to 192.168.1.4 -- renewal in</span><br><span class="line">1771 seconds.</span><br><span class="line">Feb 8 14:09:56 twin4 smartd[3468]: Device: /dev/hda, SMART</span><br><span class="line">Prefailure Attribute: 8 Seek_Time_Performance changed from 237 to 236</span><br><span class="line">Feb 8 14:10:37 twin4 mountd[3953]: /var/NFSv4/musicbox exported to</span><br><span class="line">both 192.168.1.0/24 and twin7.localdomain in</span><br><span class="line">192.168.1.0/24,twin7.localdomain</span><br><span class="line">Feb 8 14:25:07 twin4 sshd(pam_unix)[29234]: session opened for user</span><br><span class="line">me by (uid=0)</span><br><span class="line">Feb 8 14:25:36 twin4 su(pam_unix)[29279]: session opened for user</span><br><span class="line">root by me(uid=500)</span><br></pre></td></tr></table></figure>
+
+<p>使用“-f”选项，<code>tail</code>会继续监视文件，当有新行被追加时，它们会立即显示在屏幕上。这将继续进行，直到我们按下Ctrl-c。</p>
+<h4 id="tee-–-从标准输入读取并将其输出到标准输出和文件"><a href="#tee-–-从标准输入读取并将其输出到标准输出和文件" class="headerlink" title="tee – 从标准输入读取并将其输出到标准输出和文件"></a>tee – 从标准输入读取并将其输出到标准输出和文件</h4><p>为了保持我们的管道隐喻，Linux提供了一个称为tee的命令，该命令在我们的管道上创建一个“tee”接头。tee程序读取标准输入并将其复制到标准输出（允许数据继续通过管道）以及一个或多个文件。这对于在处理的中间阶段捕获管道的内容非常有用。在这里，我们重复了我们早些时候的一个例子，这次包括tee以将整个目录列表捕获到文件<code>ls.txt</code>中，然后再由grep过滤管道的内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls /usr/bin | tee ls.txt | grep zip</span><br><span class="line">bunzip2</span><br><span class="line">bzip2</span><br><span class="line">gunzip</span><br><span class="line">gzip</span><br><span class="line">unzip</span><br><span class="line">zip</span><br><span class="line">zipcloak</span><br><span class="line">zipgrep</span><br><span class="line">zipinfo</span><br><span class="line">zipnote</span><br><span class="line">zipsplit</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>像往常一样，查看我们在本章中涵盖的每个命令的文档。我们只看到了它们最基本的用法。它们都有许多有趣的选项。随着我们在Linux上的经验增长，我们会发现命令行的重定向功能对解决特定问题非常有用。有许多命令使用标准输入和输出，几乎所有的命令行程序都使用标准错误来显示它们的信息性消息。</p>
+<h3 id="Linux-是关于想象力的"><a href="#Linux-是关于想象力的" class="headerlink" title="Linux 是关于想象力的"></a>Linux 是关于想象力的</h3><p>当我被问及解释Windows和Linux之间的区别时，我经常使用一个玩具类比。</p>
+<p>Windows就像是Game Boy。你去商店买了一个全新的、闪闪发光的盒子。你带它回家，打开它，然后玩耍。漂亮的图形，可爱的声音。然而，过了一段时间，你厌倦了它自带的游戏，于是你回到商店买了另一个。这个周期一次又一次地重复。最后，你回到商店告诉柜台后面的人，“我想要一个能做这个的游戏！”结果被告知这样的游戏不存在，因为没有“市场需求”。然后你说，“但我只需要改变这一件事！”柜台后面的人告诉你不能改变它。这些游戏都被封闭在它们的卡带中。你发现你的玩具只能玩别人决定你需要的游戏。</p>
+<p>另一方面，Linux就像是世界上最大的Erector Set（铁架玩具套件）。你打开它，里面只有大量的部件。有许多钢支柱、螺丝、螺母、齿轮、滑轮、电机，还有一些建议可以建造什么。于是，你开始玩耍。你按照其中一个建议开始建造，然后又建造另一个。过了一段时间，你发现你有了自己的想法。你不需要再回到商店，因为你已经拥有了你需要的一切。这个Erector Set会按照你的想象力的形状进行变化。它会做你想要的。</p>
+<p>当然，你选择的玩具是个人的事情，那么你会觉得哪个玩具更令人满意呢？</p>
 ]]></content>
       <categories>
         <category>Linux</category>

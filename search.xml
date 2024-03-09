@@ -12274,4 +12274,271 @@ Swap: 1052248   104712   947536
         <category>Linux</category>
       </categories>
   </entry>
+  <entry>
+    <title>高级键盘技巧</title>
+    <url>/2024/05/8-advanced_keyboard_tricks/</url>
+    <content><![CDATA[<h2 id="8-–-高级键盘技巧"><a href="#8-–-高级键盘技巧" class="headerlink" title="8 – 高级键盘技巧"></a>8 – 高级键盘技巧</h2><p>我经常开玩笑地说Unix是“喜欢打字的人的操作系统”。当然，它甚至有命令行也证明了这一点。但是，命令行用户并不希望打太多字。否则，为什么会有那么多命令的名称如此简短，例如cp、ls、mv和rm呢？事实上，命令行最珍贵的目标之一就是懒惰；用最少的按键做最多的工作。另一个目标是从不需要从键盘上抬起手指并去鼠标上点击。在这一章中，我们将探讨使键盘使用更快、更高效的bash特性。</p>
+<span id="more"></span>
+
+<p>以下命令将出现：</p>
+<ul>
+<li>clear – 清除屏幕内容</li>
+<li>history – 显示历史命令列表的内容</li>
+</ul>
+<h3 id="命令行编辑"><a href="#命令行编辑" class="headerlink" title="命令行编辑"></a>命令行编辑</h3><p>bash使用一个名为<em>Readline</em>的库（一个可以被不同程序使用的共享程序集）来实现命令行编辑。我们已经见过其中的一些。例如，我们知道箭头键可以移动光标，但还有许多其他功能。可以将这些视为我们工作中可以使用的额外工具。并不是必须要学习所有的，但其中很多确实非常有用。根据需要进行选择和使用。</p>
+<p>**注意：**以下一些键序列（特别是使用Alt键的）可能被GUI用于其他功能所拦截。在使用虚拟控制台时，所有的键序列应该可以正确工作。</p>
+<h4 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h4><p>以下表格列出了用于移动光标的键：</p>
+<p><em>表8-1：光标移动命令</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>键</strong></th>
+<th><strong>操作</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ctrl-a</td>
+<td>将光标移动到行的开头。</td>
+</tr>
+<tr>
+<td>Ctrl-e</td>
+<td>将光标移动到行的末尾。</td>
+</tr>
+<tr>
+<td>Ctrl-f</td>
+<td>向前移动一个字符的位置；与右箭头键相同。</td>
+</tr>
+<tr>
+<td>Ctrl-b</td>
+<td>向后移动一个字符的位置；与左箭头键相同。</td>
+</tr>
+<tr>
+<td>Alt-f</td>
+<td>向前移动一个单词的位置。</td>
+</tr>
+<tr>
+<td>Alt-b</td>
+<td>向后移动一个单词的位置。</td>
+</tr>
+<tr>
+<td>Ctrl-l</td>
+<td>清除屏幕并将光标移动到左上角。与clear命令执行相同的操作。</td>
+</tr>
+</tbody></table>
+<h4 id="修改文本"><a href="#修改文本" class="headerlink" title="修改文本"></a>修改文本</h4><p>由于在组合命令时可能会犯错误，因此我们需要一种有效地进行更正的方法。表8-2描述了用于编辑命令行上字符的键盘命令。</p>
+<p><em>表8-2：文本编辑命令</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>键</strong></th>
+<th><strong>操作</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ctrl-d</td>
+<td>删除光标位置的字符。</td>
+</tr>
+<tr>
+<td>Ctrl-t</td>
+<td>交换光标位置的字符与其前面的字符。</td>
+</tr>
+<tr>
+<td>Alt-t</td>
+<td>交换光标位置的单词与其前面的单词。</td>
+</tr>
+<tr>
+<td>Alt-l</td>
+<td>将光标位置到单词末尾的字符转换为小写。</td>
+</tr>
+<tr>
+<td>Alt-u</td>
+<td>将光标位置到单词末尾的字符转换为大写。</td>
+</tr>
+</tbody></table>
+<h4 id="剪切和粘贴（杀死和插入）文本"><a href="#剪切和粘贴（杀死和插入）文本" class="headerlink" title="剪切和粘贴（杀死和插入）文本"></a>剪切和粘贴（杀死和插入）文本</h4><p>Readline文档使用“killing”和“yanking”这些术语来指代我们通常所说的剪切和粘贴。被剪切的项目存储在一个缓冲区（内存中的临时存储区域）中，称为<em>kill-ring</em>。</p>
+<p>命令行编辑</p>
+<p><em>表8-3：剪切和粘贴命令</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>键</strong></th>
+<th><strong>操作</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ctrl-k</td>
+<td>从光标位置剪切到行末。</td>
+</tr>
+<tr>
+<td>Ctrl-u</td>
+<td>从光标位置剪切到行开头。</td>
+</tr>
+<tr>
+<td>Alt-d</td>
+<td>从光标位置剪切到当前单词末尾。</td>
+</tr>
+<tr>
+<td>Alt-Backspace</td>
+<td>从光标位置剪切到当前单词的开头。如果光标位于单词的开头，则剪切前一个单词。</td>
+</tr>
+<tr>
+<td>Ctrl-y</td>
+<td>从kill-ring中粘贴文本并在光标位置插入。</td>
+</tr>
+</tbody></table>
+<h3 id="Meta键"><a href="#Meta键" class="headerlink" title="Meta键"></a>Meta键</h3><p>如果你深入阅读Readline文档，可以在bash手册页的“READLINE”部分找到，你会遇到<em>meta键</em>这个术语。在现代键盘上，这对应于Alt键，但这并不总是这样。</p>
+<p>在遥远的时代（在PC之前但在Unix之后），并不是每个人都有自己的计算机。他们可能拥有的是一个被称为<em>终端</em>的设备。终端是一个通信设备，它配备了一个文本显示屏和一个键盘，内部只有足够的电子元件来显示文本字符并移动光标。它通过串行电缆（通常）连接到更大的计算机或更大计算机的通信网络上。有许多不同品牌的终端，它们都有不同的键盘和显示特性。由于它们都至少能理解ASCII，因此希望编写可移植应用程序的软件开发者会针对最低公共分母进行编写。Unix系统有一套复杂的方法来处理终端及其不同的显示特性。由于Readline的开发者不能确定是否存在一个专用的额外控制键，他们发明了一个并称之为<em>meta</em>。在现代键盘上，Alt键作为meta键，但如果你仍在使用终端（在Linux中你仍然可以这样做），你也可以按下并释放Esc键以获得按住Alt键时的相同效果。</p>
+<h3 id="自动补全"><a href="#自动补全" class="headerlink" title="自动补全"></a>自动补全</h3><p>外壳另一种帮助我们的方式是通过一种称为<em>自动补全</em>的机制。当我们在输入命令时按下tab键时，就会发生自动补全。让我们看看这是如何工作的。假设有一个如下所示的家目录：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls</span><br><span class="line">Desktop ls-output.txt Pictures Templates Videos</span><br><span class="line">Documents Music Public</span><br></pre></td></tr></table></figure>
+
+<p>试着输入以下内容，但<strong>不要按下</strong> <strong>Enter键</strong>：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls l</span><br></pre></td></tr></table></figure>
+
+<p>现在按下Tab键。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>看到了吗？shell为我们完成了这行内容。让我们再试一个。同样，不要按Enter。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls D</span><br></pre></td></tr></table></figure>
+
+<p>按下Tab。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls D</span><br></pre></td></tr></table></figure>
+
+<p>没有完成，什么都没有。这是因为D匹配了目录中的多个条目。为了使自动补全成功，我们给它的“线索”必须是明确的。如果我们像下面这样继续：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls Do</span><br></pre></td></tr></table></figure>
+
+<p>然后按Tab：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls Documents</span><br></pre></td></tr></table></figure>
+
+<p>自动补全是成功的。</p>
+<p>虽然这个示例展示了路径名的自动补全，这是它最常见的用法，但自动补全也可以用于变量（如果单词的开头是$）、用户名（如果单词以~开头）、命令（如果单词是行上的第一个单词）和主机名（如果单词的开头是@）。主机名的自动补全只对列在&#x2F;etc&#x2F;hosts中的主机名有效。</p>
+<p>与自动补全相关的有许多控制和meta键序列，如表8-4所列。</p>
+<p><em>表8-4：自动补全命令</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>键</strong></th>
+<th><strong>操作</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Alt-?</td>
+<td>显示可能的自动补全列表。<em>在大多数系统上，你还可以通过再次按</em> Tab <em>键来执行此操作，这样做更容易。</em></td>
+</tr>
+<tr>
+<td>Alt-*</td>
+<td>插入所有可能的自动补全。当你想使用多个可能的匹配项时，这是很有用的。</td>
+</tr>
+</tbody></table>
+<p>还有一些相当晦涩的键和操作。在bash手册的“READLINE”部分中有一个列表。</p>
+<p><strong>可编程自动补全</strong>最近版本的bash具有一个称为<em>可编程自动补全</em>的功能。可编程自动补全允许你（或更可能是你的发行版提供者）添加额外的补全规则。通常，这是为了支持特定的应用程序。例如，可以为命令的选项列表添加补全，或者匹配应用程序支持的特定文件类型。Ubuntu默认定义了一个相当大的集合。可编程自动补全是通过shell函数来实现的，这是一种我们将在后面章节中介绍的小型shell脚本。如果你好奇，试试以下命令：<strong>set | less</strong>，看看你能否找到它们。并不是所有的发行版都默认包含它们。</p>
+<h3 id="使用历史记录"><a href="#使用历史记录" class="headerlink" title="使用历史记录"></a>使用历史记录</h3><p>正如我们在第1章中发现的那样，bash会维护已输入的命令的历史记录。这些命令的列表存储在我们的家目录中的一个名为.bash_history的文件中。结合命令行编辑，历史记录功能是减少我们需要输入的内容的有用资源。</p>
+<h4 id="搜索历史记录"><a href="#搜索历史记录" class="headerlink" title="搜索历史记录"></a>搜索历史记录</h4><p>随时，我们都可以通过执行以下操作来查看历史列表的内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ history | less</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下，bash 存储我们输入的最后 500 个命令，尽管大多数现代发行版将此值设置为 1000。我们将在第 11 章中了解如何调整此值。假设我们想要查找用于列出 &#x2F;usr&#x2F;bin 的命令。这是我们可以这样做的一种方式：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ history | grep /usr/bin</span><br></pre></td></tr></table></figure>
+
+<p>假设在我们的结果中，我们得到了一行包含一个有趣命令的行，如下：</p>
+<blockquote>
+<p>88 ls -l &#x2F;usr&#x2F;bin &gt; ls-output.txt</p>
+</blockquote>
+<p>88 是历史列表中命令的行号。我们可以使用另一种称为 <em>history expansion</em> 的扩展来立即使用这个命令。为了使用我们发现的行，我们可以这样做：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ !88</span><br></pre></td></tr></table></figure>
+
+<p>bash 将 !88 扩展为历史列表中第 88 行的内容。在下一节中，我们将介绍其他形式的历史扩展。</p>
+<p>bash 还提供了逐步搜索历史列表的能力。这意味着我们可以告诉 bash 在我们输入字符时搜索历史列表，每增加一个字符，我们的搜索就会进一步细化。要开始逐步搜索，按下 Ctrl-r，然后输入我们正在查找的文本。当我们找到它时，我们可以按 Enter 执行该命令，或者按 Ctrl-j 将该行从历史列表复制到当前命令行。要查找文本的下一个出现（向“上”移动历史列表），再次按下 Ctrl-r。要退出搜索，请按 Ctrl-g 或 Ctrl-c。这里我们看到它在实际操作中：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ </span><br></pre></td></tr></table></figure>
+
+<p>首先按下 Ctrl-r。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(reverse-i-search)`&#x27;: </span><br></pre></td></tr></table></figure>
+
+<p>提示符会更改以指示我们正在执行反向逐步搜索。这是“反向”的，因为我们从“现在”搜索到过去的某个时间。接下来，我们开始输入搜索文本。在这个例子中，是 &#x2F;usr&#x2F;bin：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(reverse-i-search)`/usr/bin&#x27;: ls -l /usr/bin &gt; ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>立即，搜索返回我们的结果。有了结果，我们可以按 Enter 执行该命令，或者按 Ctrl-j 将命令复制到当前命令行进行进一步编辑。让我们复制它。按 Ctrl-j。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ls -l /usr/bin &gt; ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>我们的 shell 提示符返回，并且我们的命令行已加载并准备好进行操作！</p>
+<p>表 8-5 列出了用于操作历史列表的一些按键。</p>
+<p><em>表 8-5：历史命令</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>按键</strong></th>
+<th><strong>动作</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ctrl-p</td>
+<td>移动到前一个历史条目。这与上箭头的动作相同。</td>
+</tr>
+<tr>
+<td>Ctrl-n</td>
+<td>移动到下一个历史条目。这与下箭头的动作相同。</td>
+</tr>
+<tr>
+<td>Alt-&lt;</td>
+<td>移动到历史列表的开始（顶部）。</td>
+</tr>
+<tr>
+<td>Alt-&gt;</td>
+<td>移动到历史列表的结束（底部），即当前命令行。</td>
+</tr>
+<tr>
+<td>Ctrl-r</td>
+<td>反向逐步搜索。这会从当前命令行开始，逐步搜索历史列表。</td>
+</tr>
+<tr>
+<td>Alt-p</td>
+<td>反向搜索，非逐步。使用此键，输入搜索字符串并在执行搜索之前按 Enter。</td>
+</tr>
+<tr>
+<td>Alt-n</td>
+<td>前向搜索，非逐步。</td>
+</tr>
+<tr>
+<td>Ctrl-o</td>
+<td>执行历史列表中的当前项目并前进到下一个。如果我们试图重新执行历史列表中的一系列命令，这非常方便。</td>
+</tr>
+</tbody></table>
+<h4 id="历史扩展"><a href="#历史扩展" class="headerlink" title="历史扩展"></a>历史扩展</h4><p>shell 使用 ! 字符为历史列表中的项目提供了一种特殊类型的扩展。我们已经看到感叹号后面可以跟一个数字来插入历史列表中的一个条目。如表 8-6 中所描述，还有许多其他的扩展特性。</p>
+<p><em>表 8-6：历史扩展命令</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>序列</strong></th>
+<th><strong>动作</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>!!</td>
+<td>重复上一条命令。按上箭头然后按 Enter 可能更容易。</td>
+</tr>
+<tr>
+<td>!<em>数字</em></td>
+<td>重复历史列表中的第 <em>数字</em> 条目。</td>
+</tr>
+<tr>
+<td>!字符串</td>
+<td>重复以字符串开始的最后一个历史列表项。</td>
+</tr>
+<tr>
+<td>!?字符串</td>
+<td>重复包含字符串的最后一个历史列表项。</td>
+</tr>
+</tbody></table>
+<p>我建议在使用 !字符串 和 !?字符串 形式时要小心，除非您绝对确定历史列表项的内容。</p>
+<p>历史扩展机制中有更多的元素可用，但这个主题已经相当深奥，如果继续讨论，我们可能会感到困惑。bash 手册页的 “HISTORY EXPANSION” 部分详细描述了所有细节。随意探索！</p>
+<h3 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h3><p>除了 bash 中的命令历史功能外，大多数 Linux 发行版还包括一个名为 script 的程序，用于记录整个 shell 会话并将其存储在文件中。命令的基本语法如下：</p>
+<p>script [<em>文件</em>]</p>
+<p>其中 <em>文件</em> 是用于存储录音的文件名。如果没有指定文件，将使用 typescript 文件。请参阅 script 手册页以获取程序的所有选项和功能的完整列表。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h4><p>在这一章中，我们介绍了 shell 提供的一些键盘技巧，以帮助热衷于打字的用户减少工作量。随着时间的推移和我们与命令行的更深入接触，我们可以回到这一章以获取更多的这些技巧。目前，您可以将它们视为可选的，并可能有助于您。</p>
+<h4 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a><strong>进一步阅读</strong></h4><ul>
+<li>Wikipedia 上有一篇关于计算机终端的好文章：<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9Db21wdXRlcl90ZXJtaW5hbA==">http://en.wikipedia.org/wiki/Computer_terminal<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
 </search>

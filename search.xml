@@ -12829,7 +12829,7 @@ Swap: 1052248   104712   947536
 <p>有些人喜欢使用八进制表示法，而有些人真的很喜欢使用符号表示法。符号表示法确实提供了一个优点，即允许我们在不干扰其他任何属性的情况下设置单个属性。</p>
 <p>查看 chmod 的 man 页面以获取更多详细信息和选项列表。关于“–recursive”选项的一个警告：它对文件和目录都起作用，因此它并不像我们希望的那样有用，因为我们很少希望文件和目录具有相同的权限。</p>
 <h4 id="使用图形用户界面设置文件模式"><a href="#使用图形用户界面设置文件模式" class="headerlink" title="使用图形用户界面设置文件模式"></a>使用图形用户界面设置文件模式</h4><p>现在我们已经了解了如何设置文件和目录的权限，我们可以更好地理解图形用户界面中的权限对话框。在Files（GNOME）和Dolphin（KDE）中，右键点击文件或目录图标将会显示一个属性对话框。以下是来自GNOME的示例：</p>
-<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/ETjDRRpUZUiaRvSetsguQWfwibtv27MIKmc95aLmwasemicY4JHuYniaK4dDEQzMxtaNKS3BXK2YO7FH1IyPUGqvsA/640"></p>
+<p><img src="/images/2024/Picture2.png"></p>
 <p><em>图2：GNOME文件权限对话框</em></p>
 <p>在这里，我们可以看到所有者、组和全局的设置。</p>
 <h4 id="umask-–-设置默认权限"><a href="#umask-–-设置默认权限" class="headerlink" title="umask – 设置默认权限"></a>umask – 设置默认权限</h4><p>umask命令控制创建文件时赋予其的默认权限。</p>
@@ -12952,7 +12952,7 @@ Swap: 1052248   104712   947536
 <h4 id="chgrp-–-更改组所有权"><a href="#chgrp-–-更改组所有权" class="headerlink" title="chgrp – 更改组所有权"></a>chgrp – 更改组所有权</h4><p>在旧版本的 Unix 中，chown 命令仅更改文件所有权，而不更改组所有权。为此，使用了一个单独的命令，名为 chgrp。它的工作方式与 chown 非常相似，但限制更多。</p>
 <h3 id="行使我们的权限"><a href="#行使我们的权限" class="headerlink" title="行使我们的权限"></a>行使我们的权限</h3><p>既然我们已经了解了这个权限的工作原理，现在是展示它的时候了。我们将演示解决一个常见问题的解决方案——设置一个共享目录。假设我们有两个名为“bill”和“karen”的用户。他们都有音乐收藏，并希望设置一个共享目录，每个人都可以在其中存储他们的音乐文件，格式为 Ogg Vorbis 或 MP3。用户 bill 通过 sudo 具有超级用户权限。</p>
 <p>首先需要做的是创建一个组，其中 bill 和 karen 都是成员。使用图形用户管理工具，bill 创建了一个名为 music 的组，并将用户 bill 和 karen 添加到其中：</p>
-<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/ETjDRRpUZUiaRvSetsguQWfwibtv27MIKmNP78UyGqIrsLT8MKJO1PBYJOvCLibbNahuKjKpxnEU9sfeV4Sz8XTbg/640"></p>
+<p><img src="/images/2024/Picture3.png"></p>
 <p><em>图3：使用 GNOME 创建新组</em></p>
 <p>接下来，bill 为音乐文件创建目录。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[bill@linuxbox ~]$ sudo mkdir /usr/local/share/Music</span><br><span class="line">Password:</span><br></pre></td></tr></table></figure>

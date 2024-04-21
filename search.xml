@@ -10878,6 +10878,9 @@ xdebug.remote_port = 9001
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>什么是Shell？</title>
@@ -10956,6 +10959,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>进程</title>
@@ -11332,6 +11338,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>vi 温柔入门</title>
@@ -11792,6 +11801,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>环境</title>
@@ -12049,6 +12061,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>导航</title>
@@ -12143,6 +12158,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>探索系统</title>
@@ -12508,6 +12526,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>操纵文件和目录</title>
@@ -12985,6 +13006,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>使用命令</title>
@@ -13215,6 +13239,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>重定向</title>
@@ -13385,6 +13412,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>从Shell的视角看世界</title>
@@ -13602,6 +13632,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>高级键盘技巧</title>
@@ -13869,6 +13902,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>Linux命令行</title>
@@ -13995,7 +14031,7 @@ Swap: 1052248   104712   947536
 <h3 id="第五个网络版本"><a href="#第五个网络版本" class="headerlink" title="第五个网络版本"></a>第五个网络版本</h3><p>特别感谢以下提供宝贵反馈并纳入第五个网络版本的个人：John Burns、Paolo Casati、Waldo Ribeiro和Valter Wierzba。</p>
 <p>最后，衷心感谢LinuxCommand.org的众多读者，他们给我寄来了许多友好的电子邮件。他们的鼓励让我认为我确实找对了方向！</p>
 <p>需要您的反馈！</p>
-<p>这本书是一个持续进行的项目，就像许多开源软件项目一样。如果您发现技术错误，请给我发一封邮件：<span class="exturl" data-url="bWFpbHRvOiYjeDYyOyYjMTE1OyYjeDY4OyYjeDZmOyYjMTE2OyYjMTE2OyYjMTE1OyYjNjQ7JiN4NzU7JiN4NzM7JiMxMDE7JiN4NzI7JiMxMTU7JiM0NjsmI3g3MzsmI3g2ZjsmIzExNzsmI3g3MjsmI3g2MzsmI3g2NTsmI3g2NjsmI3g2ZjsmIzExNDsmI3g2NzsmI3g2NTsmIzQ2OyYjeDZlOyYjeDY1OyYjeDc0Ow==">&#x62;&#115;&#x68;&#x6f;&#116;&#116;&#115;&#64;&#x75;&#x73;&#101;&#x72;&#115;&#46;&#x73;&#x6f;&#117;&#x72;&#x63;&#x65;&#x66;&#x6f;&#114;&#x67;&#x65;&#46;&#x6e;&#x65;&#x74;<i class="fa fa-external-link-alt"></i></span></p>
+<p>这本书是一个持续进行的项目，就像许多开源软件项目一样。如果您发现技术错误，请给我发一封邮件：<span class="exturl" data-url="bWFpbHRvOiYjeDYyOyYjMTE1OyYjMTA0OyYjeDZmOyYjMTE2OyYjMTE2OyYjeDczOyYjeDQwOyYjMTE3OyYjeDczOyYjeDY1OyYjMTE0OyYjeDczOyYjNDY7JiN4NzM7JiN4NmY7JiN4NzU7JiN4NzI7JiM5OTsmIzEwMTsmIzEwMjsmI3g2ZjsmIzExNDsmI3g2NzsmIzEwMTsmI3gyZTsmIzExMDsmIzEwMTsmIzExNjs=">&#x62;&#115;&#104;&#x6f;&#116;&#116;&#x73;&#x40;&#117;&#x73;&#x65;&#114;&#x73;&#46;&#x73;&#x6f;&#x75;&#x72;&#99;&#101;&#102;&#x6f;&#114;&#x67;&#101;&#x2e;&#110;&#101;&#116;<i class="fa fa-external-link-alt"></i></span></p>
 <p>请确保指明您正在阅读的确切版本。您的更改和建议可能会进入未来的版本。</p>
 <p>进一步阅读</p>
 <ul>
@@ -14009,6 +14045,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>权限</title>
@@ -14469,6 +14508,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>包管理</title>
@@ -14761,6 +14803,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>存储媒体</title>
@@ -15018,6 +15063,9 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
   <entry>
     <title>网络</title>
@@ -15097,7 +15145,7 @@ Swap: 1052248   104712   947536
 </tr>
 <tr>
 <td>anonymous</td>
-<td>登录名。在登录提示后，将出现密码提示。一些服务器接受空密码；其他服务器可能需要以电子邮件地址的形式输入密码。在这种情况下，可以尝试使用类似 <span class="exturl" data-url="bWFpbHRvOiYjeDc1OyYjMTE1OyYjMTAxOyYjMTE0OyYjNjQ7JiMxMDE7JiN4Nzg7JiM5NzsmI3g2ZDsmI3g3MDsmIzEwODsmIzEwMTsmI3gyZTsmI3g2MzsmIzExMTsmI3g2ZDs=">&#x75;&#115;&#101;&#114;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#x63;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span> 的内容。</td>
+<td>登录名。在登录提示后，将出现密码提示。一些服务器接受空密码；其他服务器可能需要以电子邮件地址的形式输入密码。在这种情况下，可以尝试使用类似 <span class="exturl" data-url="bWFpbHRvOiYjMTE3OyYjMTE1OyYjMTAxOyYjMTE0OyYjeDQwOyYjMTAxOyYjeDc4OyYjeDYxOyYjMTA5OyYjeDcwOyYjeDZjOyYjMTAxOyYjNDY7JiM5OTsmI3g2ZjsmIzEwOTs=">&#117;&#115;&#101;&#114;&#x40;&#101;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span> 的内容。</td>
 </tr>
 <tr>
 <td>cd pub&#x2F;cd_images&#x2F;Ubuntu-18.04</td>
@@ -15196,5 +15244,8 @@ Swap: 1052248   104712   947536
       <categories>
         <category>Linux</category>
       </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
   </entry>
 </search>

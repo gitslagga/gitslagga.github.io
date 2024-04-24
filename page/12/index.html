@@ -92,7 +92,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">211</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">79</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">212</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">79</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -157,7 +157,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">211</span>
+          <span class="site-state-item-count">212</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -193,6 +193,98 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/06/mysql-transaction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/06/mysql-transaction/" class="post-title-link" itemprop="url">深入理解 MySQL —— 锁、事务与并发控制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-06-19 16:34:30" itemprop="dateCreated datePublished" datetime="2018-06-19T16:34:30+08:00">2018-06-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-06 00:06:53" itemprop="dateModified" datetime="2022-12-06T00:06:53+08:00">2022-12-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="mysql服务器逻辑架构"><a href="#mysql服务器逻辑架构" class="headerlink" title="mysql服务器逻辑架构"></a>mysql服务器逻辑架构</h1><p>每个连接都会在mysql服务端产生一个线程（内部通过线程池管理线程），比如一个select语句进入，mysql首先会在查询缓存中查找是否缓存了这个select的结果集，如果没有则继续执行 解析、优化、执行的过程；否则会之间从缓存中获取结果集。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/06/mysql-transaction/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1009,98 +1101,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/04/nginx-deny/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/04/centos-nghttp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
-      <meta itemprop="name" content="Slagga">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="计算机那些事">
-      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 计算机那些事">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/centos-nghttp/" class="post-title-link" itemprop="url">让 curl 具有 http2 特性</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-04-03 11:10:30" itemprop="dateCreated datePublished" datetime="2018-04-03T11:10:30+08:00">2018-04-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-05 22:38:40" itemprop="dateModified" datetime="2022-12-05T22:38:40+08:00">2022-12-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="在-CentOS-上安装-nghttp2-最新版及让-curl-具有-http2-特性"><a href="#在-CentOS-上安装-nghttp2-最新版及让-curl-具有-http2-特性" class="headerlink" title="在 CentOS 上安装 nghttp2 最新版及让 curl 具有 http2 特性"></a>在 CentOS 上安装 nghttp2 最新版及让 curl 具有 http2 特性</h2><h2 id="nghttp2-是什么？"><a href="#nghttp2-是什么？" class="headerlink" title="nghttp2 是什么？"></a>nghttp2 是什么？</h2><p>nghttp2 是一个实现 IETF 官方 HTTP&#x2F;2 和 HPACK 头压缩算法的 C 库，但不限如此，在 C 库基础上，还实现了 http2 的客户端，服务器，代理服务器，以及压测工具。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/04/centos-nghttp/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

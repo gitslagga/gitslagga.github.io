@@ -18083,4 +18083,103 @@ Swap: 1052248   104712   947536
         <tag>TLCL</tag>
       </tags>
   </entry>
+  <entry>
+    <title>编写Shell脚本</title>
+    <url>/2024/04/24-writing-your-first-script/</url>
+    <content><![CDATA[<h1 id="第4部分-编写Shell脚本"><a href="#第4部分-编写Shell脚本" class="headerlink" title="第4部分 - 编写Shell脚本"></a>第4部分 - 编写Shell脚本</h1><h2 id="24-编写你的第一个脚本"><a href="#24-编写你的第一个脚本" class="headerlink" title="24 - 编写你的第一个脚本"></a>24 - 编写你的第一个脚本</h2><p>在前面的章节中，我们已经集合了一系列命令行工具。虽然这些工具可以解决许多种类的计算问题，但我们仍然局限于在命令行上一次一个地手动使用它们。如果我们能让shell做更多的工作不是很好吗？我们可以做到。通过将我们的工具组合成我们自己设计的程序，shell可以自己完成复杂的任务序列。我们可以通过编写<em>shell脚本</em>来使它做到这一点。</p>
+<p><strong>什么是Shell脚本？</strong></p>
+<span id="more"></span>
+
+<p>简单来说，shell脚本是一个包含一系列命令的文件。shell读取这个文件并执行命令，就好像它们已经直接在命令行上输入一样。</p>
+<p>shell在某种意义上是独一无二的，因为它既是系统的强大命令行界面，也是脚本语言解释器。我们将看到，大多数在命令行上可以做的事情都可以在脚本中完成，而大多数在脚本中可以做的事情都可以在命令行上完成。</p>
+<p>我们已经介绍了许多shell特性，但我们关注的是那些最常在命令行上直接使用的特性。shell还提供了一组通常（但不总是）在编写程序时使用的特性。</p>
+<h3 id="如何编写一个Shell脚本"><a href="#如何编写一个Shell脚本" class="headerlink" title="如何编写一个Shell脚本"></a>如何编写一个Shell脚本</h3><p>要成功创建和运行一个shell脚本，我们需要做三件事。</p>
+<ol>
+<li><p><strong>编写脚本。</strong> Shell脚本是普通文本文件。所以，我们需要一个文本编辑器来编写它们。最好的文本编辑器将提供<em>语法高亮</em>，让我们能够看到脚本元素的颜色编码视图。语法高亮将帮助我们发现某些类型的常见错误。vim, gedit, kate和许多其他编辑器都是编写脚本的好候选。</p>
+</li>
+<li><p><strong>使脚本可执行。</strong> 系统对于不允许任何旧文本文件被当作程序处理非常挑剔，这是有充分理由的！我们需要设置脚本文件的权限以允许执行。</p>
+</li>
+<li><p><strong>将脚本放在shell可以找到的地方。</strong> 当没有指定显式路径名时，shell会自动搜索某些目录中的可执行文件。为了最大的便利，我们将把我们的脚本放在这些目录中。</p>
+</li>
+</ol>
+<h3 id="脚本文件格式"><a href="#脚本文件格式" class="headerlink" title="脚本文件格式"></a>脚本文件格式</h3><p>遵循编程传统，我们将创建一个“Hello World”程序来演示一个极其简单的脚本。让我们启动文本编辑器并输入以下脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 这是我们的第一个脚本。</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Hello World!&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们脚本的最后一行非常熟悉；它只是一个带有字符串参数的echo命令。第二行也很熟悉。它看起来像是我们在许多我们已经检查和编辑的配置文件中看到的注释。关于shell脚本中的注释的一件事是，它们也可以出现在行尾，前提是它们前面至少有一个空白字符，像这样：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Hello World!&#x27;</span> <span class="comment"># 这也是一条注释</span></span><br></pre></td></tr></table></figure>
+
+<p>行中从#符号开始的所有内容都被忽略。</p>
+<p>像许多事情一样，这在命令行上也有效：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="string">&#x27;Hello World!&#x27;</span> <span class="comment"># 这也是一条注释</span></span><br><span class="line">Hello World!</span><br></pre></td></tr></table></figure>
+
+<p>虽然在命令行上注释没有太大用处，但它们会起作用。</p>
+<p>我们脚本的第一行有点神秘。它看起来应该是一个注释，因为它是以#开头的，但它看起来太有目的性了，仅仅是那样。#!字符序列实际上是一个特殊构造，称为<em>shebang</em>。shebang用于告诉内核应该用哪个解释器来执行后面的脚本。每个shell脚本都应该包括这作为其第一行。</p>
+<p>让我们将我们的脚本文件保存为hello_world。</p>
+<h3 id="可执行权限"><a href="#可执行权限" class="headerlink" title="可执行权限"></a>可执行权限</h3><p>我们接下来要做的事情是使我们的脚本可执行。这很容易使用chmod完成。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l hello_world</span><br><span class="line">-rw-r--r-- 1 me me 63 2009-03-07 10:10 hello_world</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">chmod</span> 755 hello_world</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l hello_world</span><br><span class="line">-rwxr-xr-x 1 me me 63 2009-03-07 10:10 hello_world</span><br></pre></td></tr></table></figure>
+
+<p>对于脚本有两种常见的权限设置：755表示每个人都可以执行的脚本，和700表示只有所有者可以执行的脚本。注意，脚本必须是可读的才能被执行。</p>
+<h3 id="脚本文件位置"><a href="#脚本文件位置" class="headerlink" title="脚本文件位置"></a>脚本文件位置</h3><p>设置了权限后，我们现在可以执行我们的脚本了：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ ./hello_world</span><br><span class="line">Hello World!</span><br></pre></td></tr></table></figure>
+
+<p>要运行脚本，我们必须在脚本名称前加上显式路径。如果我们不这样做，我们会得到这样的结果：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ hello_world</span><br><span class="line">bash: hello_world: 命令未找到</span><br></pre></td></tr></table></figure>
+
+<p>这是为什么呢？是什么让我们的脚本与其他程序不同？事实证明，没有什么不同。我们的脚本没问题。问题在于它的位置。在第11章中，我们讨论了PATH环境变量及其对系统搜索可执行程序方式的影响。简而言之，如果没有指定显式路径，系统每次需要找到可执行程序时都会搜索一系列目录。这就是当我们在命令行中输入ls时，系统知道执行&#x2F;bin&#x2F;ls的原因。&#x2F;bin目录是系统自动搜索的目录之一。目录列表保存在名为PATH的环境变量中。PATH变量包含一个用冒号分隔的目录列表。我们可以查看PATH的内容。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line">/home/me/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:</span><br><span class="line">/bin:/usr/games</span><br></pre></td></tr></table></figure>
+
+<p>这里我们看到了我们的目录列表。如果我们的脚本位于列表中的任何目录中，我们的问题就解决了。注意列表中的第一个目录&#x2F;home&#x2F;me&#x2F;bin。大多数Linux发行版都配置了PATH变量，包含用户主目录中的bin目录，以允许用户执行他们自己的程序。因此，如果我们创建bin目录并将我们的脚本放入其中，它应该开始像其他程序一样工作。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">mkdir</span> bin</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">mv</span> hello_world bin</span><br><span class="line">[me@linuxbox ~]$ hello_world</span><br><span class="line">Hello World!</span><br></pre></td></tr></table></figure>
+
+<p>果然如此。</p>
+<p>如果PATH变量不包含该目录，我们可以通过在我们的.bashrc文件中包含这行来轻松添加它：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=~/bin:<span class="string">&quot;<span class="variable">$PATH</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>此更改完成后，它将在每个新的终端会话中生效。要将更改应用到当前终端会话，我们必须让shell重新读取.bashrc文件。这可以通过“源”它来完成。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ . .bashrc</span><br></pre></td></tr></table></figure>
+
+<p>点（.）命令是source命令的同义词，source命令是一个shell内置命令，它读取指定的包含shell命令的文件，并将其视为来自键盘的输入。</p>
+<p>**注意：**Ubuntu（和大多数其他基于Debian的发行版）如果在用户的.bashrc文件执行时<del>&#x2F;bin目录存在，则会自动将</del>&#x2F;bin目录添加到PATH变量中。因此，在Ubuntu系统上，如果我们创建了~&#x2F;bin目录，然后登出并再次登录，一切都会正常工作。</p>
+<h4 id="脚本的好位置"><a href="#脚本的好位置" class="headerlink" title="脚本的好位置"></a>脚本的好位置</h4><p>~&#x2F;bin目录是放置个人使用的脚本的好地方。如果我们编写了一个系统上的每个人都被允许使用的脚本，传统的位置是&#x2F;usr&#x2F;local&#x2F;bin。面向系统管理员使用的脚本通常位于&#x2F;usr&#x2F;local&#x2F;sbin。在大多数情况下，无论是脚本还是编译程序，本地提供的软件都应该放在&#x2F;usr&#x2F;local层次结构中，而不是在&#x2F;bin或&#x2F;usr&#x2F;bin中。这些目录由Linux文件系统层次结构标准指定，仅包含由Linux发行商提供和维护的文件。</p>
+<h3 id="更多格式化技巧"><a href="#更多格式化技巧" class="headerlink" title="更多格式化技巧"></a>更多格式化技巧</h3><p>认真编写脚本的关键目标之一是易于<em>维护</em>，即脚本的作者或其他人可以轻松修改脚本以适应不断变化的需求的程度。使脚本易于阅读和理解是促进易于维护的一种方式。</p>
+<h4 id="长选项名称"><a href="#长选项名称" class="headerlink" title="长选项名称"></a>长选项名称</h4><p>我们研究的许多命令都具有短选项和长选项名称。例如，ls 命令有许多选项可以用短形式或长形式表示。例如，以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -ad</span><br></pre></td></tr></table></figure>
+
+<p>等同于此命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> --all --directory</span><br></pre></td></tr></table></figure>
+
+<p>为了减少打字，当在命令行输入选项时，短选项是首选的，但是在编写脚本时，长选项可以提供更好的可读性。</p>
+<h4 id="缩进和行继续"><a href="#缩进和行继续" class="headerlink" title="缩进和行继续"></a>缩进和行继续</h4><p>使用长命令时，可以通过将命令分布在几行上来增强可读性。在第17章中，我们看了 find 命令的一个特别长的例子。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[me@linuxbox ~]$ find playground \( -<span class="built_in">type</span> f -not -perm 0600 -<span class="built_in">exec</span> <span class="built_in">chmod</span> 0600 ‘&#123;&#125;’ ‘;’ \) -or \( -<span class="built_in">type</span> d -not -perm 0700 -<span class="built_in">exec</span> <span class="built_in">chmod</span> 0700 ‘&#123;&#125;’ ‘;’ \)</span><br></pre></td></tr></table></figure>
+
+<p>显然，这个命令一眼看上去有点难以理解。在脚本中，如果这样写，这个命令可能更容易理解：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find playground \</span><br><span class="line">\( \</span><br><span class="line">-<span class="built_in">type</span> f \</span><br><span class="line">-not -perm 0600 \</span><br><span class="line">-<span class="built_in">exec</span> <span class="built_in">chmod</span> 0600 ‘&#123;&#125;’ ‘;’ \</span><br><span class="line">\) \</span><br><span class="line">-or \</span><br><span class="line">\( \</span><br><span class="line">-<span class="built_in">type</span> d \</span><br><span class="line">-not -perm 0700 \</span><br><span class="line">-<span class="built_in">exec</span> <span class="built_in">chmod</span> 0700 ‘&#123;&#125;’ ‘;’ \</span><br><span class="line">\)</span><br></pre></td></tr></table></figure>
+
+<p>通过使用行继续（反斜杠-换行序列）和缩进，这个复杂命令的逻辑对读者描述得更清晰了。这种技术也可以在命令行上使用，尽管很少使用，因为输入和编辑都很尴尬。脚本和命令行之间的一个区别是脚本可以使用制表符实现缩进，而命令行不能，因为制表符用于激活完成。</p>
+<h3 id="配置-vim-用于脚本编写"><a href="#配置-vim-用于脚本编写" class="headerlink" title="配置 vim 用于脚本编写"></a>配置 vim 用于脚本编写</h3><p>vim 文本编辑器有很多配置设置。有几个常用选项可以方便脚本编写。</p>
+<p>以下命令开启语法高亮：</p>
+<h4 id="syntax-on"><a href="#syntax-on" class="headerlink" title=":syntax on"></a><strong>:syntax on</strong></h4><p>通过这个设置，查看脚本时，shell 语法的不同元素将以不同颜色显示。这有助于识别某些类型的编程错误。它看起来也很酷。注意，要使此功能工作，您必须安装完整版本的 vim，并且您正在编辑的文件必须有一个指示该文件是 shell 脚本的 shebang。如果您对前一个命令有困难，尝试使用 <strong>:set syntax&#x3D;sh</strong> 代替。</p>
+<p>以下命令开启高亮搜索结果的选项：</p>
+<h4 id="set-hlsearch"><a href="#set-hlsearch" class="headerlink" title=":set hlsearch"></a><strong>:set hlsearch</strong></h4><p>假设我们搜索单词 echo。开启这个选项后，每个实例都会被高亮显示。</p>
+<p>以下设置制表符占据的列数：</p>
+<h4 id="set-tabstop-4"><a href="#set-tabstop-4" class="headerlink" title=":set tabstop&#x3D;4"></a><strong>:set tabstop&#x3D;4</strong></h4><p>默认是八列。将值设置为 4（这是一个常见的做法）可以让长行更容易适应屏幕。</p>
+<p>以下开启“自动缩进”功能：</p>
+<h4 id="set-autoindent"><a href="#set-autoindent" class="headerlink" title=":set autoindent"></a><strong>:set autoindent</strong></h4><p>这会导致 vim 将新行缩进与刚刚输入的行相同的量。这在许多类型的编程结构上加快了打字速度。要停止缩进，按 Ctrl-d。</p>
+<p>通过将这些命令（不带前导冒号字符）添加到您的 ~&#x2F;.vimrc 文件中，可以使这些更改变为永久性。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在这第一章关于脚本的内容中，我们看了如何编写脚本并使其在我们的系统上轻松执行。我们还看到了如何使用</p>
+<p>各种格式化技术来提高脚本的可读性（从而提高可维护性）。在未来的章节中，易于维护将一次又一次地作为良好脚本编写中的一个核心原则出现。</p>
+<h3 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h3><ul>
+<li><p>关于各种编程语言中的“Hello World”程序和示例，请见：<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9IZWxsb193b3JsZA==">http://en.wikipedia.org/wiki/Hello_world<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>这篇维基百科文章更多地讨论了 shebang 机制：<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9TaGViYW5nXyhVbml4KQ==">http://en.wikipedia.org/wiki/Shebang_(Unix)<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>TLCL</tag>
+      </tags>
+  </entry>
 </search>

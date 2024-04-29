@@ -18084,7 +18084,7 @@ Swap: 1052248   104712   947536
       </tags>
   </entry>
   <entry>
-    <title>编写Shell脚本</title>
+    <title>编写你的第一个脚本</title>
     <url>/2024/04/24-writing-your-first-script/</url>
     <content><![CDATA[<h1 id="第4部分-编写Shell脚本"><a href="#第4部分-编写Shell脚本" class="headerlink" title="第4部分 - 编写Shell脚本"></a>第4部分 - 编写Shell脚本</h1><h2 id="24-编写你的第一个脚本"><a href="#24-编写你的第一个脚本" class="headerlink" title="24 - 编写你的第一个脚本"></a>24 - 编写你的第一个脚本</h2><p>在前面的章节中，我们已经集合了一系列命令行工具。虽然这些工具可以解决许多种类的计算问题，但我们仍然局限于在命令行上一次一个地手动使用它们。如果我们能让shell做更多的工作不是很好吗？我们可以做到。通过将我们的工具组合成我们自己设计的程序，shell可以自己完成复杂的任务序列。我们可以通过编写<em>shell脚本</em>来使它做到这一点。</p>
 <p><strong>什么是Shell脚本？</strong></p>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="引言Python 已成为一种流行的编程语言，因为它清晰、通用、易于学习，并且它具有大量用于不同任务的有用库。从 Web 开发到数据科学和网络安全，Python 程序员的需求量很大。 但就像所有编程语言一样，在 Python 中，一切都取决于你，程序员。你决定你的代码看起来是专业的还是丑陋的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="每个 Python 开发人员都应该具备的 6 个实用技巧">
+<meta property="og:url" content="https://slagga.top/2022/11/python-practice/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="引言Python 已成为一种流行的编程语言，因为它清晰、通用、易于学习，并且它具有大量用于不同任务的有用库。从 Web 开发到数据科学和网络安全，Python 程序员的需求量很大。 但就像所有编程语言一样，在 Python 中，一切都取决于你，程序员。你决定你的代码看起来是专业的还是丑陋的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-22T06:29:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.936Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Blog, HTML, CSS, JavaScript, Python, PHP, Java, Go, Redis, MySQL, Node.js, React, Vuejs, Git, Programming, Web Development, Blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2022/11/python-practice/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2022/11/python-practice/","path":"2022/11/python-practice/","title":"每个 Python 开发人员都应该具备的 6 个实用技巧"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>每个 Python 开发人员都应该具备的 6 个实用技巧 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%88%97%E8%A1%A8%E6%8E%A8%E5%AF%BC"><span class="nav-number">2.</span> <span class="nav-text">1. 列表推导</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%93%BE%E5%BC%8F%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">2. 链式结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%BB%9F%E8%AE%A1%E8%AE%A1%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">3. 统计计数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%9E%9A%E4%B8%BE"><span class="nav-number">5.</span> <span class="nav-text">4. 枚举</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%8F%82%E6%95%B0%E6%89%A9%E5%B1%95"><span class="nav-number">6.</span> <span class="nav-text">5. 参数扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E9%87%8A"><span class="nav-number">7.</span> <span class="nav-text">6. 类型注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9D%9F%E7%9A%84%E6%83%B3%E6%B3%95"><span class="nav-number">8.</span> <span class="nav-text">结束的想法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2022/11/python-practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="每个 Python 开发人员都应该具备的 6 个实用技巧 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          每个 Python 开发人员都应该具备的 6 个实用技巧
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-22 14:29:30" itemprop="dateCreated datePublished" datetime="2022-11-22T14:29:30+08:00">2022-11-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Python 已成为一种流行的编程语言，因为它清晰、通用、易于学习，并且它具有大量用于不同任务的有用库。从 Web 开发到数据科学和网络安全，Python 程序员的需求量很大。</p>
+<p>但就像所有编程语言一样，在 Python 中，一切都取决于你，程序员。你决定你的代码看起来是专业的还是丑陋的。</p>
+<span id="more"></span>
+
+<p>幸运的是，Python 具有大量内置功能，可以帮助您编写优雅、简洁和可扩展的代码，这些都是您期望专业程序员具备的特性。</p>
+<p>这里有一些我最喜欢的技巧，我认为每个 Python 开发人员都应该知道。</p>
+<h2 id="1-列表推导"><a href="#1-列表推导" class="headerlink" title="1. 列表推导"></a>1. 列表推导</h2><p>列表推导式是 Python 的关键特性之一，可帮助您编写更简洁和优雅的代码。假设您要创建一个包含从 1 到 100 的数字的数组。方便的方法是使用 <strong>range()</strong> 函数：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">numbers</span> = list(range(<span class="number">1</span>, <span class="number">101</span>))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>但是如果你想做一些更复杂的事情，比如创建一个从 1 到 100 的正方形列表呢？在这种情况下，经典的方法是使用 <strong>for</strong> 循环：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">numbers</span> =<span class="meta"> []</span></span><br><span class="line"><span class="attribute">for</span> i in range(<span class="number">1</span>, <span class="number">101</span>):</span><br><span class="line">    <span class="attribute">numbers</span>.append(i**<span class="number">2</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这是大多数编程语言支持的标准方式。但幸运的是，在 Python 中，列表推导使事情变得容易得多。以下是在列表理解模式下编写相同代码时的样子：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">numbers</span> = [i**<span class="number">2</span> for i in range(<span class="number">1</span>, <span class="number">101</span>)]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>您可以使用列表推导在定义列表的括号中打包多个指令和表达式。它们比 <strong>for</strong> 循环更短更优雅。在保持代码整洁的同时，您还可以做更多事情。例如，假设您有一个函数 <strong>is_prime()</strong> 来检查输入数字，如果它是质数则返回 True。以下代码片段通过向推导添加 <strong>is_prime()</strong> 条件来创建从 1 到 100 的素数平方列表。</p>
+<h2 id="2-链式结构"><a href="#2-链式结构" class="headerlink" title="2. 链式结构"></a>2. 链式结构</h2><p>另一个偶尔派上用场的 Python 功能是 <strong>zip()</strong> 函数。<strong>zip</strong> 将两个或多个列表组合成一个变量。假设您收集了一份客户姓名、他们的年龄和他们最喜欢的冰淇淋口味的列表。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">customers</span> = [<span class="string">&#x27;John&#x27;</span>, <span class="string">&#x27;Natasha&#x27;</span>, <span class="string">&#x27;Eric&#x27;</span>, <span class="string">&#x27;Sally&#x27;</span>]</span><br><span class="line"><span class="attr">ages</span> = [<span class="number">26</span>, <span class="number">31</span>, <span class="number">39</span>, <span class="number">22</span>]</span><br><span class="line"><span class="attr">flavors</span> = [<span class="string">&#x27;cherry&#x27;</span>, <span class="string">&#x27;chocolate&#x27;</span>, <span class="string">&#x27;strawberry&#x27;</span>, <span class="string">&#x27;lemon&#x27;</span>] </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用 **zip()**，您可以将所有三个列表合并到一个列表中，其中每个条目都包含一个元组，其中包含一个客户的姓名、年龄和偏好。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">combined</span> = zip(customers, ages, flavors)</span><br><span class="line"><span class="attr">customers_ice_cream</span> = list(combined)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这是您的customers_ice_cream 列表在压缩数据后的样子：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[(<span class="symbol">&#x27;John</span>&#x27;, <span class="number">26</span>, <span class="symbol">&#x27;cherry</span>&#x27;),</span><br><span class="line"> (<span class="symbol">&#x27;Natasha</span>&#x27;, <span class="number">31</span>, <span class="symbol">&#x27;chocolate</span>&#x27;),</span><br><span class="line"> (<span class="symbol">&#x27;Eric</span>&#x27;, <span class="number">39</span>, <span class="symbol">&#x27;strawberry</span>&#x27;),</span><br><span class="line"> (<span class="symbol">&#x27;Sally</span>&#x27;, <span class="number">22</span>, <span class="symbol">&#x27;lemon</span>&#x27;)]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>以下是如何在循环中使用压缩列表：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> cust <span class="keyword">in</span> customers_ice_cream:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;&#123;&#125; is &#123;&#125; years old and likes &#123;&#125;&quot;</span>.format(<span class="number">*c</span>ust))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出如下所示：</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">John <span class="keyword">is</span> <span class="number">26</span> years <span class="keyword">old</span> <span class="keyword">and</span> likes cherry</span><br><span class="line">Natasha <span class="keyword">is</span> <span class="number">31</span> years <span class="keyword">old</span> <span class="keyword">and</span> likes chocolate</span><br><span class="line">Eric <span class="keyword">is</span> <span class="number">39</span> years <span class="keyword">old</span> <span class="keyword">and</span> likes strawberry</span><br><span class="line">Sally <span class="keyword">is</span> <span class="number">22</span> years <span class="keyword">old</span> <span class="keyword">and</span> likes lemon</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-统计计数"><a href="#3-统计计数" class="headerlink" title="3. 统计计数"></a>3. 统计计数</h2><p>通常，您想知道某个值在列表中出现了多少次。例如，假设我们从在线调查中收集了 1-10 个评级的列表。为了模拟这一点，我们将使用 <strong>randint()</strong> 函数生成从 1 到 10 的 1,000 个随机数的列表。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from random <span class="keyword">import</span> <span class="type">randint</span></span><br><span class="line"><span class="variable">ratings</span> <span class="operator">=</span> [randint(<span class="number">1</span>, <span class="number">10</span>) <span class="keyword">for</span> _ in <span class="title function_">range</span><span class="params">(<span class="number">1</span>,<span class="number">1001</span>)</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>现在，我们想知道每个评分中有多少包含在列表中。一种方法是使用列表的内置 <strong>计数</strong> 功能。<strong>count()</strong> 接受一个值并返回该值在列表中出现的次数。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="selector-tag">i</span> <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">11</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;&#123;&#125;: &#123;&#125; occurences&quot;</span><span class="selector-class">.format</span>(<span class="selector-tag">i</span>, ratings<span class="selector-class">.count</span>(i)))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>此代码产生以下输出：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">1</span>: <span class="number">95</span> occurrences</span><br><span class="line"><span class="attribute">2</span>: <span class="number">115</span> occurrences</span><br><span class="line"><span class="attribute">3</span>: <span class="number">111</span> occurrences</span><br><span class="line"><span class="attribute">4</span>: <span class="number">109</span> occurrences</span><br><span class="line"><span class="attribute">5</span>: <span class="number">81</span> occurrences</span><br><span class="line"><span class="attribute">6</span>: <span class="number">110</span> occurrences</span><br><span class="line"><span class="attribute">7</span>: <span class="number">80</span> occurrences</span><br><span class="line"><span class="attribute">8</span>: <span class="number">94</span> occurrences</span><br><span class="line"><span class="attribute">9</span>: <span class="number">98</span> occurrences</span><br><span class="line"><span class="attribute">10</span>: <span class="number">107</span> occurrences</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>但是，这仅在您事先知道列表中值的范围时才有效。如果您不知道可能的值，您可以使用 <strong>set</strong>，它会创建一个包含在另一个列表中的唯一项目的列表。例如，如果您有一个名称列表并且想知道每个名称出现了多少次，您可以使用以下代码。</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="type">name</span> <span class="keyword">in</span> <span class="keyword">set</span>(names):</span><br><span class="line">    print(&quot;&#123;&#125;: &#123;&#125; occurences&quot;.format(<span class="type">name</span>, names.count(<span class="type">name</span>)))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>或者，您可以使用_Counter_类，该类专门计算列表中的值。</p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections import Counter</span><br><span class="line">ratings_count = Counter(ratings)</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">rating</span> <span class="built_in">in</span> ratings_count:</span><br><span class="line">    print(<span class="string">&quot;&#123;&#125;: &#123;&#125; occurences&quot;</span>.<span class="built_in">format</span>(<span class="built_in">rating</span>, ratings_count[<span class="built_in">rating</span>]))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Counter 提供了一些附加功能，例如 <strong>most_common()</strong> 函数，它为您提供列表中出现次数最多的值。例如，以下代码将打印出三个最受欢迎的值：</p>
+<figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for rating <span class="keyword">in</span> ratings_count.most_commo<span class="meta">n</span>(3):</span><br><span class="line">    pr<span class="meta">int</span>(<span class="string">&quot;&#123;&#125;: &#123;&#125; occurences&quot;</span>.<span class="keyword">format</span>(<span class="comment">*rating))</span></span><br><span class="line"><span class="comment"></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-枚举"><a href="#4-枚举" class="headerlink" title="4. 枚举"></a>4. 枚举</h2><p>有时，您希望在遍历列表时跟踪项目数。假设您有一个客户名称列表，并且您希望将它们与索引号一起列出。这是一种方法：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="selector-tag">i</span> <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(customers)):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;&#123;&#125;: &#123;&#125;&quot;</span><span class="selector-class">.format</span>(i+<span class="number">1</span>, customers<span class="selector-attr">[i]</span>))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这将产生如下所示的输出：</p>
+<figure class="highlight ldif"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">1</span>: Samantha</span><br><span class="line"><span class="attribute">2</span>: Mara</span><br><span class="line"><span class="attribute">3</span>: Eric</span><br><span class="line"><span class="attribute">4</span>: James</span><br><span class="line"><span class="attribute">5</span>: George</span><br><span class="line"><span class="attribute">6</span>: Toni</span><br><span class="line"><span class="attribute">7</span>: Margaret</span><br><span class="line"><span class="attribute">8</span>: Steven</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>虽然这段代码有效，但它不是很优雅。注意到索引和计数器之间的不匹配了吗？幸运的是，Python 有一个 <strong>enumerate()</strong> 函数，可以让你的索引跟踪代码更容易理解和赏心悦目。<strong>enumerate()</strong> 接受两个参数，即要枚举的列表和计数器的起始编号，并在循环的每一轮中给出两个输出，即计数器值和列表项。这是 <strong>enumerate</strong> 解决了同样的问题。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="selector-tag">i</span>, customer <span class="keyword">in</span> <span class="built_in">enumerate</span>(customers, <span class="number">1</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;&#123;&#125;: &#123;&#125;&quot;</span><span class="selector-class">.format</span>(<span class="selector-tag">i</span>, customer))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>好多了。</p>
+<h2 id="5-参数扩展"><a href="#5-参数扩展" class="headerlink" title="5. 参数扩展"></a>5. 参数扩展</h2><p>假设您有一个处理学生信息的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">process_student_info</span>(<span class="params">first_name, last_name, fav_topic, score</span>):</span><br><span class="line">    <span class="built_in">print</span>(first_name, last_name, fav_topic, score)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在许多情况下，您要传递给函数的值包含在从数据库或文本文件中填充的 <strong>列表</strong> 或 <strong>字典</strong> 对象中。在这种情况下，调用函数会有点笨拙：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">process_student_info</span>(student[<span class="number">0</span>], student[<span class="number">1</span>], student[<span class="number">2</span>], student[<span class="number">3</span>])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>幸运的是，Python 的 “参数扩展” 功能使您能够直接将整个列表传递给函数。通过在列表名称的开头添加 *，您可以在将其提交给函数之前将其扩展为单独的值。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">process_student_info</span><span class="params">(*student)</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>只要参数的数量和它们的顺序与目标函数的参数相似，使用列表的参数扩展就可以工作。如果不匹配，它将引发错误。</p>
+<p>您还可以对字典使用参数扩展，在这种情况下，值的顺序无关紧要。您只需要拥有与您的功能参数相对应的键。字典的参数扩展需要对象前的 ** 运算符。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">student = &#123;<span class="string">&#x27;last_name&#x27;</span>: <span class="string">&#x27;doe&#x27;</span>, <span class="string">&#x27;score&#x27;</span>: <span class="number">89</span>, <span class="string">&#x27;first_name&#x27;</span>: <span class="string">&#x27;john&#x27;</span>, <span class="string">&#x27;fav_topic&#x27;</span>: <span class="string">&#x27;calculus&#x27;</span>&#125;</span><br><span class="line"><span class="function"><span class="title">process_student_info</span><span class="params">(**student)</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用字典扩展的好处之一是，如果您的函数具有默认参数，则在字典中省略它们不会引发错误。</p>
+<h2 id="6-类型注释"><a href="#6-类型注释" class="headerlink" title="6. 类型注释"></a>6. 类型注释</h2><p>Python 是一种 <strong>动态类型的</strong> 语言，这意味着如果您尝试混合具有不同数据类型的变量，它通常会找到解决差异的方法，如果不能，则会引发异常。但这种灵活性也可能导致不可预测的行为。</p>
+<p>假设您有一个将两个变量相乘的函数。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">mul</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="keyword">return</span> a * b</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果您在两个整数或浮点数上调用 <strong>mul()</strong> - 您对该函数的预期用途 - 结果是可预测的。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">a</span> = <span class="number">5</span></span><br><span class="line"><span class="selector-tag">b</span> = <span class="number">6</span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(mul(a, b)</span></span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">30</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>但是，如果您的变量之一是列表怎么办？</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">a</span> = <span class="selector-attr">[1, 2, 4, 5]</span></span><br><span class="line"><span class="selector-tag">b</span> = <span class="number">3</span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(mul(a, b)</span></span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1、2、4、5</span>、<span class="number">1、2、4、5</span>、<span class="number">1、2、4、5</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>该函数创建一个列表，该列表是列表的三个连接副本。这显然不是你想要做的。Python 3.6 及更高版本提供 “类型注释”，该功能使您能够定义每个函数参数应采用的数据类型。这是类型注释的 <strong>mul()</strong> 函数的样子。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def <span class="title function_ invoke__">mul</span>(<span class="attr">a</span>: <span class="keyword">int</span>, <span class="attr">b</span>: <span class="keyword">int</span>): </span><br><span class="line">    <span class="keyword">return</span> a * b</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这种格式明确指出 <strong>mul()</strong> 采用两个整数值。需要明确的是，类型注释不会阻止您以非预期的方式使用该函数。但是无论如何都有一些很好的理由使用它。</p>
+<p>首先，定义数据类型是一种文档形式，它使其他开发人员更容易通过您的代码了解您希望函数中的数据类型（比较函数的注释和非注释版本）。</p>
+<p>但更重要的是，一些代码编辑器会处理类型注释并帮助您使用自动完成和类型错误等功能。</p>
+<p>auto complete</p>
+<h2 id="结束的想法"><a href="#结束的想法" class="headerlink" title="结束的想法"></a>结束的想法</h2><p>这是我最喜欢的六个 Python 技巧。使用它们将使您的代码简洁优雅。随着 Python 迅速成为许多领域和机构中事实上的编程语言，拥有一套良好的最佳实践将确保您能够成为开发团队中高效的成员。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/python-cuda/" rel="prev" title="GPU 编程：CUDA 和 Python 中的实际示例">
+                  <i class="fa fa-angle-left"></i> GPU 编程：CUDA 和 Python 中的实际示例
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/python-rpa/" rel="next" title="5 个自动化生活的 Python 项目：从初学者到高级">
+                  5 个自动化生活的 Python 项目：从初学者到高级 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"a34d09467fd6d616053b00f1aca6346d"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

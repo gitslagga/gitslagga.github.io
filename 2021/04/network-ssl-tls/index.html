@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="互联网的通信安全，建立在SSL&#x2F;TLS协议之上。本文简要介绍SSL&#x2F;TLS协议的运行机制。文章的重点是设计思想和运行过程，不涉及具体的实现细节。如果想了解这方面的内容，请参阅RFC文档。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSL&#x2F;TLS 协议运行机制的概述">
+<meta property="og:url" content="https://slagga.top/2021/04/network-ssl-tls/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="互联网的通信安全，建立在SSL&#x2F;TLS协议之上。本文简要介绍SSL&#x2F;TLS协议的运行机制。文章的重点是设计思想和运行过程，不涉及具体的实现细节。如果想了解这方面的内容，请参阅RFC文档。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-21T07:57:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.930Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="SSL">
+<meta property="article:tag" content="TLS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2021/04/network-ssl-tls/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2021/04/network-ssl-tls/","path":"2021/04/network-ssl-tls/","title":"SSL/TLS 协议运行机制的概述"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SSL/TLS 协议运行机制的概述 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E7%9A%84%E9%80%9A%E4%BF%A1%E5%AE%89%E5%85%A8%EF%BC%8C%E5%BB%BA%E7%AB%8B%E5%9C%A8SSL-TLS%E5%8D%8F%E8%AE%AE%E4%B9%8B%E4%B8%8A%E3%80%82"><span class="nav-number">1.</span> <span class="nav-text">互联网的通信安全，建立在SSL&#x2F;TLS协议之上。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BD%9C%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">一、作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%8E%86%E5%8F%B2"><span class="nav-number">3.</span> <span class="nav-text">二、历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%9F%BA%E6%9C%AC%E7%9A%84%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">三、基本的运行过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%8F%A1%E6%89%8B%E9%98%B6%E6%AE%B5%E7%9A%84%E8%AF%A6%E7%BB%86%E8%BF%87%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">四、握手阶段的详细过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">6.</span> <span class="nav-text">五、参考链接</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2021/04/network-ssl-tls/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SSL/TLS 协议运行机制的概述 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SSL/TLS 协议运行机制的概述
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-21 15:57:30" itemprop="dateCreated datePublished" datetime="2020-04-21T15:57:30+08:00">2020-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="互联网的通信安全，建立在SSL-TLS协议之上。"><a href="#互联网的通信安全，建立在SSL-TLS协议之上。" class="headerlink" title="互联网的通信安全，建立在SSL&#x2F;TLS协议之上。"></a>互联网的通信安全，建立在SSL&#x2F;TLS协议之上。</h2><p>本文简要介绍SSL&#x2F;TLS协议的运行机制。文章的重点是设计思想和运行过程，不涉及具体的实现细节。如果想了解这方面的内容，请参阅<span class="exturl" data-url="aHR0cDovL3Rvb2xzLmlldGYub3JnL2h0bWwvcmZjNTI0Ng==">RFC文档<i class="fa fa-external-link-alt"></i></span>。</p>
+<span id="more"></span>
+
+<h2 id="一、作用"><a href="#一、作用" class="headerlink" title="一、作用"></a>一、作用</h2><p>不使用SSL&#x2F;TLS的HTTP通信，就是不加密的通信。所有信息明文传播，带来了三大风险。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">（1） 窃听风险（eavesdropping）：第三方可以获知通信内容。</span><br><span class="line"></span><br><span class="line">（2） 篡改风险（tampering）：第三方可以修改通信内容。</span><br><span class="line"></span><br><span class="line">（3） 冒充风险（pretending）：第三方可以冒充他人身份参与通信。</span><br></pre></td></tr></table></figure>
+<p>SSL&#x2F;TLS协议是为了解决这三大风险而设计的，希望达到：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">（1） 所有信息都是加密传播，第三方无法窃听。</span><br><span class="line"></span><br><span class="line">（2） 具有校验机制，一旦被篡改，通信双方会立刻发现。</span><br><span class="line"></span><br><span class="line">（3） 配备身份证书，防止身份被冒充。</span><br></pre></td></tr></table></figure>
+<p>互联网是开放环境，通信双方都是未知身份，这为协议的设计带来了很大的难度。而且，协议还必须能够经受所有匪夷所思的攻击，这使得SSL&#x2F;TLS协议变得异常复杂。</p>
+<h2 id="二、历史"><a href="#二、历史" class="headerlink" title="二、历史"></a>二、历史</h2><p>互联网加密通信协议的历史，几乎与互联网一样长。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">1994</span>年，NetScape公司设计了SSL协议（Secure Sockets Layer）的<span class="number">1</span>.<span class="number">0</span>版，但是未发布。</span><br><span class="line"></span><br><span class="line"><span class="attribute">1995</span>年，NetScape公司发布SSL <span class="number">2</span>.<span class="number">0</span>版，很快发现有严重漏洞。</span><br><span class="line"></span><br><span class="line"><span class="attribute">1996</span>年，SSL <span class="number">3</span>.<span class="number">0</span>版问世，得到大规模应用。</span><br><span class="line"></span><br><span class="line"><span class="attribute">1999</span>年，互联网标准化组织ISOC接替NetScape公司，发布了SSL的升级版TLS <span class="number">1</span>.<span class="number">0</span>版。</span><br><span class="line"></span><br><span class="line"><span class="attribute">2006</span>年和<span class="number">2008</span>年，TLS进行了两次升级，分别为TLS <span class="number">1</span>.<span class="number">1</span>版和TLS <span class="number">1</span>.<span class="number">2</span>版。最新的变动是<span class="number">2011</span>年TLS <span class="number">1</span>.<span class="number">2</span>的修订版。</span><br></pre></td></tr></table></figure>
+<p>目前，应用最广泛的是TLS 1.0，接下来是SSL 3.0。但是，主流浏览器都已经实现了TLS 1.2的支持。</p>
+<p>TLS 1.0通常被标示为SSL 3.1，TLS 1.1为SSL 3.2，TLS 1.2为SSL 3.3。</p>
+<h2 id="三、基本的运行过程"><a href="#三、基本的运行过程" class="headerlink" title="三、基本的运行过程"></a>三、基本的运行过程</h2><p>SSL&#x2F;TLS协议的基本思路是采用公钥加密法，也就是说，客户端先向服务器端索要公钥，然后用公钥加密信息，服务器收到密文后，用自己的私钥解密。</p>
+<p>但是，这里有两个问题。</p>
+<p>（1）如何保证公钥不被篡改？</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">解决方法：将公钥放在数字证书中。只要证书是可信的，公钥就是可信的。</span><br></pre></td></tr></table></figure>
+<p>（2）公钥加密计算量太大，如何减少耗用的时间？</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">解决方法：每一次对话（<span class="keyword">session</span>），客户端和服务器端都生成一个&quot;对话密钥&quot;（<span class="keyword">session</span> key），用它来加密信息。由于&quot;对话密钥&quot;是对称加密，所以运算速度非常快，而服务器公钥只用于加密&quot;对话密钥&quot;本身，这样就减少了加密运算的消耗时间。</span><br></pre></td></tr></table></figure>
+<p>因此，SSL&#x2F;TLS协议的基本过程是这样的：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">（<span class="number">1</span>） 客户端向服务器端索要并验证公钥。</span><br><span class="line"></span><br><span class="line">（<span class="number">2</span>） 双方协商生成<span class="string">&quot;对话密钥&quot;</span>。</span><br><span class="line"></span><br><span class="line">（<span class="number">3</span>） 双方采用<span class="string">&quot;对话密钥&quot;</span>进行加密通信。</span><br></pre></td></tr></table></figure>
+<p>上面过程的前两步，又称为”握手阶段”（handshake）。</p>
+<h2 id="四、握手阶段的详细过程"><a href="#四、握手阶段的详细过程" class="headerlink" title="四、握手阶段的详细过程"></a>四、握手阶段的详细过程</h2><p>“握手阶段”涉及四次通信，我们一个个来看。需要注意的是，”握手阶段”的所有通信都是明文的。</p>
+<p>4.1 客户端发出请求（ClientHello）</p>
+<p>首先，客户端（通常是浏览器）先向服务器发出加密通信的请求，这被叫做ClientHello请求。</p>
+<p>在这一步，客户端主要向服务器提供以下信息。</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">（<span class="number">1</span>） 支持的协议版本，比如TLS <span class="number">1.0</span>版。</span><br><span class="line"></span><br><span class="line">（<span class="number">2</span>） 一个客户端生成的随机数，稍后用于生成<span class="string">&quot;对话密钥&quot;</span>。</span><br><span class="line"></span><br><span class="line">（<span class="number">3</span>） 支持的加密方法，比如RSA公钥加密。</span><br><span class="line"></span><br><span class="line">（<span class="number">4</span>） 支持的压缩方法。</span><br></pre></td></tr></table></figure>
+<p>这里需要注意的是，客户端发送的信息之中不包括服务器的域名。也就是说，理论上服务器只能包含一个网站，否则会分不清应该向客户端提供哪一个网站的数字证书。这就是为什么通常一台服务器只能有一张数字证书的原因。</p>
+<p>对于虚拟主机的用户来说，这当然很不方便。2006年，TLS协议加入了一个Server Name Indication扩展，允许客户端向服务器提供它所请求的域名。</p>
+<p>4.2 服务器回应（SeverHello）</p>
+<p>服务器收到客户端请求后，向客户端发出回应，这叫做SeverHello。服务器的回应包含以下内容。</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">（<span class="number">1</span>） 确认使用的加密通信协议版本，比如TLS <span class="number">1.0</span>版本。如果浏览器与服务器支持的版本不一致，服务器关闭加密通信。</span><br><span class="line"></span><br><span class="line">（<span class="number">2</span>） 一个服务器生成的随机数，稍后用于生成<span class="string">&quot;对话密钥&quot;</span>。</span><br><span class="line"></span><br><span class="line">（<span class="number">3</span>） 确认使用的加密方法，比如RSA公钥加密。</span><br><span class="line"></span><br><span class="line">（<span class="number">4</span>） 服务器证书。</span><br></pre></td></tr></table></figure>
+<p>除了上面这些信息，如果服务器需要确认客户端的身份，就会再包含一项请求，要求客户端提供”客户端证书”。比如，金融机构往往只允许认证客户连入自己的网络，就会向正式客户提供USB密钥，里面就包含了一张客户端证书。</p>
+<p>4.3 客户端回应</p>
+<p>客户端收到服务器回应以后，首先验证服务器证书。如果证书不是可信机构颁布、或者证书中的域名与实际域名不一致、或者证书已经过期，就会向访问者显示一个警告，由其选择是否还要继续通信。</p>
+<p>如果证书没有问题，客户端就会从证书中取出服务器的公钥。然后，向服务器发送下面三项信息。</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">（<span class="number">1</span>） 一个随机数。该随机数用服务器公钥加密，防止被窃听。</span><br><span class="line"></span><br><span class="line">（<span class="number">2</span>） 编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送。</span><br><span class="line"></span><br><span class="line">（<span class="number">3</span>） 客户端握手结束通知，表示客户端的握手阶段已经结束。这一项同时也是前面发送的所有内容的<span class="built_in">hash</span>值，用来供服务器校验。</span><br></pre></td></tr></table></figure>
+<p>上面第一项的随机数，是整个握手阶段出现的第三个随机数，又称”pre-master key”。有了它以后，客户端和服务器就同时有了三个随机数，接着双方就用事先商定的加密方法，各自生成本次会话所用的同一把”会话密钥”。</p>
+<p>至于为什么一定要用三个随机数，来生成”会话密钥”，dog250解释得很好：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&quot;不管是客户端还是服务器，都需要随机数，这样生成的密钥才不会每次都一样。由于SSL协议中证书是静态的，因此十分有必要引入一种随机因素来保证协商出来的密钥的随机性。</span></span><br><span class="line"></span><br><span class="line">对于RSA密钥交换算法来说，<span class="keyword">pre</span>-master-key本身就是一个随机数，再加上hello消息中的随机，三个随机数通过一个密钥导出器最终导出一个对称密钥。</span><br><span class="line"></span><br><span class="line"><span class="keyword">pre</span> master的存在在于SSL协议不信任每个主机都能产生完全随机的随机数，如果随机数不随机，那么<span class="keyword">pre</span> master secret就有可能被猜出来，那么仅适用<span class="keyword">pre</span> master secret作为密钥就不合适了，因此必须引入新的随机因素，那么客户端和服务器加上<span class="keyword">pre</span> master secret三个随机数一同生成的密钥就不容易被猜出了，一个伪随机可能完全不随机，可是是三个伪随机就十分接近随机了，每增加一个自由度，随机性增加的可不是一。<span class="comment">&quot;</span></span><br></pre></td></tr></table></figure>
+<p>此外，如果前一步，服务器要求客户端证书，客户端会在这一步发送证书及相关信息。</p>
+<p>4.4 服务器的最后回应</p>
+<p>服务器收到客户端的第三个随机数pre-master key之后，计算生成本次会话所用的”会话密钥”。然后，向客户端最后发送下面信息。</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">（<span class="number">1</span>）编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送。</span><br><span class="line"></span><br><span class="line">（<span class="number">2</span>）服务器握手结束通知，表示服务器的握手阶段已经结束。这一项同时也是前面发送的所有内容的<span class="built_in">hash</span>值，用来供客户端校验。</span><br></pre></td></tr></table></figure>
+<p>至此，整个握手阶段全部结束。接下来，客户端与服务器进入加密通信，就完全是使用普通的HTTP协议，只不过用”会话密钥”加密内容。</p>
+<h2 id="五、参考链接"><a href="#五、参考链接" class="headerlink" title="五、参考链接"></a>五、参考链接</h2><ul>
+<li>MicroSoft TechNet, <span class="exturl" data-url="aHR0cDovL3RlY2huZXQubWljcm9zb2Z0LmNvbS9lbi11cy9saWJyYXJ5L2NjNzg1ODExKHY9d3MuMTApLmFzcHg=">SSL&#x2F;TLS in Detail<i class="fa fa-external-link-alt"></i></span></li>
+<li>Jeff Moser, <span class="exturl" data-url="aHR0cDovL3d3dy5tb3NlcndhcmUuY29tLzIwMDkvMDYvZmlyc3QtZmV3LW1pbGxpc2Vjb25kcy1vZi1odHRwcy5odG1s">The First Few Milliseconds of an HTTPS Connection<i class="fa fa-external-link-alt"></i></span></li>
+<li>Wikipedia, <span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9UcmFuc3BvcnRfTGF5ZXJfU2VjdXJpdHk=">Transport Layer Security<i class="fa fa-external-link-alt"></i></span></li>
+<li>StackExchange, <span class="exturl" data-url="aHR0cDovL3NlY3VyaXR5LnN0YWNrZXhjaGFuZ2UuY29tL3F1ZXN0aW9ucy8yMDgwMy9ob3ctZG9lcy1zc2wtd29yaw==">How does SSL work?<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SSL/" rel="tag"># SSL</a>
+              <a href="/tags/TLS/" rel="tag"># TLS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/blockchain-technology/" rel="prev" title="区块链有技术吗？">
+                  <i class="fa fa-angle-left"></i> 区块链有技术吗？
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/algorithm-rsa/" rel="next" title="RSA 算法原理">
+                  RSA 算法原理 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"846b1bfb238feaf761f81c0a7e206793"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

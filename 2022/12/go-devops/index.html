@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="Go 训练营系列中的 DevOps为什么在 Go 中使用 DevOps？目前，大多数 DevOps 工程师都使用Python它作为他们的 DevOps 编程语言。但是Python伴随着一些编译时和服务扩展问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go 中的 DevOps——你的第一个 Go 程序">
+<meta property="og:url" content="https://slagga.top/2022/12/go-devops/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="Go 训练营系列中的 DevOps为什么在 Go 中使用 DevOps？目前，大多数 DevOps 工程师都使用Python它作为他们的 DevOps 编程语言。但是Python伴随着一些编译时和服务扩展问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-05T06:29:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.939Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Blog, HTML, CSS, JavaScript, Python, PHP, Java, Go, Redis, MySQL, Node.js, React, Vuejs, Git, Programming, Web Development, Blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2022/12/go-devops/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2022/12/go-devops/","path":"2022/12/go-devops/","title":"Go 中的 DevOps——你的第一个 Go 程序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Go 中的 DevOps——你的第一个 Go 程序 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-%E8%AE%AD%E7%BB%83%E8%90%A5%E7%B3%BB%E5%88%97%E4%B8%AD%E7%9A%84-DevOps"><span class="nav-number">1.</span> <span class="nav-text">Go 训练营系列中的 DevOps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9C%A8-Go-%E4%B8%AD%E4%BD%BF%E7%94%A8-DevOps%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">为什么在 Go 中使用 DevOps？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go%E7%89%88%E6%9C%AC"><span class="nav-number">3.</span> <span class="nav-text">Go版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-Linux-%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E5%AE%89%E8%A3%85-Go-v1-19-3"><span class="nav-number">4.</span> <span class="nav-text">在 Linux 服务器上安装 Go v1.19.3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-Hello-world"><span class="nav-number">5.</span> <span class="nav-text">Go Hello world</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">6.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#import"><span class="nav-number">7.</span> <span class="nav-text">import</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#func"><span class="nav-number">8.</span> <span class="nav-text">func</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-IDE"><span class="nav-number">9.</span> <span class="nav-text">Go IDE</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2022/12/go-devops/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Go 中的 DevOps——你的第一个 Go 程序 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Go 中的 DevOps——你的第一个 Go 程序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-05 14:29:30" itemprop="dateCreated datePublished" datetime="2022-12-05T14:29:30+08:00">2022-12-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="Go-训练营系列中的-DevOps"><a href="#Go-训练营系列中的-DevOps" class="headerlink" title="Go 训练营系列中的 DevOps"></a>Go 训练营系列中的 DevOps</h2><h2 id="为什么在-Go-中使用-DevOps？"><a href="#为什么在-Go-中使用-DevOps？" class="headerlink" title="为什么在 Go 中使用 DevOps？"></a>为什么在 Go 中使用 DevOps？</h2><p>目前，大多数 DevOps 工程师都使用<code>Python</code>它作为他们的 DevOps 编程语言。但是<code>Python</code>伴随着一些编译时和服务扩展问题。</p>
+<span id="more"></span>
+
+<p>例如，简单地升级到新版本的 Python ( <code>Python2</code> to <code>Python3</code>, <code>Python3.7</code> to <code>Python3.11</code>) 可能会导致您现有的脚本停止工作。当出现兼容性问题时，回滚到旧版本的 Python 并不容易。</p>
+<p>现在在云时代，<code>Go</code>已经成为云原生编排和应用的<em>事实</em>语言。<code>Go</code>随附您在工具可靠性和扩展能力方面取得巨大进步所需的所有工具。</p>
+<p>快速浏览 Go 官方网站，您可以看到以下公司（以及更多公司）已经在使用 Go。</p>
+<blockquote>
+<p><span class="exturl" data-url="aHR0cHM6Ly9nb2xhbmcuZ29vZ2xlLmNuL3NvbHV0aW9ucy8jY2FzZS1zdHVkaWVz">https://golang.google.cn/solutions/#case-studies<i class="fa fa-external-link-alt"></i></span></p>
+</blockquote>
+<p>比如：Docker-compose, kubernetes, istio, k3s, prometheus, argocd, terraform 等。你可以看到越来越多的云服务软件在使用<code>Go</code>。对于 DevOps 工程师，我个人认为采用 DevOps 编程语言很重要，它将帮助您掌握新的云原生应用程序，并使您在职业生涯中保持竞争力。</p>
+<h2 id="Go版本"><a href="#Go版本" class="headerlink" title="Go版本"></a>Go版本</h2><p>如今，<code>Go</code>团队已经将版本的发布节奏稳定在每年两次大发布，通常是二月和八月。Go 团队承诺为最新的两个稳定主要版本的 Go 提供支持。</p>
+<p>例如，如果最新的主要版本是<code>Go 1.17</code>，那么 Go 团队将提供对<code>Go 1.17</code>和<code>Go 1.16</code>提供支持。支持范围主要包括版本重大问题修复、文档变更、安全问题更新等。</p>
+<p>我建议您选择最新<code>Go</code>版本。因为稳定版的平均质量<code>Go</code>一直都很高，很少有影响使用的大bug。您不必太担心新版本的支持。Google 自己的产品，例如 Google App Engine，将很快支持它。</p>
+<h2 id="在-Linux-服务器上安装-Go-v1-19-3"><a href="#在-Linux-服务器上安装-Go-v1-19-3" class="headerlink" title="在 Linux 服务器上安装 Go v1.19.3"></a>在 Linux 服务器上安装 Go v1.19.3</h2><p><code>Go</code>支持几乎所有主流Linux发行版操作系统。常见的有Ubuntu、CentOS、Fedora、SUSE等，<code>Go</code>在这些主流的Linux发行版操作系统上的安装方法都是一样的（当然某些发行版也可能使用其软件安装管理器只提供自己的安装方法）。可以参考以下安装步骤（<span class="exturl" data-url="aHR0cHM6Ly9nb2xhbmcub3JnL2RvYy9pbnN0YWxsJUVGJUJDJTg5">https://golang.org/doc/install）<i class="fa fa-external-link-alt"></i></span></p>
+<ul>
+<li><code>Go v1.19.3</code>从其官网下载：</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ wget https:<span class="comment">//go.dev/dl/go1.19.3.linux-amd64.tar.gz                                                                                               --2022-11-08 08:12:19--  https://go.dev/dl/go1.19.3.linux-amd64.tar.gz</span></span><br><span class="line">...</span><br><span class="line">Saving to: ‘go1.<span class="number">19.3</span><span class="selector-class">.linux-amd64</span><span class="selector-class">.tar</span>.gz’</span><br><span class="line">go1.<span class="number">19.3</span><span class="selector-class">.linux-amd64</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span>                <span class="number">100%</span><span class="selector-attr">[======================================================================================&gt;]</span> <span class="number">142.01</span>M  <span class="number">13.2</span>MB/s    <span class="keyword">in</span> <span class="number">11s</span></span><br><span class="line"><span class="number">2022</span>-<span class="number">11</span>-<span class="number">08</span> <span class="number">08</span>:<span class="number">12</span>:<span class="number">30</span> (<span class="number">13.2</span> MB/s) - ‘go1.<span class="number">19.3</span><span class="selector-class">.linux-amd64</span><span class="selector-class">.tar</span>.gz’ saved <span class="selector-attr">[148907134/148907134]</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将 Go 二进制文件安装到“&#x2F;usr&#x2F;local&#x2F;bin”</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">rm</span> -rf /usr/local/go &amp;&amp; tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">ls</span> /usr/local</span></span><br><span class="line">bin  etc  games  go  include  lib  lib64  libexec  sbin  share  src</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果您已经这样做了，请把“&#x2F;usr&#x2F;local&#x2F;go&#x2F;bin”添加到环境变量中</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&#x27;export PATH=$PATH:/usr/local/go/bin&#x27;</span> &gt;&gt; ~/.bashrc</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>检查 Go 版本</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ which <span class="keyword">go</span></span><br><span class="line">/usr/local/<span class="keyword">go</span>/bin/<span class="keyword">go</span></span><br><span class="line">$ <span class="keyword">go</span> <span class="keyword">version</span></span><br><span class="line"><span class="keyword">go</span> <span class="keyword">version</span> go1.<span class="number">19.3</span> linux/amd64</span><br></pre></td></tr></table></figure>
+
+<h2 id="Go-Hello-world"><a href="#Go-Hello-world" class="headerlink" title="Go Hello world"></a>Go Hello world</h2><p>现在我们已经<code>Go</code>安装成功了，让我们来创建我们的第一个<code>Go</code>程序吧！</p>
+<ul>
+<li>在主目录下创建一个文件夹<code>godev</code></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">mkdir</span> godev</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在<code>godev</code>中创建文件夹<code>helloworld</code></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> godev</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">mkdir</span> helloworld</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> helloworld</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建<code>main.go</code>文件内容如下（注意，在<code>Go</code>中，我们通常直接将多个单词拼接起来作为源文件名，而不是使用下划线或其他分隔符，这是因为下划线在<code>Go</code>中有特殊的作用）。</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;Hello, world&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>运行：</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">go</span> fmt main.<span class="keyword">go</span></span><br><span class="line">$ <span class="keyword">go</span> run main.<span class="keyword">go</span></span><br><span class="line">Hello, world</span><br></pre></td></tr></table></figure>
+
+<p>恭喜，你刚刚成功运行了你的第一个 go <code>helloworld</code>程序！</p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>现在您已经成功运行了第一个 Go 程序，让我们检查每一行</p>
+<p><code>package main</code></p>
+<p>这定义了一个包<code>Go</code>。包是<code>Go</code>语言的基本单位，<code>Go</code>程序本质上是包的集合。</p>
+<p>在我们的示例中，它告诉 Go 编译器创建可执行文件而不是库文件。如果您以不同的方式命名包，您将运行 int 以下错误：</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> <span class="title">command-line-arguments </span><span class="keyword">is</span> <span class="keyword">not</span> a main <span class="keyword">package</span></span><br></pre></td></tr></table></figure>
+
+<p>比如重命名为apple，如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> apple</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;Hello, world&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你想运行使用<code>go run main.go</code>：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">go</span> run main.<span class="keyword">go</span></span><br><span class="line">package <span class="keyword">command</span>-<span class="built_in">line</span>-arguments <span class="keyword">is</span> not <span class="keyword">a</span> main package</span><br></pre></td></tr></table></figure>
+
+<p>但是您仍然可以构建它，但它不会生成任何可执行文件：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">go</span> build main.<span class="keyword">go</span></span><br><span class="line">$ <span class="keyword">ls</span></span><br><span class="line">main.<span class="keyword">go</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="import"><a href="#import" class="headerlink" title="import"></a>import</h2><p>顾名思义，这个<code>import</code>关键字从 $GOPATH 目录（如果没有提到路径）或从提到的目录中导入指定的包。</p>
+<p>在我们的例子中，<code>fmt</code>是一个包的名称，它也代表了包的导入路径，也就是<code>fmt</code>标准库下的目录。</p>
+<h2 id="func"><a href="#func" class="headerlink" title="func"></a>func</h2><p><code>func</code>是 中的关键字<code>Go</code>，用于创建函数。语法如下：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func <span class="built_in">function_name</span>(Parameter-list)(Return_type)&#123;</span><br><span class="line">    <span class="comment">// function body.....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>这里的</strong><code>main</code><strong>函数比较特殊：当你运行一个可执行</strong><code>Go</code><strong>程序时，所有的代码都会从这个入口函数开始运行。</strong></p>
+<p><code>fmt.Println</code></p>
+<p><code>fmt</code>包使用类似于 C 的 printf() 和 scanf() 函数的函数实现格式化 I&#x2F;O。该<code>fmt.Println()</code>函数使用默认格式的运算对象并写入标准输出。最后添加一个换行符。</p>
+<h2 id="Go-IDE"><a href="#Go-IDE" class="headerlink" title="Go IDE"></a>Go IDE</h2><p>我推荐你使用<span class="exturl" data-url="aHR0cHM6Ly93d3cuamV0YnJhaW5zLmNvbS9nby9wcm9tby8=">GoLand<i class="fa fa-external-link-alt"></i></span>或<span class="exturl" data-url="aHR0cHM6Ly9jb2RlLnZpc3VhbHN0dWRpby5jb20v">VsCode<i class="fa fa-external-link-alt"></i></span>。但是 GoLand 每月花费 19.90 美元或每年 199.00 美元。VsCode 是免费的，这就是我使用的。要使用 VsCode 设置 Go，您只需遵循 VsCode 官方文档。</p>
+<blockquote>
+<p><span class="exturl" data-url="aHR0cHM6Ly9jb2RlLnZpc3VhbHN0dWRpby5jb20vZG9jcy9sYW5ndWFnZXMvZ28=">https :&#x2F;&#x2F;code.visualstudio.com&#x2F;docs&#x2F;languages&#x2F;go<i class="fa fa-external-link-alt"></i></span></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/12/devtools-github/" rel="prev" title="17 个杀手级 GitHub 存储库！">
+                  <i class="fa fa-angle-left"></i> 17 个杀手级 GitHub 存储库！
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/12/go-prefer/" rel="next" title="为什么我们更喜欢 Go 作为后端">
+                  为什么我们更喜欢 Go 作为后端 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"06b7ae07a877e66fdac9d94408971f2e"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="30 - 故障排除随着我们的脚本变得更加复杂，现在是时候看看当事情出错时会发生什么了。在本章中，我们将看看脚本中发生的一些常见错误类型，并检查一些有用的技术，这些技术可以用来追踪和根除问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="故障排除">
+<meta property="og:url" content="https://slagga.top/2024/05/30-troubleshooting/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="30 - 故障排除随着我们的脚本变得更加复杂，现在是时候看看当事情出错时会发生什么了。在本章中，我们将看看脚本中发生的一些常见错误类型，并检查一些有用的技术，这些技术可以用来追踪和根除问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-05-05T03:56:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.957Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="TLCL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2024/05/30-troubleshooting/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2024/05/30-troubleshooting/","path":"2024/05/30-troubleshooting/","title":"故障排除"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>故障排除 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#30-%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4"><span class="nav-number">1.</span> <span class="nav-text">30 - 故障排除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95%E9%94%99%E8%AF%AF"><span class="nav-number">1.1.</span> <span class="nav-text">语法错误</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E5%B0%91%E5%BC%95%E5%8F%B7"><span class="nav-number">1.1.1.</span> <span class="nav-text">缺少引号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E5%A4%B1%E6%88%96%E6%84%8F%E5%A4%96%E7%9A%84%E6%A0%87%E8%AE%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">缺失或意外的标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AA%E9%A2%84%E6%96%99%E7%9A%84%E6%89%A9%E5%B1%95"><span class="nav-number">1.1.3.</span> <span class="nav-text">未预料的扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E9%94%99%E8%AF%AF"><span class="nav-number">1.2.</span> <span class="nav-text">逻辑错误</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B2%E5%BE%A1%E6%80%A7%E7%BC%96%E7%A8%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">防御性编程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E6%96%87%E4%BB%B6%E5%90%8D"><span class="nav-number">1.2.2.</span> <span class="nav-text">注意文件名</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E7%A7%BB%E6%A4%8D%E7%9A%84%E6%96%87%E4%BB%B6%E5%90%8D"><span class="nav-number">1.3.</span> <span class="nav-text">可移植的文件名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E8%BE%93%E5%85%A5"><span class="nav-number">1.3.1.</span> <span class="nav-text">验证输入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%98%AF%E6%97%B6%E9%97%B4%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">设计是时间的函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">1.5.</span> <span class="nav-text">测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B"><span class="nav-number">1.5.1.</span> <span class="nav-text">测试用例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E8%AF%95"><span class="nav-number">1.6.</span> <span class="nav-text">调试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%BE%E5%88%B0%E9%97%AE%E9%A2%98%E5%8C%BA%E5%9F%9F"><span class="nav-number">1.6.1.</span> <span class="nav-text">找到问题区域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%BD%E8%B8%AA"><span class="nav-number">1.6.2.</span> <span class="nav-text">追踪</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E6%89%A7%E8%A1%8C%E6%9C%9F%E9%97%B4%E6%A3%80%E6%9F%A5%E5%80%BC"><span class="nav-number">1.6.3.</span> <span class="nav-text">在执行期间检查值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E9%98%85%E8%AF%BB"><span class="nav-number">1.8.</span> <span class="nav-text">进一步阅读</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2024/05/30-troubleshooting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="故障排除 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          故障排除
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-05 11:56:30" itemprop="dateCreated datePublished" datetime="2024-05-05T11:56:30+08:00">2024-05-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="30-故障排除"><a href="#30-故障排除" class="headerlink" title="30 - 故障排除"></a>30 - 故障排除</h2><p>随着我们的脚本变得更加复杂，现在是时候看看当事情出错时会发生什么了。在本章中，我们将看看脚本中发生的一些常见错误类型，并检查一些有用的技术，这些技术可以用来追踪和根除问题。</p>
+<span id="more"></span>
+
+<h3 id="语法错误"><a href="#语法错误" class="headerlink" title="语法错误"></a>语法错误</h3><p>一种通用的错误类别是<em>语法错误</em>。语法错误涉及到错误输入了某些shell语法元素。当遇到这种类型的错误时，shell将停止执行脚本。</p>
+<p>在接下来的讨论中，我们将使用这个脚本来演示常见的错误类型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># trouble: 用于演示常见错误的脚本</span></span><br><span class="line">number=1</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$number</span> = 1 ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is not equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>按照上述方式编写，这个脚本可以成功运行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ trouble</span><br><span class="line">Number is equal to 1.</span><br></pre></td></tr></table></figure>
+
+<h4 id="缺少引号"><a href="#缺少引号" class="headerlink" title="缺少引号"></a>缺少引号</h4><p>让我们编辑我们的脚本，从第一个echo命令后的参数中删除尾随引号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># trouble: 用于演示常见错误的脚本</span></span><br><span class="line">number=1</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$number</span> = 1 ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is equal to 1.</span></span><br><span class="line"><span class="string">else</span></span><br><span class="line"><span class="string">	echo &quot;</span>Number is not equal to 1.<span class="string">&quot;</span></span><br><span class="line"><span class="string">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>发生了以下情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ trouble</span><br><span class="line">/home/me/bin/trouble: line 10: unexpected EOF <span class="keyword">while</span> looking <span class="keyword">for</span> matching `<span class="string">&quot;&#x27;</span></span><br><span class="line"><span class="string">/home/me/bin/trouble: line 13: syntax error: unexpected end of file</span></span><br></pre></td></tr></table></figure>
+
+<p>它生成了两个错误。有趣的是，错误消息报告的行号并不是缺失引号的位置，而是在程序中的更晚的地方。如果我们跟随程序中缺失引号之后的部分，我们可以看到为什么。bash将继续寻找关闭引号，直到找到一个，它在第二个echo命令紧接后找到了一个。之后，bash变得非常困惑。随后的if命令的语法因为fi语句现在在一个被引用（但未关闭）的字符串内部而破坏了。</p>
+<p>在长脚本中，这种类型的错误可能非常难以找到。使用具有语法高亮显示的编辑器将有所帮助，因为在大多数情况下，它将以与其他种类的shell语法不同的方式显示引用字符串。如果安装了完整版本的vim，可以通过输入此命令来启用语法高亮显示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:syntax on</span><br></pre></td></tr></table></figure>
+
+<h4 id="缺失或意外的标记"><a href="#缺失或意外的标记" class="headerlink" title="缺失或意外的标记"></a>缺失或意外的标记</h4><p>另一个常见错误是忘记完成一个复合命令，例如if或while。让我们看看如果我们在if命令中的test后面移除分号会发生什么：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># trouble: 用于演示常见错误的脚本</span></span><br><span class="line">number=1</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$number</span> = 1 ] <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is not equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>结果是这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ trouble</span><br><span class="line">/home/me/bin/trouble: line 9: syntax error near unexpected token `<span class="keyword">else</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">/home/me/bin/trouble: line 9: `else&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>再次，错误消息指向的是比实际问题更晚发生的错误。发生的情况真的很有趣。正如我们回忆的那样，if接受命令列表并评估列表中最后一个命令的退出代码。在我们的程序中，我们打算这个列表由单一命令[,]组成，一个test的同义词。[命令将其后的内容视为参数列表；在我们的案例中，那是四个参数：$number,&#x3D;,1和]。去掉分号后，then这个词被添加到参数列表中，这在语法上是合法的。接下来的echo命令也是合法的。它被解释为if将为退出代码评估的另一个命令列表中的命令。接下来遇到的是else，但它是不合适的，因为shell将其识别为<em>保留字</em>（对shell有特殊意义的词）而不是命令的名称，这就是错误消息的原因。</p>
+<h4 id="未预料的扩展"><a href="#未预料的扩展" class="headerlink" title="未预料的扩展"></a>未预料的扩展</h4><p>在脚本中可能有只是偶尔出现的错误。有时脚本会运行得很好，而其他时候它会因为扩展的结果而失败。如果我们返回我们的缺失分号并将number的值更改为一个空变量，我们可以演示。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># trouble: 用于演示常见错误的脚本</span></span><br><span class="line">number=</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$number</span> = 1 ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is not equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>使用此更改运行脚本会产生以下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ trouble</span><br><span class="line">/home/me/bin/trouble: line 7: [: =: unary operator expected Number is not equal to 1.</span><br></pre></td></tr></table></figure>
+
+<p>我们得到了这个相当神秘的错误消息，然后是第二个echo命令的输出。问题是number变量在test命令中的扩展。当以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ <span class="variable">$number</span> = 1 ]</span><br></pre></td></tr></table></figure>
+
+<p>在number为空的情况下进行扩展时，结果是这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ = 1 ]</span><br></pre></td></tr></table></figure>
+
+<p>这是无效的，并且生成了错误。&#x3D;操作符是一个二元操作符（它需要两边都有值），但第一个值缺失了，所以test命令期待一个一元操作符（如-z）来替代。进一步，由于测试失败（因为错误），if命令接收到一个非零退出代码并相应地行动，第二个echo命令被执行。</p>
+<p>通过在test命令中的第一个参数周围添加引号可以纠正这个问题。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ <span class="string">&quot;<span class="variable">$number</span>&quot;</span> = 1 ]</span><br></pre></td></tr></table></figure>
+
+<p>然后当扩展发生时，结果将是这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ <span class="string">&quot;&quot;</span> = 1 ]</span><br></pre></td></tr></table></figure>
+
+<p>这产生了正确数量的参数。除了空字符串外，应该在可能展开为包含嵌入空格的多词字符串的值的情况下使用引号，如文件名。</p>
+<p><strong>注意：</strong> 除非需要词分割，否则请始终将变量和命令替换包围在双引号内。</p>
+<h3 id="逻辑错误"><a href="#逻辑错误" class="headerlink" title="逻辑错误"></a>逻辑错误</h3><p>与语法错误不同，<em>逻辑错误</em>不会阻止脚本运行。脚本将运行，但由于逻辑问题，它不会产生期望的结果。可能有无数种可能的逻辑错误，但这里是脚本中发现的一些最常见的类型：</p>
+<ol>
+<li>**条件表达式不正确。**很容易错误编码if&#x2F;then&#x2F;else并执行错误的逻辑。有时逻辑会被颠倒，或者它会不完整。</li>
+<li>**“偏差一”错误。**在使用计数器编码循环时，可能会忽略循环可能需要从零开始计数，而不是一，以便在正确的点结束计数。这种错误导致循环“超出末端”通过计数太远或循环通过提前一次迭代终止而错过最后一次迭代。</li>
+<li>**未预料的情况。**大多数逻辑错误都是由程序遇到程序员未预见的数据或情况造成的。正如</li>
+</ol>
+<p>我们所看到的，这也可以包括未预料的扩展，例如包含嵌入空格的文件名扩展为多个命令参数而不是单个文件名。</p>
+<h4 id="防御性编程"><a href="#防御性编程" class="headerlink" title="防御性编程"></a>防御性编程</h4><p>在编程时验证假设是很重要的。这意味着仔细评估脚本所使用的程序和命令的退出状态。这里有一个基于真实故事的例子。一个不幸的系统管理员编写了一个脚本来执行重要服务器上的维护任务。该脚本包含以下两行代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$dir_name</span></span><br><span class="line"><span class="built_in">rm</span> *</span><br></pre></td></tr></table></figure>
+
+<p>只要变量dir_name中命名的目录存在，这两行本身没有问题。但是如果它不存在怎么办？在那种情况下，cd命令失败，脚本继续到下一行并删除当前工作目录中的文件。这根本不是想要的结果！由于这种设计决策，这个不幸的管理员破坏了服务器的一个重要部分。</p>
+<p>让我们看看这个设计可以如何改进。首先，最好确保dir_name变量只扩展为一个单词，通过引用它，并使rm的执行依赖于cd的成功。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$dir_name</span>&quot;</span> &amp;&amp; <span class="built_in">rm</span> *</span><br></pre></td></tr></table></figure>
+
+<p>这样，如果cd命令失败，rm命令就不会执行。这更好，但仍然留下了dir_name变量未设置或为空的可能性，这将导致删除用户家目录中的文件。通过检查dir_name确实包含现有目录的名称，也可以避免这种情况。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[ -d <span class="string">&quot;<span class="variable">$dir_name</span>&quot;</span> ]] &amp;&amp; <span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$dir_name</span>&quot;</span> &amp;&amp; <span class="built_in">rm</span> *</span><br></pre></td></tr></table></figure>
+
+<p>通常，当出现前面所示的情况时，最好包含逻辑以终止脚本并报告错误。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除目录$dir_name中的文件</span></span><br><span class="line"><span class="keyword">if</span> [[ ! -d <span class="string">&quot;<span class="variable">$dir_name</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;没有这样的目录: &#x27;<span class="variable">$dir_name</span>&#x27;&quot;</span> &gt;&amp;2</span><br><span class="line">	<span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">if</span> ! <span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$dir_name</span>&quot;</span>; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;无法cd到&#x27;<span class="variable">$dir_name</span>&#x27;&quot;</span> &gt;&amp;2</span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">if</span> ! <span class="built_in">rm</span> *; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;文件删除失败。检查结果&quot;</span> &gt;&amp;2</span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们检查名称，看它是否是现有的目录，并检查cd命令的成功。如果任何一个失败，就发送描述性错误消息到标准错误，并以一的退出状态终止脚本以指示失败。</p>
+<h4 id="注意文件名"><a href="#注意文件名" class="headerlink" title="注意文件名"></a>注意文件名</h4><p>这个文件删除脚本还有另一个问题，虽然不太明显，但可能非常危险。Unix（及类Unix操作系统）在许多人看来，在文件名上有一个严重的设计缺陷。Unix对文件名的限制非常宽松。实际上，只有两个字符不能包含在文件名中。第一个是<code>/</code>字符，因为它用于分隔路径名的元素，第二个是空字符（一个零字节），它在内部用于标记字符串的结尾。其他一切都是合法的，包括空格、制表符、换行符、前导连字符、回车符等。</p>
+<p>特别值得关注的是前导连字符。例如，拥有一个名为”-rf ~“的文件是完全合法的。想象一下当该文件名传递给rm时会发生什么。</p>
+<p>为了防范这个问题，我们想在文件删除脚本中将<code>rm *</code>命令更改为以下形式：<code>rm ./*</code>。</p>
+<p>这将防止以连字符开头的文件名被解释为命令选项。作为一般规则，始终在通配符（如*和?）前加上<code>./</code>，以防止命令误解。这包括像*.pdf和???.mp3这样的情况。</p>
+<h3 id="可移植的文件名"><a href="#可移植的文件名" class="headerlink" title="可移植的文件名"></a>可移植的文件名</h3><p>为了确保文件名在多个平台（即，不同类型的计算机和操作系统）之间的可移植性，必须小心限制包含在文件名中的字符。有一个称为POSIX可移植文件名字符集的标准，可以用来最大限度地增加文件名在不同系统间工作的可能性。这个标准相当简单。唯一允许的字符是大写字母A-Z，小写字母a-z，数字0-9，点（.），连字符（-），和下划线（_）。该标准进一步建议文件名不应以连字符开头。</p>
+<h4 id="验证输入"><a href="#验证输入" class="headerlink" title="验证输入"></a>验证输入</h4><p>一个良好编程的通用规则是，如果程序接受输入，它必须能够处理它接收到的任何东西。这通常意味着必须仔细筛选输入，以确保只有有效的输入被接受进一步处理。我们在上一章学习read命令时看到了一个例子。一个脚本包含以下测试来验证菜单选择：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[ <span class="variable">$REPLY</span> =~ ^[0-3]$ ]]</span><br></pre></td></tr></table></figure>
+
+<p>这个测试非常具体。只有当用户输入的字符串是0到3范围内的数字时，它才返回零退出状态。不接受其他任何东西。有时这些测试可能很难编写，但努力是必要的，以产生高质量的脚本。</p>
+<h3 id="设计是时间的函数"><a href="#设计是时间的函数" class="headerlink" title="设计是时间的函数"></a>设计是时间的函数</h3><p>当我还是一个学习工业设计的大学生时，一个明智的教授说过，项目上的设计量由给设计师的时间量决定。如果给你五分钟来设计一个“杀死苍蝇的设备”，你设计的是苍蝇拍。如果给你五个月，你可能会设计出一个激光引导的“反苍蝇系统”。</p>
+<p>编程也适用同样的原则。如果一个脚本只会被使用一次，且仅由程序员使用，有时一个“快速而脏”的脚本就足够了。这种类型的脚本很常见，应该迅速开发，以使努力变得经济。这样的脚本不需要很多注释和防御性检查。另一方面，如果一个脚本是为了<em>生产使用</em>，即，一个将被反复用于重要任务或多个用户使用的脚本，它需要更加小心的开发。</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>测试是包括脚本在内的每种软件开发中的重要步骤。开源世界有句话，“尽早发布，频繁发布”，反映了这一事实。通过尽早和频繁发布，软件获得更多的使用和测试机会。经验表明，如果在开发周期的早期发现错误，找到错误并修复它会更容易，也更便宜。</p>
+<p>在第26章，“自顶向下设计”中，我们看到了如何使用存根来验证程序流。从脚本开发的最早阶段开始，它们就是检查我们工作进展的有价值技术。</p>
+<p>让我们看看之前显示的文件删除问题，看看如何为方便测试编码。测试原始代码片段将是危险的，因为它的目的是删除文件，但我们可以修改代码使测试安全。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [[ -d <span class="variable">$dir_name</span> ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="keyword">if</span> <span class="built_in">cd</span> <span class="variable">$dir_name</span>; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="built_in">rm</span> * <span class="comment"># 测试</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;无法cd到&#x27;<span class="variable">$dir_name</span>&#x27;&quot;</span> &gt;&amp;2</span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;没有这样的目录: &#x27;<span class="variable">$dir_name</span>&#x27;&quot;</span> &gt;&amp;2</span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">exit</span> <span class="comment"># 测试</span></span><br></pre></td></tr></table></figure>
+
+<p>由于错误条件已经输出了有用的信息，我们不必添加任何内容。最重要的更改是在rm命令之前放置一个echo命令，允许显示命令及其扩展的参数列表，而不是实际执行该命令。这个更改允许安全执行代码。在代码片段的末尾，我们放置一个exit命令来结束测试，并防止脚本的其他部分被执行。根据脚本的设计，这是否需要将有所不同。</p>
+<p>我们还包括一些注释，作为我们与测试相关变更的“标记”。这些可以帮助在测试完成时找到并删除更改。</p>
+<h4 id="测试用例"><a href="#测试用例" class="headerlink" title="测试用例"></a>测试用例</h4><p>要进行有用的测试，开发和应用好的<em>测试用例</em>很重要。这是通过精心选择反映<em>边缘</em>和<em>角落</em>案例的输入数据或操作条件来完成的。在我们的代码片段中（这是简单的），我们想知道代码在三个特定条件下的表现：</p>
+<ol>
+<li>dir_name包含现有目录的名称。</li>
+<li>dir_name包含不存在目录的名称。</li>
+<li>dir_name为空。</li>
+</ol>
+<p>通过在这些条件下进行测试，实现了良好的<em>测试覆盖</em>。</p>
+<p>就像设计一样，测试也是时间的函数。并不是每个脚本特性都需要广泛测试。这真的是决定什么最重要的问题。由于如果发生故障可能会造成极大的破坏，我们的代码片段在设计和测试过程中都值得仔细考虑。</p>
+<h3 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h3><p>如果测试揭示了脚本的问题，下一步就是调试。“问题”通常意味着脚本以某种方式没有达到程序员的期望。如果是这样，我们需要仔细确定脚本实际上在做什么以及为什么。找到错误有时可能涉及大量的侦探工作。</p>
+<p>一个设计良好的脚本将尝试提供帮助。它应该被防御性编程，以检测异常条件并向用户提供有用的反馈。然而，有时问题非常奇怪和意外，需要更多的技术。</p>
+<h4 id="找到问题区域"><a href="#找到问题区域" class="headerlink" title="找到问题区域"></a>找到问题区域</h4><p>在一些脚本中，特别是长的脚本，有时用于隔离与问题相关的脚本区域是有用的。这可能不总是实际的错误，但隔离通常会提供对实际原因的洞察。一个用于隔离代码的技术是“注释掉”脚本的部分区域。例如，我们的文件删除片段可以被修改来确定是否删除的部分与错误相关。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [[ -d <span class="variable">$dir_name</span> ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="keyword">if</span> <span class="built_in">cd</span> <span class="variable">$dir_name</span>; <span class="keyword">then</span></span><br><span class="line">	  <span class="built_in">rm</span> *</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;无法cd到&#x27;<span class="variable">$dir_name</span>&#x27;&quot;</span> &gt;&amp;2</span><br><span class="line">	  <span class="built_in">exit</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="comment"># else</span></span><br><span class="line"><span class="comment"># echo &quot;没有这样的目录: &#x27;$dir_name&#x27;&quot; &gt;&amp;2</span></span><br><span class="line"><span class="comment"># exit 1</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>通过在脚本的逻辑部分的每行开始处放置注释符号，我们防止该部分被执行。然后可以再次进行测试，以查看代码的移除是否对错误的行为有任何影响。</p>
+<h4 id="追踪"><a href="#追踪" class="headerlink" title="追踪"></a>追踪</h4><p>错误通常是脚本内意外逻辑流的情况。也就是说，脚本的部分要么从未被执行，要么以错误的顺序或错误的时间被执行。要查看程序的实际流程，我们使用称为<em>追踪</em>的技术。</p>
+<p>一种追踪方法涉及在脚本中放置信息性消息，以显示执行的位置。我们可以向我们的代码片段添加消息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;准备删除文件&quot;</span> &gt;&amp;2</span><br><span class="line"><span class="keyword">if</span> [[ -d <span class="variable">$dir_name</span> ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="keyword">if</span> <span class="built_in">cd</span> <span class="variable">$dir_name</span>; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;正在删除文件&quot;</span> &gt;&amp;2</span><br><span class="line">    <span class="built_in">rm</span> *</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;无法cd到&#x27;<span class="variable">$dir_name</span>&#x27;&quot;</span> &gt;&amp;2</span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;没有这样的目录: &#x27;<span class="variable">$dir_name</span>&#x27;&quot;</span> &gt;&amp;2</span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;文件删除完成&quot;</span> &gt;&amp;2</span><br></pre></td></tr></table></figure>
+
+<p>我们将消息发送到标准错误，以将它们与正常输出分开。我们也不缩进包含消息的行，这样当需要移除它们时更容易找到。</p>
+<p>现在当脚本被执行时，可以看到文件删除已经被执行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ deletion-script</span><br><span class="line">准备删除文件</span><br><span class="line">正在删除文件</span><br><span class="line">文件删除完成</span><br><span class="line">[me@linuxbox ~]$</span><br></pre></td></tr></table></figure>
+
+<p>bash还提供了一种追踪方法，通过-x选项和带有-x选项的set命令实现。使用我们之前的trouble脚本，我们可以通过在第一行添加-x选项来激活整个脚本的追踪。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash -x</span></span><br><span class="line"><span class="comment"># trouble: 用于演示常见错误的脚本</span></span><br><span class="line">number=1</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$number</span> = 1 ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is not equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>执行时，结果看起来像这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ trouble</span><br><span class="line">+ number=1</span><br><span class="line">+ <span class="string">&#x27;[&#x27;</span> 1 = 1 <span class="string">&#x27;]&#x27;</span></span><br><span class="line">+ <span class="built_in">echo</span> <span class="string">&#x27;Number is equal to 1.&#x27;</span></span><br><span class="line">Number is equal to 1.</span><br></pre></td></tr></table></figure>
+
+<p>启用追踪后，我们看到执行的命令及其应用的扩展。前导加号表示追踪的显示，以将它们与常规输出的行区分开来。加号是追踪输出的默认字符。它包含在PS4（提示字符串4）shell变量中。可以调整这个变量的内容，使提示更有用。这里，我们修改变量的内容以包括在脚本中执行追踪的当前行号。注意，需要使用单引号以防止在实际使用提示时进行扩展。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">export</span> PS4=<span class="string">&#x27;$LINENO + &#x27;</span></span><br><span class="line">[me@linuxbox ~]$ trouble</span><br><span class="line">5 + number=1</span><br><span class="line">7 + <span class="string">&#x27;[&#x27;</span> 1 = 1 <span class="string">&#x27;]&#x27;</span></span><br><span class="line">8 + <span class="built_in">echo</span> <span class="string">&#x27;Number is equal to 1.&#x27;</span></span><br><span class="line">Number is equal to 1.</span><br></pre></td></tr></table></figure>
+
+<p>要在脚本的选定部分而不是整个脚本上执行追踪，我们可以使用带有-x选项的set命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># trouble: 用于演示常见错误的脚本</span></span><br><span class="line">number=1</span><br><span class="line"><span class="built_in">set</span> -x <span class="comment"># 开启追踪</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$number</span> = 1 ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is not equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">set</span> +x <span class="comment"># 关闭追踪</span></span><br></pre></td></tr></table></figure>
+
+<p>我们使用带有-x选项的set命令来激活追踪，使用+x选项来停用追踪。这种技术可以用来检查一个有问题的脚本的多个部分。</p>
+<h4 id="在执行期间检查值"><a href="#在执行期间检查值" class="headerlink" title="在执行期间检查值"></a>在执行期间检查值</h4><p>通常，与追踪一起，显示变量的内容以看到脚本在执行期间的内部工作是有用的。应用额外的echo语句通常就能完成这个任务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># trouble: 用于演示常见错误的脚本</span></span><br><span class="line">number=1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;number=<span class="variable">$number</span>&quot;</span> <span class="comment"># 调试</span></span><br><span class="line"><span class="built_in">set</span> -x <span class="comment"># 开启追踪</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$number</span> = 1 ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Number is not equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">set</span> +x <span class="comment"># 关闭追踪</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个简单的例子中，我们简单地显示变量number的值，并用注释标记添加的行，以便以后识别和移除。当观察脚本中的循环和算术行为时，这种技术特别有用。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在本章中，我们只看了在脚本开发过程中可能出现的一些问题。当然，还有更多。这里描述的技术将使发现大多数常见错误成为可能。调试是通过经验发展出来的一门精细的艺术，既在于知道如何避免错误（在整个开发过程中不断测试）也在于发现错误（有效使用追踪）。</p>
+<h3 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h3><ul>
+<li><p>维基百科有几篇关于语法和逻辑错误的短文章：</p>
+<p><span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9TeW50YXhfZXJyb3I=">http://en.wikipedia.org/wiki/Syntax_error<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9Mb2dpY19lcnJvcg==">http://en.wikipedia.org/wiki/Logic_error<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>有许多关于bash编程技术方面的在线资源：</p>
+<p><span class="exturl" data-url="aHR0cDovL215d2lraS53b29sZWRnZS5vcmcvQmFzaFBpdGZhbGxz">http://mywiki.wooledge.org/BashPitfalls<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cDovL3RsZHAub3JnL0xEUC9hYnMvaHRtbC9nb3RjaGFzLmh0bWw=">http://tldp.org/LDP/abs/html/gotchas.html<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cDovL3d3dy5nbnUub3JnL3NvZnR3YXJlL2Jhc2gvbWFudWFsL2h0bWxfbm9kZS9SZXNlcnZlZC1Xb3JkLUluZGV4Lmh0bWw=">http://www.gnu.org/software/bash/manual/html_node/Reserved-Word-Index.html<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>David Wheeler对Unix文件名问题及如何编码shell脚本以处理它进行了出色的讨论：</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly93d3cuZHdoZWVsZXIuY29tL2Vzc2F5cy9maWxlbmFtZXMtaW4tc2hlbGwuaHRtbA==">https://www.dwheeler.com/essays/filenames-in-shell.html<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>对于真正重型的调试，有Bash调试器：</p>
+<p><span class="exturl" data-url="aHR0cDovL2Jhc2hkYi5zb3VyY2Vmb3JnZS5uZXQv">http://bashdb.sourceforge.net/<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TLCL/" rel="tag"># TLCL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/29-flow-control-looping/" rel="prev" title="流控制：使用while / until循环">
+                  <i class="fa fa-angle-left"></i> 流控制：使用while / until循环
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/05/31-branching-with-case/" rel="next" title="流程控制：使用 case 进行分支">
+                  流程控制：使用 case 进行分支 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"9691a0cb693aa7346a71587a8b0996a5"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

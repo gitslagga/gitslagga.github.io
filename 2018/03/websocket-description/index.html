@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="一、WebSocket是HTML5出的东西（协议）也就是说HTTP协议没有变化，或者说没关系，但HTTP是不支持持久连接的（长连接，循环连接的不算） 首先HTTP有1.1和1.0之说，也就是所谓的keep-alive，把多个HTTP请求合并为一个，但是Websocket其实是一个新协议，跟HTTP协议基本没有关系。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我见过的最好的 WebSocket 介绍">
+<meta property="og:url" content="https://slagga.top/2018/03/websocket-description/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="一、WebSocket是HTML5出的东西（协议）也就是说HTTP协议没有变化，或者说没关系，但HTTP是不支持持久连接的（长连接，循环连接的不算） 首先HTTP有1.1和1.0之说，也就是所谓的keep-alive，把多个HTTP请求合并为一个，但是Websocket其实是一个新协议，跟HTTP协议基本没有关系。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-03-16T09:44:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.910Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="WebSocket">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2018/03/websocket-description/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2018/03/websocket-description/","path":"2018/03/websocket-description/","title":"我见过的最好的 WebSocket 介绍"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>我见过的最好的 WebSocket 介绍 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81WebSocket%E6%98%AFHTML5%E5%87%BA%E7%9A%84%E4%B8%9C%E8%A5%BF%EF%BC%88%E5%8D%8F%E8%AE%AE%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">一、WebSocket是HTML5出的东西（协议）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Websocket%E6%98%AF%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E5%8D%8F%E8%AE%AE%EF%BC%8C%E5%85%B7%E4%BD%93%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">二、Websocket是什么样的协议，具体有什么优点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%9FWebsocket%E6%9C%89%E4%BB%80%E4%B9%88%E5%85%B3%E7%B3%BB%E5%91%A2%EF%BC%9F"><span class="nav-number">2.0.1.</span> <span class="nav-text">跟Websocket有什么关系呢？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Websocket%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">三、Websocket的作用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ajax%E8%BD%AE%E8%AF%A2"><span class="nav-number">3.0.1.</span> <span class="nav-text">ajax轮询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#long-poll"><span class="nav-number">3.0.2.</span> <span class="nav-text">long poll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%95%BF%E8%BF%9E%E6%8E%A5-Websocket-%E7%9A%84%E5%9C%BA%E6%99%AF"><span class="nav-number">3.0.3.</span> <span class="nav-text">长连接 Websocket 的场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%82%A3%E4%B9%88%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BB%96%E4%BC%9A%E8%A7%A3%E5%86%B3%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E6%B6%88%E8%80%97%E8%B5%84%E6%BA%90%E7%9A%84%E9%97%AE%E9%A2%98%E5%91%A2%EF%BC%9F"><span class="nav-number">3.0.4.</span> <span class="nav-text">那么为什么他会解决服务器上消耗资源的问题呢？</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/03/websocket-description/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="我见过的最好的 WebSocket 介绍 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          我见过的最好的 WebSocket 介绍
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-03-16 17:44:30" itemprop="dateCreated datePublished" datetime="2018-03-16T17:44:30+08:00">2018-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="一、WebSocket是HTML5出的东西（协议）"><a href="#一、WebSocket是HTML5出的东西（协议）" class="headerlink" title="一、WebSocket是HTML5出的东西（协议）"></a>一、WebSocket是HTML5出的东西（协议）</h2><p>也就是说HTTP协议没有变化，或者说没关系，但HTTP是不支持持久连接的（长连接，循环连接的不算）</p>
+<p>首先HTTP有1.1和1.0之说，也就是所谓的keep-alive，把多个HTTP请求合并为一个，但是Websocket其实是一个新协议，跟HTTP协议基本没有关系。</p>
+<span id="more"></span>
+
+<p>只是为了兼容现有浏览器的握手规范而已，也就是说它是HTTP。有交集，但是并不是全部。   </p>
+<p>另外Html5是指的一系列新的API，或者说新规范，新技术。Http协议本身只有1.0和1.1，而且跟Html本身没有直接关系。。   </p>
+<p>通俗来说，你可以用HTTP<strong>协议</strong>传输非Html<strong>数据</strong>。</p>
+<p>再简单来说，<strong>层级不一样</strong>。</p>
+<h2 id="二、Websocket是什么样的协议，具体有什么优点"><a href="#二、Websocket是什么样的协议，具体有什么优点" class="headerlink" title="二、Websocket是什么样的协议，具体有什么优点"></a>二、Websocket是什么样的协议，具体有什么优点</h2><p>首先，Websocket是一个持久化的协议，相对于HTTP这种非持久的协议来说。</p>
+<p>简单的举个例子吧，用目前应用比较广泛的PHP生命周期来解释。   </p>
+<ol>
+<li>HTTP的生命周期通过Request来界定，也就是一个Request 一个Response，那么在HTTP1.0中，这次HTTP请求就结束了。</li>
+</ol>
+<p>在HTTP1.1中进行了改进，使得有一个keep-alive，也就是说，在一个HTTP连接中，可以发送多个Request，接收多个Response。   </p>
+<p>但是请记住 Request &#x3D; Response ， 在HTTP中永远是这样，也就是说一个request只能有一个response。而且这个response也是被动的，不能主动发起。   </p>
+<h4 id="跟Websocket有什么关系呢？"><a href="#跟Websocket有什么关系呢？" class="headerlink" title="跟Websocket有什么关系呢？"></a>跟Websocket有什么关系呢？</h4><p>首先Websocket是基于HTTP协议的，或者说借用了HTTP的协议来完成一部分握手。</p>
+<p>在握手阶段是一样的，以下涉及专业技术内容，首先我们来看个典型的Websocket握手（借用Wikipedia）</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/chat</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>server.example.com</span><br><span class="line"><span class="attribute">Upgrade</span><span class="punctuation">: </span>websocket</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>Upgrade</span><br><span class="line"><span class="attribute">Sec-WebSocket-Key</span><span class="punctuation">: </span>x3JJHMbDL1EzLkh9GBhXDw==</span><br><span class="line"><span class="attribute">Sec-WebSocket-Protocol</span><span class="punctuation">: </span>chat, superchat</span><br><span class="line"><span class="attribute">Sec-WebSocket-Version</span><span class="punctuation">: </span>13</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://example.com</span><br></pre></td></tr></table></figure>
+
+<p>熟悉HTTP的童鞋可能发现了，这段类似HTTP协议的握手请求中，多了几个东西。</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">Upgrade:</span> websocket</span><br><span class="line"><span class="symbol">Connection:</span> Upgrade</span><br></pre></td></tr></table></figure>
+
+<p>这个就是Websocket的核心了，告诉Apache、Nginx等服务器，发起的是Websocket协议。</p>
+<p>首先，Sec-WebSocket-Key 是一个Base64 encode的值，这个是浏览器随机生成的，告诉服务器验证是不是真的是Websocket协议。</p>
+<p>然后，Sec_WebSocket-Protocol 是一个用户定义的字符串，用来区分同URL下，不同的服务所需要的协议。</p>
+<p>最后，Sec-WebSocket-Version 是告诉服务器所使用的Websocket Draft（协议版本），在最初的时候，Websocket协议还在 Draft 阶段，各种奇奇怪怪的协议都有。</p>
+<p>而且还有很多期奇奇怪怪不同的东西，什么Firefox和Chrome用的不是一个版本之类的，当初Websocket协议太多可是一个大难题。不过现在还好，已经定下来啦。</p>
+<p>然后服务器会返回下列东西，表示已经接受到请求， 成功建立Websocket。</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">HTTP/1.1</span> <span class="number">101</span> Switching Protocols</span><br><span class="line"><span class="attribute">Upgrade</span><span class="punctuation">: </span>websocket</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>Upgrade</span><br><span class="line"><span class="attribute">Sec-WebSocket-Accept</span><span class="punctuation">: </span>HSmrc0sMlYUkAGmm5OPpG2HaGWk=</span><br><span class="line"><span class="attribute">Sec-WebSocket-Protocol</span><span class="punctuation">: </span>chat</span><br></pre></td></tr></table></figure>
+
+<p>这里开始就是HTTP最后负责的区域了，告诉客户，我已经成功切换协议。</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">Upgrade:</span> websocket</span><br><span class="line"><span class="symbol">Connection:</span> Upgrade</span><br></pre></td></tr></table></figure>
+
+<p>依然是固定的，告诉客户端即将升级的是Websocket协议，而不是mozillasocket，lurnarsocket或者shitsocket。</p>
+<p>然后，Sec-WebSocket-Accept 这个则是经过服务器确认，并且加密过后的 Sec-WebSocket-Key。</p>
+<p>后面的，Sec-WebSocket-Protocol 则是表示最终使用的协议。</p>
+<p>至此，HTTP已经完成它所有工作了，接下来就是完全按照Websocket协议进行了。</p>
+<hr>
+<h2 id="三、Websocket的作用"><a href="#三、Websocket的作用" class="headerlink" title="三、Websocket的作用"></a>三、Websocket的作用</h2><p>在讲Websocket之前，我就顺带着讲下 long poll 和 ajax 轮询的原理。</p>
+<h4 id="ajax轮询"><a href="#ajax轮询" class="headerlink" title="ajax轮询"></a>ajax轮询</h4><p>首先是 ajax轮询 ，ajax轮询 的原理非常简单，让浏览器隔个几秒就发送一次请求，询问服务器是否有新信息。</p>
+<p>场景再现：</p>
+<figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">客户端：啦啦啦，有没有新信息(<span class="built_in">Request</span>)   </span><br><span class="line">服务端：没有（<span class="built_in">Response</span>）   </span><br><span class="line">客户端：啦啦啦，有没有新信息(<span class="built_in">Request</span>)   </span><br><span class="line">服务端：没有。。（<span class="built_in">Response</span>）   </span><br><span class="line">客户端：啦啦啦，有没有新信息(<span class="built_in">Request</span>)   </span><br><span class="line">服务端：你好烦啊，没有啊。。（<span class="built_in">Response</span>）   </span><br><span class="line">客户端：啦啦啦，有没有新消息（<span class="built_in">Request</span>）   </span><br><span class="line">服务端：好啦好啦，有啦给你。（<span class="built_in">Response</span>）   </span><br><span class="line">客户端：啦啦啦，有没有新消息（<span class="built_in">Request</span>）   </span><br><span class="line">服务端：。。。。。没。。。。没。。。没有（<span class="built_in">Response</span>） —- <span class="keyword">loop</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="long-poll"><a href="#long-poll" class="headerlink" title="long poll"></a>long poll</h4><p>long poll 其实原理跟 ajax轮询 差不多，都是采用轮询的方式，不过采取的是阻塞模型（一直打电话，没收到就不挂电话），也就是说，客户端发起连接后，如果没消息，就一直不返回Response给客户端。</p>
+<p>直到有消息才返回，返回完之后，客户端再次建立连接，周而复始。</p>
+<p>场景再现:</p>
+<figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">客户端：啦啦啦，有没有新信息，没有的话就等有了才返回给我吧（<span class="built_in">Request</span>）   </span><br><span class="line">服务端：额。。 等待到有消息的时候。。来 给你（<span class="built_in">Response</span>）   </span><br><span class="line">客户端：啦啦啦，有没有新信息，没有的话就等有了才返回给我吧（<span class="built_in">Request</span>） -<span class="keyword">loop</span></span><br></pre></td></tr></table></figure>
+
+<p>从上面可以看出其实这两种方式，都是在不断地建立HTTP连接，然后等待服务端处理，可以体现HTTP协议的另外一个特点，被动性。</p>
+<p>何为被动性呢，其实就是，服务端不能主动联系客户端，只能有客户端发起。</p>
+<p>简单地说就是，服务器是一个很懒的冰箱（这是个梗）（不会、不能主动发起连接），但是上司有命令，如果有客户来，不管多么累都要好好接待。</p>
+<p>说完这个，我们再来说一说上面的缺陷（原谅我废话这么多吧OAQ）从上面很容易看出来，不管怎么样，上面这两种都是非常消耗资源的。   </p>
+<p>ajax轮询 需要服务器有很快的处理速度和资源。（速度）long poll 需要有很高的并发，也就是说同时接待客户的能力。   </p>
+<p>（场地大小）所以ajax轮询 和long poll 都有可能发生这种情况。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="strong">**客户端：啦啦啦啦，有新信息么？**</span>   </span><br><span class="line"><span class="strong">**服务端：月线正忙，请稍后再试（503 Server Unavailable）**</span>   </span><br><span class="line"><span class="strong">**客户端：。。。。好吧，啦啦啦，有新信息么？**</span>   </span><br><span class="line"><span class="strong">**服务端：月线正忙，请稍后再试（503 Server Unavailable）**</span>   </span><br><span class="line"><span class="strong">**客户端：**</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="长连接-Websocket-的场景"><a href="#长连接-Websocket-的场景" class="headerlink" title="长连接 Websocket 的场景"></a>长连接 Websocket 的场景</h4><p>通过上面这个例子，我们可以看出，这两种方式都不是最好的方式，需要很多资源。   </p>
+<p>一种需要更快的速度，一种需要更多的’电话’。这两种都会导致’电话’的需求越来越高。   </p>
+<p>HTTP还是一个无状态协议。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">通俗的说就是，服务器因为每天要接待太多客户了，是个<span class="strong">**健忘鬼**</span>，你一挂电话，他就把你的东西全忘光了，把你的东西全丢掉了。</span><br><span class="line"></span><br><span class="line">你第二次还得再告诉服务器一遍。</span><br></pre></td></tr></table></figure>
+
+<p>所以在这种情况下出现了，Websocket出现了。他解决了HTTP的这几个难题。   </p>
+<p>首先，<strong>被动性</strong>，当服务器完成协议升级后（HTTP-&gt;Websocket），服务端就可以主动推送信息给客户端啦。</p>
+<p>所以上面的情景可以做如下修改。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">客户端：啦啦啦，我要建立Websocket协议，需要的服务：chat，Websocket协议版本：<span class="number">17</span>（HTTP Request）   </span><br><span class="line">服务端：ok，确认，已升级为Websocket协议（HTTP Protocols <span class="keyword">Switched） </span>  </span><br><span class="line">客户端：麻烦你有信息的时候推送给我噢。。   </span><br><span class="line">服务端：ok，有的时候会告诉你的。   </span><br><span class="line">服务端：<span class="keyword">balabalabalabala </span>  </span><br><span class="line">服务端：<span class="keyword">balabalabalabala </span>  </span><br><span class="line">服务端：哈哈哈哈哈啊哈哈哈哈   </span><br><span class="line">服务端：笑死我了哈哈哈哈哈哈哈</span><br></pre></td></tr></table></figure>
+
+<p>就变成了这样，<strong>只需要经过一次HTTP请求</strong>，就可以做到源源不断的信息传送了。</p>
+<p>（在程序设计中，这种设计叫做回调，即：你有信息了再来通知我，而不是我傻乎乎的每次跑来问你）这样的协议解决了上面同步有延迟，而且还非常消耗资源的这种情况。</p>
+<h4 id="那么为什么他会解决服务器上消耗资源的问题呢？"><a href="#那么为什么他会解决服务器上消耗资源的问题呢？" class="headerlink" title="那么为什么他会解决服务器上消耗资源的问题呢？"></a>那么为什么他会解决服务器上消耗资源的问题呢？</h4><p>其实我们所用的程序是要经过两层代理的，<strong>即HTTP协议在Nginx等服务器的解析下</strong>，然后再传送给相应的<strong>Handler（PHP等）</strong>来处理。</p>
+<p>简单地说，我们有一个非常快速的<strong>接线员（Nginx）</strong>，他负责把问题转交给相应的<strong>客服（Handler）。</strong></p>
+<p>本身<strong>接线员基本上速度是足够的</strong>，但是每次都卡在<strong>客服（Handler）</strong>了，老有客服处理速度太慢。，导致客服不够。</p>
+<p>Websocket就解决了这样一个难题，建立后，可以直接跟接线员建立持<strong>久连接</strong>，有信息的时候客服想办法通知接线员，然后<strong>接线员在统一转交给客户</strong>。</p>
+<p>这样就可以解决客服处理速度过慢的问题了。</p>
+<p>同时，在传统的方式上，要不断的建立，关闭HTTP协议，由于HTTP是非状态性的，<strong>每次都要重新传输identity info（鉴别信息）</strong>，来告诉服务端你是谁。</p>
+<p>虽然接线员很快速，但是每次都要听这么一堆，效率也会有所下降的，同时还得不断把这些信息转交给客服，不但浪费客服的<strong>处理时间</strong>，而且还会在网路传<strong>输中消耗过多的流量&#x2F;时间。</strong></p>
+<p>但是Websocket<strong>只需要一次HTTP握手，所以说整个通讯过程是建立在一次连接&#x2F;状态中</strong>，也就避免了HTTP的非状态性，服务端会一直知道你的信息，直到你关闭请求，这样就解决了接线员要反复解析HTTP协议，还要查看identity info的信息。</p>
+<p>同时由<strong>客户主动询问</strong>，转换为<strong>服务器（推送）有信息的时候就发送（当然客户端还是等主动发送信息过来的。。）</strong>，没有信息的时候就交给接线员（Nginx），不需要占用本身速度就慢的<strong>客服（Handler）</strong>了</p>
+<p>至于怎么在不支持Websocket的客户端上使用Websocket。。<strong>答案是：不能</strong></p>
+<p>但是可以通过上面说的 long poll 和 ajax 轮询来 <strong>模拟出类似的效果</strong></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/WebSocket/" rel="tag"># WebSocket</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/php-performance/" rel="prev" title="PHP 解决网站大数据大流量与高并发">
+                  <i class="fa fa-angle-left"></i> PHP 解决网站大数据大流量与高并发
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/03/website-deploy/" rel="next" title="网站架构部署">
+                  网站架构部署 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"71aaf2222ab37565c85b1e3447897029"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

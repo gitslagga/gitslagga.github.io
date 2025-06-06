@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="在 Go 中构建您自己的全功能 Set 类型很多人学习 Go 时发现的一件更令人沮丧的事情是缺少集合类型，例如 Sets 及其常用操作。在本文中，我们将展示 Go 1.19 中泛型的引入如何让我们能够构建自己的功能齐全的 Set 类型。 您可能熟悉非常有用的数据收集类型 Set。Set 是唯一项的无序集合。通常集合是使用 Hashmap 实现的，Hashmap 查找值的时间复杂度为 O(1)（假设">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用带有 Golang 泛型的集合">
+<meta property="og:url" content="https://slagga.top/2022/12/go-generice/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="在 Go 中构建您自己的全功能 Set 类型很多人学习 Go 时发现的一件更令人沮丧的事情是缺少集合类型，例如 Sets 及其常用操作。在本文中，我们将展示 Go 1.19 中泛型的引入如何让我们能够构建自己的功能齐全的 Set 类型。 您可能熟悉非常有用的数据收集类型 Set。Set 是唯一项的无序集合。通常集合是使用 Hashmap 实现的，Hashmap 查找值的时间复杂度为 O(1)（假设">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-07T06:29:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.940Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Blog, HTML, CSS, JavaScript, Python, PHP, Java, Go, Redis, MySQL, Node.js, React, Vuejs, Git, Programming, Web Development, Blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2022/12/go-generice/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2022/12/go-generice/","path":"2022/12/go-generice/","title":"使用带有 Golang 泛型的集合"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用带有 Golang 泛型的集合 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-Go-%E4%B8%AD%E6%9E%84%E5%BB%BA%E6%82%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E5%85%A8%E5%8A%9F%E8%83%BD-Set-%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">在 Go 中构建您自己的全功能 Set 类型</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2022/12/go-generice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用带有 Golang 泛型的集合 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用带有 Golang 泛型的集合
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-07 14:29:30" itemprop="dateCreated datePublished" datetime="2022-12-07T14:29:30+08:00">2022-12-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="在-Go-中构建您自己的全功能-Set-类型"><a href="#在-Go-中构建您自己的全功能-Set-类型" class="headerlink" title="在 Go 中构建您自己的全功能 Set 类型"></a>在 Go 中构建您自己的全功能 Set 类型</h2><p>很多人学习 Go 时发现的一件更令人沮丧的事情是缺少集合类型，例如 Sets 及其常用操作。在本文中，我们将展示 Go 1.19 中泛型的引入如何让我们能够构建自己的功能齐全的 Set 类型。</p>
+<p>您可能熟悉非常有用的数据收集类型 Set。Set 是唯一项的无序集合。通常集合是使用 Hashmap 实现的，Hashmap 查找值的时间复杂度为 O(1)（假设没有哈希冲突）。集合有 4 个主要操作，使它们特别有用：</p>
+<span id="more"></span>
+
+<ol>
+<li>Union ( <strong>A</strong> ⋃ <strong>B</strong> ) — 并集是包含集合 A 和 B 中所有元素的集合。</li>
+<li>Intersection ( <strong>A</strong> ∩ <strong>B</strong> ) — 交集是包含集合 A 和 B 中相交元素的集合。</li>
+<li>Complement ( <strong>A</strong> c) — 补集是通用集合 S 中但不在 A 中的元素集合。<em>我们将忽略补集，因为它由 Difference 处理。</em></li>
+<li>Difference ( <strong>A</strong> − <strong>B</strong> ) — 差集是 <strong>A</strong> 中但不在 <strong>B</strong> 中的元素的集合。</li>
+</ol>
+<p>让我们开始在 Go 中定义我们的 Set 类型。首先，我们要定义 Set 是什么，使用泛型我们可以利用约束轻松扩展 Set 类型以处理大量数据类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> collections</span><br><span class="line"></span><br><span class="line"><span class="comment">// A collection of unique comparable items. Uses a map with only true values</span></span><br><span class="line"><span class="comment">// to accomplish set functionality.</span></span><br><span class="line"><span class="keyword">type</span> Set[T comparable] <span class="keyword">map</span>[T]<span class="type">bool</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Create a new empty set with the specified initial size.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewSet</span>[<span class="title">T</span> <span class="title">comparable</span>]<span class="params">(size <span class="type">int</span>)</span></span> Set[T] &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">make</span>(Set[T], size)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Add a new key to the set</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s Set[T])</span></span> Add(key T) &#123;</span><br><span class="line">    s[key] = <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Remove a key from the set. If the key is not in the set then noop</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s Set[T])</span></span> Remove(key T) &#123;</span><br><span class="line">    <span class="built_in">delete</span>(s, key)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Check if Set s contains key</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s Set[T])</span></span> Contains(key T) <span class="type">bool</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> s[key]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在第一部分中，我们创建了使用内置地图类型的 Set 类型。我们将映射的键限制为 Comparable 类型。从文档中，我们知道 Comparable 类型包括</p>
+<blockquote>
+<p>（布尔值、数字、字符串、指针、通道、可比较类型的数组、字段都是可比较类型的结构）</p>
+</blockquote>
+<p>我们还在我们的类型上添加了一些基本方法，用于添加、删除和检查是否存在。有了这个，我们还没有准备好开始实施上面定义的 Set 操作。让我们从 <code>Difference</code> 开始。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A difference B | <span class="doctag">NOTE:</span> A-B != B-A</span></span><br><span class="line">func (<span class="selector-tag">a</span> Set<span class="selector-attr">[T]</span>) <span class="built_in">Difference</span>(<span class="selector-tag">b</span> Set<span class="selector-attr">[T]</span>) Set<span class="selector-attr">[T]</span> &#123;</span><br><span class="line">    resultSet := NewSet<span class="selector-attr">[T]</span>(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">for</span> key := range <span class="selector-tag">a</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> !<span class="selector-tag">b</span><span class="selector-class">.Contains</span>(key) &#123;</span><br><span class="line">             resultSet<span class="selector-class">.Add</span>(key)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return resultSet</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相当简单的例子。我们简单地创建一个容量为 0 的新 Set（因为我们不知道新 Set 有多大），然后迭代 Set <code>A</code> 只添加不包含在 <code>B</code>。</p>
+<p>接下来的两个操作 <code>Union</code> 和 <code>Intersection</code>  遵循类似的模式 — 但这次我们添加了一个轻微的优化。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A union B</span></span><br><span class="line">func (<span class="selector-tag">a</span> Set<span class="selector-attr">[T]</span>) <span class="built_in">Union</span>(<span class="selector-tag">b</span> Set<span class="selector-attr">[T]</span>) Set<span class="selector-attr">[T]</span> &#123;</span><br><span class="line">    small, large := <span class="built_in">smallLarge</span>(<span class="selector-tag">a</span>, b)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> key := range small &#123;</span><br><span class="line">        large<span class="selector-class">.Add</span>(key)</span><br><span class="line">    &#125;</span><br><span class="line">    return large</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// A intersect B</span></span><br><span class="line">func (<span class="selector-tag">a</span> Set<span class="selector-attr">[T]</span>) <span class="built_in">Intersection</span>(<span class="selector-tag">b</span> Set<span class="selector-attr">[T]</span>) Set<span class="selector-attr">[T]</span> &#123;</span><br><span class="line">    small, large := <span class="built_in">smallLarge</span>(<span class="selector-tag">a</span>, b)</span><br><span class="line">    </span><br><span class="line">    resultSet := NewSet<span class="selector-attr">[T]</span>(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">for</span> key := range small &#123;</span><br><span class="line">        <span class="keyword">if</span> large<span class="selector-class">.Contains</span>(key) &#123;</span><br><span class="line">            resultSet<span class="selector-class">.Add</span>(key)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return resultSet</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// returns the small and large sets according to their len</span></span><br><span class="line">func smallLarge<span class="selector-attr">[T comparable]</span>(<span class="selector-tag">a</span>, <span class="selector-tag">b</span> Set<span class="selector-attr">[T]</span>) (Set<span class="selector-attr">[T]</span>, Set<span class="selector-attr">[T]</span>) &#123;</span><br><span class="line">    small, large := <span class="selector-tag">b</span>, <span class="selector-tag">a</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(b) &gt; <span class="built_in">len</span>(a) &#123;</span><br><span class="line">        small, large = <span class="selector-tag">a</span>, <span class="selector-tag">b</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return small, large</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这两种方法都相当简单。在中，<code>Union</code> 我们只是迭代一个集合，将值添加到另一个集合。在中，<code>Intersection</code> 我们正在检查中的值 <code>A</code> 是否也在中，<code>B</code> 并返回一个仅包含两者中的元素的集合。</p>
+<p>优化来自区分哪个集合是 <code>smallLarge(a, b)</code> 调用中较小的集合。通过这样做，我们允许循环只迭代两个集合中较小的一个。如果一个 Set 很大而另一个很小，这可能会节省很多迭代。</p>
+<blockquote>
+<p>但是，在 <strong>Union</strong> 中，我们正在覆盖可能是 <strong>A</strong> 或 <strong>B</strong> 的大集合。如果我们想在合并时保留原始集合，我们将不得不循环遍历两个集合。</p>
+</blockquote>
+<p>我们现在有一个功能齐全的 Set 包。通过更多的工作，我们可以为切片添加帮助器并添加更多实用方法，例如检查是否相等。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A == B (all elements of A are in B and vice versa)</span></span><br><span class="line">func (<span class="selector-tag">a</span> Set<span class="selector-attr">[T]</span>) <span class="built_in">Equals</span>(<span class="selector-tag">b</span> Set<span class="selector-attr">[T]</span>) bool &#123;</span><br><span class="line">    return <span class="built_in">len</span>(<span class="selector-tag">a</span><span class="selector-class">.Difference</span>(b)) == <span class="number">0</span> &amp;&amp; <span class="built_in">len</span>(<span class="selector-tag">b</span><span class="selector-class">.Difference</span>(a)) == <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create a Set from a slice.</span></span><br><span class="line">func SliceToSet<span class="selector-attr">[T comparable]</span>(s <span class="selector-attr">[]</span>T) Set<span class="selector-attr">[T]</span> &#123;</span><br><span class="line">   set := NewSet<span class="selector-attr">[T]</span>(<span class="built_in">len</span>(s))</span><br><span class="line">   <span class="keyword">for</span> _, item := range s &#123;</span><br><span class="line">       set<span class="selector-class">.Add</span>(item)</span><br><span class="line">   &#125;</span><br><span class="line">   return set</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Union two slices. The provided slices do not need to be unique. Order not guaranteed.</span></span><br><span class="line">func SliceUnion<span class="selector-attr">[T comparable]</span>(<span class="selector-tag">a</span>, <span class="selector-tag">b</span> <span class="selector-attr">[]</span>T) <span class="selector-attr">[]</span>T &#123;</span><br><span class="line">   aSet, bSet := <span class="built_in">SliceToSet</span>(a), <span class="built_in">SliceToSet</span>(b)</span><br><span class="line">   union := aSet<span class="selector-class">.Union</span>(bSet)</span><br><span class="line">   return union<span class="selector-class">.ToSlice</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Intersection of two slices. The provided slices do not need to be unique. Order not guaranteed.</span></span><br><span class="line">func SliceIntersection<span class="selector-attr">[T comparable]</span>(<span class="selector-tag">a</span>, <span class="selector-tag">b</span> <span class="selector-attr">[]</span>T) <span class="selector-attr">[]</span>T &#123;</span><br><span class="line">   aSet, bSet := <span class="built_in">SliceToSet</span>(a), <span class="built_in">SliceToSet</span>(b)</span><br><span class="line">   intersection := aSet<span class="selector-class">.Intersection</span>(bSet)</span><br><span class="line">   return intersection<span class="selector-class">.ToSlice</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过以上所有工作，我们能够执行如下所示的操作：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func <span class="built_in">TestSets</span>(t *testing.T) &#123;</span><br><span class="line">   A := <span class="built_in">SliceToSet</span>(<span class="selector-attr">[]</span>int&#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>&#125;)</span><br><span class="line">   B := <span class="built_in">SliceToSet</span>(<span class="selector-attr">[]</span>int&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;)</span><br><span class="line">  </span><br><span class="line">   union := A<span class="selector-class">.Union</span>(B)</span><br><span class="line">   fmt<span class="selector-class">.Println</span>(union) <span class="comment">// map[0:true 1:true 2:true 3:true 4:true 5:true]</span></span><br><span class="line">  </span><br><span class="line">   C := <span class="built_in">SliceToSet</span>(<span class="selector-attr">[]</span>string&#123;<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;noah&quot;</span>&#125;)</span><br><span class="line">   D := <span class="built_in">SliceToSet</span>(<span class="selector-attr">[]</span>string&#123;<span class="string">&quot;a&quot;</span>, <span class="string">&quot;noah&quot;</span>&#125;)</span><br><span class="line">   intersection := C<span class="selector-class">.Intersection</span>(D)</span><br><span class="line">   fmt<span class="selector-class">.Println</span>(intersection) <span class="comment">// map[a:true noah:true]</span></span><br><span class="line">  </span><br><span class="line">   fmt<span class="selector-class">.Println</span>(C<span class="selector-class">.Equals</span>(D)) <span class="comment">// false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我希望你发现这篇文章有帮助！同样，所有代码都可以在 GitHub 上找到。</p>
+<blockquote>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYS9nby1ydXN0LWV4YW1wbGUvdHJlZS9tYXN0ZXIvZ28tZ2VuZXJpY3M=">https://github.com/gitslagga/go-rust-example/tree/master/go-generics<i class="fa fa-external-link-alt"></i></span></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/12/go-prefer/" rel="prev" title="为什么我们更喜欢 Go 作为后端">
+                  <i class="fa fa-angle-left"></i> 为什么我们更喜欢 Go 作为后端
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/12/go-library/" rel="next" title="Go 语言指南：框架、库、IDE、云、资源、导师">
+                  Go 语言指南：框架、库、IDE、云、资源、导师 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"49f71085733ffdf479afdf9336cdcc4f"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="33 – 控制流：使用for循环在这最后一章关于控制流的讨论中，我们将看看shell的另一种循环结构。与while和until循环不同，for循环提供了一种在循环过程中处理序列的方法。这在编程时非常有用。因此，for循环是bash脚本中一个流行的结构。 自然地，for循环是通过for复合命令实现的。在bash中，for以两种形式存在。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="控制流：使用for循环">
+<meta property="og:url" content="https://slagga.top/2024/05/33-looping-with-for/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="33 – 控制流：使用for循环在这最后一章关于控制流的讨论中，我们将看看shell的另一种循环结构。与while和until循环不同，for循环提供了一种在循环过程中处理序列的方法。这在编程时非常有用。因此，for循环是bash脚本中一个流行的结构。 自然地，for循环是通过for复合命令实现的。在bash中，for以两种形式存在。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-05-08T08:22:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.958Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="TLCL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2024/05/33-looping-with-for/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2024/05/33-looping-with-for/","path":"2024/05/33-looping-with-for/","title":"控制流：使用for循环"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>控制流：使用for循环 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#33-%E2%80%93-%E6%8E%A7%E5%88%B6%E6%B5%81%EF%BC%9A%E4%BD%BF%E7%94%A8for%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.</span> <span class="nav-text">33 – 控制流：使用for循环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#for%EF%BC%9A%E4%BC%A0%E7%BB%9FShell%E5%BD%A2%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">for：传统Shell形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for%EF%BC%9AC%E8%AF%AD%E8%A8%80%E5%BD%A2%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">for：C语言形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E9%98%85%E8%AF%BB"><span class="nav-number">1.4.</span> <span class="nav-text">进一步阅读</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2024/05/33-looping-with-for/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="控制流：使用for循环 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          控制流：使用for循环
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-08 16:22:30" itemprop="dateCreated datePublished" datetime="2024-05-08T16:22:30+08:00">2024-05-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="33-–-控制流：使用for循环"><a href="#33-–-控制流：使用for循环" class="headerlink" title="33 – 控制流：使用for循环"></a>33 – 控制流：使用for循环</h2><p>在这最后一章关于控制流的讨论中，我们将看看shell的另一种循环结构。与while和until循环不同，for循环提供了一种在循环过程中处理序列的方法。这在编程时非常有用。因此，for循环是bash脚本中一个流行的结构。</p>
+<p>自然地，for循环是通过for复合命令实现的。在bash中，for以两种形式存在。</p>
+<span id="more"></span>
+
+<h3 id="for：传统Shell形式"><a href="#for：传统Shell形式" class="headerlink" title="for：传统Shell形式"></a>for：传统Shell形式</h3><p>原始的for命令语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> 变量 [<span class="keyword">in</span> 单词]; <span class="keyword">do</span></span><br><span class="line">	命令</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<em>变量</em>是在循环执行过程中会递增的变量的名称，<em>单词</em>是可选的，会被顺序分配给<em>变量</em>的项列表，<em>命令</em>是每次循环迭代时要执行的命令。</p>
+<p>for命令在命令行中非常有用。我们可以轻松演示其工作原理。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="keyword">for</span> i <span class="keyword">in</span> A B C D; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>; <span class="keyword">done</span></span><br><span class="line">A</span><br><span class="line">B</span><br><span class="line">C</span><br><span class="line">D</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，for被给定了一个由四个单词组成的列表：A、B、C和D。有了四个单词的列表，循环就执行了四次。每次执行循环时，一个单词被分配给变量i。在循环内部，我们有一个echo命令来显示i的值，以展示分配情况。与while和until循环一样，done关键词结束了循环。</p>
+<p>for的真正强大之处在于我们可以通过多种有趣的方式来创建单词列表。例如，我们可以通过大括号扩展来实现，像这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="keyword">for</span> i <span class="keyword">in</span> &#123;A..D&#125;; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>; <span class="keyword">done</span></span><br><span class="line">A</span><br><span class="line">B</span><br><span class="line">C</span><br><span class="line">D</span><br></pre></td></tr></table></figure>
+
+<p>或者我们可以使用路径名扩展，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="keyword">for</span> i <span class="keyword">in</span> distros*.txt; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$i</span>&quot;</span>; <span class="keyword">done</span></span><br><span class="line">distros-by-date.txt</span><br><span class="line">distros-dates.txt</span><br><span class="line">distros-key-names.txt</span><br><span class="line">distros-key-vernums.txt</span><br><span class="line">distros-names.txt</span><br><span class="line">distros.txt</span><br><span class="line">distros-vernums.txt</span><br><span class="line">distros-versions.txt</span><br></pre></td></tr></table></figure>
+
+<p>路径名扩展提供了一个干净的、可以在循环中处理的路径名列表。需要的一个预防措施是检查扩展是否真的匹配了一些文件。默认情况下，如果扩展未匹配任何文件，将返回通配符本身（上例中的”distros*.txt”）。为了防止这种情况，我们会在脚本中这样编写上面的例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> distros*.txt; <span class="keyword">do</span></span><br><span class="line">  <span class="keyword">if</span> [[ -e <span class="string">&quot;<span class="variable">$i</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$i</span>&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>通过添加一个文件存在性检测，我们将忽略失败的扩展。</p>
+<p>另一个常见的单词生成方法是命令替换。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># longest-word: 在文件中找到最长的字符串</span></span><br><span class="line"><span class="keyword">while</span> [[ -n <span class="string">&quot;<span class="variable">$1</span>&quot;</span> ]]; <span class="keyword">do</span></span><br><span class="line">  <span class="keyword">if</span> [[ -r <span class="string">&quot;<span class="variable">$1</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">    max_word=</span><br><span class="line">    max_len=0</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> $(strings <span class="string">&quot;<span class="variable">$1</span>&quot;</span>); <span class="keyword">do</span></span><br><span class="line">      len=<span class="string">&quot;<span class="subst">$(echo -n <span class="string">&quot;<span class="variable">$i</span>&quot;</span> | wc -c)</span>&quot;</span></span><br><span class="line">      <span class="keyword">if</span> (( len &gt; max_len )); <span class="keyword">then</span></span><br><span class="line">        max_len=<span class="string">&quot;<span class="variable">$len</span>&quot;</span></span><br><span class="line">        max_word=<span class="string">&quot;<span class="variable">$i</span>&quot;</span></span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$1</span>: &#x27;<span class="variable">$max_word</span>&#x27; (<span class="variable">$max_len</span>个字符)&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">shift</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们寻找文件中的最长字符串。当在命令行上给出一个或多个文件名时，这个程序使用strings程序（包含在GNU binutils包中）来生成每个文件中的可读文本“单词”列表。for循环依次处理每个单词，并确定当前单词是否是到目前为止找到的最长单词。当循环结束时，将显示最长的单词。</p>
+<p>需要注意的一点是，与我们通常的做法相反，我们没有将命令替换<code>$(strings &quot;$</code>1”)用双引号括起来。这是因为我们实际上希望发生单词拆分以给我们提供我们的列表。如果我们用引号括起来了命令替换，它将只产生一个单词，包含文件中的每个字符串。这不是我们所寻找的。</p>
+<p>如果省略了for命令的可选in <em>单词</em>部分，for默认处理位置参数。我们将修改我们的longest-word脚本，使用这种方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># longest-word2: 在文件中找到最长的字符串</span></span><br><span class="line"><span class="keyword">for</span> i; <span class="keyword">do</span></span><br><span class="line">  <span class="keyword">if</span> [[ -r <span class="string">&quot;<span class="variable">$i</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">    max_word=</span><br><span class="line">    max_len=0</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> $(strings <span class="string">&quot;<span class="variable">$i</span>&quot;</span>); <span class="keyword">do</span></span><br><span class="line">      len=<span class="string">&quot;<span class="subst">$(echo -n <span class="string">&quot;<span class="variable">$j</span>&quot;</span> | wc -c)</span>&quot;</span></span><br><span class="line">      <span class="keyword">if</span> (( len &gt; max_len )); <span class="keyword">then</span></span><br><span class="line">        max_len=<span class="string">&quot;<span class="variable">$len</span>&quot;</span></span><br><span class="line">        max_word=<span class="string">&quot;<span class="variable">$j</span>&quot;</span></span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$i</span>: &#x27;<span class="variable">$max_word</span>&#x27; (<span class="variable">$max_len</span>个字符)&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>正如我们看到的，我们将最外层的循环改为使用for代替while。通过在for命令中省略单词列表，使用了位置参数代替。在循环内部，之前使用变量i的实例已经更改为变量j。同时也消除了shift的使用。</p>
+<p><strong>为什么使用i？</strong></p>
+<p>你可能已经注意到，之前的for循环例子中选择了变量i。为什么呢？实际上没有具体的原因，除了传统以外。与for一起使用的变量可以是任何有效的变量，但i是最常见的，其次是j和k。</p>
+<p>这个传统的基础来自于Fortran编程语言。在Fortran中，以字母I、J、K、L和M开头的未声明变量自动被定为整数类型，而以任何其他字母开头的变量被定为实数类型（带有小数部分的数字）。这种行为导致程序员使用变量I、J和K作为循环变量，因为当需要一个临时变量（循环变量经常是）时，使用它们工作量更小。</p>
+<p>这也导致了以下基于Fortran的俏皮话：</p>
+<blockquote>
+<p>“上帝是实数，除非声明为整数。”</p>
+</blockquote>
+<h3 id="for：C语言形式"><a href="#for：C语言形式" class="headerlink" title="for：C语言形式"></a>for：C语言形式</h3><p>bash的最新版本增加了第二种形式的for命令语法，一种类似于C编程语言中的形式。许多其他语言也支持这种形式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (( 表达式<span class="number">1</span>; 表达式<span class="number">2</span>; 表达式<span class="number">3</span> )); <span class="keyword">do</span></span><br><span class="line">	命令</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的<em>表达式1</em>、<em>表达式2</em>和<em>表达式3</em>是算术表达式，<em>命令</em>是每次循环迭代期间要执行的命令。</p>
+<p>在行为上，这种形式等同于以下结构：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(( 表达式<span class="number">1</span> ))</span><br><span class="line"><span class="keyword">while</span> (( 表达式<span class="number">2</span> )); <span class="keyword">do</span></span><br><span class="line">	命令</span><br><span class="line">	(( 表达式<span class="number">3</span> ))</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p><em>表达式1</em>用于初始化循环条件，<em>表达式2</em>用于确定循环何时完成，<em>表达式3</em>在循环的每次迭代结束时执行。</p>
+<p>这里是一个典型的应用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># simple_counter: C风格for命令的演示</span></span><br><span class="line"><span class="keyword">for</span> (( i=<span class="number">0</span>; i&lt;<span class="number">5</span>; i=i+<span class="number">1</span> )); <span class="keyword">do</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">$i</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>执行时，它产生以下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ simple_counter</span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，<em>表达式1</em>用零初始化变量i，<em>表达式2</em>允许循环继续，只要i的值小于5，<em>表达式3</em>每次循环重复时将i的值增加1。</p>
+<p>C语言形式的for在需要数字序列时非常有用。在接下来的两章中，我们将看到这种形式的几种应用。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>通过了解for命令，我们现在将对我们的sys_info_page脚本进行最后的改进。目前，report_home_space函数看起来是这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">report_home_space</span></span> () &#123;</span><br><span class="line">  <span class="keyword">if</span> [[ <span class="string">&quot;<span class="subst">$(id -u)</span>&quot;</span> -eq 0 ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">cat</span> &lt;&lt;- <span class="string">_EOF_</span></span><br><span class="line"><span class="string">      &lt;h2&gt;家庭空间利用率（所有用户）&lt;/h2&gt;</span></span><br><span class="line"><span class="string">      &lt;pre&gt;$(du -sh /home/*)&lt;/pre&gt;</span></span><br><span class="line"><span class="string">      _EOF_</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">cat</span> &lt;&lt;- <span class="string">_EOF_</span></span><br><span class="line"><span class="string">      &lt;h2&gt;家庭空间利用率（$USER）&lt;/h2&gt;</span></span><br><span class="line"><span class="string">      &lt;pre&gt;$(du -sh &quot;$HOME&quot;)&lt;/pre&gt;</span></span><br><span class="line"><span class="string">      _EOF_</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们将重写它，为每个用户的家目录提供更多细节，并包括每个中的文件总数和子目录数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">report_home_space</span></span> () &#123;</span><br><span class="line">    <span class="built_in">local</span> format=<span class="string">&quot;%8s%10s%10s\n&quot;</span></span><br><span class="line">    <span class="built_in">local</span> i dir_list total_files total_dirs total_size user_name</span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="subst">$(id -u)</span>&quot;</span> -eq 0 ]]; <span class="keyword">then</span></span><br><span class="line">        dir_list=/home/*</span><br><span class="line">        user_name=<span class="string">&quot;所有用户&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        dir_list=<span class="string">&quot;<span class="variable">$HOME</span>&quot;</span></span><br><span class="line">        user_name=<span class="string">&quot;<span class="variable">$USER</span>&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&lt;h2&gt;家庭空间利用率（<span class="variable">$user_name</span>）&lt;/h2&gt;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$dir_list</span>; <span class="keyword">do</span></span><br><span class="line">        total_files=<span class="string">&quot;<span class="subst">$(find <span class="string">&quot;<span class="variable">$i</span>&quot;</span> -type f | wc -l)</span>&quot;</span></span><br><span class="line">        total_dirs=<span class="string">&quot;<span class="subst">$(find <span class="string">&quot;<span class="variable">$i</span>&quot;</span> -type d | wc -l)</span>&quot;</span></span><br><span class="line">        total_size=<span class="string">&quot;<span class="subst">$(du -sh <span class="string">&quot;<span class="variable">$i</span>&quot;</span> | cut -f 1)</span>&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;&lt;H3&gt;<span class="variable">$i</span>&lt;/H3&gt;&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;&lt;pre&gt;&quot;</span></span><br><span class="line">        <span class="built_in">printf</span> <span class="string">&quot;<span class="variable">$format</span>&quot;</span> <span class="string">&quot;目录&quot;</span> <span class="string">&quot;文件&quot;</span> <span class="string">&quot;大小&quot;</span></span><br><span class="line">        <span class="built_in">printf</span> <span class="string">&quot;<span class="variable">$format</span>&quot;</span> <span class="string">&quot;----&quot;</span> <span class="string">&quot;-----&quot;</span> <span class="string">&quot;----&quot;</span></span><br><span class="line">        <span class="built_in">printf</span> <span class="string">&quot;<span class="variable">$format</span>&quot;</span> <span class="string">&quot;<span class="variable">$total_dirs</span>&quot;</span> <span class="string">&quot;<span class="variable">$total_files</span>&quot;</span> <span class="string">&quot;<span class="variable">$total_size</span>&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;&lt;/pre&gt;&quot;</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line"><span class="built_in">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这次重写应用了我们迄今为止学到的很多知识。我们仍然检测超级用户，但不是作为if的一部分执行完整的操作集，而是设置了一些变量，稍后在for循环中使用。我们为函数添加了几个本地变量，并使用printf来格式化一些输出。</p>
+<h3 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h3><ul>
+<li><p><em>高级Bash脚本编写指南</em>有一章关于循环的，包括使用for的各种示例：</p>
+<p><span class="exturl" data-url="aHR0cDovL3RsZHAub3JnL0xEUC9hYnMvaHRtbC9sb29wczEuaHRtbA==">http://tldp.org/LDP/abs/html/loops1.html<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p><em>Bash参考手册</em>描述了包括for在内的循环复合命令：</p>
+<p><span class="exturl" data-url="aHR0cDovL3d3dy5nbnUub3JnL3NvZnR3YXJlL2Jhc2gvbWFudWFsL2Jhc2hyZWYuaHRtbCNMb29waW5nLUNvbnN0cnVjdHM=">http://www.gnu.org/software/bash/manual/bashref.html#Looping-Constructs<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TLCL/" rel="tag"># TLCL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/32-positional-parameters/" rel="prev" title="位置参数">
+                  <i class="fa fa-angle-left"></i> 位置参数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/05/34-strings-and-numbers/" rel="next" title="字符串和数字">
+                  字符串和数字 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"fb419e7fe863d42fc103f92a960434b7"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

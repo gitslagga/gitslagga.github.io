@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="一、编程语言的作用及与操作系统和硬件的关系作用：编程语言是计算机语言，是一种程序员与计算机之间沟通的介质，通过编程语言可以使得计算机能够根据人的指令一步一步去工作，完成某种特定的任务。  关系：编程语言会通过编译软件写成程序，程序是不能直接和硬件来进行交互的，而操作系统是用来管理计算机硬件设备的，所以我们可以就可以在操作系统上来运行程序，让操作系统去管理与配置内存、决定系统资源供需的优先次序、控制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编程语言的作用及与操作系统和硬件的关系">
+<meta property="og:url" content="https://slagga.top/2018/06/software-hardware/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="一、编程语言的作用及与操作系统和硬件的关系作用：编程语言是计算机语言，是一种程序员与计算机之间沟通的介质，通过编程语言可以使得计算机能够根据人的指令一步一步去工作，完成某种特定的任务。  关系：编程语言会通过编译软件写成程序，程序是不能直接和硬件来进行交互的，而操作系统是用来管理计算机硬件设备的，所以我们可以就可以在操作系统上来运行程序，让操作系统去管理与配置内存、决定系统资源供需的优先次序、控制">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-06-25T09:53:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.916Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Blog, HTML, CSS, JavaScript, Python, PHP, Java, Go, Redis, MySQL, Node.js, React, Vuejs, Git, Programming, Web Development, Blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2018/06/software-hardware/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2018/06/software-hardware/","path":"2018/06/software-hardware/","title":"编程语言的作用及与操作系统和硬件的关系"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编程语言的作用及与操作系统和硬件的关系 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E4%BD%9C%E7%94%A8%E5%8F%8A%E4%B8%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%92%8C%E7%A1%AC%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.</span> <span class="nav-text">一、编程语言的作用及与操作系统和硬件的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E3%80%81%E7%A1%AC%E4%BB%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">2.</span> <span class="nav-text">二、应用程序、操作系统、硬件之间的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81cpu%E3%80%81%E5%86%85%E5%AD%98%E3%80%81%E7%A3%81%E7%9B%98%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">3.</span> <span class="nav-text">三、cpu、内存、磁盘之间的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81cpu-%E4%B8%8E%E5%AF%84%E5%AD%98%E5%99%A8%EF%BC%8C%E5%86%85%E6%A0%B8%E6%80%81%E4%B8%8E%E7%94%A8%E6%88%B7%E6%80%81%E5%8F%8A%E5%A6%82%E4%BD%95%E5%88%87%E6%8D%A2"><span class="nav-number">4.</span> <span class="nav-text">四、cpu 与寄存器，内核态与用户态及如何切换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81L1-%E7%BC%93%E5%AD%98%EF%BC%8CL2-%E7%BC%93%E5%AD%98%EF%BC%8C%E5%86%85%E5%AD%98%EF%BC%88RAM%EF%BC%89%EF%BC%8CEEPROM-%E5%92%8C%E9%97%AA%E5%AD%98%EF%BC%8CCMOS-%E4%B8%8E-BIOS-%E7%94%B5%E6%B1%A0"><span class="nav-number">5.</span> <span class="nav-text">五、L1 缓存，L2 缓存，内存（RAM），EEPROM 和闪存，CMOS 与 BIOS 电池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%B9%B3%E5%9D%87%E5%AF%BB%E9%81%93%E6%97%B6%E9%97%B4%EF%BC%8C%E5%B9%B3%E5%9D%87%E5%BB%B6%E8%BF%9F%E6%97%B6%E9%97%B4%EF%BC%8C%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E4%B8%8E-MMU"><span class="nav-number">6.</span> <span class="nav-text">六、平均寻道时间，平均延迟时间，虚拟内存与 MMU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E7%A3%81%E5%B8%A6"><span class="nav-number">7.</span> <span class="nav-text">七、磁带</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E4%B8%8E%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">8.</span> <span class="nav-text">八、设备驱动与控制器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%9D%E3%80%81%E6%80%BB%E7%BA%BF%E4%B8%8E%E5%8D%97%E6%A1%A5%E5%92%8C%E5%8C%97%E6%A1%A5"><span class="nav-number">9.</span> <span class="nav-text">九、总线与南桥和北桥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B"><span class="nav-number">10.</span> <span class="nav-text">十、操作系统的启动流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B"><span class="nav-number">11.</span> <span class="nav-text">十一、应用程序的启动流程</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/06/software-hardware/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编程语言的作用及与操作系统和硬件的关系 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编程语言的作用及与操作系统和硬件的关系
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-06-25 17:53:30" itemprop="dateCreated datePublished" datetime="2018-06-25T17:53:30+08:00">2018-06-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Software/" itemprop="url" rel="index"><span itemprop="name">Software</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="一、编程语言的作用及与操作系统和硬件的关系"><a href="#一、编程语言的作用及与操作系统和硬件的关系" class="headerlink" title="一、编程语言的作用及与操作系统和硬件的关系"></a>一、编程语言的作用及与操作系统和硬件的关系</h2><pre><code>作用：编程语言是计算机语言，是一种程序员与计算机之间沟通的介质，通过编程语言可以使得计算机能够根据人的指令一步一步去工作，完成某种特定的任务。
+
+关系：编程语言会通过编译软件写成程序，程序是不能直接和硬件来进行交互的，而操作系统是用来管理计算机硬件设备的，所以我们可以就可以在操作系统上来运行程序，让操作系统去管理与配置内存、决定系统资源供需的优先次序、控制输入与输出、操作网络与管理文件系统等基本任务。
+</code></pre>
+<span id="more"></span>
+
+<h2 id="二、应用程序、操作系统、硬件之间的关系"><a href="#二、应用程序、操作系统、硬件之间的关系" class="headerlink" title="二、应用程序、操作系统、硬件之间的关系"></a>二、应用程序、操作系统、硬件之间的关系</h2><pre><code>硬件上运行操作系统，操作系统上运行应用程序，应用程序通过 Windows API 调用操作系统函数从而和计算机硬件交互。
+</code></pre>
+<h2 id="三、cpu、内存、磁盘之间的关系"><a href="#三、cpu、内存、磁盘之间的关系" class="headerlink" title="三、cpu、内存、磁盘之间的关系"></a>三、cpu、内存、磁盘之间的关系</h2><ol>
+<li><p>CPU 即中央处理器，CPU 从内存或缓存中取出指令，放入指令寄存器，并对指令进行解码，然后发出各种控制命令，从而完成一条指令的执行。</p>
+</li>
+<li><p>CPU 并不能直接调用存储在硬盘上的系统、程序和数据，必须将硬盘的有关内容通过总线存储在内存中，才能被 CPU 读取运行。因而，内存可以理解为硬盘和 CPU 的 “中转站”。</p>
+</li>
+<li><p>当运行数据大小超出物理内存的时候，这时系统就会将硬盘上的部分空间模拟成内存 —— 虚拟内存，并将暂时不运行的程序或不使用的数据存放到这部分空间之中，等待需要的时候方便及时调用。</p>
+</li>
+<li><p>内存是带电储存，断电消失，并且容量有限，如果想长期储存的话还需要将数据存放到硬盘中。</p>
+</li>
+</ol>
+<h2 id="四、cpu-与寄存器，内核态与用户态及如何切换"><a href="#四、cpu-与寄存器，内核态与用户态及如何切换" class="headerlink" title="四、cpu 与寄存器，内核态与用户态及如何切换"></a>四、cpu 与寄存器，内核态与用户态及如何切换</h2><ol>
+<li><p>寄存器是 cpu 的一部分，因为 cpu 从内存得到指令或数据的时间比 cpu 执行指令花费的时间要长，所以将关键变量和临时数据保存到寄存器里面，访问速度和 CPU 同速或半速，用来避免内存速率比 CPU 慢几个数量级的瓶颈问题，寄存器的分类：</p>
+<p>  a. 通用寄存器：用来保存 cpu 运行中产生的变量和临时结果。</p>
+<p>  b. 程序计数器：cpu 只能同时做一件事情，所以在运行过程中会在多个指令中来回切换执行，程序计数器用来存放这些指令的状态。</p>
+<p>  c. 堆栈指针：堆栈指针的的作用是在堆栈过程中始终指向栈顶，取出指令，然后 cpu 去运行。栈就是先进后出的一种数据结构。</p>
+<p>  d. 程序状态字寄存器：无论是系统软件还是应用软件执行后都得转换成 cpu 的指令，状态字寄存器用来控制用户态和内核态两种状态。</p>
+</li>
+<li><p>当 cpu 可以访问内存里的所有数据，并且可以访问外围设备（硬盘，网卡等硬件）时为内核态，CPU 也可以将自己从一个程序切换到另一个程序；受限的访问内存，且不允许访问外围设备时为用户态，占用 CPU 的能力被剥夺，CPU 资源可以被其他程序获取。</p>
+</li>
+<li><p>所有用户程序都是运行在用户态的，但是有时候程序确实需要做一些内核态的事情，例如从硬盘读取数据， 或者从键盘获取输入等。 而唯一可以做这些事情的就是操作系统， 所以此时用户程序就需要使用系统调用，操作系统请求以程序的名义来执行这些操作，此时就会从用户态切换到内核态。</p>
+</li>
+</ol>
+<h2 id="五、L1-缓存，L2-缓存，内存（RAM），EEPROM-和闪存，CMOS-与-BIOS-电池"><a href="#五、L1-缓存，L2-缓存，内存（RAM），EEPROM-和闪存，CMOS-与-BIOS-电池" class="headerlink" title="五、L1 缓存，L2 缓存，内存（RAM），EEPROM 和闪存，CMOS 与 BIOS 电池"></a>五、L1 缓存，L2 缓存，内存（RAM），EEPROM 和闪存，CMOS 与 BIOS 电池</h2><ol>
+<li><p>寄存器既 L1 缓存，材质、速度和 CPU 相同，CPU 访问寄存器时无延时。</p>
+</li>
+<li><p>L2 缓存被称为告诉缓存，CPU 比较常用的会放在 L2 缓存中，访问速度会比 L1 缓存慢。</p>
+</li>
+<li><p>所有的程序都是在内存中运行的，计算机在运行中，操作系统也会在内存中运行。内存的速度会慢于 L1 和 L2 缓存，CPU 访问的先后顺序是先访问 L1 缓存吗，然后访问 L2 缓存，再访问内存，最后访问硬盘，每次访问的命中率为 80%。</p>
+</li>
+<li><p>EEPROM 和闪存都是一种储存器，可以擦除和重写，但是重写的速度介于内存和磁盘之间。被应用于便携式电子设备的存储媒介，磁盘，固态硬盘等，都是应用闪存。</p>
+</li>
+</ol>
+<p>5.CMOS 也是一类存储介质，它是易失性的，断电既消失，但是因为它的耗电亮很小，所以采用它来存储一些系统的参数配置，一块电池能使用若干年。</p>
+<h2 id="六、平均寻道时间，平均延迟时间，虚拟内存与-MMU"><a href="#六、平均寻道时间，平均延迟时间，虚拟内存与-MMU" class="headerlink" title="六、平均寻道时间，平均延迟时间，虚拟内存与 MMU"></a>六、平均寻道时间，平均延迟时间，虚拟内存与 MMU</h2><ol>
+<li><p>平均寻道时间它是指硬盘在接收到系统指令后，磁头从开始移动到移动至数据所在的磁道所花费时间的平均值。</p>
+</li>
+<li><p>平均延迟时间机械臂到达正确的磁道之后，使得要读取的扇区转到读写头的下方这段时间的平均值，为平均延迟时间。</p>
+</li>
+<li><p>当计算机运行大小大于物理内存的程序时，会在硬盘中分块一块空间，然后将内存中程序不常用的数据放到硬盘的那块空间中，当用到的时候在拿回到内存中，这时内存和虚拟的内存空间会形成映射，成为存储器管理单元（MMU）。这种方式的运行速度会比正常情况下低。</p>
+</li>
+</ol>
+<h2 id="七、磁带"><a href="#七、磁带" class="headerlink" title="七、磁带"></a>七、磁带</h2><p>速度低于磁盘，但是因其大容量，在地震水灾火灾时可移动性强等特性，常被用来做备份。</p>
+<h2 id="八、设备驱动与控制器"><a href="#八、设备驱动与控制器" class="headerlink" title="八、设备驱动与控制器"></a>八、设备驱动与控制器</h2><ol>
+<li><p>控制器是计算机中的一个实体设备，实现 I&#x2F;O 设备和计算机之间的数据交换，它是 CPU 与 I&#x2F;O 设备之间的接口，它接收从 CPU 发来的命令，并去控制 I&#x2F;O 设备工作，以使处理机从繁杂的设备控制事务中解脱出来。</p>
+</li>
+<li><p>设备驱动是操作系统和输入输出设备间的粘合剂。驱动负责将操作系统的请求传输，转化为特定物理设备控制器能够理解的命令。</p>
+</li>
+</ol>
+<h2 id="九、总线与南桥和北桥"><a href="#九、总线与南桥和北桥" class="headerlink" title="九、总线与南桥和北桥"></a>九、总线与南桥和北桥</h2><ol>
+<li><p>总线将计算机内部各部件连接，并且实现了计算机各功能部件之间的信息传输。</p>
+</li>
+<li><p>南桥连接慢速设备，硬盘，显示器等设备。</p>
+</li>
+<li><p>北桥连接高速设备，CPU，内存等设备。</p>
+</li>
+</ol>
+<h2 id="十、操作系统的启动流程"><a href="#十、操作系统的启动流程" class="headerlink" title="十、操作系统的启动流程"></a>十、操作系统的启动流程</h2><ol>
+<li><p>机器加电，bios 启动检查硬件设备。</p>
+</li>
+<li><p>bios 读取 COMS 中存储的参数，选择启动设备。</p>
+</li>
+<li><p>从启动设备中读取第一个扇区的内容。</p>
+</li>
+<li><p>根据分区信息读入 bootloader 启动装载模块，启动操作系统。</p>
+</li>
+<li><p>操作系统文件会从 bios 中获取配置参数。会检查计算机设备的驱动程序，如果有设备缺少会提示用户缺少驱动，如果全动加载成功，则操作系统会将他们加入到内核中。</p>
+</li>
+</ol>
+<h2 id="十一、应用程序的启动流程"><a href="#十一、应用程序的启动流程" class="headerlink" title="十一、应用程序的启动流程"></a>十一、应用程序的启动流程</h2><ol>
+<li><p>输入设备将指令发给控制器。</p>
+</li>
+<li><p>控制器通过驱动器将请求发给操作系统。</p>
+</li>
+<li><p>操作系统会去硬盘上寻找文件位置。</p>
+</li>
+<li><p>操作系统找到文件以后会往内存里读，读完以后程序启动成功。</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/06/redis-install/" rel="prev" title="Redis 安装异常解决办法">
+                  <i class="fa fa-angle-left"></i> Redis 安装异常解决办法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/06/php-performance/" rel="next" title="48条高效率的PHP优化写法">
+                  48条高效率的PHP优化写法 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"f5b6660c804017dc45e1dc565a6da3c4"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

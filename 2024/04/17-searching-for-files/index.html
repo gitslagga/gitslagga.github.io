@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="17章 - 查找文件在我们漫游Linux系统时，一个明显的问题是：Linux系统有许多文件！这引出了一个问题：“我们如何找到所需的内容？”我们已经知道，Linux文件系统根据从一代类Unix系统传承下来的习惯良好地组织着，但海量的文件还是可能让人望而生畏。 在本章中，我们将探讨两种在系统中查找文件的工具。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="查找文件">
+<meta property="og:url" content="https://slagga.top/2024/04/17-searching-for-files/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="17章 - 查找文件在我们漫游Linux系统时，一个明显的问题是：Linux系统有许多文件！这引出了一个问题：“我们如何找到所需的内容？”我们已经知道，Linux文件系统根据从一代类Unix系统传承下来的习惯良好地组织着，但海量的文件还是可能让人望而生畏。 在本章中，我们将探讨两种在系统中查找文件的工具。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-22T07:16:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.951Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="TLCL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2024/04/17-searching-for-files/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2024/04/17-searching-for-files/","path":"2024/04/17-searching-for-files/","title":"查找文件"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>查找文件 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#17%E7%AB%A0-%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">17章 - 查找文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#locate-%E7%AE%80%E5%8D%95%E6%96%B9%E5%BC%8F%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">locate - 简单方式查找文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#find-%E5%9B%B0%E9%9A%BE%E6%96%B9%E5%BC%8F%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">find - 困难方式查找文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">1.2.1.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.2.2.</span> <span class="nav-text">运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.3.</span> <span class="nav-text">预定义操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E5%AE%9A%E4%B9%89%E7%9A%84%E5%8A%A8%E4%BD%9C"><span class="nav-number">1.2.4.</span> <span class="nav-text">用户定义的动作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87"><span class="nav-number">1.2.5.</span> <span class="nav-text">提高效率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#xargs"><span class="nav-number">1.2.6.</span> <span class="nav-text">xargs</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%9C%89%E8%B6%A3%E7%9A%84%E6%96%87%E4%BB%B6%E5%90%8D"><span class="nav-number">1.3.</span> <span class="nav-text">处理有趣的文件名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E5%88%B0%E6%93%8D%E5%9C%BA"><span class="nav-number">1.3.1.</span> <span class="nav-text">返回到操场</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%89%E9%A1%B9"><span class="nav-number">1.3.2.</span> <span class="nav-text">选项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E9%98%85%E8%AF%BB"><span class="nav-number">1.5.</span> <span class="nav-text">进一步阅读</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2024/04/17-searching-for-files/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="查找文件 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          查找文件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-22 15:16:30" itemprop="dateCreated datePublished" datetime="2024-04-22T15:16:30+08:00">2024-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="17章-查找文件"><a href="#17章-查找文件" class="headerlink" title="17章 - 查找文件"></a>17章 - 查找文件</h2><p>在我们漫游Linux系统时，一个明显的问题是：Linux系统有许多文件！这引出了一个问题：“我们如何找到所需的内容？”我们已经知道，Linux文件系统根据从一代类Unix系统传承下来的习惯良好地组织着，但海量的文件还是可能让人望而生畏。</p>
+<p>在本章中，我们将探讨两种在系统中查找文件的工具。</p>
+<span id="more"></span>
+
+<ul>
+<li>locate - 通过名称查找文件</li>
+<li>find - 在目录层次结构中搜索文件</li>
+</ul>
+<p>我们还将介绍一些常与文件搜索命令一起使用的命令，以处理搜索结果生成的文件列表。</p>
+<ul>
+<li>xargs - 从标准输入构建并执行命令行</li>
+<li>touch - 更改文件时间</li>
+<li>stat - 显示文件或文件系统状态</li>
+</ul>
+<h3 id="locate-简单方式查找文件"><a href="#locate-简单方式查找文件" class="headerlink" title="locate - 简单方式查找文件"></a>locate - 简单方式查找文件</h3><p>locate程序执行快速的数据库路径名搜索，然后输出每个与给定子字符串匹配的名称。例如，我们想找到所有以zip开头的程序。由于我们正在寻找程序，我们可以假设包含程序的目录名称以bin&#x2F;结尾。因此，我们可以尝试使用locate以这种方式查找文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ locate bin/zip</span><br></pre></td></tr></table></figure>
+
+<p>locate将搜索其路径名数据库，并输出包含字符串bin&#x2F;zip的任何路径。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/zip</span><br><span class="line">/usr/bin/zipcloak</span><br><span class="line">/usr/bin/zipgrep</span><br><span class="line">/usr/bin/zipinfo</span><br><span class="line">/usr/bin/zipnote</span><br><span class="line">/usr/bin/zipsplit</span><br></pre></td></tr></table></figure>
+
+<p>如果搜索要求不那么简单，我们可以将locate与其他工具（如grep）结合使用，设计更有趣的搜索。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ locate zip | grep bin</span><br><span class="line">/bin/bunzip2</span><br><span class="line">/bin/bzip2</span><br><span class="line">/bin/bzip2recover</span><br><span class="line">/bin/gunzip</span><br><span class="line">/bin/gzip</span><br><span class="line">/usr/bin/funzip</span><br><span class="line">/usr/bin/gpg-zip</span><br><span class="line">/usr/bin/preunzip</span><br><span class="line">/usr/bin/prezip</span><br><span class="line">/usr/bin/prezip-bin</span><br><span class="line">/usr/bin/unzip</span><br><span class="line">/usr/bin/unzipsfx</span><br><span class="line">/usr/bin/zip</span><br><span class="line">/usr/bin/zipcloak</span><br><span class="line">/usr/bin/zipgrep</span><br><span class="line">/usr/bin/zipinfo</span><br><span class="line">/usr/bin/zipnote</span><br><span class="line">/usr/bin/zipsplit </span><br></pre></td></tr></table></figure>
+
+<p>locate程序已经存在多年，现在常见的Linux发行版中有几种变体，如slocate和mlocate，它们通常通过名为locate的符号链接来访问。locate的不同版本有重叠的选项集。某些版本包括正则表达式匹配（我们将在第19章“正则表达式”中介绍）和通配符支持。检查locate的手册页，以确定安装了哪个版本的locate。</p>
+<p><strong>locate数据库从哪里来？</strong></p>
+<p>你可能会注意到，在一些发行版上，系统刚安装完毕时locate可能无法正常工作，但如果第二天再试一次，它就能正常工作。这是怎么回事？locate数据库是由另一个名为updatedb的程序创建的。通常，它会作为一个*定时任务（cron job）*定期运行，即由cron守护进程定期执行的任务。大多数装有locate的系统每天运行一次updatedb。由于数据库不是持续更新的，你会注意到使用locate时最近创建的文件不会显示。为了解决这个问题，可以通过成为超级用户并在提示符下手动运行updatedb程序。</p>
+<h3 id="find-困难方式查找文件"><a href="#find-困难方式查找文件" class="headerlink" title="find - 困难方式查找文件"></a>find - 困难方式查找文件</h3><p>虽然locate程序仅能基于文件名查找文件，但find程序则可以根据各种属性搜索给定目录（及其子目录）中的文件。我们将花费很多时间学习find，因为它有许多有趣的特性，当我们开始在后续章节中讨论编程概念时，这些特性将会再次出现。</p>
+<p>在最简单的用法中，find被给予一个或多个要搜索的目录名称。例如要生成我们家目录的列表，我们可以使用这个命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find ~</span><br></pre></td></tr></table></figure>
+
+<p>在大多数活跃的用户账户上，这会产生一个很长的列表。由于列表被发送到标准输出，我们可以将列表通过管道传输到其他程序。让我们使用wc来计算文件数量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find ~ | <span class="built_in">wc</span> -l</span><br><span class="line">47068</span><br></pre></td></tr></table></figure>
+
+<p>哇，我们已经很忙了！find的美妙之处在于它可以用来识别满足特定条件的文件。它通过（略显奇怪的）使用<em>选项</em>、<em>测试</em>和<em>动作</em>来实现。我们先看看测试。</p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>假设我们想从搜索中得到一个目录列表。为此，我们可以添加以下测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find ~ -<span class="built_in">type</span> d | <span class="built_in">wc</span> -l</span><br><span class="line">1695</span><br></pre></td></tr></table></figure>
+
+<p>添加-test d测试将搜索限制为目录。相反，我们可以通过这个测试将搜索限制为常规文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find ~ -<span class="built_in">type</span> f | <span class="built_in">wc</span> -l</span><br><span class="line">38737</span><br></pre></td></tr></table></figure>
+
+<p>表17-1列出了find支持的常见文件类型测试。</p>
+<p><em>表 17-1:</em> <em>find文件类型</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>文件类型</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>b</td>
+<td>块特殊设备文件</td>
+</tr>
+<tr>
+<td>c</td>
+<td>字符特殊设备文件</td>
+</tr>
+<tr>
+<td>d</td>
+<td>目录</td>
+</tr>
+<tr>
+<td>f</td>
+<td>常规文件</td>
+</tr>
+<tr>
+<td>l</td>
+<td>符号链接</td>
+</tr>
+</tbody></table>
+<p>我们还可以通过添加一些额外的测试来根据文件大小和文件名进行搜索。让我们寻找所有与通配符模式*.JPG匹配且大于一兆字节的常规文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find ~ -<span class="built_in">type</span> f -name <span class="string">&quot;*.JPG&quot;</span> -size +1M | <span class="built_in">wc</span> -l</span><br><span class="line">840</span><br></pre></td></tr></table></figure>
+
+<p>在此示例中，我们添加了-name测试，后跟通配符模式。注意我们如何用引号将其括起来，以防止由shell进行路径名展开。接下来，我们添加了-size测试，后跟字符串“+1M”。前导加号表示我们正在寻找大于指定数字的文件。前导减号将更改字符串的含义，表示小于指定数字。不使用符号意味着“精确匹配该值”。尾随的字母M表示度量单位为兆字节。表17-2列出了可以用来指定单位的字符。</p>
+<p><em>表 17-2:</em> <em>find大小单位</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>字符</strong></th>
+<th><strong>单位</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>b</td>
+<td>512字节块。如果未指定单位，则默认为此单位。</td>
+</tr>
+<tr>
+<td>c</td>
+<td>字节。</td>
+</tr>
+<tr>
+<td>w</td>
+<td>2字节字。</td>
+</tr>
+<tr>
+<td>k</td>
+<td>千字节（1024字节单位）。</td>
+</tr>
+<tr>
+<td>M</td>
+<td>兆字节（1048576字节单位）。</td>
+</tr>
+<tr>
+<td>G</td>
+<td>吉字节（1073741824字节单位）。</td>
+</tr>
+</tbody></table>
+<p>find支持大量的测试。表17-3提供了常见测试的概述。注意，在需要数字参数的情况下，可以应用上面讨论的+和-符号。</p>
+<p><strong>表 17-3: find命令测试</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>测试</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-cmin <em>n</em></td>
+<td>匹配内容或属性在<em>n</em>分钟前刚好被修改过的文件或目录。使用*-n<em>表示少于</em>n<em>分钟前，使用</em>+n<em>表示多于</em>n*分钟前。</td>
+</tr>
+<tr>
+<td>-cnewer <em>file</em></td>
+<td>匹配内容或属性比<em>file</em>更近期被修改的文件或目录。</td>
+</tr>
+<tr>
+<td>-ctime <em>n</em></td>
+<td>匹配内容或属性在<em>n</em>天前被修改的文件或目录。</td>
+</tr>
+<tr>
+<td>-empty</td>
+<td>匹配空文件和空目录。</td>
+</tr>
+<tr>
+<td>-group <em>name</em></td>
+<td>匹配属于<em>group</em>的文件或目录。<em>group</em>可以是组名或组ID。</td>
+</tr>
+<tr>
+<td>-iname <em>pattern</em></td>
+<td>类似于-name测试，但不区分大小写。</td>
+</tr>
+<tr>
+<td>-inum <em>n</em></td>
+<td>匹配inode号为<em>n</em>的文件。这有助于找到链接到特定inode的所有硬链接。</td>
+</tr>
+<tr>
+<td>-mmin <em>n</em></td>
+<td>匹配内容在<em>n</em>分钟前被修改的文件或目录。</td>
+</tr>
+<tr>
+<td>-mtime <em>n</em></td>
+<td>匹配内容在<em>n</em>天前被修改的文件或目录。</td>
+</tr>
+<tr>
+<td>-name <em>pattern</em></td>
+<td>匹配符合指定通配符<em>pattern</em>的文件和目录。</td>
+</tr>
+<tr>
+<td>-newer <em>file</em></td>
+<td>匹配内容比指定的<em>file</em>更新的文件和目录。这在编写执行文件备份的shell脚本时非常有用。每次进行备份时，更新一个文件（如日志），然后使用find确定自上次更新以来哪些文件发生了变化。</td>
+</tr>
+<tr>
+<td>-nouser</td>
+<td>匹配不属于有效用户的文件和目录。这可以用来找到属于已删除账户的文件或检测攻击者的活动。</td>
+</tr>
+<tr>
+<td>-nogroup</td>
+<td>匹配不属于有效组的文件和目录。</td>
+</tr>
+<tr>
+<td>-perm <em>mode</em></td>
+<td>匹配权限设置为指定<em>mode</em>的文件或目录。<em>mode</em>可以用八进制或符号表示。</td>
+</tr>
+<tr>
+<td>-samefile <em>name</em></td>
+<td>类似于-inum测试。匹配与文件<em>name</em>共享相同inode号的文件。</td>
+</tr>
+<tr>
+<td>-size <em>n</em></td>
+<td>匹配大小为<em>n</em>的文件。</td>
+</tr>
+<tr>
+<td>-type <em>c</em></td>
+<td>匹配类型为<em>c</em>的文件。</td>
+</tr>
+<tr>
+<td>-user <em>name</em></td>
+<td>匹配属于用户<em>name</em>的文件或目录。用户可以用用户名或数字用户ID表示。</td>
+</tr>
+</tbody></table>
+<p>这不是完整的列表。完整详情请参阅find手册页。</p>
+<h4 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h4><p>即使find提供了所有这些测试，我们仍然可能需要更好的方式来描述测试之间的<em>逻辑关系</em>。例如，如果我们需要确定一个目录中的所有文件和子目录是否都有安全权限，我们将寻找所有权限不是0600的文件和权限不是0700的目录。幸运的是，find提供了使用<em>逻辑运算符</em>结合测试的方式，以创建更复杂的逻辑关系。要表达上述测试，我们可以这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find ~ \( -<span class="built_in">type</span> f -not -perm 0600 \) -or \( -<span class="built_in">type</span> d</span><br><span class="line">-not -perm 0700 \)</span><br></pre></td></tr></table></figure>
+
+<p>哇！看起来很怪异。这是些什么东西？实际上，一旦你熟悉了这些运算符，它们并不复杂。表 17-4 描述了与find一起使用的逻辑运算符。</p>
+<p><em>表 17-4: find逻辑运算符</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>运算符</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-and</td>
+<td>如果运算符两边的测试都为真，则匹配。这可以缩写为-a。注意，如果没有指定运算符，默认情况下隐含-and。</td>
+</tr>
+<tr>
+<td>-or</td>
+<td>如果运算符两边的任一测试为真，则匹配。这可以缩写为-o。</td>
+</tr>
+<tr>
+<td>-not</td>
+<td>如果跟随运算符的测试为假，则匹配。这可以用感叹号(!)缩写。</td>
+</tr>
+<tr>
+<td>( )</td>
+<td>将测试和运算符组合在一起，形成更大的表达式。这用于控制逻辑评估的优先顺序。默认情况下，find从左到右进行评估。有时需要覆盖默认的评估顺序以获得所需的结果。即使不需要，有时包含分组字符也有助于提高命令的可读性。注意，由于括号对shell有特殊意义，因此在命令行上使用它们时必须加引号，以便作为参数传递给find。通常使用反斜杠字符来转义它们。</td>
+</tr>
+</tbody></table>
+<p>有了这些运算符列表，让我们来解构我们的find命令。从最高层次看，我们看到我们的测试被安排为两个组，由一个-or运算符分隔。</p>
+<p>( <em>表达式 1</em> ) -or ( <em>表达式 2</em> )</p>
+<p>这很有意义，因为我们正在寻找具有某些权限的文件和具有不同权限的目录。如果我们在寻找文件和目录，为什么我们使用-or而不是-and？因为当find扫描文件和目录时，每一个都会被评估以确定它是否与指定的测试匹配。我们想知道的</p>
+<p>是它是<em>文件带有不好的权限</em>或者<em>目录带有不好的权限</em>。它不可能同时是两者。所以如果我们展开分组表达式，我们可以这样看：</p>
+<p><strong>( 文件带有不好的权限 ) -or ( 目录带有不好的权限 )</strong></p>
+<p>接下来我们的挑战是如何测试“不好的权限”。我们怎么做？实际上，我们不会。我们将测试的是“不是好的权限”，因为我们知道“好的权限”是什么。在文件的情况下，我们定义好的权限为0600，对于目录，我们定义为0700。测试文件是否具有“不好的”权限的表达式如下：</p>
+<p><strong>-type f -and -not -perms 0600</strong></p>
+<p>对于目录，它如下：</p>
+<p><strong>-type d -and -not -perms 0700</strong></p>
+<p>如表 17-4 中所述，-and运算符可以安全地移除，因为它默认隐含。所以如果我们把这一切放在一起，我们得到了最终的命令。</p>
+<p><strong>find ~ ( -type f -not -perms 0600 ) -or ( -type d -not perms 0700 )</strong></p>
+<p>然而，由于括号对shell有特殊意义，我们必须转义它们，以防止shell尝试解释它们。在每个前面加上反斜杠字符就可以了。</p>
+<p>还有一个关于逻辑运算符的重要特性需要理解。假设我们有两个表达式，由一个逻辑运算符分隔。</p>
+<p><em><strong>expr1</strong></em>** -operator **<em><strong>expr2</strong></em></p>
+<p>在所有情况下，<em>expr1</em> 总是会被执行；然而，运算符将决定是否执行<em>expr2</em>。表 17-5 概述了它的工作方式。</p>
+<p><em>表 17-5: find AND&#x2F;OR逻辑</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>结果</strong></th>
+<th><strong>运算符</strong></th>
+<th><strong>执行</strong><em><strong>expr2</strong></em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>true</td>
+<td>-and</td>
+<td>总是执行</td>
+</tr>
+<tr>
+<td>false</td>
+<td>-and</td>
+<td>从不执行</td>
+</tr>
+<tr>
+<td>true</td>
+<td>-or</td>
+<td>从不执行</td>
+</tr>
+<tr>
+<td>false</td>
+<td>-or</td>
+<td>总是执行</td>
+</tr>
+</tbody></table>
+<p>为什么会这样？这样做是为了提高性能。以-and为例。我们知道，如果<em>expr1</em>的结果是假，则表达式<em>expr1</em> -and <em>expr2</em>不可能为真，所以没有必要执行<em>expr2</em>。同样，如果我们有表达式<em>expr1</em> -or <em>expr2</em>，并且<em>expr1</em>的结果是真，那么没有必要执行<em>expr2</em>，因为我们已经知道表达式<em>expr1</em> -or <em>expr2</em>是真的。</p>
+<p>好吧，这有助于提高速度。为什么这很重要？这很重要，因为我们可以依赖这种行为来控制如何执行操作，正如我们很快就会看到的。</p>
+<h4 id="预定义操作"><a href="#预定义操作" class="headerlink" title="预定义操作"></a>预定义操作</h4><p>让我们完成一些工作！拥有find命令的结果列表是有用的，但我们真正想要做的是根据列表上的项目执行操作。幸运的是，find允许根据搜索结果执行操作。有一套预定义的操作和几种应用用户定义操作的方法。首先，让我们看看几个预定义的操作，列在表 17-6 中。</p>
+<p><em>表 17-6: 预定义的find操作</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>操作</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-delete</td>
+<td>删除当前匹配的文件。</td>
+</tr>
+<tr>
+<td>-ls</td>
+<td>对匹配的文件执行类似于ls -dils的操作。输出发送到标准输出。</td>
+</tr>
+<tr>
+<td>-print</td>
+<td>将匹配文件的完整路径名输出到标准输出。如果没有指定其他操作，则为默认操作。</td>
+</tr>
+<tr>
+<td>-quit</td>
+<td>一旦匹配，就退出。</td>
+</tr>
+</tbody></table>
+<p>与测试一样，还有更多的操作。有关完整详情，请参阅find手册页。</p>
+<p>在第一个示例中，我们这样做了：</p>
+<p><strong>find ~</strong></p>
+<p>这产生了一个列表，包含我们家目录中的每个文件和子目录。它产生了一个列表，因为如果没有指定其他操作，则隐含-print操作。因此，我们的命令也可以这样表达：</p>
+<p><strong>find ~ -print</strong></p>
+<p>我们可以使用find删除符合某些条件的文件。例如，要删除具有文件扩展名.bak的文件（通常用于指定备份文件），我们可以使用以下命令：</p>
+<p><strong>find ~ -type f -name ‘*.bak’ -delete</strong></p>
+<p>在这个示例中，搜索用户家目录（及其子目录）中以.bak结尾的文件名。当它们被找到时，它们被删除。</p>
+<p><strong>警告：</strong> 不用说，当使用-delete操作时，你应该<em><strong>极其小心</strong></em>。总是先用-print操作替换-delete来测试命令，以确认搜索结果。</p>
+<p>在继续之前，让我们再看一下逻辑运算符如何影响操作。考虑以下命令：</p>
+<p><strong>find ~ -type f -name ‘*.bak’ -print</strong></p>
+<p>正如我们所见，这个命令将查找每个常规文件（-type f），其名称以.bak结尾（-name ‘*.bak’），并将每个匹配文件的相对路径名输出到标准输出（-print）。然而，命令执行方式的原因是由测试和操作之间的逻辑关系决定的。记住，默认情况下，在每个测试和操作之间隐含一个-and关系。我们也可以这样表达命令，使逻辑关系更容易看到：</p>
+<p><strong>find ~ -type f -and -name ‘*.bak’ -and -print</strong></p>
+<p>用我们的命令完全表达出来，让我们来看看逻辑运算符是如何影响其执行的：</p>
+<table>
+<thead>
+<tr>
+<th><strong>测试&#x2F;动作</strong></th>
+<th><strong>仅当…为真时执行</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-print</td>
+<td>-type f 和 -name ‘*.bak’ 都为真时</td>
+</tr>
+<tr>
+<td>-name ‘*.bak’</td>
+<td>-type f 为真时</td>
+</tr>
+<tr>
+<td>-type f</td>
+<td>由于它是 and 关系中的第一个测试&#x2F;动作，因此总是执行。</td>
+</tr>
+</tbody></table>
+<p>由于测试和动作之间的逻辑关系决定了哪些测试和动作被执行，我们可以看到测试和动作的顺序是重要的。例如，如果我们将测试和动作的顺序重新排列，使得 -print 动作是第一个，那么命令的行为将大不相同。</p>
+<p><strong>find ~ -print -and -type f -and -name ‘*.bak’</strong></p>
+<p>这个版本的命令将打印每个文件（-print 动作总是返回真）然后测试文件类型和指定的文件扩展名。</p>
+<h4 id="用户定义的动作"><a href="#用户定义的动作" class="headerlink" title="用户定义的动作"></a>用户定义的动作</h4><p>除了预定义的动作之外，我们还可以调用任意命令。传统的方式是使用 -exec 动作。这个动作的工作方式如下：</p>
+<p>**-exec **<em><strong>command</strong></em> {} ;</p>
+<p>这里 <em>command</em> 是命令的名称，{} 是当前路径名的符号表示，分号是一个必需的分隔符，表示命令的结束。这里有一个使用 -exec 来像前面讨论的 -delete 动作那样的例子：</p>
+<p><strong>-exec rm ‘{}’ ‘;’</strong></p>
+<p>同样，由于大括号和分号字符对 shell 有特殊含义，它们必须被引用或转义。</p>
+<p>也可以交互式地执行用户定义的动作。使用 -ok 动作代替 -exec，每次执行指定命令之前都会提示用户。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">find ~ -<span class="built_in">type</span> f -name <span class="string">&#x27;foo*&#x27;</span> -ok <span class="built_in">ls</span> -l <span class="string">&#x27;&#123;&#125;&#x27;</span> <span class="string">&#x27;;&#x27;</span></span><br><span class="line">&lt; <span class="built_in">ls</span> ... /home/me/bin/foo &gt; ? y</span><br><span class="line">-rwxr-xr-x 1 me me 224 2007-10-29 18:44 /home/me/bin/foo</span><br><span class="line">&lt; <span class="built_in">ls</span> ... /home/me/foo.txt &gt; ? y</span><br><span class="line">-rw-r--r-- 1 me me 0 2016-09-19 12:53 /home/me/foo.txt</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们搜索以字符串 foo 开头的文件名，并在每次找到时执行 ls -l 命令。使用 -ok 动作在执行 ls 命令之前提示用户。</p>
+<h4 id="提高效率"><a href="#提高效率" class="headerlink" title="提高效率"></a>提高效率</h4><p>当使用 -exec 动作时，每次找到匹配的文件就会启动指定命令的一个新实例。有时我们可能更愿意将所有的搜索结果合并起来，只启动一次指定命令的实例。例如，我们可能更愿意这样执行命令：</p>
+<p>**ls -l **<em><strong>file1 file2</strong></em></p>
+<p>而不是这样：</p>
+<p>**ls -l **<em><strong>file1</strong></em></p>
+<p>**ls -l **<em><strong>file2</strong></em></p>
+<p>这导致命令只需要执行一次而不是多次。我们可以通过两种方式做到这一点：传统的方式，使用外部命令 xargs 和 find 本身的一个新特性。我们先讨论后一种方式。</p>
+<p>通过将尾随的分号字符更改为加号，我们激活了 find 将搜索结果的结果合并成一个参数列表，以便单次执行所需命令的能力。回到我们的例子，这将在每次找到匹配文件时执行 ls：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find ~ -<span class="built_in">type</span> f -name <span class="string">&#x27;foo*&#x27;</span> -<span class="built_in">exec</span> <span class="built_in">ls</span> -l <span class="string">&#x27;&#123;&#125;&#x27;</span> <span class="string">&#x27;;&#x27;</span></span><br><span class="line">-rwxr-xr-x 1 me me 224 2007-10-29 18:44 /home/me/bin/foo</span><br><span class="line">-rw-r--r-- 1 me me 0 2016-09-19 12:53 /home/me/foo.txt</span><br></pre></td></tr></table></figure>
+
+<p>通过将命令更改为以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">find ~ -</span><br><span class="line"></span><br><span class="line"><span class="built_in">type</span> f -name <span class="string">&#x27;foo*&#x27;</span> -<span class="built_in">exec</span> <span class="built_in">ls</span> -l <span class="string">&#x27;&#123;&#125;&#x27;</span> +</span><br><span class="line">-rwxr-xr-x 1 me me 224 2007-10-29 18:44 /home/me/bin/foo</span><br><span class="line">-rw-r--r-- 1 me me 0 2016-09-19 12:53 /home/me/foo.txt</span><br></pre></td></tr></table></figure>
+
+<p>我们得到相同的结果，但系统只需要执行一次 ls 命令。</p>
+<h4 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h4><p>xargs 命令执行一个有趣的功能。它从标准输入接受输入，并将其转换为指定命令的参数列表。在我们的例子中，我们将像这样使用它：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find ~ -<span class="built_in">type</span> f -name <span class="string">&#x27;foo*&#x27;</span> -<span class="built_in">print</span> | xargs <span class="built_in">ls</span> -l</span><br><span class="line">-rwxr-xr-x 1 me me 224 2007-10-29 18:44 /home/me/bin/foo</span><br><span class="line">-rw-r--r-- 1 me me 0 2016-09-19 12:53 /home/me/foo.txt-rwxr-xr-x 1 me  me 224 2007-10-29 18:44 /home/me/bin/foo -rw-r--r-- 1 me  me  0 2016-09-19 12:53 /home/me/foo.txt</span><br></pre></td></tr></table></figure>
+
+<p>这里我们看到 find 命令的输出被管道输送到 xargs，xargs 接着为 ls 命令构建一个参数列表，然后执行它。</p>
+<p><strong>注意：</strong> 虽然可以放置在命令行中的参数数量非常大，但它并不是无限的。创建的命令可能太长，无法被 shell 接受。当命令行超过系统支持的最大长度时，xargs 会用尽可能多的参数执行指定的命令，然后重复此过程，直到标准输入耗尽。要查看命令行的最大尺寸，可以执行带有 –show-limits 选项的 xargs。</p>
+<h3 id="处理有趣的文件名"><a href="#处理有趣的文件名" class="headerlink" title="处理有趣的文件名"></a>处理有趣的文件名</h3><p>类 Unix 系统允许在文件名中嵌入空格（甚至是换行符！）。这对于像 xargs 这样构建其他程序的参数列表的程序来说会造成问题。嵌入的空格将被视为分隔符，结果命令将把每个空格分隔的单词解释为一个单独的参数。为了克服这个问题，find 和 xargs 允许使用 <em>空字符</em> 作为参数分隔符。空字符在 ASCII 中被定义为数字零（而不是例如空格字符，它在 ASCII 中被定义为数字 32）所表示的字符。find 命令提供了动作 -print0，它产生空字符分隔的输出，xargs 命令有 –null（或 -0）选项，它接受空字符分隔的输入。这里有一个例子：</p>
+<p><strong>find ~ -iname ‘*.jpg’ -print0 | xargs –null ls -l</strong></p>
+<p>使用这种技术，我们可以确保即使是那些文件名中包含嵌入空格的文件，也能被正确处理。</p>
+<h4 id="返回到操场"><a href="#返回到操场" class="headerlink" title="返回到操场"></a>返回到操场</h4><p>是时候把 find 命令用于一些（几乎）实际用途了。我们将创建一个操场并尝试一些我们学到的东西。</p>
+<p>首先，让我们创建一个包含许多子目录和文件的操场。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">mkdir</span> -p playground/dir-&#123;001..100&#125;</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">touch</span> playground/dir-&#123;001..100&#125;/file-&#123;A..Z&#125;</span><br></pre></td></tr></table></figure>
+
+<p>惊叹于命令行的力量！通过这两行命令，我们创建了一个包含 100 个子目录的操场，每个子目录中都包含 26 个空文件。尝试使用 GUI 做这个！</p>
+<p>我们使用了一个熟悉的命令（mkdir）、一个不常见的 shell 扩展（大括号）和一个新命令 touch 完成这个神奇的操作。通过结合使用 mkdir 和其 -p 选项（它会使 mkdir 创建指定路径的父目录）以及大括号扩展，我们成功创建了 100 个子目录。</p>
+<p>通常，touch 命令用于设置或更新文件的访问、更改和修改时间。然而，如果文件名参数是不存在的文件，那么会创建一个空文件。</p>
+<p>在我们的实验环境中，我们创建了 100 个名为 file-A 的文件实例。让我们来找到它们。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find playground -<span class="built_in">type</span> f -name <span class="string">&#x27;file-A&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>请注意，与 ls 不同，find 命令产生的结果并不是排序的。其顺序由存储设备的布局决定。我们可以通过以下方式确认我们确实有 100 个 file-A 文件实例。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find playground -<span class="built_in">type</span> f -name <span class="string">&#x27;file-A&#x27;</span> | <span class="built_in">wc</span> -l</span><br><span class="line">100</span><br></pre></td></tr></table></figure>
+
+<p>接下来，让我们根据文件的修改时间来查找文件。这在创建备份或按时间顺序组织文件时很有帮助。为此，我们首先创建一个参照文件，用于比较修改时间。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">touch</span> playground/timestamp</span><br></pre></td></tr></table></figure>
+
+<p>这将创建一个名为 timestamp 的空文件，并将其修改时间设置为当前时间。我们可以使用另一个方便的命令 stat 来验证这一点，stat 命令是 ls 的增强版。stat 命令揭示了系统对文件及其属性的全部理解。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">stat</span> playground/timestamp</span><br><span class="line"> File: `playground/timestamp<span class="string">&#x27;</span></span><br><span class="line"><span class="string"> Size: 0 Blocks: 0 IO Block: 4096 regular empty file</span></span><br><span class="line"><span class="string">Device: 803h/2051d Inode: 14265061 Links: 1</span></span><br><span class="line"><span class="string">Access: (0644/-rw-r--r--) Uid: ( 1001/ me) Gid: ( 1001/ me)</span></span><br><span class="line"><span class="string">Access: 2018-10-08 15:15:39.000000000 -0400</span></span><br><span class="line"><span class="string">Modify: 2018-10-08 15:15:39.000000000 -0400</span></span><br><span class="line"><span class="string">Change: 2018-10-08 15:15:39.000000000 -0400</span></span><br></pre></td></tr></table></figure>
+
+<p>如果我们再次使用 touch 命令，然后用 stat 检查文件，我们会看到文件的时间已被更新。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">touch</span> playground/timestamp</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">stat</span> playground/timestamp</span><br><span class="line"> File: `playground/timestamp<span class="string">&#x27;</span></span><br><span class="line"><span class="string"> Size: 0 Blocks: 0 IO Block: 4096 regular empty file</span></span><br><span class="line"><span class="string">Device: 803h/2051d Inode: 14265061 Links: 1</span></span><br><span class="line"><span class="string">Access: (0644/-rw-r--r--) Uid: ( 1001/ me) Gid: ( 1001/ me)</span></span><br><span class="line"><span class="string">Access: 2018-10-08 15:23:33.000000000 -0400</span></span><br><span class="line"><span class="string">Modify: 2018-10-08 15:23:33.000000000 -0400</span></span><br><span class="line"><span class="string">Change: 2018-10-08 15:23:33.000000000 -0400</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来，让我们使用 find 命令更新我们实验环境中的一些文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find playground -<span class="built_in">type</span> f -name <span class="string">&#x27;file-B&#x27;</span> -<span class="built_in">exec</span> <span class="built_in">touch</span></span><br><span class="line"><span class="string">&#x27;&#123;&#125;&#x27;</span> <span class="string">&#x27;;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这会更新实验环境中所有名为 file-B 的文件。接下来我们会使用 find 来识别已更新的文件，通过将所有文件与参照文件 timestamp 进行比较。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find playground -<span class="built_in">type</span> f -newer playground/timestamp</span><br></pre></td></tr></table></figure>
+
+<p>结果包含了所有 100 个 file-B 实例。由于在更新 timestamp 之后，我们对实验环境中名为 file-B 的所有文件执行了 touch 操作，它们现在比 timestamp “更新”，因此可以通过 -newer 测试识别出来。</p>
+<p>最后，让我们回到之前进行的错误权限测试，并将其应用到实验环境中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find playground \( -<span class="built_in">type</span> f -not -perm 0600 \) -or \(</span><br><span class="line">-<span class="built_in">type</span> d -not -perm 0700 \)</span><br></pre></td></tr></table></figure>
+
+<p>此命令列出了实验环境中的所有 100 个目录和 2,600 个文件（以及 timestamp 和实验环境本身，共 2,702 个），因为它们都不符合我们定义的“好权限”。有了我们对运算符和动作的了解，我们可以向这个命令添加动作，以便对实验环境中的文件和目录应用新的权限。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find playground \( -<span class="built_in">type</span> f -not -perm 0600 -<span class="built_in">exec</span></span><br><span class="line"><span class="built_in">chmod</span> 0600 <span class="string">&#x27;&#123;&#125;&#x27;</span> <span class="string">&#x27;;&#x27;</span> \) -or \( -<span class="built_in">type</span> d -not -perm 0700 -<span class="built_in">exec</span> <span class="built_in">chmod</span></span><br><span class="line">0700 <span class="string">&#x27;&#123;&#125;&#x27;</span> <span class="string">&#x27;;&#x27;</span> \)</span><br></pre></td></tr></table></figure>
+
+<p>在日常基础上，我们可能会发现发出两个命令，一个针对目录，一个针对文件，比这个大型复合命令更容易，但了解我们可以这样做是很好的。重要的一点是要理解如何将运算符和动作一起使用来执行有用的任务。</p>
+<h4 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h4><p>最后，我们有选项。选项用于控制 find 搜索的范围。它们可以在构建 find 表达式时与其他测试和动作一起包括在内。表 17-7 列出了最常用的 find 选项。</p>
+<p><em>表 17-7:</em> <em>find 选项</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-depth</td>
+<td>指导 find 在处理目录本身之前先处理目录的文件。当指定 -delete 动作时，此选项会自动应用。</td>
+</tr>
+<tr>
+<td>-maxdepth <em>levels</em></td>
+<td>设置 find 在执行测试和动作时下降到目录树中的最大层数。</td>
+</tr>
+<tr>
+<td>-mindepth <em>levels</em></td>
+<td>设置 find 在应用测试和动作之前下降到目录树中的最小层数。</td>
+</tr>
+<tr>
+<td>-mount</td>
+<td>指导 find 不遍历挂载在其他文件系统上的目录。</td>
+</tr>
+<tr>
+<td>-noleaf</td>
+<td>指导 find 不基于其正在搜索类 Unix 文件系统的假设来优化搜索。当扫描 DOS&#x2F;Windows 文件系统和 CD-ROM 时需要这样做。</td>
+</tr>
+</tbody></table>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>很容易看出 locate 与 find 的复杂程度相反。它们各有用途。花时间探索 find 的许多功能。它可以通过定期使用，提高您对 Linux 文件系统操作的理解。</p>
+<h3 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h3><ul>
+<li>locate、updatedb、find 和 xargs 程序都是 GNU 项目的 <em>findutils</em> 包的一部分。GNU 项目提供了一个网站，上面有广泛的在线文档，这些文档非常好，如果您在高安全环境中使用这些程序，应该阅读：<span class="exturl" data-url="aHR0cDovL3d3dy5nbnUub3JnL3NvZnR3YXJlL2ZpbmR1dGlscy8=">http://www.gnu.org/software/findutils/<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TLCL/" rel="tag"># TLCL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/16-networking/" rel="prev" title="网络">
+                  <i class="fa fa-angle-left"></i> 网络
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/18-archiving-and-backup/" rel="next" title="归档与备份">
+                  归档与备份 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"f3a4bd1b32cdbdbb006ce19ea5d42e28"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

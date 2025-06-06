@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="现象描述因近期服务不稳定，根据现象来对 APACHE 调优，以前用 MAXCLIENTS 3000, 砖家建议后，改为 1500。 MaxClients 要加到多少？ 连接数理论上当然是支持越大越好，但要在服务器的能力范围内，这跟服务器的 CPU、内存、带宽等都有关系。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="apache 中 MaxClients 与 MaxRequestsPerChild 并发数">
+<meta property="og:url" content="https://slagga.top/2016/08/apache-concurrency/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="现象描述因近期服务不稳定，根据现象来对 APACHE 调优，以前用 MAXCLIENTS 3000, 砖家建议后，改为 1500。 MaxClients 要加到多少？ 连接数理论上当然是支持越大越好，但要在服务器的能力范围内，这跟服务器的 CPU、内存、带宽等都有关系。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-08-12T08:11:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.889Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="ab">
+<meta property="article:tag" content="MPM">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2016/08/apache-concurrency/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2016/08/apache-concurrency/","path":"2016/08/apache-concurrency/","title":"apache 中 MaxClients 与 MaxRequestsPerChild 并发数"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>apache 中 MaxClients 与 MaxRequestsPerChild 并发数 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%B0%E8%B1%A1%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">现象描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#httpd-conf-%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">httpd.conf 文件配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#httpd-mpm-conf-%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">httpd-mpm.conf 文件配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%81%E5%8A%A0%E5%88%B0%E5%A4%9A%E5%B0%91%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">要加到多少？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8-usr-local-apache-bin-ab-%E6%9D%A5%E6%B5%8B%E8%AF%95%E5%8E%8B%E5%8A%9B-%E4%B8%8D%E8%BF%87%E8%BF%98%E6%9C%89%E4%B8%80%E4%B8%AA%E5%B7%A5%E5%85%B7%E5%8F%AB-webbench-%E4%B9%9F%E5%8F%AF%E4%BB%A5%E6%B5%8B%E8%AF%95%E3%80%82"><span class="nav-number">6.</span> <span class="nav-text">用 &#x2F;usr&#x2F;local&#x2F;apache&#x2F;bin&#x2F;ab 来测试压力 不过还有一个工具叫 webbench 也可以测试。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%AF%E5%9C%A8%E4%BD%BF%E7%94%A8-Apache2-2-%E7%9A%84-ab-%E8%BF%9B%E8%A1%8C%E6%B5%8B%E8%AF%95%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text">是在使用 Apache2.2 的 ab 进行测试时遇到的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apache-%E7%AE%80%E4%BB%8B"><span class="nav-number">8.</span> <span class="nav-text">apache 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E4%B8%80%E4%B8%AA-MPM"><span class="nav-number">8.0.1.</span> <span class="nav-text">选择一个 MPM</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MPM-%E6%A6%82%E8%BF%B0"><span class="nav-number">9.</span> <span class="nav-text">MPM 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="nav-number">9.0.0.1.</span> <span class="nav-text">工作方式</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Apache-MPM-worker-%E6%94%AF%E6%8C%81%E6%B7%B7%E5%90%88%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%A4%9A%E8%B7%AF%E5%A4%84%E7%90%86%E6%A8%A1%E5%9D%97%E6%A6%82%E8%BF%B0"><span class="nav-number">10.</span> <span class="nav-text">Apache MPM worker 支持混合的多线程多进程的多路处理模块概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F-1"><span class="nav-number">10.0.1.</span> <span class="nav-text">工作方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-apache-%E4%BD%BF%E7%94%A8-workerMPM%EF%BC%9A"><span class="nav-number">11.</span> <span class="nav-text">配置 apache 使用 workerMPM：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2016/08/apache-concurrency/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="apache 中 MaxClients 与 MaxRequestsPerChild 并发数 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          apache 中 MaxClients 与 MaxRequestsPerChild 并发数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-08-12 16:11:30" itemprop="dateCreated datePublished" datetime="2016-08-12T16:11:30+08:00">2016-08-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Apache/" itemprop="url" rel="index"><span itemprop="name">Apache</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>因近期服务不稳定，根据现象来对 APACHE 调优，以前用 MAXCLIENTS 3000, 砖家建议后，改为 1500。</p>
+<p>MaxClients 要加到多少？ 连接数理论上当然是支持越大越好，但要在服务器的能力范围内，这跟服务器的 CPU、内存、带宽等都有关系。 </p>
+<span id="more"></span>
+
+<p>最大 client 联接数的算法 查看当前的连接数可以用 <code>ps aux | grep httpd | wc -l</code></p>
+<p>或者 <code>pgrep httpd|wc -l</code> 或 实时检测 HTTPD 连接数 <code>watch -n 1 -d &quot;pgrep httpd|wc -l&quot;</code></p>
+<p>计算 httpd 占用内存的平均数 <code>ps aux|grep -v grep|awk &#39;/httpd/&#123;sum+=$6;n++&#125;;END &#123;print sum/n&#125;&#39;</code> <code>14446.1 14M</code> 或 top 一下，httpd 占内存 0.1%, 0.2%, 就是 8-16M, 按 16M 来。或常规按 20M 来算也成。</p>
+<p>服务器内存有 8G，除去常规启动的服务大约需要一些（保守估计），就当 6G 可用，那么理论上可以支持 <code>610241024*1024/20000000 = 322</code> 个用户？ </p>
+<p>那问题就出来了， 1 为何 HTTPD 占 20M 这么大？ 2TOP 时发现 JAVA 占 14% 内存 (是全部内存的 14%，还是其他)</p>
+<p><code>MaxRequestsPerChild</code> 放个非 0 的较小数即可</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>首先要了解 Apache 采用的 MPM（Multi -Processing Modules，多道处理模块） MPM 是 Apache 的核心，它的作用是管理网络连接、调度请求。</p>
+<p>Apache2.0 中 MPM 分为 3 种（perfork、worker、event）。perfork 从 Apache1.3 中继承下来的，它采用的是进程管 理方式，所以它可以提供更可靠的性能和更好的兼容性。</p>
+<p>worker 是 Apache2.0 中新增加的方式，它采用了线程控制方法，可以比 perfork 更节 约系统开销、处理更多的数据量，但同时兼容性并不是很好，很多旧的程序无法工作在 worker 下。</p>
+<p>event 仍处于试验阶段，它为每个任务分配不同的进程 池，目前不应该采用。 通过命令 httpd -l 可以获取目前 Apache 采用的是哪种 MPM 本文仅针对 perfork 方式进行讨论</p>
+<p>了解 perfork 的工作方式 查看 Apache2.0 的配置文件 httpd.conf，可以看到 perfork 的配置段，大致如下</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ServerLimit</span> <span class="number">256</span></span><br><span class="line"><span class="attribute">StartServers</span> <span class="number">5</span></span><br><span class="line"><span class="attribute">MinSpareServers</span> <span class="number">10</span></span><br><span class="line"><span class="attribute">MaxSpareServers</span> <span class="number">15</span></span><br><span class="line"><span class="attribute">MaxClients</span> <span class="number">256</span></span><br><span class="line"><span class="attribute">MaxRequestsPerChild</span> <span class="number">4000</span></span><br></pre></td></tr></table></figure>
+
+<p>当 Apache 被启动时，Apache 会自动创建 StartServers 个进程，并且尽力将空闲进程数保持在 <code>MinSpareServers</code> 和 <code>MaxSpareServers</code> 之间。</p>
+<p>如果空闲进程小于 <code>MinSpareServers，Apache</code> 将会以大约每秒 1 个的速度新建进程。</p>
+<p>如果空闲进程小于 <code>MaxSpareServers，Apache</code> 将会删除多余的空闲进程，释放服务器资源。 </p>
+<p>进程数的最大值由 MaxClients 控制，在 Apache1.3 中最大只能设置为 256，但在 Apache2.0 中，可以通过在配置开头增加 ServerLimit 项目来突破 256 的限制，此时必须 MaxClients ≤ ServerLimit ≤ 20000 MaxRequestsPerChild 用来控制每个进程在处理了多少次请求之后自动销毁，这个参数可以设置为 0 表示无限（即不销毁进程）。</p>
+<p>优化 perfork 首先，对于一个负载相对较高的网站来说，256 的进程限制是不够的，如果服务器已经达到 256 的极限，那么接下去的访问就需要排队，这也就是为什么某些服务器负载不高，但是访问却很慢的原因之一。所以首先应该了解服务器在繁忙时的进程数量。 </p>
+<p>通过命令 <code>ps -ef|grep httpd|wc -l</code> 可以了解到当前系统中 Apache 进程数，通过设置 ServerLimit 和 MaxClients 来达到为服务器软扩容的目的。</p>
+<p>然后，在访问量高峰期，经常会出现的情况是突然之间发生非常多的并发连接，然后突然之间减少了很多访问。</p>
+<p>如果 Apache 没有准备足够数量的预备进 程，那访问只能等待 Apache 每秒 1 个的新增进程，随后又要将多余的进程删除，那 Apache 只能一直忙于新建和销毁进程，大大地降低了访问速度。</p>
+<p>可以适当增加 <code>StartServers、MinSpareServers、MaxSpareServers</code> 来使得 Apache 不需要一直忙于作无用功。</p>
+<p>最后，强烈推荐 <code>MaxRequestsPerChild</code> 不要设置为 0，设置为非 0，可以保护 Apache 进程免遭内存泄漏的影响，因为你不知道运行在 Apache 上的应用程式在什么时候会出错导致内存泄漏。</p>
+<h2 id="httpd-conf-文件配置"><a href="#httpd-conf-文件配置" class="headerlink" title="httpd.conf 文件配置"></a>httpd.conf 文件配置</h2><p>设置完之后大致是这样的：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ServerLimit</span> <span class="number">1000</span></span><br><span class="line"><span class="attribute">StartServers</span> <span class="number">30</span></span><br><span class="line"><span class="attribute">MinSpareServers</span> <span class="number">30</span></span><br><span class="line"><span class="attribute">MaxSpareServers</span> <span class="number">45</span></span><br><span class="line"><span class="attribute">MaxClients</span> <span class="number">1000</span></span><br><span class="line"><span class="attribute">MaxRequestsPerChild</span> <span class="number">4000</span></span><br></pre></td></tr></table></figure>
+
+<p>apache 修改最大连接并用 ab 网站压力测试</p>
+<p>apache 2.2，使用默认配置，默认最大连接数是 150</p>
+<p>首先在 <code>httpd.conf</code> 中加载 <code>httpd-mpm.conf</code> 配置（去掉前面的注释）</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Server-pool management (MPM specific)</span><br><span class="line"><span class="keyword">Include</span> <span class="keyword">conf</span>/extra/httpd-mpm.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="httpd-mpm-conf-文件配置"><a href="#httpd-mpm-conf-文件配置" class="headerlink" title="httpd-mpm.conf 文件配置"></a>httpd-mpm.conf 文件配置</h2><p>可见的 MPM 配置在 <code>/usr/local/apache/conf/extra/httpd-mpm.conf</code>，但里面根据 httpd 的工作模式分了很多块，哪一部才是当前 httpd 的工作模式呢？</p>
+<p>可通过执行 apachectl -l 来查看： <code>[root@zh888 extra]# /usr/local/apache/bin/apachectl -l</code> &#x2F;&#x2F; 因为采用静态编译 Compiled in modules:</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">core<span class="selector-class">.c</span></span><br><span class="line">mod_authn_file<span class="selector-class">.c</span></span><br><span class="line">mod_authn_default<span class="selector-class">.c</span></span><br><span class="line">mod_authz_host<span class="selector-class">.c</span></span><br><span class="line">mod_authz_groupfile<span class="selector-class">.c</span></span><br><span class="line">mod_authz_user<span class="selector-class">.c</span></span><br><span class="line">mod_authz_default<span class="selector-class">.c</span></span><br><span class="line">mod_auth_basic<span class="selector-class">.c</span></span><br><span class="line">mod_cache<span class="selector-class">.c</span></span><br><span class="line">mod_disk_cache<span class="selector-class">.c</span></span><br><span class="line">mod_mem_cache<span class="selector-class">.c</span></span><br><span class="line">mod_include<span class="selector-class">.c</span></span><br><span class="line">mod_filter<span class="selector-class">.c</span></span><br><span class="line">mod_deflate<span class="selector-class">.c</span></span><br><span class="line">mod_log_config<span class="selector-class">.c</span></span><br><span class="line">mod_env<span class="selector-class">.c</span></span><br><span class="line">mod_expires<span class="selector-class">.c</span></span><br><span class="line">mod_headers<span class="selector-class">.c</span></span><br><span class="line">mod_setenvif<span class="selector-class">.c</span></span><br><span class="line">mod_version<span class="selector-class">.c</span></span><br><span class="line">mod_proxy<span class="selector-class">.c</span></span><br><span class="line">mod_proxy_connect<span class="selector-class">.c</span></span><br><span class="line">mod_proxy_ftp<span class="selector-class">.c</span></span><br><span class="line">mod_proxy_http<span class="selector-class">.c</span></span><br><span class="line">mod_proxy_scgi<span class="selector-class">.c</span></span><br><span class="line">mod_proxy_ajp<span class="selector-class">.c</span></span><br><span class="line">mod_proxy_balancer<span class="selector-class">.c</span></span><br><span class="line">prefork<span class="selector-class">.c</span>   <span class="comment">// 才用 prefork 所以在 httpd-mpm.conf 中找到 mpm_prefork_module</span></span><br><span class="line">http_core<span class="selector-class">.c</span></span><br><span class="line">mod_mime<span class="selector-class">.c</span></span><br><span class="line">mod_status<span class="selector-class">.c</span></span><br><span class="line">mod_autoindex<span class="selector-class">.c</span></span><br><span class="line">mod_asis<span class="selector-class">.c</span></span><br><span class="line">mod_cgi<span class="selector-class">.c</span></span><br><span class="line">mod_negotiation<span class="selector-class">.c</span></span><br><span class="line">mod_dir<span class="selector-class">.c</span></span><br><span class="line">mod_actions<span class="selector-class">.c</span></span><br><span class="line">mod_userdir<span class="selector-class">.c</span></span><br><span class="line">mod_alias<span class="selector-class">.c</span></span><br><span class="line">mod_rewrite<span class="selector-class">.c</span></span><br><span class="line">mod_so.c</span><br></pre></td></tr></table></figure>
+
+<p>所以修改连接数就在 <code>/usr/local/apache/conf/extra/httpd-mpm.conf</code> 这个文件了，打开它就找到 prefork 模式的默认配置是</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">&lt;IfModule mpm_prefork_module&gt;</span></span><br><span class="line"><span class="attribute">StartServers</span> <span class="number">5</span></span><br><span class="line"><span class="attribute">MinSpareServers</span> <span class="number">5</span></span><br><span class="line"><span class="attribute">MaxSpareServers</span> <span class="number">10</span></span><br><span class="line"><span class="attribute">MaxClients</span> <span class="number">150</span></span><br><span class="line"><span class="attribute">MaxRequestsPerChild</span> <span class="number">0</span></span><br><span class="line"><span class="section">&lt;/IfModule&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>prefork 控制进程在最初建立 “StartServers” 个子进程后，为了满足 <code>MinSpareServers</code> 设置的需要创建一个进程，等待一秒钟，继续创建两个，再等待一秒钟，继续创建四个…… 如此按指数级增加创建的进程数，最多达到每秒 32 个，直到满足 <code>MinSpareServers</code> 设置的值为止。</p>
+<p>这种模式可以不必在请求到来时再产生新的进程，从而减小了系统开销以增加性能。MaxSpareServers 设置了最大的空闲进程数，如果空闲进程数大 于这个值，Apache 会自动 kill 掉一些多余进程。这个值不要设得过大，但如果设的值比 <code>MinSpareServers</code> 小，Apache 会自动把其调 整为 <code>MinSpareServers+1</code>。如果站点负载较大，可考虑同时加大 <code>MinSpareServers</code> 和 <code>MaxSpareServers。</code></p>
+<p>MaxRequestsPerChild设置的是每个子进程可处理的请求数。每个子进程在处理了“MaxRequestsPerChild”个请求后将自动销毁。0意味着无限，即子进程永不销毁。</p>
+<p>虽然缺省设为 0 可以使每个子进程处理更多的请求，但如果设成非零值也有两点重要的好处</p>
+<ol>
+<li>可防止意外的内存泄漏。 </li>
+<li>在服务器负载下降的时侯会自动减少子进程数。因此，可根据服务器的负载来调整这个值。MaxClients 是这些指令中最为重要的一个，设定的是 Apache 可以同时处理的请求，是对 Apache 性能影响最大的参数。其缺省值 150 是远远不够的，如果请求总数已达到这个值（可通过 <code>ps -ef|grep httpd|wc -l</code> 来确认），那么后面的请求就要排队，直到某个已处理请求完毕。这就是系统资源还剩下很多而 HTTP 访问却很慢的主要原因。虽然理论上这个值越大，可以 处理的请求就越多，但 Apache 默认的限制不能大于 <code>256。ServerLimit</code> 指令无须重编译 Apache 就可以加大 <code>MaxClients。</code></li>
+</ol>
+<p>注意，虽 然通过设置 ServerLimit，我们可以把 MaxClients 加得很大，但是往往会适得其反，系统耗光所有内存。</p>
+<p>以我手头的一台服务器为例：内存 2G，每个 apache 进程消耗大约 0.5%（可通过 ps aux 来确认）的内存，也就是 10M，这样，理论上这台服务器最多跑 200 个 apache 进程就会耗光系统所有内存，所以，设置 MaxClients 要慎重。</p>
+<h2 id="要加到多少？"><a href="#要加到多少？" class="headerlink" title="要加到多少？"></a>要加到多少？</h2><p>连接数理论上当然是支持越大越好，但要在服务器的能力范围内，这跟服务器的 CPU、内存、带宽等都有关系。</p>
+<p>查看当前的连接数可以用 <code>ps aux | grep httpd | wc -l</code></p>
+<p>计算 httpd 占用内存的平均数 <code>ps aux|grep -v grep|awk &#39;/httpd/&#123;sum+=$6;n++&#125;;END &#123;print sum/n&#125;&#39;</code></p>
+<p>由于基本都是静态页面，CPU 消耗很低，每进程占用内存也不算多，大约 200K。</p>
+<p>假如服务器内存有 2G，除去常规启动的服务大约需要 500M（保守估计），还剩 1.5G 可用，那么理论上可以支持 <code>1.510241024*1024/200000 = 8053.06368</code></p>
+<p>约 8K 个进程，支持 2W 人同时访问应该是没有问题的（能保证其中 8K 的人访问很快，其他的可能需要等待 1、2 秒才能连上，而一旦连上就会很流畅）</p>
+<p>控制最大连接数的 MaxClients ，因此可以尝试配置为</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">&lt;IfModule mpm_prefork_module&gt;</span></span><br><span class="line"><span class="attribute">StartServers</span> <span class="number">5</span></span><br><span class="line"><span class="attribute">MinSpareServers</span> <span class="number">5</span></span><br><span class="line"><span class="attribute">MaxSpareServers</span> <span class="number">10</span></span><br><span class="line"><span class="attribute">ServerLimit</span> <span class="number">5500</span></span><br><span class="line"><span class="attribute">MaxClients</span> <span class="number">5000</span></span><br><span class="line"><span class="attribute">MaxRequestsPerChild</span> <span class="number">100</span></span><br><span class="line"><span class="section">&lt;/IfModule&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，MaxClients 默认最大为 250，若要超过这个值就要显式设置 <code>ServerLimit</code>，且 <code>ServerLimit</code> 要放在 MaxClients 之 前，值要不小于 MaxClients，不然重启 httpd 时会有提示。</p>
+<p>重启 httpd 后，通过反复执行 <code>pgrep httpd|wc -l</code> 来观察连接数，可以看到连接数在达到 MaxClients 的设值后不再增加，但此时访问网站也很流畅，那就不用贪心再设置更高的值了，不然以后如果网站访 问突增不小心就会耗光服务器内存，可根据以后访问压力趋势及内存的占用变化再逐渐调整，直到找到一个最优的设置值。</p>
+<p>(<code>MaxRequestsPerChild</code> 不能设置为 0，可能会因内存泄露导致服务器崩溃）</p>
+<p>更佳最大值计算的公式：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">apache_max_process_with_good_perfermance</span> &lt; (total_hardware_memory / apache_memory_per_process ) * <span class="number">2</span></span><br><span class="line"><span class="attribute">apache_max_process</span> = apache_max_process_with_good_perfermance * <span class="number">1</span>.<span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="用-usr-local-apache-bin-ab-来测试压力-不过还有一个工具叫-webbench-也可以测试。"><a href="#用-usr-local-apache-bin-ab-来测试压力-不过还有一个工具叫-webbench-也可以测试。" class="headerlink" title="用 /usr/local/apache/bin/ab 来测试压力 不过还有一个工具叫 webbench 也可以测试。"></a>用 <code>/usr/local/apache/bin/ab</code> 来测试压力 不过还有一个工具叫 webbench 也可以测试。</h2><p><code>[root@zh888 bin]# /usr/local/apache/bin/ab -n 100 -c 100 http://192.168.100.1:8000/index.php</code> &#x2F;&#x2F; 参数很多，一般我们用 -c 和 -n 参数就可以了，这个表示同时处理 100 个请求并运行 100 次 index.php 文件.</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">This is ApacheBench, Version <span class="number">2.3</span> &lt;$Revision: <span class="number">655654</span> $&gt; Copyright <span class="number">1996</span> Adam Twiss, Zeus Technology Ltd, <span class="keyword">http</span>://www.zeustech.net/ Licensed <span class="built_in">to</span> The Apache Software Foundation, <span class="keyword">http</span>://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking <span class="number">192.168</span><span class="number">.100</span><span class="number">.1</span> (be patient).....done</span><br><span class="line"></span><br><span class="line">Server Software: Apache/<span class="number">2.2</span><span class="number">.19</span>// 平台 apache 版本 <span class="number">2.0</span><span class="number">.54</span></span><br><span class="line"></span><br><span class="line">Server Hostname: <span class="number">192.168</span><span class="number">.100</span><span class="number">.1</span>// 服务器主机名</span><br><span class="line"></span><br><span class="line">Server Port: <span class="number">8000</span>// 端口</span><br><span class="line"></span><br><span class="line">Document Path: /index.ph<span class="comment">p// 测试的页面文档</span></span><br><span class="line"></span><br><span class="line">Document Length: <span class="number">36174</span> <span class="keyword">byte</span><span class="comment">s// 文档大小</span></span><br><span class="line"></span><br><span class="line">Concurrency Level: <span class="number">100</span>// 并发数</span><br><span class="line"></span><br><span class="line">Time taken <span class="keyword">for</span> tests: <span class="number">4.482</span> <span class="keyword">second</span><span class="comment">s// 整个测试持续的时间</span></span><br><span class="line"></span><br><span class="line">Complete requests: <span class="number">100</span>// 完成的请求数量</span><br><span class="line"></span><br><span class="line">Failed requests: <span class="number">0</span>// 失败的请求数量</span><br><span class="line"></span><br><span class="line">Write errors: <span class="number">0</span> Total transferred: <span class="number">3642600</span> <span class="keyword">byte</span><span class="comment">s// 整个场景中的网络传输量</span></span><br><span class="line"></span><br><span class="line">HTML transferred: <span class="number">3617400</span> <span class="keyword">bytes</span> Requests per <span class="keyword">second</span>: <span class="number">22.31</span> [<span class="comment">#/sec] (mean)// 大家最关心的指标之一，相当于 LR 中的 每秒事务数 ，后面括号中的 mean 表示这是一个平均值</span></span><br><span class="line"></span><br><span class="line">Time per request: <span class="number">4481.929</span> [ms] (mean<span class="comment">)// 大家最关心的指标之二，相当于 LR 中的 平均事务响应时间 ，后面括号中的 mean 表示这是一个平均值 Time per request: 44.819 [ms] (mean, across all concurrent requests)// 每个请求实际运行时间的平均值</span></span><br><span class="line"></span><br><span class="line">Transfer rate: <span class="number">793.68</span> [Kbytes/<span class="built_in">sec</span>] receive<span class="comment">d// 平均每秒网络上的流量，可以帮助排除是否存在网络流量过大导致响应时间延长的问题</span></span><br><span class="line"></span><br><span class="line">Connection Times (ms<span class="comment">)// 网络上消耗的时间的分解。</span></span><br><span class="line"></span><br><span class="line">                 <span class="built_in">min</span>  mean [+/-sd] <span class="built_in">median</span>   <span class="built_in">max</span></span><br><span class="line">Connect: <span class="number">0</span> <span class="number">73</span> <span class="number">24.5</span> <span class="number">79</span> <span class="number">96</span> Processing: <span class="number">252</span> <span class="number">2542</span> <span class="number">1291.7</span> <span class="number">2590</span> <span class="number">4386</span> Waiting: <span class="number">252</span> <span class="number">2541</span> <span class="number">1292.5</span> <span class="number">2590</span> <span class="number">4384</span> Total: <span class="number">253</span> <span class="number">2615</span> <span class="number">1311.0</span> <span class="number">2671</span> <span class="number">4482</span></span><br><span class="line"></span><br><span class="line">Percentage <span class="keyword">of</span> <span class="keyword">the</span> requests served <span class="keyword">within</span> <span class="keyword">a</span> certain <span class="built_in">time</span> (ms<span class="comment">)// 整个场景中所有请求的响应情况。</span></span><br></pre></td></tr></table></figure>
+
+<p>在场景中每个请求都有一个响应时间，其中</p>
+<p>50％的用户响应时间小于 1093 毫秒，</p>
+<p>60％ 的用户响应时间小于 1247 毫秒，</p>
+<p>最大的响应时间小于 7785 毫秒</p>
+<p>由于对于并发请求，cpu 实际上并不是同时处理的，而是按照每个请求获得的时间片逐个轮转处理的，所以基本上第一个 Time per request 时间约等于第二个 Time per request 时间乘以并发请求数</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">50</span>% <span class="number">2671</span> <span class="number">66</span>% <span class="number">3351</span> <span class="number">75</span>% <span class="number">3923</span> <span class="number">80</span>% <span class="number">4095</span> <span class="number">90</span>% <span class="number">4358</span> <span class="number">95</span>% <span class="number">4441</span> <span class="number">98</span>% <span class="number">4472</span> <span class="number">99</span>% <span class="number">4482</span> <span class="number">100</span>% <span class="number">4482</span> (longest request)</span><br></pre></td></tr></table></figure>
+
+<h2 id="是在使用-Apache2-2-的-ab-进行测试时遇到的问题"><a href="#是在使用-Apache2-2-的-ab-进行测试时遇到的问题" class="headerlink" title="是在使用 Apache2.2 的 ab 进行测试时遇到的问题"></a>是在使用 Apache2.2 的 ab 进行测试时遇到的问题</h2><p>使用 ab 测试的时候当 - c 并发数超过 1024 就会出错： </p>
+<p>windows 下提示：<code>apr_pollset_create failed: Invalid argument (22)</code> </p>
+<p>linux 下提示：s<code>ocket: Too many open files</code> </p>
+<p>解决办法： linux 下 <code>ulimit -n 35768</code>（设置系统允许同时打开的文件数，系统默认是 1024），可以用 <code>ulimit -a</code> 查看 open files 项，<code>lsof |wc -l</code> 可以查看系统所有进程的文件打开数。</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ulimit：显示（或设置）用户可以使用的资源限制 　　 　　</span><br><span class="line">ulimit -<span class="keyword">a</span> 显示用户可以使用的资源限制 　　 　　</span><br><span class="line">ulimit unlimited 不限制用户可以使用的资源，但本设置对可打开的最大文件数（<span class="built_in">max</span> <span class="built_in">open</span> <span class="built_in">files</span>）和可同时运行的最大进程数（<span class="built_in">max</span> user processes）无效</span><br><span class="line">ulimit -n &lt;可以同时打开的文件数&gt; 设置用户可以同时打开的最大文件数（<span class="built_in">max</span> <span class="built_in">open</span> <span class="built_in">files</span>）</span><br><span class="line">例如：ulimit -n <span class="number">8192</span></span><br><span class="line">如果本参数设置过小，对于并发访问量大的网站，可能会出现 too many <span class="built_in">open</span> <span class="built_in">files</span> 的错误</span><br><span class="line">ulimit -u &lt; 可以运行的最大并发进程数 &gt; 设置用户可以同时运行的最大进程数（<span class="built_in">max</span> user processes）</span><br><span class="line">例如：ulimit -u <span class="number">1024</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="apache-简介"><a href="#apache-简介" class="headerlink" title="apache 简介"></a>apache 简介</h2><p><code>Apache HTTP</code> 服务器被设计为一个强大的、灵活的能够在多种平台以及不同环境下工作的服务器。不同的平台和不同的环境经常产生不同的需求，或是为了达到同样的最 佳效果而采用不同的方法。</p>
+<p>Apache 凭借它的模块化设计很好的适应了大量不同的环境。这一设计使得网站管理员能够在编译时和运行时凭借载入不同的模块来 决定服务器的不同附加功能。</p>
+<p>Apache2.0 将这种模块化的设计延伸到了 web 服务器的基础功能上。这个版本带有多路处理模块 (MPM) 的选择以处理网络端口绑定、接受请求并指派子进程来处理这些请求。</p>
+<p>将模块化设计延伸到这一层次主要有以下两大好处：</p>
+<ul>
+<li>Apache可以更简洁、更有效地支持各种操作系统。尤其是在mpm_winnt中使用本地网络特性代替Apache1.3中使用的POSIX模拟层 后，Windows版本的Apache现在具有更好的性能。这个优势借助特定的MPM同样延伸到了其他各种操作系统。</li>
+<li>服务器可以为某些特定的站点进行定制。比如，需要更好伸缩性的站点可以选择象worker或event这样线程化的MPM，而需要更好的稳定性和兼容性以适应一些旧的软件的站点可以用prefork 。<br>从用户角度来看，MPM 更像其他的 Apache 模块。主要的不同在于：不论何时，必须有且仅有一个 MPM 被载入到服务器中。现有的 MPM 列表可以在模块索引中找到。</li>
+</ul>
+<h4 id="选择一个-MPM"><a href="#选择一个-MPM" class="headerlink" title="选择一个 MPM"></a>选择一个 MPM</h4><p>MPM 必须在编译配置时进行选择，并静态编译到服务器中。如果编译器能够确定线程功能被启用，它将会负责优化大量功能。因为一些 MPM 在 Unix 上使用了线程，而另外一些没有使用，所以如果在编译配置时选择 MPM 并静态编译进 Apache，Apache 将会有更好的表现。</p>
+<p>你可以在使用 <code>configure</code> 脚本时用 <code>--with-mpm=NAME</code> 选项指定 MPM，NAME 就是你想使用的 MPM 的名称。</p>
+<p>一旦服务器编译完成，就可以用 <code>./httpd -l</code> 命令来查看使用了哪个 MPM。这个命令将列出所有已经被编译到服务器中的模块，包括 MPM。</p>
+<p>我们主要阐述 prefork 和 worker 这两种和性能关系最大的产品级 MPM。</p>
+<p>Apache MPM prefork 一个非线程型的、预派生的 MPM</p>
+<h2 id="MPM-概述"><a href="#MPM-概述" class="headerlink" title="MPM 概述"></a>MPM 概述</h2><p>这个多路处理模块 (MPM) 实现了一个非线程型的、预派生的 web 服务器，它的工作方式类似于 Apache 1.3。它适合于没有线程安全库，需要避免线程兼容性问题的系统。</p>
+<p>它是要求将每个请求相互独立的情况下最好的 MPM，这样若一个请求出现问题就不会影响到其他请求。</p>
+<p>这个 MPM 具有很强的自我调节能力，只需要很少的配置指令调整。最重要的是将 <code>MaxClients</code> 设置为一个足够大的数值以处理潜在的请求高峰，同时又不能太大，以致需要使用的内存超出物理内存的大小。</p>
+<h5 id="工作方式"><a href="#工作方式" class="headerlink" title="工作方式"></a>工作方式</h5><p>一个单独的控制进程 (父进程) 负责产生子进程，这些子进程用于监听请求并作出应答。</p>
+<p>Apache 总是试图保持一些备用的 (spare) 或者是空闲的子进程用于迎接即将到来的请求。这样客户端就不需要在得到服务前等候子进程的产生。</p>
+<p>StartServers, MinSpareServers, MaxSpareServers, <code>MaxClients</code> 指令用于调节父进程如何产生子进程。</p>
+<p>通常情况下 Apache 具有很强的自我调节能力，所以一般的网站不需要调整这些指令的默认值。可 能需要处理最大超过 256 个并发请求的服务器可能需要增加 <code>MaxClients</code> 的值。</p>
+<p>内存比较小的机器则需要减少 <code>MaxClients</code> 的值以保证服务器不 会崩溃。更多关于调整进程产生的问题请参见性能方面的提示。</p>
+<p>在 Unix 系统中，父进程通常以 root 身份运行以便 邦定 80 端口，而 Apache 产生的子进程通常以一个低特权的用户运行。</p>
+<p>User 和 Group 指令用于设置子进程的低特权用户。运行子进程的用户必须要对 它所服务的内容有读取的权限，但是对服务内容之外的其他资源必须拥有尽可能少的权限。</p>
+<p><code>MaxRequestsPerChild</code> 指令控制服务器杀死旧进程产生新进程的频率。</p>
+<h2 id="Apache-MPM-worker-支持混合的多线程多进程的多路处理模块概述"><a href="#Apache-MPM-worker-支持混合的多线程多进程的多路处理模块概述" class="headerlink" title="Apache MPM worker 支持混合的多线程多进程的多路处理模块概述"></a>Apache MPM worker 支持混合的多线程多进程的多路处理模块概述</h2><p>此多路处理模块 (MPM) 使网络服务器支持混合的多线程多进程。由于使用线程来处理请求，所以可以处理海量请求，而系统资源的开销小于基于进程的 MPM。但是，它也使用了多进程，每个进程又有多个线程，以获得基于进程的 MPM 的稳定性。</p>
+<p>控制这个 MPM 的最重要的指令是，控制每个子进程允许建立的线程数的 <code>ThreadsPerChild</code> 指令，和控制允许建立的总线程数的 MaxClients 指令。</p>
+<h4 id="工作方式-1"><a href="#工作方式-1" class="headerlink" title="工作方式"></a>工作方式</h4><p>每个进程可以拥有的线程数量是固定的。服务器会根据负载情况增加或减少进程数量。一个单独的控制进程 (父进程) 负责子进程的建立。每个子进程可以建立 <code>ThreadsPerChild</code> 数量的服务线程和一个监听线程，该监听线程监听接入请求并将其传递给服务线程处理和应答。</p>
+<p>Apache 总是试图维持一个备用 (spare) 或是空闲的服务线程池。这样，客户端无须等待新线程或新进程的建立即可得到处理。初始化时建立的进程数量由 <code>StartServers</code> 指令决定。</p>
+<p>随后父进程检测所有子进程中空闲线程的总数，并新建或结束子进程使空闲线程的总数维持在 MinSpareThreads 和 MaxSpareThreads 所指定的范围内。由于这个过程是自动调整的，几乎没有必要修改这些指令的缺省值。</p>
+<p>可以并 行处理的客户端的最大数量取决于 MaxClients 指令。活动子进程的最大数量取决于 MaxClients 除以 <code>ThreadsPerChild</code> 的值。</p>
+<p>有 两个指令设置了活动子进程数量和每个子进程中线程数量的硬限制。要想改变这个硬限制必须完全停止服务器然后再启动服务器 (直接重启是不行 的)，ServerLimit 是活动子进程数量的硬限制，它必须大于或等于 <code>MaxClients</code> 除以 <code>ThreadsPerChild</code> 的值。 </p>
+<p><code>ThreadLimit</code> 是所有服务线程总数的硬限制，它必须大于或等于 <code>ThreadsPerChild</code> 指令。这两个指令必须出现在其他 <code>workerMPM</code> 指令的前面。</p>
+<p>在设置的活动子进程数量之外，还可能有额外的子进程处于 “正在中止” 的状态但是其中至少有一个服务线程仍然在处理客户端请求，直到到达 <code>MaxClients</code> 以致结束进程，虽然实际数量会很小。这个行为能够通过以下禁止特别的子进程中止的方法来避免：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">* </span>将MaxRequestsPerChild设为&quot;0&quot;</span><br><span class="line"><span class="bullet">* </span>将MaxSpareThreads和MaxClients设为相同的值</span><br></pre></td></tr></table></figure>
+
+<p>一个典型的针对 workerMPM 的配置如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ServerLimit</span> <span class="number">16</span></span><br><span class="line"><span class="attribute">StartServers</span> <span class="number">2</span></span><br><span class="line"><span class="attribute">MaxClients</span> <span class="number">150</span></span><br><span class="line"><span class="attribute">MinSpareThreads</span> <span class="number">25</span></span><br><span class="line"><span class="attribute">MaxSpareThreads</span> <span class="number">75</span></span><br><span class="line"><span class="attribute">ThreadsPerChild</span> <span class="number">25</span></span><br></pre></td></tr></table></figure>
+
+<p>在 Unix 中，为了能够绑定 80 端口，父进程一般都是以 root 身份启动，随后，Apache 以较低权限的用户建立子进程和线程。User 和 Group 指令 用于设置 Apache 子进程的权限。</p>
+<p>虽然子进程必须对其提供的内容拥有读权限，但应该尽可能给予它较少的特权。另外，除非使用了 suexec ，否则，这些指令设置的权限将被 CGI 脚本所继承。</p>
+<p><code>MaxRequestsPerChild</code> 指令用于控制服务器建立新进程和结束旧进程的频率。</p>
+<p>常用指令：</p>
+<p><code>StartServers</code> 指令 <code>StartServers</code> 指令设置了服务器启动时建立的子进程数量。因为子进程数量动态的取决于负载的轻重，所有一般没有必要调整这个参数。</p>
+<p><code>MinSpareServers</code> 指令 <code>MinSpareServers</code> 指令设置空闲子进程的最小数量。</p>
+<p>所谓空闲子进程是指没有正在处理请求的子进程。如果当前空闲子进程数少于 <code>MinSpareServers</code> ，那么 Apache 将以最大每秒一个的速度产生新的子进程。 </p>
+<p>只有在非常繁忙机器上才需要调整这个参数。将此参数设的太大通常是一个坏主意。</p>
+<p><code>MaxSpareServers</code> 指令 <code>MaxSpareServers</code> 指令设置空闲子进程的最大数量。所谓空闲子进程是指没有正在处理请求的子进程。如果当前有超过 <code>MaxSpareServers</code> 数量的空闲子进程，那么父进程将杀死多余的子进程。 </p>
+<p>只有在非常繁忙机器上才需要调整这个参数。将此参数设的太大通常是一个坏主意。如果你将该指令的值设置为比 <code>MinSpareServers</code> 小，Apache 将会自动将其修改成 “MinSpareServers+1”。</p>
+<p><code>MaxClients</code> 指令 <code>MaxClients</code> 指令设置了允许同时伺服的最大接入请求数量。任何超过 <code>MaxClients</code> 限制的请求都将进入等候队列，直到达到 ListenBacklog 指令限制的最大值为止。一旦一个链接被释放，队列中的请求将得到服务。 </p>
+<p>对于非线程型的 MPM (也就是 prefork)<code>，MaxClients</code> 表示可以用于伺服客户端请求的最大子进程数量，默认值是 256。要增大这个值，你必须同时增大 <code>ServerLimit</code> 。 </p>
+<p>对 于线程型或者混合型的 MPM (也就是 beos 或 worker)<code>，MaxClients</code> 表示可以用于伺服客户端请求的最大线程数量。</p>
+<p>线程型的 beos 的默认 值是 50。对于混合型的 MPM 默认值是 16 (ServerLimit) 乘以 25 (ThreadsPerChild) 的结果。</p>
+<p>因此要将 <code>MaxClients</code> 增加到超过 16 个进程才能提供的时候，你必须同时增加 ServerLimit 的值。</p>
+<p><code>MaxRequestsPerChild</code> 指令 <code>MaxRequestsPerChild</code> 指令设置每个子进程在其生存期内允许伺服的最大请求数量。</p>
+<p>到达 <code>MaxRequestsPerChild</code> 的限制后，子进程将会结束。如果 <code>MaxRequestsPerChild</code> 为 “0”，子进程将永远不会结束。</p>
+<p>不同的默认值 在 mpm_netware 和 mpm_winnt 上的默认值是 “0”。 将 <code>MaxRequestsPerChild</code> 设置成非零值有两个好处： * 可以防止 (偶然的) 内存泄漏无限进行，从而耗尽内存。 </p>
+<p>给进程一个有限寿命，从而有助于当服务器负载减轻的时候减少活动进程的数量。</p>
+<blockquote>
+<p>注意： 对于 <code>KeepAlive</code> 链接，只有第一个请求会被计数。事实上，它改变了每个子进程限制最大链接数量的行为。</p>
+</blockquote>
+<p><code>ThreadsPerChild</code> 指令 这 个指令设置了每个子进程建立的线程数。子进程在启动时建立这些线程后就不再建立新的线程了。</p>
+<p>如果使用一个类似于 mpm_winnt 只有一个子进程的 MPM，这个数值要足够大，以便可以处理可能的请求高峰。</p>
+<p>如果使用一个类似于 worker 有多个子进程的 MPM，每个子进程所拥有的所有线程的总数要足够 大，以便可以处理可能的请求高峰。</p>
+<p>对于 <code>mpm_winnt，ThreadsPerChild</code> 的默认值是 64；对于其他 MPM 是 25。</p>
+<p>ThreadLimit 指令 这个指令设置了每个子进程可配置的线程数 <code>ThreadsPerChild</code> 上限。</p>
+<p>任何在重启期间对这个指令的改变都将被忽略，但对 <code>ThreadsPerChild</code> 的修改却会生效。 使 用这个指令时要特别当心。</p>
+<p>如果将 ThreadLimit 设置成一个高出 <code>ThreadsPerChild</code> 实际需要很多的值，将会有过多的共享内存被分配。</p>
+<p>如果将 <code>ThreadLimit</code> 和 ThreadsPerChild 设置成超过系统的处理能力，Apache 可能无法启动，或者系统将变得不稳定。</p>
+<p>该指令的值应 当和 <code>ThreadsPerChild</code> 可能达到的最大值保持一致。 对于 <code>mpm_winnt，ThreadLimit</code> 的默认值是 1920；对于其他 MPM 这个值是 64。 </p>
+<p>注意： Apache 在编译时内部有一个硬性的限制 “ThreadLimit 20000”(对于 mpm_winnt 是 “ThreadLimit 15000”)，你不能超越这个限制。</p>
+<p><code>ServerLimit</code> 指令 对 于 preforkMPM，这个指令设置了 <code>MaxClients</code> 最大允许配置的数值。</p>
+<p>对于 workerMPM，这个指令和 <code>ThreadLimit</code> 结合使用设 置了 <code>MaxClients</code> 最大允许配置的数值。</p>
+<p>任何在重启期间对这个指令的改变都将被忽略，但对 <code>MaxClients</code> 的修改却会生效。 使用这个指令时要特别当心。</p>
+<p>如果将 ServerLimit 设置成一个高出实际需要许多的值，将会有过多的共享内存被分配。如果将 ServerLimit 和 <code>MaxClients</code> 设置成超过系统的处理能力，Apache 可能无法启动，或者系统将变得不稳定。 </p>
+<p>对于 preforkMPM，只有在你需要将 <code>MaxClients</code> 设置成高于默认值 256 的时候才需要使用这个指令。要将此指令的值保持和 <code>MaxClients</code> 一样。 </p>
+<p>对于 workerMPM，只有在你需要将 <code>MaxClients</code> 和 <code>ThreadsPerChild</code> 设置成需要超过默认值 16 个子进程的时候才需要使用这个指令。</p>
+<p>不要将该指令的值设置的比 <code>MaxClients</code> 和 <code>ThreadsPerChild</code> 需要的子进程数量高。 </p>
+<blockquote>
+<p>注意： Apache 在编译时内部有一个硬限制 “ServerLimit 20000”(对于 preforkMPM 为 “ServerLimit 200000”)。你不能超越这个限制。</p>
+</blockquote>
+<h2 id="配置-apache-使用-workerMPM："><a href="#配置-apache-使用-workerMPM：" class="headerlink" title="配置 apache 使用 workerMPM："></a>配置 apache 使用 workerMPM：</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> httpd-2.0.55</span> </span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make clean</span> </span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">vi server/mpm/worker/worker.c</span> </span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>修改 define DEFAULT_THREAD_LIMIT 64 为 100 即 &#x3D; 你要设置的 <code>ThreadsPerChild</code> 的值（修改默认 <code>ThreadsPerChild</code> ） </li>
+<li>修改 define DEFAULT_SERVER_LIMIT 16 为 25 即 &#x3D; 你要设置的 <code>ServerLimit</code> 值（修改默认 <code>ServerLimit</code> 值） <code>:wq</code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure --prefix=/usr/local/apache --with-mpm=worker</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span> </span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make install</span> </span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> /usr/local/apache/conf</span> </span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><code>vi httpd.conf</code> 修改 </p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">&lt;IfModule worker.c&gt;</span></span><br><span class="line"><span class="attribute">StartServers</span> <span class="number">2</span></span><br><span class="line"><span class="attribute">MaxClients</span> <span class="number">150</span></span><br><span class="line"><span class="attribute">MinSpareThreads</span> <span class="number">25</span></span><br><span class="line"><span class="attribute">MaxSpareThreads</span> <span class="number">75</span></span><br><span class="line"><span class="attribute">ThreadsPerChild</span> <span class="number">25</span></span><br><span class="line"><span class="attribute">MaxRequestsPerChild</span> <span class="number">0</span></span><br><span class="line"><span class="section">&lt;/IfModule&gt;</span></span><br></pre></td></tr></table></figure>
+<p>内容为</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">&lt;IfModule worker.c&gt;</span></span><br><span class="line"><span class="attribute">StartServers</span> <span class="number">3</span></span><br><span class="line"><span class="attribute">MaxClients</span> <span class="number">2000</span></span><br><span class="line"><span class="attribute">ServerLimit</span> <span class="number">25</span></span><br><span class="line"><span class="attribute">MinSpareThreads</span> <span class="number">50</span></span><br><span class="line"><span class="attribute">MaxSpareThreads</span> <span class="number">200</span></span><br><span class="line"><span class="attribute">ThreadLimit</span> <span class="number">200</span></span><br><span class="line"><span class="attribute">ThreadsPerChild</span> <span class="number">100</span></span><br><span class="line"><span class="attribute">MaxRequestsPerChild</span> <span class="number">0</span></span><br><span class="line"><span class="section">&lt;/IfModule&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改 serveradmin servername 等信息为正确配置 :wq </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="regexp">/usr/</span>local<span class="regexp">/apache/</span>bin/apachectl start </span><br><span class="line">$ vi <span class="regexp">/etc/</span>rc.loacl  <span class="regexp">//</span>添加 </span><br><span class="line">$ <span class="regexp">/usr/</span>local<span class="regexp">/apache/</span>bin/apachectl start</span><br></pre></td></tr></table></figure>
+
+<p>PS: 用 <code>netstat -an|grep ESTABLISHED|grep 202.100.85.249:80 |wc -l</code> 看连接数，使用 worker 模式后，httpd 进程数变少不能反映 tcp 连接数</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ab/" rel="tag"># ab</a>
+              <a href="/tags/MPM/" rel="tag"># MPM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/08/phpstorm-composer/" rel="prev" title="使用 PhpStorm+Composer 快速初始化项目">
+                  <i class="fa fa-angle-left"></i> 使用 PhpStorm+Composer 快速初始化项目
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/08/php-laravel/" rel="next" title="为什么 Laravel 会成为最成功的 PHP 框架">
+                  为什么 Laravel 会成为最成功的 PHP 框架 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"f6922fb2ac814215459fb80d763e6c7b"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

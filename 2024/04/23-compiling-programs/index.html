@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="23 – 编译程序在本章中，我们将探讨如何通过编译源代码来构建程序。源代码的可用性是使得Linux成为可能的基本自由。整个Linux开发生态系统依赖于开发者之间的自由交换。对许多桌面用户而言，编译是一种失传的艺术。它曾经相当普遍，但今天，发行版提供者维护着庞大的预编译二进制文件库，随时可以下载和使用。在本文写作之时，Debian仓库（各个发行版中最大的一个）包含超过68,000个包。 那么，为什么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译程序">
+<meta property="og:url" content="https://slagga.top/2024/04/23-compiling-programs/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="23 – 编译程序在本章中，我们将探讨如何通过编译源代码来构建程序。源代码的可用性是使得Linux成为可能的基本自由。整个Linux开发生态系统依赖于开发者之间的自由交换。对许多桌面用户而言，编译是一种失传的艺术。它曾经相当普遍，但今天，发行版提供者维护着庞大的预编译二进制文件库，随时可以下载和使用。在本文写作之时，Debian仓库（各个发行版中最大的一个）包含超过68,000个包。 那么，为什么">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-28T04:40:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.954Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="TLCL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2024/04/23-compiling-programs/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2024/04/23-compiling-programs/","path":"2024/04/23-compiling-programs/","title":"编译程序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编译程序 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#23-%E2%80%93-%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">23 – 编译程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91C%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.1.</span> <span class="nav-text">编译C程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.1.</span> <span class="nav-text">获取源代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E6%BA%90%E4%BB%A3%E7%A0%81%E6%A0%91"><span class="nav-number">1.1.2.</span> <span class="nav-text">检查源代码树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.1.3.</span> <span class="nav-text">构建程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.1.4.</span> <span class="nav-text">安装程序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E9%98%85%E8%AF%BB"><span class="nav-number">1.3.</span> <span class="nav-text">进一步阅读</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2024/04/23-compiling-programs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编译程序 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编译程序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-28 12:40:30" itemprop="dateCreated datePublished" datetime="2024-04-28T12:40:30+08:00">2024-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="23-–-编译程序"><a href="#23-–-编译程序" class="headerlink" title="23 – 编译程序"></a>23 – 编译程序</h2><p>在本章中，我们将探讨如何通过编译源代码来构建程序。源代码的可用性是使得Linux成为可能的基本自由。整个Linux开发生态系统依赖于开发者之间的自由交换。对许多桌面用户而言，编译是一种失传的艺术。它曾经相当普遍，但今天，发行版提供者维护着庞大的预编译二进制文件库，随时可以下载和使用。在本文写作之时，Debian仓库（各个发行版中最大的一个）包含超过68,000个包。</p>
+<p>那么，为什么要编译软件呢？有两个原因：</p>
+<span id="more"></span>
+
+<ol>
+<li><strong>可用性</strong>。尽管发行版仓库中有许多预编译程序，但某些发行版可能不包含所有期望的应用程序。在这种情况下，获取所需程序的唯一方式是从源代码编译。</li>
+<li><strong>及时性</strong>。虽然一些发行版专注于程序的最新版本，但许多发行版不是。这意味着要拥有程序的最新版本，编译是必要的。</li>
+</ol>
+<p>从源代码编译软件可能会变得相当复杂和技术性，并且超出了许多用户的能力范围。然而，许多编译任务很简单，只涉及几个步骤。这完全取决于包。我们将查看一个简单的案例，为那些想要进行进一步学习的人提供一个概览和起点。</p>
+<p>我们将介绍一个新命令：</p>
+<ul>
+<li>make – 维护程序的工具</li>
+</ul>
+<p><strong>什么是编译？</strong></p>
+<p>简单地说，编译是将<em>源代码</em>（程序员编写的、用于人类阅读的程序描述）翻译成计算机处理器的原生语言的过程。</p>
+<p>计算机的处理器（或<em>CPU</em>）在基本级别上工作，以所谓的<em>机器语言</em>执行程序。这是一个数字代码，描述极其小的操作，例如“添加这个字节”、“指向内存中的这个位置”或“复制这个字节”。每条指令都用二进制（一和零）表示。最早的计算机程序是使用这种数字代码编写的，这或许可以解释为什么编写它的程序员据说要抽很多烟、喝大量的咖啡，并戴厚厚的眼镜。</p>
+<p><em>汇编语言</em>的出现克服了这个问题，它用（稍微）更容易使用的字符<em>助记符</em>替代了数字代码，如CPY（用于复制）和MOV（用于移动）。用汇编语言编写的程序通过一个称为<em>汇编器</em>的程序处理成机器语言。汇编语言今天仍用于某些特殊的编程任务，如<em>设备驱动程序</em>和<em>嵌入式系统</em>。</p>
+<p>接下来我们遇到所谓的<em>高级编程语言</em>。之所以这样称呼，是因为它们允许程序员更少地关注处理器正在做什么的细节，更多地关注解决手头的问题。早期的一些（在1950年代开发）包括<em>FORTRAN</em>（为科学和技术任务设计）和<em>COBOL</em>（为商业应用设计）。它们今天仍然有限制地使用。</p>
+<p>虽然有许多流行的编程语言，但有两种占主导地位。为现代系统编写的大多数程序要么用<em>C</em>编写，要么用<em>C++</em></p>
+<p>编写。在接下来的例子中，我们将编译一个C程序。</p>
+<p>用高级编程语言编写的程序通过另一个称为<em>编译器</em>的程序转换成机器语言。有些编译器将高级指令翻译成汇编语言，然后使用汇编器执行最后阶段的翻译成机器语言。</p>
+<p>一个经常与编译一起使用的过程称为<em>链接</em>。许多程序执行的常见任务。例如，打开一个文件。许多程序执行这个任务，但让每个程序实现自己的打开文件例程将是浪费。更有意义的是拥有一个懂得如何打开文件的单一编程片段，并允许所有需要它的程序共享它。通过所谓的<em>库</em>提供对常见任务的支持。它们包含多个<em>例程</em>，每个例程执行一些多个程序可以共享的常见任务。如果我们查看&#x2F;lib和&#x2F;usr&#x2F;lib目录，我们可以看到许多库所在的位置。一个称为<em>链接器</em>的程序用于形成编译器输出和编译程序所需的库之间的连接。这个过程的最终结果是<em>可执行程序文件</em>，准备使用。</p>
+<p><strong>所有程序都是编译的吗？</strong></p>
+<p>不是。正如我们所见，有些程序，如shell脚本，不需要编译。它们直接执行。这些是用所谓的<em>脚本</em>或<em>解释型</em>语言编写的。这些语言近年来在流行度上有所增长，包括<em>Perl、Python、PHP、Ruby</em>等许多其他语言。</p>
+<p>解释型语言由一种特殊的程序称为<em>解释器</em>执行。解释器输入程序文件，并读取并执行其中包含的每条指令。一般而言，解释型程序的执行速度比编译型程序慢得多。这是因为解释型程序中的每条源代码指令都在执行时进行翻译，而在编译型程序中，源代码指令只翻译一次，这种翻译永久记录在最终的可执行文件中。</p>
+<p>为什么解释型语言如此受欢迎？对许多编程任务来说，结果是“足够快的”，但真正的优势是，开发解释型程序通常比开发编译型程序更快、更容易。程序通常在编码、编译、测试的循环中开发。随着程序规模的增长，循环中的编译阶段可能变得相当长。解释型语言去除了编译步骤，因此加速了程序开发。</p>
+<h3 id="编译C程序"><a href="#编译C程序" class="headerlink" title="编译C程序"></a>编译C程序</h3><p>让我们来编译一些东西。然而，在此之前，我们需要一些工具，如编译器、链接器和make。在Linux环境中几乎普遍使用的C编译器称为gcc（GNU C Compiler），最初由Richard Stallman编写。大多数发行版默认不安装gcc。我们可以这样检查编译器是否存在：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">which</span> gcc</span><br><span class="line">/usr/bin/gcc</span><br></pre></td></tr></table></figure>
+
+<p>这个例子中的结果表明编译器已经安装。</p>
+<p><strong>提示</strong>：你的发行版可能有一个元包（一系列包的集合）用于软件开发。如果是的话，如果你打算在你的系统上编译程序，考虑安装它。如果你的系统没有提供元包，尝试安装gcc和make包。在许多发行版上，这就足以进行以下练习。</p>
+<h4 id="获取源代码"><a href="#获取源代码" class="headerlink" title="获取源代码"></a>获取源代码</h4><p>对于我们的编译练习，我们将编译一个来自GNU项目的程序，称为diction。这个小巧的程序用于检查文本文件的写作质量和风格。作为程序而言，它相当小且易于构建。</p>
+<p>按照惯例，我们首先为我们的源代码创建一个名为src的目录，然后使用ftp将源代码下载到其中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">mkdir</span> src</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">cd</span> src</span><br><span class="line">[me@linuxbox src]$ ftp ftp.gnu.org</span><br><span class="line">连接到 ftp.gnu.org。</span><br><span class="line">220 GNU FTP服务器就绪。</span><br><span class="line">名称 (ftp.gnu.org:me): 匿名</span><br><span class="line">230 登录成功。</span><br><span class="line">远程系统类型是UNIX。</span><br><span class="line">使用二进制模式传输文件。</span><br><span class="line">ftp&gt; <span class="built_in">cd</span> gnu/diction</span><br><span class="line">250 目录成功更改。</span><br><span class="line">ftp&gt; <span class="built_in">ls</span></span><br><span class="line">200 PORT命令成功。考虑使用PASV。</span><br><span class="line">150 这里是目录列表。</span><br><span class="line">-rw-r--r-- 1 1003 65534 68940 1998年8月28日 diction-0.7.tar.gz</span><br><span class="line">-rw-r--r-- 1 1003 65534 90957 2002年3月4日 diction-1.02.tar.gz</span><br><span class="line">-rw-r--r-- 1 1003 65534 141062 2007年9月17日 diction-1.11.tar.gz</span><br><span class="line">226 目录发送OK。</span><br><span class="line">ftp&gt; get diction-1.11.tar.gz</span><br><span class="line">本地: diction-1.11.tar.gz 远程: diction-1.11.tar.gz</span><br><span class="line">200 PORT命令成功。考虑使用PASV。</span><br><span class="line">150 为diction-1.11.tar.gz打开BINARY模式数据连接</span><br><span class="line">(141062字节)。</span><br><span class="line">226 文件发送OK。</span><br><span class="line">接收到141062字节，在0.16秒内 (847.4 kB/s)</span><br><span class="line">ftp&gt; <span class="built_in">bye</span></span><br><span class="line">221 再见。</span><br><span class="line">[me@linuxbox src]$ <span class="built_in">ls</span></span><br><span class="line">diction-1.11.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>虽然我们在前一个示例中使用了ftp，这是传统方式，但还有其他下载源代码的方法。例如，GNU项目还支持使用HTTPS下载。我们可以使用wget程序下载diction源代码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ wget https://ftp.gnu.org/gnu/diction/diction1.11.tar.gz</span><br><span class="line">--2018-07-25 09:42:20-- https://ftp.gnu.org/gnu/diction/diction1.11.tar.gz</span><br><span class="line">正在解析主机 ftp.gnu.org (ftp.gnu.org)... 208.118.235.20,</span><br><span class="line">2001:4830:134:3::b</span><br><span class="line">正在连接 ftp.gnu.org (ftp.gnu.org)|208.118.235.20|:443... 已连接。</span><br><span class="line">已发送HTTP请求，正在等待回应... 200 OK</span><br><span class="line">长度：141062 (138K) [application/x-gzip]</span><br><span class="line">正在保存至：“diction-1.11.tar.gz”</span><br><span class="line">diction-1.11.tar.gz 100%[===================&gt;] 137.76K --.-KB/s</span><br><span class="line">用时 0.09s</span><br><span class="line">2018-07-25 09:42:20 (1.43 MB/s) - “diction-1.11.tar.gz.1” 已保存 [141062/141062]</span><br></pre></td></tr></table></figure>
+
+<p>**注意：**由于我们是这段源代码的“维护者”，在我们编译它时，我们将保留它在~&#x2F;src中。由你的发行版安装的源代码将安装在&#x2F;usr&#x2F;src中，而我们维护的、意图供多个用户使用的源代码通常安装在&#x2F;usr&#x2F;local&#x2F;src中。</p>
+<p>如我们所见，源代码通常以压缩tar文件的形式提供。有时称为<em>tarball</em>，这个文件包含<em>源代码树</em>，或组成源代码的目录和文件的层次结构。到达ftp站点后，我们检查可用的tar文件列表，并选择最新版本下载。使用ftp内的get命令，我们将文件从ftp服务器复制到本地机器。</p>
+<p>一旦tar文件下载完毕，必须解压它。这是用tar程序完成的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox src]$ tar xzf diction-1.11.tar.gz</span><br><span class="line">[me@linuxbox src]$ <span class="built_in">ls</span></span><br><span class="line">diction-1.11 diction-1.11.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>**提示：**diction程序，像所有GNU项目软件一样，遵循某些源代码打包标准。Linux生态系统中可用的大多数其他源代码也遵循这一标准。该标准的一个元素是，当源代码tar文件被解包时，将创建一个包含源代码树的目录，这个目录将被命名为<em>project-x.xx</em>，因此包含了项目的名称和版本号。这种方案允许轻松安装同一程序的多个版本。然而，在解包之前检查树的布局通常是个好主意。有些项目不会创建目录，而是直接将文件交付到当前目录。这将在我们原本井井有条的src目录中造成混乱。为避免这种情况，请使用以下命令来检查tar文件的内容：</p>
+<blockquote>
+<p>tar tzvf <em>tarfile</em> | head</p>
+</blockquote>
+<h4 id="检查源代码树"><a href="#检查源代码树" class="headerlink" title="检查源代码树"></a>检查源代码树</h4><p>解压tar文件会创建一个新的目录，名为diction-1.11。这个目录包含源代码树。让我们看看里面。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox src]$ <span class="built_in">cd</span> diction-1.11</span><br><span class="line">[me@linuxbox diction-1.11]$ <span class="built_in">ls</span></span><br><span class="line">config.guess diction.c getopt.c <span class="built_in">nl</span></span><br><span class="line">config.h.in diction.pot getopt.h nl.po</span><br><span class="line">config.sub diction.spec getopt_int.h README</span><br><span class="line">configure diction.spec.in INSTALL sentence.c</span><br><span class="line">configure.in diction.texi.in install-sh sentence.h</span><br><span class="line">COPYING en Makefile.<span class="keyword">in</span> style.1.in</span><br><span class="line">de en_GB misc.c style.c</span><br><span class="line">de.po en_GB.po misc.h <span class="built_in">test</span></span><br><span class="line">diction.1.in getopt1.c NEWS</span><br></pre></td></tr></table></figure>
+
+<p>在其中，我们看到了许多文件。属于GNU项目的程序，以及许多其他程序，会提供README、INSTALL、NEWS和COPYING这些文档文件。这些文件包含了程序的描述、如何构建和安装它的信息，以及它的许可条款。在尝试构建程序之前仔细阅读README和INSTALL文件总是一个好主意。</p>
+<p>这个目录中其他有趣的文件是那些以.c和.h结尾的文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ <span class="built_in">ls</span> *.c</span><br><span class="line">diction.c getopt1.c getopt.c misc.c sentence.c style.c</span><br><span class="line">[me@linuxbox diction-1.11]$ <span class="built_in">ls</span> *.h</span><br><span class="line">getopt.h getopt_int.h misc.h sentence.h</span><br></pre></td></tr></table></figure>
+
+<p>.c文件包含了软件包提供的两个C程序（style和diction），分为模块。大型程序被拆分为更小、更易于管理的部分是常见做法。源代码文件是普通文本，可以用less查看。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ less diction.c</span><br></pre></td></tr></table></figure>
+
+<p>.h文件被称为<em>头文件</em>。这些也是普通文本。头文件包含了源代码文件或库中包含的例程的描述。为了让编译器连接模块，它必须接收到完成整个程序所需的所有模块的描述。在diction.c文件的开头附近，我们看到这样一行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &quot;getopt.h&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这指示编译器在读取diction.c中的源代码时阅读getopt.h文件，以“知道”getopt.c中有什么。getopt.c文件提供了style和diction程序共享的例程。</p>
+<p>在getopt.h的include语句之前，我们看到一些其他的include语句，比如这些：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;regex.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;stdlib.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;string.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;unistd.h&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这些也是指向头文件，但它们指向的是当前源代码树之外的头文件。它们由系统提供，以支持每个程序的编译。如果我们查看&#x2F;usr&#x2F;include，我们可以看到它们。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ <span class="built_in">ls</span> /usr/include</span><br></pre></td></tr></table></figure>
+
+<p>这个目录中的头文件是在我们安装编译器时安装的。</p>
+<h4 id="构建程序"><a href="#构建程序" class="headerlink" title="构建程序"></a>构建程序</h4><p>大多数程序都可以通过一个简单的两个命令序列构建。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<p>configure程序是一个随源代码树提供的shell脚本。它的工作是分析<em>构建环境</em>。大多数源代码都设计为<em>可移植的</em>。也就是说，它设计为在多种类型的类Unix系统上构建。但为了做到这一点，源代码在构建过程中可能需要进行轻微的调整，以适应系统之间的差异。configure还会检查是否安装了必要的外部工具和组件。让我们运行configure。由于configure不位于shell通常期望程序位于的位置，我们必须通过在命令前加上.&#x2F;来明确告诉shell它的位置，以指示程序位于当前工作目录中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ ./configure</span><br></pre></td></tr></table></figure>
+
+<p>configure在测试和配置构建时会输出许多消息。当它完成时，它会看起来像这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">checking libintl.h presence... <span class="built_in">yes</span></span><br><span class="line">checking <span class="keyword">for</span> libintl.h... <span class="built_in">yes</span></span><br><span class="line">checking <span class="keyword">for</span> library containing gettext... none required</span><br><span class="line">configure: creating ./config.status</span><br><span class="line">config.status: creating Makefile</span><br><span class="line">config.status: creating diction.1</span><br><span class="line">config.status: creating diction.texi</span><br><span class="line">config.status: creating diction.spec</span><br><span class="line">config.status: creating style.1</span><br><span class="line">config.status: creating <span class="built_in">test</span>/rundiction</span><br><span class="line">config.status: creating config.h</span><br><span class="line">[me@linuxbox diction-1.11]$ </span><br></pre></td></tr></table></figure>
+
+<p>重要的是这里没有错误消息。如果有错误消息，配置失败了，程序将无法构建，直到错误被纠正。</p>
+<p>我们看到configure在我们的源目录中创建了几个新文件。最重要的一个是<em>makefile</em>。makefile是一个配置文件，指示make程序如何准确地构建程序。没有它，make将拒绝运行。makefile是一个普通文本文件，所以我们可以查看它：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ less Makefile</span><br></pre></td></tr></table></figure>
+
+<p>make程序以<em>makefile</em>（通常命名为Makefile）为输入，该文件描述了构成完成程序的组件之间的关系和依赖性。</p>
+<p>makefile的第一部分定义了变量，这些变量在makefile的后续部分被替换。例如我们看到以下行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CC= gcc</span><br></pre></td></tr></table></figure>
+
+<p>那定义了C编译器为gcc。后面在makefile中，我们看到一个使用它的实例。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">diction: diction.o sentence.o misc.o getopt.o getopt1.o</span><br><span class="line"> $(CC) -o <span class="variable">$@</span> $(LDFLAGS) diction.o sentence.o misc.o \</span><br><span class="line"> getopt.o getopt1.o $(LIBS)</span><br></pre></td></tr></table></figure>
+
+<p>这里进行了替换，运行时$(CC)的值被替换为gcc。</p>
+<p>makefile的大部分由定义<em>目标</em>的行组成，在这个例子中是可执行文件diction和它所依赖的文件。其余的行描述了从其组件创建目标所需的命令。在这个例子中，我们看到可执行文件diction（其中一个最终产品）依赖于diction.o、sentence.o、misc.o、getopt.o和getopt1.o的存在。后来，在makefile中，我们看到每个目标的定义。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">diction.o: diction.c config.h getopt.h misc.h sentence.h</span><br><span class="line">getopt.o: getopt.c getopt.h getopt_int.h</span><br><span class="line">getopt1.o: getopt1.c getopt.h getopt_int.h</span><br><span class="line">misc.o: misc.c config.h misc.h</span><br><span class="line">sentence.o: sentence.c config.h misc.h sentence.h</span><br><span class="line">style.o: style.c config.h getopt.h misc.h sentence.h</span><br></pre></td></tr></table></figure>
+
+<p>然而，我们没有看到为它们指定的任何命令。这是由文件中较早的一个通用目标处理的，该目标描述了将任何.c文件编译成.o文件所使用的命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.c.o:</span><br><span class="line"> $(CC) -c $(CPPFLAGS) $(CFLAGS) $&lt;</span><br></pre></td></tr></table></figure>
+
+<p>这一切看起来非常复杂。为什么不简单地列出所有编译部分的步骤呢？答案很快就会清楚。与此同时，让我们运行make并构建我们的程序。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ make</span><br></pre></td></tr></table></figure>
+
+<p>make程序将运行，使用Makefile的内容指导其操作。它会产生很多消息。</p>
+<p>当它完成时，我们会看到所有的目标现在都出现在我们的目录中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ <span class="built_in">ls</span></span><br><span class="line">config.guess de.po en install-sh sentence.c</span><br><span class="line">config.h diction en_GB Makefile sentence.h</span><br><span class="line">config.h.in diction.1 en_GB.mo Makefile.<span class="keyword">in</span> sentence.o</span><br><span class="line">config.log diction.1.in en_GB.po misc.c style</span><br><span class="line">config.status diction.c getopt1.c misc.h style.1</span><br><span class="line">config.sub diction.o getopt1.o misc.o style.1.in</span><br><span class="line">configure diction.p</span><br><span class="line"></span><br><span class="line">ot getopt.c NEWS style.c</span><br><span class="line">configure.in diction.spec getopt.h <span class="built_in">nl</span> style.o</span><br><span class="line">COPYING diction.spec.in getopt_int.h nl.mo <span class="built_in">test</span></span><br><span class="line">de diction.texi getopt.o nl.po</span><br><span class="line">de.mo diction.texi.in INSTALL README</span><br></pre></td></tr></table></figure>
+
+<p>在文件中，我们看到diction和style，我们开始构建的程序。恭喜你！我们刚刚从源代码编译了我们的第一个程序！</p>
+<p>但是，出于好奇，让我们再次运行make。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ make</span><br><span class="line">make: Nothing to be <span class="keyword">done</span> <span class="keyword">for</span> `all<span class="string">&#x27;.</span></span><br></pre></td></tr></table></figure>
+
+<p>它只产生了这个奇怪的消息。发生了什么？为什么它没有再次构建程序？啊，这就是make的魔力。make不是简单地再次构建一切，而是只构建需要构建的东西。由于所有的目标都存在，make确定没有什么可做的。我们可以通过删除一个目标，然后再次运行make来看看它会做什么。让我们删除一个中间目标。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ <span class="built_in">rm</span> getopt.o</span><br><span class="line">[me@linuxbox diction-1.11]$ make</span><br></pre></td></tr></table></figure>
+
+<p>我们看到make重新构建了它，并重新链接了diction和style程序，因为它们依赖于丢失的模块。这种行为也指出了make的另一个重要特性：它保持目标最新。make坚持目标比它们的依赖更新。这是非常有意义的，因为程序员经常会更新一些源代码，然后使用make构建完成产品的新版本。make确保基于更新的代码需要构建的一切都被构建了。如果我们使用touch程序“更新”其中一个源代码文件，我们可以看到这种情况发生：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ <span class="built_in">ls</span> -l diction getopt.c</span><br><span class="line">-rwxr-xr-x 1 me me 37164 2009-03-05 06:14 diction</span><br><span class="line">-rw-r--r-- 1 me me 33125 2007-03-30 17:45 getopt.c</span><br><span class="line">[me@linuxbox diction-1.11]$ <span class="built_in">touch</span> getopt.c</span><br><span class="line">[me@linuxbox diction-1.11]$ <span class="built_in">ls</span> -l diction getopt.c</span><br><span class="line">-rwxr-xr-x 1 me me 37164 2009-03-05 06:14 diction</span><br><span class="line">-rw-r--r-- 1 me me 33125 2009-03-05 06:23 getopt.c</span><br><span class="line">[me@linuxbox diction-1.11]$ make</span><br></pre></td></tr></table></figure>
+
+<p>在make运行后，我们看到它已经将目标恢复为比依赖更新：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ <span class="built_in">ls</span> -l diction getopt.c</span><br><span class="line">-rwxr-xr-x 1 me me 37164 2009-03-05 06:24 diction</span><br><span class="line">-rw-r--r-- 1 me me 33125 2009-03-05 06:23 getopt.c</span><br></pre></td></tr></table></figure>
+
+<p>make能够智能地只构建需要构建的内容，对程序员来说是一个巨大的好处。虽然我们的小项目可能看不出时间节省，但在更大的项目上这非常重要。记住，Linux内核（一个不断修改和改进的程序）包含了几百万行代码。</p>
+<h4 id="安装程序"><a href="#安装程序" class="headerlink" title="安装程序"></a>安装程序</h4><p>良好打包的源代码通常会包括一个特殊的make目标，称为install。这个目标将把最终产品安装在系统目录中供使用。通常，这个目录是&#x2F;usr&#x2F;local&#x2F;bin，这是本地构建软件的传统位置。然而，这个目录通常不允许普通用户写入，所以我们必须成为超级用户才能执行安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ sudo make install</span><br></pre></td></tr></table></figure>
+
+<p>执行安装后，我们可以检查程序是否准备就绪。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox diction-1.11]$ <span class="built_in">which</span> diction</span><br><span class="line">/usr/local/bin/diction</span><br><span class="line">[me@linuxbox diction-1.11]$ man diction</span><br></pre></td></tr></table></figure>
+
+<p>我们完成了！</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在本章中，我们看到了如何使用三个简单的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure make make install</span><br></pre></td></tr></table></figure>
+
+<p>来构建许多源代码包。我们还看到了make在程序维护中扮演的重要角色。make程序可以用于需要维护目标&#x2F;依赖关系的任何任务，不仅仅是编译源代码。</p>
+<h3 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h3><ul>
+<li><p>维基百科上有关于编译器和make程序的好文章：</p>
+<p><span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9Db21waWxlcg==">http://en.wikipedia.org/wiki/Compiler<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9NYWtlXyhzb2Z0d2FyZSk=">http://en.wikipedia.org/wiki/Make_(software)<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p><em>GNU Make手册</em>：</p>
+<p><span class="exturl" data-url="aHR0cDovL3d3dy5nbnUub3JnL3NvZnR3YXJlL21ha2UvbWFudWFsL2h0bWxfbm9kZS9pbmRleC5odG1s">http://www.gnu.org/software/make/manual/html_node/index.html<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TLCL/" rel="tag"># TLCL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/22-printing/" rel="prev" title="打印">
+                  <i class="fa fa-angle-left"></i> 打印
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/24-writing-your-first-script/" rel="next" title="编写你的第一个脚本">
+                  编写你的第一个脚本 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"e24a643c4fed5cd5a8a9661c846c01da"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

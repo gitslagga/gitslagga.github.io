@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="【名词解释】Internet  因特网。专指从 ARPANET 发展而来的连接全球各广域网的唯一网络。 Internet Protocol  网际协议。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Socket（套接字）专题，网络编程必读">
+<meta property="og:url" content="https://slagga.top/2017/12/network-socket/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="【名词解释】Internet  因特网。专指从 ARPANET 发展而来的连接全球各广域网的唯一网络。 Internet Protocol  网际协议。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://slagga.top/images/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg">
+<meta property="og:image" content="https://slagga.top/images/2017/wKiom1XhdDOQ-grqAAmE0jtaxDQ090.jpeg">
+<meta property="og:image" content="https://slagga.top/images/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg">
+<meta property="og:image" content="https://slagga.top/images/2017/wKiom1Xh_mqgfopQABRkZFgr01s075.jpeg">
+<meta property="og:image" content="https://slagga.top/images/2017/wKioL1Xh6v-iOouMAATi4njrqUs470.jpeg">
+<meta property="article:published_time" content="2017-12-13T02:11:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.905Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Socket">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://slagga.top/images/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg">
+
+
+<link rel="canonical" href="https://slagga.top/2017/12/network-socket/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2017/12/network-socket/","path":"2017/12/network-socket/","title":"Socket（套接字）专题，网络编程必读"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Socket（套接字）专题，网络编程必读 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%90%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A%E3%80%91"><span class="nav-number">1.</span> <span class="nav-text">【名词解释】</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%90%E5%A5%97%E6%8E%A5%E5%AD%97%E7%9B%B8%E5%85%B3%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%91"><span class="nav-number">2.</span> <span class="nav-text">【套接字相关的基础知识】</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E5%A5%97%E6%8E%A5%E5%AD%97%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90"><span class="nav-number">3.</span> <span class="nav-text">客户端的套接字数据结构组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%A5%97%E6%8E%A5%E5%AD%97%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90"><span class="nav-number">4.</span> <span class="nav-text">服务器的套接字数据结构组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%90%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5%E3%80%91"><span class="nav-number">5.</span> <span class="nav-text">【编程实践】</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8%E7%BD%91%E7%BB%9C%E4%B8%8A%E4%BC%A0%E8%BE%93%E7%9A%84%E5%A4%A7%E5%B0%8F%E4%B8%8A%E9%99%90"><span class="nav-number">6.</span> <span class="nav-text">数据包在网络上传输的大小上限</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/12/network-socket/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Socket（套接字）专题，网络编程必读 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Socket（套接字）专题，网络编程必读
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-13 10:11:30" itemprop="dateCreated datePublished" datetime="2017-12-13T10:11:30+08:00">2017-12-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="【名词解释】"><a href="#【名词解释】" class="headerlink" title="【名词解释】"></a>【名词解释】</h2><p>Internet  因特网。专指从 ARPANET 发展而来的连接全球各广域网的唯一网络。</p>
+<p>Internet Protocol  网际协议。</p>
+<span id="more"></span>
+
+<p>IPv4  网际协议第 4 版。</p>
+<p>IPv6  网际协议第 6 版。</p>
+<p>TCP&#x2F;IP  传输控制协议 &#x2F; 网际协议。</p>
+<p>因特网是互联网的一种 (最大的互联网)，但互联网并不等同于因特网。</p>
+<h2 id="【套接字相关的基础知识】"><a href="#【套接字相关的基础知识】" class="headerlink" title="【套接字相关的基础知识】"></a>【套接字相关的基础知识】</h2><hr>
+<p>套接字：一种抽象概念或者框架，各操作系统与编程语言对其有不同的实现。</p>
+<p>套接字接口：本地（宿主）操作系统提供给客户端以及服务器应用程序进程访问本地的套接字数据结构（等价于和底层操作系统通信）时必须使用的指令集。通常以套接字接口函数的形式存在，供应用程序开发者调用。</p>
+<p>套接字接口是网络通信 API 的一种；网络通信 API 的实现有很多种，例如：套接字接口，传输层接口（TLI），STREAM 等。</p>
+<p>必须指出：在 TCP&#x2F;IP 协议簇分层中，分组（数据报）或由应用程序产生的字节流数据，在同一个主机的应用层与传输层之间不能直接传递，而是需要传输环境（操作系统）提供的传输对象，载体（套接字数据结构）与传输手段（套接字接口）。</p>
+<p>例如，开发人员想开发一个运行在某操作系统环境中，具备网络通信功能的应用程序，则必须使用该操作系统提供的网络通信 API 函数（例如套接字接口函数，其最初在 1980 年代由加州大学伯克利分校的计算机系统研究组在一种叫做 BSD 的类 UNIX 系统内核中实现）来编写应用程序。</p>
+<p>（如果是基于 C&#x2F;S，即客户 - 服务器 网络通信模式，则应分别编写客户端版本与服务器版本的应用程序）</p>
+<p>这样，当客户端进程与服务器进程通信时，网络通信 API 函数会首先将进程与各自的宿主操作系统通信，然后网络通信 API 函数使用封装在各自宿主操作系统的 TCP&#x2F;IP 协议堆栈中的部分或者全部 4 层协议，来完成实际的（本地与远程）进程间通信。</p>
+<p>总而言之，通过调用各自操作系统提供的网络通信 API 函数，客户与服务器进程可以先分别与各自的宿主操作系统通信，然后再进行网络通信。</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如果应用程序在开发时不利用这些 API 函数已经封装的网络通信功能，则要么开发人员必须自行编写函数来操纵，控制 TCP/<span class="built_in">IP</span> 协议堆栈前 <span class="number">4</span> 层（不包含最高层应用层）的协议来建立连接，发送，接收分组（数据报）以及关闭连接。这会造成极大的编程难度与极低的编程效率。则要么该应用程序就不具备网络通信功能。</span><br></pre></td></tr></table></figure>
+
+<p>一般而言，操作系统的发布厂商会在自己的产品中实现 TCP&#x2F;IP 协议簇的低 4 层，并提供相应的 API 函数给开发网络应用程序的人员来利用这些协议实现网络通信功能。</p>
+<blockquote>
+<p>套接字数据结构：客户端以及服务器本地创建的数据结构，用于存储各种类型的变量。该数据结构可以通过调用本地操作系统提供的套接字接口函数来创建。</p>
+</blockquote>
+<h2 id="客户端的套接字数据结构组成"><a href="#客户端的套接字数据结构组成" class="headerlink" title="客户端的套接字数据结构组成"></a>客户端的套接字数据结构组成</h2><pre><code>客户端的 IP 地址（32 位）加上客户端进程的端口号（16 位），对客户端而言是本地套接字地址
+
+服务器的 IP 地址（32 位）加上服务器进程的端口号（16 位），对客户端而言是远程套接字地址
+
+其中，客户端进程的端口号是发送请求时（建立 TCP 连接），临时分配的。这意味着同一 IP 的相同客户端进程在每次请求连接时，被分配的临时端口号也不会与前一次相同，且不能和本地其它进程使用的端口号冲突。
+
+例如，使用 web 浏览器访问同一站点，每次开启的浏览器进程端口号均不同。
+
+本地套接字地址由运行客户端进程的操作系统提供；远程套接字地址可以通过 2 种方法获得：
+
+① 由编写客户 - 服务应用程序（即常说的 C/S 架构）的程序员在测试客户端进程能否正常工作时设定，或者由运行客户端进程的用户指定（一种办法是将 IP 地址作为 cmd 命令行的参数传递给客户端进程的 main 函数）。
+
+② 多数情况下，远程套接字地址的服务器进程端口号都是已知的（即公用熟知端口），关键在于获取服务器的 IP 地址。如果客户端进程接受 URL 格式的因特网域名输入作为服务器 IP 地址，则可以通过本地的另一个叫做 DNS 的客户 - 服务进程将其映射到服务端 IP 地址。
+</code></pre>
+<h2 id="服务器的套接字数据结构组成"><a href="#服务器的套接字数据结构组成" class="headerlink" title="服务器的套接字数据结构组成"></a>服务器的套接字数据结构组成</h2><pre><code>服务器的 IP 地址（32 位）加上服务器进程的端口号（16 位），对服务器而言是本地套接字地址
+
+客户端的 IP 地址（32 位）加上客户端进程的端口号（16 位），对服务器而言是远程套接字地址
+
+其中，本地套接字地址的 IP 地址部分由服务器操作系统提供；如果是采用因特网管理机构定义的标准应用层协议（如 HTTP，FTP）通信的进程，其端口号部分为默认；如果采用非标准（私人开发且未经批准）的应用层协议通信的进程，需要该进程开发者自行指定不与公认端口冲突的端口；
+</code></pre>
+<font color='red'>
+远程套接字地址的 IP 地址与端口号，需要等到多个客户端请求连接时，从每个客户端的 TCP 数据报文中获得。这通过系统调用 accept () 实现，后者每次从请求队列中取出一个数据报文，创建一个监听套接字的副本（数据传输套接字），然后根据报文的 IP 头部的 “目标地址” 替换数据传输套接字中的 “本地套接字地址” 字段（
+
+<p>如果通过 htonl (INADDR_ANY) 设置监听套接字的本地套接字地址，那么在调用</p>
+<p>bind () 时候，绑定到监听套接字的本地套接字地址就是 0.0.0.0，表示在所有网卡的所有 IP 地址上监听连接请求，当实际的远程数据包到达时，从监听套接字复制创建的数据传输套接字的本地套接字地址 0.0.0.0 就会被替换成数据报文 IP 头部的目标地址字段，而数据传输套接字的 “远程套接字地址” 字段，将被替换为数据报文 IP 头部的 “源地址” 字段）</p>
+<p>例如我们在本机启动一个 apache httpd 进程（web 服务器），发现它的监听套接字为 0.0.0.0:80 ，这就表示 apache 的编程模型采用了处理本地所有网卡所有 IP 地址上的连接请求的策略。假设本机网卡有个 IP 为 192.168.1.2 ，那么我们在浏览器地址栏输入 192.168.1.2:80 这个请求包将被 httpd 进程处理（它监听所有网卡所有 IP 的 80 端口），此时，httpd 创建一个 0.0.0.0:80 套接字的副本，将其替换为</p>
+<p>192.168.1.2:80 ，然后远程套接字地址为浏览器所在的机器 IP 地址：浏览器动态端口。如下图所示：<br></font></p>
+<p><img src="/images/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg"></p>
+<font color='red'>
+上图的演示环境基于 2 台虚拟机：一台 192.168.3.57 运行 httpd 进程，一台 192.168.3.200 使用 web 浏览器对 httpd 发起 TCP 连接。
+
+<p>从二个标识为 1 的位置可以看到，PID 为 1240 的 httpd 父进程，启动时的监听套接字为 0.0.0.0:80 这表明它在编程时，对本地套接字地址的赋值采用的函数 - 参数组合为： htonl (INADDR_ANY)，htonl 函数将 Intel x86&#x2F;x64 架构兼容机的小端（主机）字节序表示法转换为大端（网络）字节序表示法，远程主机接收后才能正确还原为主机字节序表示法；参数 INADDR_ANY 的效果就是在所有网卡所有 IP 地址监听，即上图的 0.0.0.0；可以看到监听套接字的远程地址为 0.0.0.0:0 此时还没有任何远程 IP: 端口与其关联；当在 192.168.3.200 主机上使用浏览器访问 httpd 时，将与 192.168.3.57 主机建立 TCP 连接。我们从 1 处看到 192.168.3.57 的内核协议栈根据数据报文中的目标地址和源地址，填充了新建立套接字（绿色高亮区域）的 “本地套接字地址” 与 “远程套接字地址” 字段，httpd 进程通过系统调用 accept () 来请求内核协议栈执行创建和填充的操作；accept () 执行成功返回新建立套接字的描述符，而实际新建的套接字则是保存在内核空间的数据结构（参考后面的示意图）</p>
+<p>因为 httpd 进程空间中的套接字描述符保有对该数据结构的引用，因此我们在 process explorer 的 httpd 进程属性的 TCP&#x2F;IP 标签中，可以查看到这个描述符引用的套接字；当然 httpd 进程不能直接通过套接字描述符直接访问内核空间的相应套接字数据结构，而是需要借助类似 accept () 的系统调用，从用户模式切换到内核模式。现在你明白了为什么 accept () 需要应用进程传递一个监听套接字描述符作为其第一个参数了吧；accetp () 执行后，将处于阻塞状态，这意味着直到接收了远程主机的数据报文，并且创建和填充相应的套接字数据结构后，才返回用户模式（带着相应的描述符）</p>
+<p>另外， httpd 子进程不处理任何与网络连接相关的事务，全都由父进程负责，在多进程模型的 Chrome 浏览器中，我们也可以看到类似的情况；</p>
+<p>二个标识为 2 处的位置是在 cmd 命令行执行 netstat -ano 输出的相同结果，注意，如果没有通过浏览器与 httpd 建立连接，那么只会显示监听套接字，监听套接字是 httpd 父进程在启动时通过 socket () 系统调用对应的机器指令创建的（返回监听套接字描述符）；</p>
+<p>标识为 3 的位置处是在任务管理器列出的 httpd PID，与前面 2 个工具输出的相同。<br></font></p>
+<p>下面的客户 - 服务 TCP 连接时序图可以帮助你更清晰的理解上述过程，这张图来自计算机网络教程 —— 自顶向下方法，经过我略微修改以符合上述例子：</p>
+<p><img src="/images/2017/wKiom1XhdDOQ-grqAAmE0jtaxDQ090.jpeg"></p>
+<p>一般而言，web 服务器进程处理大量不同 IP 用户的并发连接时，在一套接字描述符表中，为每个用户维护单独的套接字描述符，总数可能高达成千上万，每个的本地套接字地址均相同（服务器 IP 地址与进程端口号）；但每个的远程套接字地址都不同，它们表示不同 IP 地址的客户端连接。</p>
+<p>套接字描述符：整型变量，用于关联（或者引用，绑定）到特定的套接字数据结构。</p>
+<p>套接字数据结构的地址：内存地址，用于寻址套接字数据结构。</p>
+<p>套接字地址是一种特定类型的结构变量（struct socketaddr），属于套接字数据结构的 5 个字段（成员）之一。</p>
+<p>套接字地址本身又包含 5 个结构成员。例如，对本地套接字地址其中的 3 个重要成员赋值后，即可通过 bind () 将其绑定（添加）到套接字数据结构中。</p>
+<hr>
+<p>① 操作系统为本地的每个需要进行网络通信的应用程序的进程空间（或称 虚拟的 内存空间）中，都提供一个 套接字描述符表。</p>
+<p>② 应用程序（进程）通过 套接字描述符表 中记录的 特定套接字描述符 与 套接字数据结构的地址 之间的映射关系，来访问由操作系统维护的，存储在实际内存中的 套接字数据结构。</p>
+<hr>
+<p>客户端应用程序（进程）通过向宿主操作系统维护的本地套接字数据结构发送请求，以及从本地套接字数据结构中接收响应，来与服务端应用程序（进程）进行逻辑通信。实际的物理通信由本地 TCP&#x2F;IP 协议堆栈的低 4 层（与对端的低 4 层）进行。</p>
+<p>服务端应用程序进程通过从宿主操作系统维护的本地套接字数据结构中接收请求，以及向本地套接字数据结构发送响应，来与客户端应用程序进程进行逻辑通信。实际的物理通信同样由本地 TCP&#x2F;IP 协议堆栈的低 4 层（与对端的低 4 层）进行。</p>
+<p>套接字，套接字描述符，套接字地址，应用缓冲区，内核缓冲区。。。的关系参考下图：</p>
+<p><img src="/images/2017/wKioL1XgDPWQrtTqAAigym7T69g824.jpeg"></p>
+<hr>
+<p>每当一个套接字 API 函数需要一个 “指向某特定类型套接字地址结构的 | 内存地址 | 的指针” 作为参数来调用时，该指针需要强制类型转换成 “指向通用类型套接字地址结构的 | 内存地址 | 的指针”，然后才能 | 作为该套接字 API 函数 | 的参数来调用。</p>
+<p>例如：</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="type">sockaddr_in</span> servaddr;  <span class="comment">//声明一个名为servaddr的“sockaddr_in类型”变量</span></span><br></pre></td></tr></table></figure>
+
+<p>sockaddr_in 结构的定义类似如下形式，不同的系统上可能略有差别：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">sockaddr_in</span> &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="type">short</span> sin_family;                <span class="comment">//AF_INET</span></span><br><span class="line">    u_short sin_port;               <span class="comment">//16位端口号，网络字节序   </span></span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">in_addr</span> sin_addr;       <span class="comment">//结构，其中一个成员存储了32位IP地址信息</span></span><br><span class="line">    <span class="type">char</span> sin_zero[<span class="number">8</span>];             <span class="comment">// 保留</span></span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>后面我们会用 visual studio 内置的调试工具来近距离分析上述结构，看看 windows 平台是如何实现这个结构的；而在类 UNIX 系统中，可以查看 socket.h 头文件来获取该结构的定义。</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="type">sockaddr</span> servaddr2;  <span class="comment">//定义一个名为servaddr2的“sockaddr类型结构变量”</span></span><br><span class="line"></span><br><span class="line">sockaddr 结构为通用套接字地址结构（注意该结构没有_in 后缀）。</span><br></pre></td></tr></table></figure>
+
+<p>因此</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connect( <span class="name">sockfd</span>, (<span class="name">*</span>)<span class="symbol">&amp;servaddr</span>, sizeof(<span class="name">servaddr</span>) )<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面这种用法错误不被 connect 这个套接字 API 函数接受。因为其第二个参数要求 sockaddr 类型指针，而 (*)&amp;servaddr 是 sockaddr_in 类型指针（编译器会报错，类型不匹配）</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connect( <span class="name">sockfd</span>, (<span class="name">struct</span> sockaddr*)<span class="symbol">&amp;servaddr</span>, sizeof(<span class="name">servaddr</span>) )<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面是正确用法。因为该函数第二个参数仅接受指向 sockaddr 类型变量起始地址的指针，所以将一个 sockaddr 类型指针指向 servaddr 的起始地址，这样就匹配了。</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connect( <span class="name">sockfd</span>, (<span class="name">*</span>)<span class="symbol">&amp;servaddr2</span>, sizeof(<span class="name">servaddr2</span>) )<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面是正确用法。因为 servaddr2 是 sockaddr 类型变量，(*)&amp;servaddr2 就是指向该变量起始地址的指针。</p>
+<h2 id="【编程实践】"><a href="#【编程实践】" class="headerlink" title="【编程实践】"></a>【编程实践】</h2><p>下面通过一个简单的服务器端程序来总结前述知识点，该例子源码在 visual studio 2010 上编译，运行，调试通过，使用 windows 网络编程 API ，程序运行后，监听在 tcp 端口 7775 等待客户端连接，并回送客户发来的信息，有了前面的预备知识后，相信你在阅读代码时已经非常清楚系统在底层究竟做了什么事：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#pragma comment (lib, &quot;ws2_32.lib&quot;) </span></span><br><span class="line"><span class="comment">#include &lt;windows.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;winsock.h&gt;</span></span><br><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"> </span><br><span class="line">int main() &#123;</span><br><span class="line">     </span><br><span class="line">     </span><br><span class="line">    SOCKET server_listen_socket_descriptor, server_handle_connection_socket_descriptor;</span><br><span class="line">    struct sockaddr_in server_addr;</span><br><span class="line">    struct sockaddr_in client_addr;</span><br><span class="line">    int server_handle_connection_socket_data_struct_len = sizeof(struct sockaddr_in);</span><br><span class="line">    WSADATA wsa;</span><br><span class="line">    WSAStartup(MAKEWORD(<span class="number">2</span>, <span class="number">2</span>), &amp;wsa);</span><br><span class="line">    char buffer_in_user_space_to_save_process_data_which_send_and_receive [<span class="number">1024</span>];</span><br><span class="line">    char* point_to_buffer_start_address = buffer_in_user_space_to_save_process_data_which_send_and_receive;</span><br><span class="line">    int user_buffer_len = sizeof(buffer_in_user_space_to_save_process_data_which_send_and_receive);</span><br><span class="line">    int the_sucessful_copyed_bytes_to_user_buffer_from_client_each_call_recv = <span class="number">0</span>;</span><br><span class="line">    int the_total_bytes_to_send_back_to_client_each_call_send = <span class="number">0</span>;</span><br><span class="line">    /*下面三行对“本地套接字地址”这个结构体中的<span class="number">3</span>个字段初始化后，才可以调用bind()将其绑定到用于监听的套接字上，bind()执行成功才返回指向</span><br><span class="line">    该套接字（数据结构）的描述符*/</span><br><span class="line">    server_addr.sin_family = AF_INET;</span><br><span class="line">    /*一种检测htonl函数作用的方法是，首先在计算器上输入十进制数<span class="number">1921683200</span>转换成<span class="number">16</span>进制数为<span class="number">728</span>a8f00，但是Intel小端法表示</span><br><span class="line">    造成操作系统内部表示为<span class="number">008</span>f8a72，于是我们可以将下面的htonl参数改为<span class="number">0</span>x008f8a72，然后在main函数按f10单步进入调试，</span><br><span class="line">    点击下方的 local局部变量的动态监视表，发现执行完<span class="number">26</span>行之后，server_addr.sin_addr.s_addr的值变为<span class="number">1921683200</span></span><br><span class="line">    证实了htonl将小端序数转换为大端序数，以便在互联网上传输*/</span><br><span class="line">    server_addr.sin_addr.s_addr = htonl(INADDR_ANY); <span class="regexp">/*在所有IP地址上监听*/</span></span><br><span class="line">     </span><br><span class="line">    <span class="regexp">/*htonl()将主机字节顺序(在Intel x86/</span>x64 兼容机上就是小端法)表示的长整型IP地址，转换为网络字节顺序的长整型对应值，    从而保证远程主机能够在接收时正确还原IP地址*/</span><br><span class="line">    server_addr.sin_port = htons(<span class="number">7775</span>);   <span class="regexp">/*htons()将主机字节顺序(在Intel x86/</span>x64 兼容机上就是小端法)表示的短整型端口号，转换为网络字节顺序的短整型对应值，保证远程主机能       够在接收时正确还原端口号。虽然在windows平台上编程时不使用这<span class="number">2</span>个函数转换成网络字节序，编译器检查时也不会报错，但是为了保证程序的可移植性以及可能与异构操作系统通信，</span><br><span class="line">    建议还是将其转换*/</span><br><span class="line">     </span><br><span class="line">    <span class="keyword">if</span> ((server_listen_socket_descriptor = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>)) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">         </span><br><span class="line">        perror(<span class="string">&quot;Error:  create socket failed !&quot;</span>);</span><br><span class="line">        <span class="keyword">exit</span>(<span class="number">1</span>);</span><br><span class="line">     </span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span> ((bind(server_listen_socket_descriptor, (struct sockaddr *)&amp;server_addr, sizeof(struct sockaddr))) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">     </span><br><span class="line">        perror(<span class="string">&quot;Error:  binding socket failed !&quot;</span>);</span><br><span class="line">        <span class="keyword">exit</span>(<span class="number">1</span>);</span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span> ((listen(server_listen_socket_descriptor, <span class="number">10</span>)) &lt;<span class="number">0</span>) &#123;</span><br><span class="line">     </span><br><span class="line">        perror(<span class="string">&quot;Error:  listen socket failed !&quot;</span>);</span><br><span class="line">        <span class="keyword">exit</span>(<span class="number">1</span>);</span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">     </span><br><span class="line">    printf(<span class="string">&quot;%s\n&quot;</span>, hacker);</span><br><span class="line">     </span><br><span class="line">    <span class="regexp">//</span>下面这个无限 <span class="keyword">for</span> 循环是作为服务器进程持续运行不可或缺的</span><br><span class="line">    <span class="keyword">for</span> ( ; ;) &#123;</span><br><span class="line">        /*accept()在内核中复制一个与监听套接字数据结构相同的套接字数据结构（handle_connection_socket），然后通过第<span class="number">2</span>个参数（客户套接字地址的起始地址）填充handle_connection_socket中的未初始化远程套接字地址字段</span><br><span class="line">        accept 执行成功则返回指向handle_connection_socket 起始地址的描述符，应用进程后续的收发数据操作都需要通过这个描述符*/</span><br><span class="line">        <span class="keyword">if</span> ((server_handle_connection_socket_descriptor = accept(server_listen_socket_descriptor, (struct sockaddr *)&amp;client_addr, &amp;server_handle_connection_socket_data_struct_len)) &lt;<span class="number">0</span>) &#123;</span><br><span class="line">         </span><br><span class="line">            perror(<span class="string">&quot;Error:  handle client connection failed !&quot;</span>);</span><br><span class="line">            <span class="keyword">exit</span>(<span class="number">1</span>);</span><br><span class="line"> </span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">while</span> ((the_sucessful_copyed_bytes_to_user_buffer_from_client_each_call_recv = recv(server_handle_connection_socket_descriptor, point_to_buffer_start_address,  user_buffer_len, <span class="number">0</span>)) &gt;<span class="number">0</span>) &#123;</span><br><span class="line">            <span class="regexp">/*每成功调用recv()一次，都返回不为0的实际复制字节数，并且point_to_buffer_start_address指针向后移动实际复制字节的长度，更新为下次调用recv的参数*/</span></span><br><span class="line">            point_to_buffer_start_address += the_sucessful_copyed_bytes_to_user_buffer_from_client_each_call_recv;</span><br><span class="line">            user_buffer_len -= the_sucessful_copyed_bytes_to_user_buffer_from_client_each_call_recv;<span class="regexp">/*每成功调用recv()一次，用户缓冲的大小都减少实际复制的字节数长度，更新为下次调用recv的参数*/</span></span><br><span class="line">            the_total_bytes_to_send_back_to_client_each_call_send += the_sucessful_copyed_bytes_to_user_buffer_from_client_each_call_recv;<span class="regexp">/*每成功调用一次，总共复制的字节数都增加（全局变量），更新为后面调用send返回数据时的参数*/</span></span><br><span class="line">             </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="regexp">/*当recv()返回0，所有数据复制到用户缓冲完毕，调用send()回送客户端发过来的数据*/</span></span><br><span class="line">        send(server_handle_connection_socket_descriptor, buffer_in_user_space_to_save_process_data_which_send_and_receive, the_total_bytes_to_send_back_to_client_each_call_send, <span class="number">0</span>);</span><br><span class="line">        closesocket(server_handle_connection_socket_descriptor);</span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="regexp">/*不关闭监听套接字的原因子在于，它需要持续存在并等待处理下一个客户端连接，当下一个客户连接到来时，再次通过accept()创建处理连接的套接字收发数据*/</span></span><br><span class="line">     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中使用到的变量名虽然长了些，但是并不臭，反而很优雅。因为一眼就能看出变量的用途，不像某些变量名为 s，abc，n，ptr，buffer 等，完全没有任何存在的价值。</p>
+<p>由于我直接在代码内关键的逻辑处添加了注释，因此就不再详细解释每行语句的作用；你可以直接复制上面源码，然后在 visual studio 系列 IDE 中创建一个空白 cpp 文件，粘贴代码后直接 F5+F7 编译调试运行。下面是我在 visual studio 2010 中调试该程序的截图，为的是验证 htonl () 函数的作用：上面代码中使用到的变量名虽然长了些，但是并不臭，反而很优雅。因为一眼就能看出变量的用途，不像某些变量名为 s，abc，n，ptr，buffer 等，完全没有任何存在的价值。</p>
+<p><img src="/images/2017/wKiom1Xh_mqgfopQABRkZFgr01s075.jpeg"></p>
+<p>最后，上面程序的精髓部分在 for 循环内嵌的 while 循环中，执行 recv () 系统调用从内核缓冲区复制远程主机发送的数据到用户空间的缓冲区所使用的算法，其实也没那么复杂，因为内核缓冲通常比应用程序缓冲区要大，一次 recv () 调用可能无法复制完所有的数据，特别是远程主机发送类似流媒体格式的数据流时，所以在 while 循环中计算并更新了 3 个局部变量（声明并初始化在 main 函数内）：</p>
+<p>用来追踪每次循环后应用程序缓冲区的使用情况（user_buffer_len）</p>
+<p>总共复制的字节数（the_total_bytes_to_send_back_to_client_each_call_send）</p>
+<p>本次要把数据复制到缓冲区中的地址（point_to_buffer_start_address ）</p>
+<p>当 recv () 返回 0，表明将所有内核接收到的数据复制到应用缓冲，此时满足循环退出条件，于是执行 send () 系统调用 “回送” 所有数据到发送端。</p>
+<p>整个算法的设计思路基于下面这张图（还是取自前面那本书，经过适当修改），由于 recv () 每次执行成功，都返回实际复制到用户缓冲的字节数，并且用变量（the_sucessful_copyed_bytes_to_user_buffer_from_client_each_call_recv）</p>
+<p>来保存，因此上面 3 个变量与该变量是紧密相关的：</p>
+<p><img src="/images/2017/wKioL1Xh6v-iOouMAATi4njrqUs470.jpeg"></p>
+<hr>
+<h2 id="数据包在网络上传输的大小上限"><a href="#数据包在网络上传输的大小上限" class="headerlink" title="数据包在网络上传输的大小上限"></a>数据包在网络上传输的大小上限</h2><p>位于发送端操作系统 TCP&#x2F;IP 协议栈的传输层 (TCP)，把来自其上层 (应用层进程或程序) 产生的字节流数据，按顺序经分割后封装成各个 TCP 分段，并 (逻辑上的) 传送给接收端的传输层。</p>
+<p>字节流数据是指：由应用程序通过一次或多次 “输出” 操作，“写入” 到本地 (发送端) 传输层的套接字数据结构中的数据。该数据实际被存储在本地操作系统的缓冲区中。</p>
+<p>是否分割由应用程序产生的原始数据：</p>
+<p>√ 取决于在 TCP 连接建立阶段，由对端传输层所通告支持的最大分节大小 (Maximum Segment Size,MSS)。可以将 MSS 视为 (发送端与接收端各自的) 应用层与传输层之间的接口属性。</p>
+<p>√ 取决于链路层的最大传输单元 (Maximum Transmission Unit,MTU) 大小。</p>
+<p>如果因特网上支持 IPv6 (IP 协议第 6 版) 的路由器具备 “链路层 MTU 发现” 功能，则可以确定在转发数据包时可能经过的路径 (链路) 中，存在 “最小 MTU” 的必经路径 (链路)。</p>
+<p>此时分割后的原始应用程序数据块的大小必须保证不得超过此条路径 (链路) 的 MTU 值。</p>
+<p>分割操作可由发送端操作系统 TCP&#x2F;IP 协议栈完成，也可以由因特网上的路由器完成。</p>
+<p>为了避免因特网上主干节点的路由器过载和提高转发效率，IPv6 通过 “链路层 MTU 发现” 功能，来获取所有必经链路中 MTU 值最小者；或者下一跳直连链路的 MTU 值。同时确保分割操作是由发送端完成而非路由器。</p>
+<p>可以将 MTU 视为 (发送端与接收端各自的) 网络层与链路层之间的接口属性。</p>
+<p>发送端同接收端网络层逻辑交换的 “协议数据单元”(protocol data unit,PDU) 称为 IP 分组。虽然 IPv4 分组最大能有 65535 字节 (65K Bytes)；IPv6 分组最大能有 65575 字节，但在链路层中，一个封装这些 IP 分组的” 帧 “(两端链路层逻辑交换的 PDU 名称) 通常只有 1500 字节 (1.5K Bytes)，这意味着需要将过大的网络层 IP 分组进行分割才能发送。</p>
+<p>IPv6 通过 “路径 MTU 发现” 功能，确保对过大 IP 分组的分割操作由发送端网络层 —— 链路层完成，而非因特网上的路由器。</p>
+<hr>
+<p>当应用程序要从某个 TCP 套接字数据结构 (或对应的由操作系统维护的缓冲区中) 读取由对端发送的完整数据时，由于应用程序单次调用 read () 并不能确保从操作系统缓冲区中读取完所有发送端的数据，所以通常将 read () 调用放进一个循环。</p>
+<p>当 read () 调用返回 0 (表示缓冲区中已无待读取的数据)；</p>
+<p>或返回小于 0 (表示 read () 调用发生错误) 则结束该循环。</p>
+<hr>
+<p>Unix socket API 函数与 Unix 线程函数 的错误处理对比</p>
+<p>Unix socket API 函数发生错误时：</p>
+<p>√把全局变量 errno 的值设置为标识该错误类型的整型正值。</p>
+<p>√该 socket API 函数本身返回 - 1。</p>
+<p>Unix 线程函数 (以 pthread_开头的函数) 发生错误时：</p>
+<p>√不会把标识该错误类型的整型正值保存在全局变量 errno 中。</p>
+<p>√该线程函数本身返回标识该错误类型的整型正值。</p>
+<p>由此可见，对于线程函数，必须额外定义一个整型变量来保存其返回的错误类型标识值。并把其值赋给全局变量 errno。</p>
+<p>这样，后续调用 err_sys () 函数时，它才能根据 errno 的值 (错误类型) 来输出相应的出错提示消息。</p>
+<p>在 &lt;sys&#x2F;errno.h&gt; 系统头文件中定义了所有 Unix 系统错误常量 (以 E 开头的全大写字面值) 对应的整型错误类型标识值。</p>
+<p>综上所述，“connect () 返回 ECONNREFUSED” 这种描述形式表明：</p>
+<p>√这是一个标准的 Unix socket API 函数；</p>
+<p>√调用 connect 函数时发生错误，该函数本身返回 - 1;</p>
+<p>√该函数将全局变量 errno 的值设为 ECONNREFUSED 字面值常量对应的整型错误类型标识值。这个值应该与 &lt;sys&#x2F;errno.h&gt; 系统头文件中定义 ECONNREFUSED 的值相符。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Socket/" rel="tag"># Socket</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/php-php-fpm/" rel="prev" title="查看 PHP-FPM 内存占用命令">
+                  <i class="fa fa-angle-left"></i> 查看 PHP-FPM 内存占用命令
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/nginx-php-fpm/" rel="next" title="网站出现 502 BAD GATEWAY 的解决办法">
+                  网站出现 502 BAD GATEWAY 的解决办法 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"8a1c09be1ebc4971b8c5680273562454"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

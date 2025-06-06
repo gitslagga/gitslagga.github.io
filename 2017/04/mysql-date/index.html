@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="概述MySQL 日期类型：日期格式、所占存储空间、日期范围 比较。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 日期数据类型、时间类型使用总结">
+<meta property="og:url" content="https://slagga.top/2017/04/mysql-date/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="概述MySQL 日期类型：日期格式、所占存储空间、日期范围 比较。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-04-23T05:26:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.896Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Blog, HTML, CSS, JavaScript, Python, PHP, Java, Go, Redis, MySQL, Node.js, React, Vuejs, Git, Programming, Web Development, Blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2017/04/mysql-date/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2017/04/mysql-date/","path":"2017/04/mysql-date/","title":"MySQL 日期数据类型、时间类型使用总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MySQL 日期数据类型、时间类型使用总结 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E8%A1%A8%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B8%BA"><span class="nav-number">2.</span> <span class="nav-text">建表的代码为:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E8%80%85%E4%B9%8B%E9%97%B4%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">3.</span> <span class="nav-text">两者之间的比较:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-%E8%8E%B7%E5%BE%97%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4-%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">MySQL 获得当前日期时间 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sysdate-%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0%EF%BC%8C%E4%B8%80%E8%88%AC%E6%83%85%E5%86%B5%E4%B8%8B%E5%BE%88%E5%B0%91%E7%94%A8%E5%88%B0%E3%80%82"><span class="nav-number">5.</span> <span class="nav-text">sysdate() 日期时间函数，一般情况下很少用到。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-%E6%97%B6%E9%97%B4%E6%88%B3%EF%BC%88Timestamp%EF%BC%89%E5%87%BD%E6%95%B0"><span class="nav-number">6.</span> <span class="nav-text">MySQL 时间戳（Timestamp）函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4-Extract%EF%BC%88%E9%80%89%E5%8F%96%EF%BC%89-%E5%87%BD%E6%95%B0%E3%80%82"><span class="nav-number">7.</span> <span class="nav-text">MySQL 日期时间 Extract（选取） 函数。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4%E8%AE%A1%E7%AE%97%E5%87%BD%E6%95%B0"><span class="nav-number">8.</span> <span class="nav-text">MySQL 日期时间计算函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-%E6%97%B6%E5%8C%BA%EF%BC%88timezone%EF%BC%89%E8%BD%AC%E6%8D%A2%E5%87%BD%E6%95%B0"><span class="nav-number">9.</span> <span class="nav-text">MySQL 时区（timezone）转换函数</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/04/mysql-date/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="MySQL 日期数据类型、时间类型使用总结 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL 日期数据类型、时间类型使用总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-04-23 13:26:30" itemprop="dateCreated datePublished" datetime="2017-04-23T13:26:30+08:00">2017-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>MySQL 日期类型：日期格式、所占存储空间、日期范围 比较。 </p>
+<span id="more"></span>
+
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">日期类型        存储空间       日期格式                 日期范围 </span><br><span class="line">------------ ---------   --------------------- ----------------------------------------- </span><br><span class="line">datetime       8 bytes   YYYY-MM-DD HH:MM:SS   1000<span class="string">-01</span><span class="string">-01</span> 00:00:00 ~ 9999<span class="string">-12</span><span class="string">-31</span> 23:59:59 </span><br><span class="line">timestamp      4 bytes   YYYY-MM-DD HH:MM:SS   1970<span class="string">-01</span><span class="string">-01</span> 00:00:01 ~ 2038 </span><br><span class="line">date           3 bytes   YYYY-MM-DD            1000<span class="string">-01</span><span class="string">-01</span>          ~ 9999<span class="string">-12</span><span class="string">-31</span> </span><br><span class="line">year           1 bytes   YYYY                  1901                ~ 2155</span><br></pre></td></tr></table></figure>
+
+<p>在 MySQL 中创建表时，对照上面的表格，很容易就能选择到合适自己的数据类型。不过到底是选择 datetime 还是 timestamp，可能会有点犯难。</p>
+<p>这两个日期时间类型各有优点：datetime 的日期范围比较大；timestamp 所占存储空间比较小，只是 datetime 的一半。</p>
+<p>另外，timestamp 类型的列还有个特性：默认情况下，在 insert, update 数据时，timestamp 列会自动以当前时间（CURRENT_TIMESTAMP）填充 &#x2F; 更新。</p>
+<p>“自动” 的意思就是，你不去管它，MySQL 会替你去处理。 </p>
+<h2 id="建表的代码为"><a href="#建表的代码为" class="headerlink" title="建表的代码为:"></a>建表的代码为:</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t8 (</span><br><span class="line">  `id1` <span class="type">timestamp</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">default</span> <span class="built_in">CURRENT_TIMESTAMP</span>,</span><br><span class="line">  `id2` datetime <span class="keyword">default</span> <span class="keyword">NULL</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>一般情况下，我倾向于使用 datetime 日期类型。</p>
+<h2 id="两者之间的比较"><a href="#两者之间的比较" class="headerlink" title="两者之间的比较:"></a>两者之间的比较:</h2><ol>
+<li>timestamp 容易所支持的范围比 timedate 要小。 并且容易出现超出的情况</li>
+<li>timestamp 比较受时区 timezone 的影响以及 MYSQL 版本和服务器的 SQL MODE 的影响.</li>
+</ol>
+<p>MySQL 时间类型：时间格式、所占存储空间、时间范围。 </p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">时间类型        存储空间      时间格式                 时间范围</span> </span><br><span class="line"><span class="literal">------------</span> <span class="literal">---------</span>   <span class="literal">---------------------</span> <span class="literal">-----------------------------------------</span> </span><br><span class="line"><span class="comment">time           3 bytes   HH:MM:SS</span>              <span class="literal">-</span><span class="comment">838:59:59          ~ 838:59:59</span></span><br></pre></td></tr></table></figure>
+
+<p>time 时间范围居然有这么大的范围，特别是 time 可以取负值，有点奇怪。后来，看了 MySQL 手册才知道这是为了满足两个日期时间相减才这样设计的。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">select</span> timediff(&#x27;<span class="number">2000</span>:<span class="number">01</span>:<span class="number">31</span> <span class="number">23</span>:<span class="number">59</span>:<span class="number">59</span>&#x27;, &#x27;<span class="number">2000</span>:<span class="number">01</span>:<span class="number">01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;); -- <span class="number">743</span>:<span class="number">59</span>:<span class="number">59</span> </span><br><span class="line"><span class="attribute">select</span> timediff(&#x27;<span class="number">2000</span>:<span class="number">01</span>:<span class="number">01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;, &#x27;<span class="number">2000</span>:<span class="number">01</span>:<span class="number">31</span> <span class="number">23</span>:<span class="number">59</span>:<span class="number">59</span>&#x27;); -- -<span class="number">743</span>:<span class="number">59</span>:<span class="number">59</span> </span><br><span class="line"><span class="attribute">select</span> timediff(&#x27;<span class="number">23</span>:<span class="number">59</span>:<span class="number">59</span>&#x27;, &#x27;<span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;);                        -- <span class="number">11</span>:<span class="number">59</span>:<span class="number">59</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，timediff 的两个参数只能是 datetime&#x2F;timestamp, time 类型的，并且这两个参数类型要相同。</p>
+<p>即：datetime&#x2F;timestamp 和 datetime&#x2F;timestamp 比较；time 和 time 相比较。</p>
+<p>虽然 MySQL 中的日期时间类型比较丰富，但遗憾的是，目前（2008-08-08）这些日期时间类型只能支持到秒级别，不支持毫秒、微秒。也没有产生毫秒的函数。</p>
+<p>《MySQL：MySQL 日期数据类型、MySQL 时间类型使用总结》适用于 MySQL 5.X 及以上版本。</p>
+<h2 id="MySQL-获得当前日期时间-函数"><a href="#MySQL-获得当前日期时间-函数" class="headerlink" title="MySQL 获得当前日期时间 函数"></a>MySQL 获得当前日期时间 函数</h2><p>1.1 获得当前日期 + 时间（date + time）函数：now ()</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select now();</span><br><span class="line"></span><br><span class="line"><span class="code">+---------------------+</span> </span><br><span class="line">| now()               | </span><br><span class="line"><span class="code">+---------------------+</span> </span><br><span class="line"><span class="section">| 2008-08-08 22:20:46 | </span></span><br><span class="line"><span class="section">+---------------------+</span></span><br></pre></td></tr></table></figure>
+
+<p>除了 now () 函数能获得当前的日期时间外，MySQL 中还有下面的函数：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">current_timestamp</span>() </span><br><span class="line">,<span class="built_in">current_timestamp</span> </span><br><span class="line">,<span class="built_in">localtime</span>() </span><br><span class="line">,<span class="built_in">localtime</span> </span><br><span class="line">,<span class="built_in">localtimestamp</span>    <span class="comment">-- (v4.0.6) </span></span><br><span class="line">,<span class="built_in">localtimestamp</span>() <span class="comment">-- (v4.0.6)</span></span><br></pre></td></tr></table></figure>
+
+<p>这些日期时间函数，都等同于 now ()。鉴于 now () 函数简短易记，建议总是使用 now () 来替代上面列出的函数。</p>
+<p>1.2 获得当前日期 + 时间（date + time）函数：sysdate ()</p>
+<p>sysdate () 日期时间函数跟 now () 类似，不同之处在于：now () 在执行开始时值就得到了， sysdate () 在函数执行时动态得到值。看下面的例子就明白了：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select now(), sleep(3), now();</span><br><span class="line"></span><br><span class="line"><span class="code">+---------------------+</span>----------<span class="code">+---------------------+</span> </span><br><span class="line">| now()               | sleep(3) | now()               | </span><br><span class="line"><span class="code">+---------------------+</span>----------<span class="code">+---------------------+</span> </span><br><span class="line"><span class="section">| 2008-08-08 22:28:21 |        0 | 2008-08-08 22:28:21 | </span></span><br><span class="line"><span class="section">+---------------------+----------+---------------------+</span></span><br><span class="line"></span><br><span class="line">mysql&gt; select sysdate(), sleep(3), sysdate();</span><br><span class="line"></span><br><span class="line"><span class="code">+---------------------+</span>----------<span class="code">+---------------------+</span> </span><br><span class="line">| sysdate()           | sleep(3) | sysdate()           | </span><br><span class="line"><span class="code">+---------------------+</span>----------<span class="code">+---------------------+</span> </span><br><span class="line"><span class="section">| 2008-08-08 22:28:41 |        0 | 2008-08-08 22:28:44 | </span></span><br><span class="line"><span class="section">+---------------------+----------+---------------------+</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，虽然中途 sleep 3 秒，但 now () 函数两次的时间值是相同的； sysdate () 函数两次得到的时间值相差 3 秒。</p>
+<p>MySQL Manual 中是这样描述 sysdate () 的：<code>Return the time at which the function executes</code>。</p>
+<h2 id="sysdate-日期时间函数，一般情况下很少用到。"><a href="#sysdate-日期时间函数，一般情况下很少用到。" class="headerlink" title="sysdate() 日期时间函数，一般情况下很少用到。"></a>sysdate() 日期时间函数，一般情况下很少用到。</h2><ol>
+<li><p>获得当前日期（date）函数：curdate ()</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select curdate();</span><br><span class="line"></span><br><span class="line"><span class="code">+------------+</span> </span><br><span class="line">| curdate() | </span><br><span class="line"><span class="code">+------------+</span> </span><br><span class="line"><span class="section">| 2008-08-08 | </span></span><br><span class="line"><span class="section">+------------+</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>其中，下面的两个日期函数等同于 curdate()：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">current_date</span><span class="params">()</span></span>, current_date</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获得当前时间（time）函数：curtime()</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select curtime();</span><br><span class="line"></span><br><span class="line"><span class="code">+-----------+</span> </span><br><span class="line">| curtime() | </span><br><span class="line"><span class="code">+-----------+</span> </span><br><span class="line"><span class="section">| 22:41:30 | </span></span><br><span class="line"><span class="section">+-----------+</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>其中，下面的两个时间函数等同于 curtime()：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">current_time</span><span class="params">()</span></span>, current_time</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>获得当前 UTC 日期时间函数：utc_date (), utc_time (), utc_timestamp ()<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">mysql</span>&gt; select utc_timestamp(), utc_date(), utc_time(), now()</span><br><span class="line"></span><br><span class="line">+---------------------+------------+------------+---------------------+ </span><br><span class="line">| utc_timestamp()     | utc_date() | utc_time() | now()               | </span><br><span class="line">+---------------------+------------+------------+---------------------+ </span><br><span class="line">| <span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">14</span>:<span class="number">47</span>:<span class="number">11</span> | <span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> | <span class="number">14</span>:<span class="number">47</span>:<span class="number">11</span>   | <span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">22</span>:<span class="number">47</span>:<span class="number">11</span> | </span><br><span class="line">+---------------------+------------+------------+---------------------+</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>因为我国位于东八时区，所以本地时间 &#x3D; UTC 时间 + 8 小时。UTC 时间在业务涉及多个国家和地区的时候，非常有用。</p>
+<h2 id="MySQL-时间戳（Timestamp）函数"><a href="#MySQL-时间戳（Timestamp）函数" class="headerlink" title="MySQL 时间戳（Timestamp）函数"></a>MySQL 时间戳（Timestamp）函数</h2><ol>
+<li><p>MySQL 获得当前时间戳函数：current_timestamp, current_timestamp ()</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select current_timestamp, current_timestamp();</span><br><span class="line"></span><br><span class="line"><span class="code">+---------------------+</span>---------------------+ </span><br><span class="line">| current_timestamp   | current_timestamp() | </span><br><span class="line"><span class="code">+---------------------+</span>---------------------+ </span><br><span class="line"><span class="section">| 2008-08-09 23:22:24 | 2008-08-09 23:22:24 | </span></span><br><span class="line"><span class="section">+---------------------+---------------------+</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MySQL （Unix 时间戳、日期）转换函数：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">unix_timestamp</span><span class="params">()</span></span>, </span><br><span class="line"><span class="function"><span class="title">unix_timestamp</span><span class="params">(date)</span></span>, </span><br><span class="line"><span class="function"><span class="title">from_unixtime</span><span class="params">(unix_timestamp)</span></span>, </span><br><span class="line"><span class="function"><span class="title">from_unixtime</span><span class="params">(unix_timestamp,format)</span></span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>下面是示例：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">unix_timestamp</span> ()</span>;                       -- <span class="number">1218290027</span>            === 得到当前时间的 UNIX 时间值</span><br></pre></td></tr></table></figure>
+
+<p>将具体时间来转换成 timestamp</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">select</span> unix_timestamp(&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span>&#x27;);           -- <span class="number">1218124800</span> </span><br><span class="line"><span class="attribute">select</span> unix_timestamp(&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">12</span>:<span class="number">30</span>:<span class="number">00</span>&#x27;); -- <span class="number">1218169800</span></span><br></pre></td></tr></table></figure>
+
+<p>将 timestamp 来转换成具体时间</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">select</span> from_unixtime(<span class="number">1218290027</span>);              -- &#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">09</span> <span class="number">21</span>:<span class="number">53</span>:<span class="number">47</span>&#x27; </span><br><span class="line"><span class="attribute">select</span> from_unixtime(<span class="number">1218124800</span>);              -- &#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>&#x27; </span><br><span class="line"><span class="attribute">select</span> from_unixtime(<span class="number">1218169800</span>);              -- &#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">12</span>:<span class="number">30</span>:<span class="number">00</span>&#x27;</span><br><span class="line"></span><br><span class="line"><span class="attribute">select</span> from_unixtime(<span class="number">1218169800</span>, &#x27;%Y %D %M %h:%i:%s %x&#x27;); -- &#x27;<span class="number">2008</span> <span class="number">8</span>th August <span class="number">12</span>:<span class="number">30</span>:<span class="number">00</span> <span class="number">2008</span>&#x27;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>MySQL 时间戳（timestamp）转换、增、减函数：<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">timestamp</span><span class="params">(date)</span></span>                                     -- date to timestamp </span><br><span class="line"><span class="function"><span class="title">timestamp</span><span class="params">(dt,time)</span></span>                                  -- <span class="selector-tag">dt</span> + <span class="selector-tag">time</span> </span><br><span class="line"><span class="function"><span class="title">timestampadd</span><span class="params">(unit,interval,datetime_expr)</span></span>           -- </span><br><span class="line"><span class="function"><span class="title">timestampdiff</span><span class="params">(unit,datetime_expr1,datetime_expr2)</span></span>   --</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>请看示例部分：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">select</span> timestamp(&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span>&#x27;);                         -- <span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> </span><br><span class="line"><span class="attribute">select</span> timestamp(&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">08</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;, &#x27;<span class="number">01</span>:<span class="number">01</span>:<span class="number">01</span>&#x27;);    -- <span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">09</span>:<span class="number">01</span>:<span class="number">01</span> </span><br><span class="line"><span class="attribute">select</span> timestamp(&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">08</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;, &#x27;<span class="number">10</span> <span class="number">01</span>:<span class="number">01</span>:<span class="number">01</span>&#x27;); -- <span class="number">2008</span>-<span class="number">08</span>-<span class="number">18</span> <span class="number">09</span>:<span class="number">01</span>:<span class="number">01</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">select</span> timestampadd(day, <span class="number">1</span>, &#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">08</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;);     -- <span class="number">2008</span>-<span class="number">08</span>-<span class="number">09</span> <span class="number">08</span>:<span class="number">00</span>:<span class="number">00</span> </span><br><span class="line"><span class="attribute">select</span> date_add(&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">08</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;, interval <span class="number">1</span> day); -- <span class="number">2008</span>-<span class="number">08</span>-<span class="number">09</span> <span class="number">08</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">MySQL</span> timestampadd () 函数类似于 date_add ()。</span><br><span class="line"></span><br><span class="line"><span class="attribute">select</span> timestampdiff(year,&#x27;<span class="number">2002</span>-<span class="number">05</span>-<span class="number">01</span>&#x27;,&#x27;<span class="number">2001</span>-<span class="number">01</span>-<span class="number">01</span>&#x27;);                    -- -<span class="number">1</span> </span><br><span class="line"><span class="attribute">select</span> timestampdiff(day ,&#x27;<span class="number">2002</span>-<span class="number">05</span>-<span class="number">01</span>&#x27;,&#x27;<span class="number">2001</span>-<span class="number">01</span>-<span class="number">01</span>&#x27;);                    -- -<span class="number">485</span> </span><br><span class="line"><span class="attribute">select</span> timestampdiff(hour,&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;,&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;); -- -<span class="number">12</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">select</span> datediff(&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;, &#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;);           -- <span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">MySQL</span> timestampdiff () 函数就比 datediff () 功能强多了，datediff () 只能计算两个日期（date）之间相差的天数。</span><br></pre></td></tr></table></figure>
+
+<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<h2 id="MySQL-日期时间-Extract（选取）-函数。"><a href="#MySQL-日期时间-Extract（选取）-函数。" class="headerlink" title="MySQL 日期时间 Extract（选取） 函数。"></a>MySQL 日期时间 Extract（选取） 函数。</h2><ol>
+<li><p>选取日期时间的各个部分：日期、时间、年、季度、月、日、小时、分钟、秒、微秒</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="variable">@dt</span> <span class="operator">=</span> <span class="string">&#x27;2008-09-10 07:15:30.123456&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="type">date</span>(<span class="variable">@dt</span>);        <span class="comment">-- 2008-09-10 </span></span><br><span class="line"><span class="keyword">select</span> <span class="type">time</span>(<span class="variable">@dt</span>);        <span class="comment">-- 07:15:30.123456 </span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">year</span>(<span class="variable">@dt</span>);        <span class="comment">-- 2008 </span></span><br><span class="line"><span class="keyword">select</span> quarter(<span class="variable">@dt</span>);     <span class="comment">-- 3 </span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">month</span>(<span class="variable">@dt</span>);       <span class="comment">-- 9 </span></span><br><span class="line"><span class="keyword">select</span> week(<span class="variable">@dt</span>);        <span class="comment">-- 36 </span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">day</span>(<span class="variable">@dt</span>);         <span class="comment">-- 10 </span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">hour</span>(<span class="variable">@dt</span>);        <span class="comment">-- 7 </span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">minute</span>(<span class="variable">@dt</span>);      <span class="comment">-- 15 </span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">second</span>(<span class="variable">@dt</span>);      <span class="comment">-- 30 </span></span><br><span class="line"><span class="keyword">select</span> microsecond(<span class="variable">@dt</span>); <span class="comment">-- 123456</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MySQL Extract () 函数，可以上面实现类似的功能：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="variable">@dt</span> <span class="operator">=</span> <span class="string">&#x27;2008-09-10 07:15:30.123456&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(<span class="keyword">year</span>                <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 2008 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(quarter             <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 3 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(<span class="keyword">month</span>               <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 9 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(week                <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 36 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(<span class="keyword">day</span>                 <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 10 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(<span class="keyword">hour</span>                <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 7 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(<span class="keyword">minute</span>              <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 15 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(<span class="keyword">second</span>              <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 30 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(microsecond         <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 123456</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(year_month          <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 200809 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(day_hour            <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 1007 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(day_minute          <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 100715 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(day_second          <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 10071530 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(day_microsecond     <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">-- 10071530123456 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(hour_minute         <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">--    715 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(hour_second         <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">--    71530 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(hour_microsecond    <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">--    71530123456 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(minute_second       <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">--      1530 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(minute_microsecond <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">--      1530123456 </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">extract</span>(second_microsecond <span class="keyword">from</span> <span class="variable">@dt</span>); <span class="comment">--        30123456</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>MySQL Extract () 函数除了没有 date (),time () 的功能外，其他功能一应具全。并且还具有选取‘day_microsecond’ 等功能。注意这里不是只选取 day 和 microsecond，而是从日期的 day 部分一直选取到 microsecond 部分。够强悍的吧！</p>
+<p>MySQL Extract () 函数唯一不好的地方在于：你需要多敲几次键盘。</p>
+<ol start="3">
+<li>MySQL dayof… 函数：dayofweek (), dayofmonth (), dayofyear ()</li>
+</ol>
+<p>分别返回日期参数，在一周、一月、一年中的位置。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="variable">@dt</span> <span class="operator">=</span> <span class="string">&#x27;2008-08-08&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> dayofweek(<span class="variable">@dt</span>);   <span class="comment">-- 6 </span></span><br><span class="line"><span class="keyword">select</span> dayofmonth(<span class="variable">@dt</span>); <span class="comment">-- 8 </span></span><br><span class="line"><span class="keyword">select</span> dayofyear(<span class="variable">@dt</span>);   <span class="comment">-- 221</span></span><br></pre></td></tr></table></figure>
+
+<p>日期 ‘2008-08-08’ 是一周中的第 6 天（1 &#x3D; Sunday, 2 &#x3D; Monday, …, 7 &#x3D; Saturday）；一月中的第 8 天；一年中的第 221 天。</p>
+<ol start="4">
+<li>MySQL week… 函数：week (), weekofyear (), dayofweek (), weekday (), yearweek ()<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="variable">@dt</span> <span class="operator">=</span> <span class="string">&#x27;2008-08-08&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> week(<span class="variable">@dt</span>);        <span class="comment">-- 31 </span></span><br><span class="line"><span class="keyword">select</span> week(<span class="variable">@dt</span>,<span class="number">3</span>);      <span class="comment">-- 32 </span></span><br><span class="line"><span class="keyword">select</span> weekofyear(<span class="variable">@dt</span>); <span class="comment">-- 32</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> dayofweek(<span class="variable">@dt</span>);   <span class="comment">-- 6 </span></span><br><span class="line"><span class="keyword">select</span> weekday(<span class="variable">@dt</span>);     <span class="comment">-- 4</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> yearweek(<span class="variable">@dt</span>);    <span class="comment">-- 200831</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>MySQL week () 函数，可以有两个参数，具体可看手册。 weekofyear () 和 week () 一样，都是计算 “某天” 是位于一年中的第几周。 weekofyear (@dt) 等价于 week (@dt,3)。</p>
+<p>MySQL weekday () 函数和 dayofweek () 类似，都是返回 “某天” 在一周中的位置。不同点在于参考的标准， weekday：(0 &#x3D; Monday, 1 &#x3D; Tuesday, …, 6 &#x3D; Sunday)； dayofweek：（1 &#x3D; Sunday, 2 &#x3D; Monday, …, 7 &#x3D; Saturday）</p>
+<p>MySQL yearweek () 函数，返回 year (2008) + week 位置 (31)。</p>
+<ol start="5">
+<li>MySQL 返回星期和月份名称函数：dayname (), monthname ()<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="variable">@dt</span> <span class="operator">=</span> <span class="string">&#x27;2008-08-08&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> dayname(<span class="variable">@dt</span>);     <span class="comment">-- Friday </span></span><br><span class="line"><span class="keyword">select</span> monthname(<span class="variable">@dt</span>);   <span class="comment">-- August</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>思考，如何返回中文的名称呢？</p>
+<ol start="6">
+<li>MySQL last_day () 函数：返回月份中的最后一天。<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">select</span> last_day(&#x27;<span class="number">2008</span>-<span class="number">02</span>-<span class="number">01</span>&#x27;); -- <span class="number">2008</span>-<span class="number">02</span>-<span class="number">29</span> </span><br><span class="line"><span class="attribute">select</span> last_day(&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span>&#x27;); -- <span class="number">2008</span>-<span class="number">08</span>-<span class="number">31</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>MySQL last_day () 函数非常有用，比如我想得到当前月份中有多少天，可以这样来计算：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select now(), day(last_day(now())) as days;</span><br><span class="line"></span><br><span class="line"><span class="code">+---------------------+</span>------+ </span><br><span class="line">| now()               | days | </span><br><span class="line"><span class="code">+---------------------+</span>------+ </span><br><span class="line"><span class="section">| 2008-08-09 11:45:45 |   31 | </span></span><br><span class="line"><span class="section">+---------------------+------+</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="MySQL-日期时间计算函数"><a href="#MySQL-日期时间计算函数" class="headerlink" title="MySQL 日期时间计算函数"></a>MySQL 日期时间计算函数</h2><ol>
+<li><p>MySQL 为日期增加一个时间间隔：date_add ()</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="variable">@dt</span> <span class="operator">=</span> now();</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="number">1</span> <span class="keyword">day</span>);        <span class="comment">-- add 1 day </span></span><br><span class="line"><span class="keyword">select</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="number">1</span> <span class="keyword">hour</span>);       <span class="comment">-- add 1 hour </span></span><br><span class="line"><span class="keyword">select</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="number">1</span> <span class="keyword">minute</span>);     <span class="comment">-- ... </span></span><br><span class="line"><span class="keyword">select</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="number">1</span> <span class="keyword">second</span>); </span><br><span class="line"><span class="keyword">select</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="number">1</span> microsecond); </span><br><span class="line"><span class="keyword">select</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="number">1</span> week); </span><br><span class="line"><span class="keyword">select</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="number">1</span> <span class="keyword">month</span>); </span><br><span class="line"><span class="keyword">select</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="number">1</span> quarter); </span><br><span class="line"><span class="keyword">select</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="number">1</span> <span class="keyword">year</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="number">-1</span> <span class="keyword">day</span>);       <span class="comment">-- sub 1 day</span></span><br><span class="line"></span><br><span class="line">MySQL adddate (), addtime () 函数，可以用 date_add () 来替代。下面是 date_add () 实现 addtime () 功能示例：</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">set</span> <span class="variable">@dt</span> <span class="operator">=</span> <span class="string">&#x27;2008-08-09 12:12:33&#x27;</span>;</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> </span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">select</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="string">&#x27;01:15:30&#x27;</span> hour_second);</span><br><span class="line"></span><br><span class="line"><span class="operator">+</span><span class="comment">------------------------------------------------+ </span></span><br><span class="line"><span class="operator">|</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="string">&#x27;01:15:30&#x27;</span> hour_second) <span class="operator">|</span> </span><br><span class="line"><span class="operator">+</span><span class="comment">------------------------------------------------+ </span></span><br><span class="line"><span class="operator">|</span> <span class="number">2008</span><span class="number">-08</span><span class="number">-09</span> <span class="number">13</span>:<span class="number">28</span>:<span class="number">03</span>                            <span class="operator">|</span> </span><br><span class="line"><span class="operator">+</span><span class="comment">------------------------------------------------+</span></span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">select</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="string">&#x27;1 01:15:30&#x27;</span> day_second);</span><br><span class="line"></span><br><span class="line"><span class="operator">+</span><span class="comment">-------------------------------------------------+ </span></span><br><span class="line"><span class="operator">|</span> date_add(<span class="variable">@dt</span>, <span class="type">interval</span> <span class="string">&#x27;1 01:15:30&#x27;</span> day_second) <span class="operator">|</span> </span><br><span class="line"><span class="operator">+</span><span class="comment">-------------------------------------------------+ </span></span><br><span class="line"><span class="operator">|</span> <span class="number">2008</span><span class="number">-08</span><span class="number">-10</span> <span class="number">13</span>:<span class="number">28</span>:<span class="number">03</span>                             <span class="operator">|</span> </span><br><span class="line"><span class="operator">+</span><span class="comment">-------------------------------------------------+</span></span><br><span class="line"></span><br><span class="line">date_add () 函数，分别为 <span class="variable">@dt</span> 增加了 “<span class="number">1</span> 小时 <span class="number">15</span> 分 <span class="number">30</span> 秒” 和 “<span class="number">1</span> 天 <span class="number">1</span> 小时 <span class="number">15</span> 分 <span class="number">30</span> 秒”。建议：总是使用 date_add () 日期时间函数来替代 adddate (), addtime ()。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MySQL 为日期减去一个时间间隔：date_sub ()</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select date_sub(<span class="emphasis">&#x27;1998-01-01 00:00:00&#x27;</span>, interval <span class="emphasis">&#x27;1 1:1:1&#x27;</span> day_second);</span><br><span class="line"></span><br><span class="line"><span class="code">+----------------------------------------------------------------+</span> </span><br><span class="line">| date_sub(<span class="emphasis">&#x27;1998-01-01 00:00:00&#x27;</span>, interval <span class="emphasis">&#x27;1 1:1:1&#x27;</span> day_second) | </span><br><span class="line"><span class="code">+----------------------------------------------------------------+</span> </span><br><span class="line"><span class="section">| 1997-12-30 22:58:59                                            | </span></span><br><span class="line"><span class="section">+----------------------------------------------------------------+</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>MySQL date_sub () 日期时间函数 和 date_add () 用法一致，不再赘述。另外，MySQL 中还有两个函数 subdate (), subtime ()，建议，用 date_sub () 来替代。</p>
+<ol start="3">
+<li>MySQL 另类日期函数：period_add (P,N), period_diff (P1,P2)</li>
+</ol>
+<p>函数参数 “P” 的格式为 “YYYYMM” 或者 “YYMM”，第二个参数 “N” 表示增加或减去 N month（月）。</p>
+<p>MySQL period_add (P,N)：日期加 &#x2F; 减去 N 月。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select period_add(200808,2), period_add(20080808,-2)</span><br><span class="line"></span><br><span class="line"><span class="code">+----------------------+</span>-------------------------+ </span><br><span class="line">| period_add(200808,2) | period_add(20080808,-2) | </span><br><span class="line"><span class="code">+----------------------+</span>-------------------------+ </span><br><span class="line"><span class="section">|               200810 |                20080806 | </span></span><br><span class="line"><span class="section">+----------------------+-------------------------+</span></span><br><span class="line"></span><br><span class="line">MySQL period_diff (P1,P2)：日期 P1-P2，返回 N 个月。</span><br><span class="line"></span><br><span class="line">mysql&gt; select period_diff(200808, 200801);</span><br><span class="line"></span><br><span class="line"><span class="code">+-----------------------------+</span> </span><br><span class="line">| period_diff(200808, 200801) | </span><br><span class="line"><span class="code">+-----------------------------+</span> </span><br><span class="line"><span class="section">|                           7 | </span></span><br><span class="line"><span class="section">+-----------------------------+</span></span><br></pre></td></tr></table></figure>
+
+<p>在 MySQL 中，这两个日期函数，一般情况下很少用到。</p>
+<ol start="4">
+<li>MySQL 日期、时间相减函数：datediff (date1,date2), timediff (time1,time2)<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">MySQL</span> datediff (date1,date2)：两个日期相减 date1 - date2，返回天数。</span><br><span class="line"></span><br><span class="line"><span class="attribute">select</span> datediff(&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span>&#x27;, &#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">01</span>&#x27;); -- <span class="number">7</span> </span><br><span class="line"><span class="attribute">select</span> datediff(&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">01</span>&#x27;, &#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span>&#x27;); -- -<span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">MySQL</span> timediff (time1,time2)：两个日期相减 time1 - time2，返回 time 差值。</span><br><span class="line"></span><br><span class="line"><span class="attribute">select</span> timediff(&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">08</span>:<span class="number">08</span>:<span class="number">08</span>&#x27;, &#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;); -- <span class="number">08</span>:<span class="number">08</span>:<span class="number">08</span> </span><br><span class="line"><span class="attribute">select</span> timediff(&#x27;<span class="number">08</span>:<span class="number">08</span>:<span class="number">08</span>&#x27;, &#x27;<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>&#x27;);                       -- <span class="number">08</span>:<span class="number">08</span>:<span class="number">08</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>注意：timediff (time1,time2) 函数的两个参数类型必须相同。</p>
+<p>四、MySQL 日期转换函数、时间转换函数 </p>
+<ol>
+<li><p>MySQL （时间、秒）转换函数：time_to_sec (time), sec_to_time (seconds)</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">select</span> time_to_sec(&#x27;<span class="number">01</span>:<span class="number">00</span>:<span class="number">05</span>&#x27;); -- <span class="number">3605</span> </span><br><span class="line"><span class="attribute">select</span> sec_to_time(<span class="number">3605</span>);        -- &#x27;<span class="number">01</span>:<span class="number">00</span>:<span class="number">05</span>&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MySQL （日期、天数）转换函数：to_days (date), from_days (days)</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">select</span> to_days(&#x27;<span class="number">0000</span>-<span class="number">00</span>-<span class="number">00</span>&#x27;); -- <span class="number">0</span> </span><br><span class="line"><span class="attribute">select</span> to_days(&#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span>&#x27;); -- <span class="number">733627</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">select</span> from_days(<span class="number">0</span>);           -- &#x27;<span class="number">0000</span>-<span class="number">00</span>-<span class="number">00</span>&#x27; </span><br><span class="line"><span class="attribute">select</span> from_days(<span class="number">733627</span>);      -- &#x27;<span class="number">2008</span>-<span class="number">08</span>-<span class="number">08</span>&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MySQL Str to Date （字符串转换为日期）函数：str_to_date (str, format)</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">select</span> str_to_date(&#x27;<span class="number">08</span>/<span class="number">09</span>/<span class="number">2008</span>&#x27;, &#x27;%m/%d/%Y&#x27;);                   -- <span class="number">2008</span>-<span class="number">08</span>-<span class="number">09</span> </span><br><span class="line"><span class="attribute">select</span> str_to_date(&#x27;<span class="number">08</span>/<span class="number">09</span>/<span class="number">08</span>&#x27; , &#x27;%m/%d/%y&#x27;);                   -- <span class="number">2008</span>-<span class="number">08</span>-<span class="number">09</span> </span><br><span class="line"><span class="attribute">select</span> str_to_date(&#x27;<span class="number">08</span>.<span class="number">09</span>.<span class="number">2008</span>&#x27;, &#x27;%m.%d.%Y&#x27;);                   -- <span class="number">2008</span>-<span class="number">08</span>-<span class="number">09</span> </span><br><span class="line"><span class="attribute">select</span> str_to_date(&#x27;<span class="number">08</span>:<span class="number">09</span>:<span class="number">30</span>&#x27;, &#x27;%h:%i:%s&#x27;);                     -- <span class="number">08</span>:<span class="number">09</span>:<span class="number">30</span> </span><br><span class="line"><span class="attribute">select</span> str_to_date(&#x27;<span class="number">08</span>.<span class="number">09</span>.<span class="number">2008</span> <span class="number">08</span>:<span class="number">09</span>:<span class="number">30</span>&#x27;, &#x27;%m.%d.%Y %h:%i:%s&#x27;); -- <span class="number">2008</span>-<span class="number">08</span>-<span class="number">09</span> <span class="number">08</span>:<span class="number">09</span>:<span class="number">30</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>可以看到，str_to_date (str,format) 转换函数，可以把一些杂乱无章的字符串转换为日期格式。另外，它也可以转换为时间。“format” 可以参看 MySQL 手册。</p>
+<ol start="4">
+<li>MySQL Date&#x2F;Time to Str（日期 &#x2F; 时间转换为字符串）函数：date_format (date,format), time_format (time,format)<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select date_format(<span class="emphasis">&#x27;2008-08-08 22:23:00&#x27;</span>, <span class="emphasis">&#x27;%W %M %Y&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="code">+------------------------------------------------+</span> </span><br><span class="line">| date_format(<span class="emphasis">&#x27;2008-08-08 22:23:00&#x27;</span>, <span class="emphasis">&#x27;%W %M %Y&#x27;</span>) | </span><br><span class="line"><span class="code">+------------------------------------------------+</span> </span><br><span class="line"><span class="section">| Friday August 2008                             | </span></span><br><span class="line"><span class="section">+------------------------------------------------+</span></span><br><span class="line"></span><br><span class="line">mysql&gt; select date_format(<span class="emphasis">&#x27;2008-08-08 22:23:01&#x27;</span>, <span class="emphasis">&#x27;%Y%m%d%H%i%s&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="code">+----------------------------------------------------+</span> </span><br><span class="line">| date_format(<span class="emphasis">&#x27;2008-08-08 22:23:01&#x27;</span>, <span class="emphasis">&#x27;%Y%m%d%H%i%s&#x27;</span>) | </span><br><span class="line"><span class="code">+----------------------------------------------------+</span> </span><br><span class="line"><span class="section">| 20080808222301                                     | </span></span><br><span class="line"><span class="section">+----------------------------------------------------+</span></span><br><span class="line"></span><br><span class="line">mysql&gt; select time_format(<span class="emphasis">&#x27;22:23:01&#x27;</span>, <span class="emphasis">&#x27;%H.%i.%s&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="code">+-------------------------------------+</span> </span><br><span class="line">| time_format(<span class="emphasis">&#x27;22:23:01&#x27;</span>, <span class="emphasis">&#x27;%H.%i.%s&#x27;</span>) | </span><br><span class="line"><span class="code">+-------------------------------------+</span> </span><br><span class="line"><span class="section">| 22.23.01                            | </span></span><br><span class="line"><span class="section">+-------------------------------------+</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>MySQL 日期、时间转换函数：date_format (date,format), time_format (time,format) 能够把一个日期 &#x2F; 时间转换成各种各样的字符串格式。它是 str_to_date (str,format) 函数的 一个逆转换。</p>
+<ol start="5">
+<li>MySQL 获得国家地区时间格式函数：get_format ()</li>
+</ol>
+<p>MySQL get_format () 语法：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">get_format(date|time|datetime, <span class="string">&#x27;eur&#x27;</span>|<span class="string">&#x27;usa&#x27;</span>|<span class="string">&#x27;jis&#x27;</span>|<span class="string">&#x27;iso&#x27;</span>|<span class="string">&#x27;internal&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function">MySQL <span class="title">get_format</span> () 用法的全部示例：</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">date,<span class="string">&#x27;usa&#x27;</span></span>)</span>          ;   -- <span class="string">&#x27;%m.%d.%Y&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">date,<span class="string">&#x27;jis&#x27;</span></span>)</span>          ;   -- <span class="string">&#x27;%Y-%m-%d&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">date,<span class="string">&#x27;iso&#x27;</span></span>)</span>          ;   -- <span class="string">&#x27;%Y-%m-%d&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">date,<span class="string">&#x27;eur&#x27;</span></span>)</span>          ;   -- <span class="string">&#x27;%d.%m.%Y&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">date,<span class="string">&#x27;internal&#x27;</span></span>)</span>     ;   -- <span class="string">&#x27;%Y%m%d&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">datetime,<span class="string">&#x27;usa&#x27;</span></span>)</span>      ;   -- <span class="string">&#x27;%Y-%m-%d %H.%i.%s&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">datetime,<span class="string">&#x27;jis&#x27;</span></span>)</span>      ;   -- <span class="string">&#x27;%Y-%m-%d %H:%i:%s&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">datetime,<span class="string">&#x27;iso&#x27;</span></span>)</span>      ;   -- <span class="string">&#x27;%Y-%m-%d %H:%i:%s&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">datetime,<span class="string">&#x27;eur&#x27;</span></span>)</span>      ;   -- <span class="string">&#x27;%Y-%m-%d %H.%i.%s&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">datetime,<span class="string">&#x27;internal&#x27;</span></span>)</span> ;   -- <span class="string">&#x27;%Y%m%d%H%i%s&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">time,<span class="string">&#x27;usa&#x27;</span></span>)</span>          ;   -- <span class="string">&#x27;%h:%i:%s %p&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">time,<span class="string">&#x27;jis&#x27;</span></span>)</span>          ;   -- <span class="string">&#x27;%H:%i:%s&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">time,<span class="string">&#x27;iso&#x27;</span></span>)</span>          ;   -- <span class="string">&#x27;%H:%i:%s&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">time,<span class="string">&#x27;eur&#x27;</span></span>)</span>          ;   -- <span class="string">&#x27;%H.%i.%s&#x27;</span> </span><br><span class="line"><span class="function"><span class="keyword">select</span> <span class="title">get_format</span>(<span class="params">time,<span class="string">&#x27;internal&#x27;</span></span>)</span>     ;   -- <span class="string">&#x27;%H%i%s&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>MySQL get_format () 函数在实际中用到机会的比较少。</p>
+<ol start="6">
+<li>MySQL 拼凑日期、时间函数：makdedate (year,dayofyear), maketime (hour,minute,second)<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">select</span> makedate(<span class="number">2001</span>,<span class="number">31</span>);   -- &#x27;<span class="number">2001</span>-<span class="number">01</span>-<span class="number">31</span>&#x27; </span><br><span class="line"><span class="attribute">select</span> makedate(<span class="number">2001</span>,<span class="number">32</span>);   -- &#x27;<span class="number">2001</span>-<span class="number">02</span>-<span class="number">01</span>&#x27;</span><br><span class="line"></span><br><span class="line"><span class="attribute">select</span> maketime(<span class="number">12</span>,<span class="number">15</span>,<span class="number">30</span>); -- &#x27;<span class="number">12</span>:<span class="number">15</span>:<span class="number">30</span>&#x27;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="MySQL-时区（timezone）转换函数"><a href="#MySQL-时区（timezone）转换函数" class="headerlink" title="MySQL 时区（timezone）转换函数"></a>MySQL 时区（timezone）转换函数</h2><figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">convert_tz(dt,from_tz,to_tz)</span><br><span class="line"></span><br><span class="line">select convert_tz(&#x27;2008<span class="string">-08</span><span class="string">-08</span> 12:00:00&#x27;, &#x27;<span class="string">+08</span>:00&#x27;, &#x27;<span class="string">+00</span>:00&#x27;); -- 2008<span class="string">-08</span><span class="string">-08</span> 04:00:00</span><br><span class="line"></span><br><span class="line">时区转换也可以通过 date_add, date_sub, timestampadd 来实现。</span><br><span class="line"></span><br><span class="line">select date_add(&#x27;2008<span class="string">-08</span><span class="string">-08</span> 12:00:00&#x27;, interval <span class="string">-8</span> hour); -- 2008<span class="string">-08</span><span class="string">-08</span> 04:00:00 </span><br><span class="line">select date_sub(&#x27;2008<span class="string">-08</span><span class="string">-08</span> 12:00:00&#x27;, interval 8 hour); -- 2008<span class="string">-08</span><span class="string">-08</span> 04:00:00 </span><br><span class="line">select timestampadd(hour, <span class="string">-8</span>, &#x27;2008<span class="string">-08</span><span class="string">-08</span> 12:00:00&#x27;);      -- 2008<span class="string">-08</span><span class="string">-08</span> 04:00:00</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/04/java-idea/" rel="prev" title="IntelliJ Idea 常用快捷键 列表 (实战终极总结！！！！)">
+                  <i class="fa fa-angle-left"></i> IntelliJ Idea 常用快捷键 列表 (实战终极总结！！！！)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/04/mysql-performace/" rel="next" title="数据库学习建议之提高数据库速度的十条建议">
+                  数据库学习建议之提高数据库速度的十条建议 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"dfc5bfad0974a8fa32bf4d0dd1dc906a"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

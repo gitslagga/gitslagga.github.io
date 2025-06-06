@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="2022年你应该解决的全新自动化项目如果你正在学习 Python，你应该尝试自动化你的日常任务。 您不仅可以通过实现您已经知道的知识来学习更多 Python，而且最终，您可以看到所有的辛勤工作是如何得到回报的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5 个自动化生活的 Python 项目：从初学者到高级">
+<meta property="og:url" content="https://slagga.top/2022/11/python-rpa/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="2022年你应该解决的全新自动化项目如果你正在学习 Python，你应该尝试自动化你的日常任务。 您不仅可以通过实现您已经知道的知识来学习更多 Python，而且最终，您可以看到所有的辛勤工作是如何得到回报的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-23T06:29:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.936Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Blog, HTML, CSS, JavaScript, Python, PHP, Java, Go, Redis, MySQL, Node.js, React, Vuejs, Git, Programming, Web Development, Blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2022/11/python-rpa/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2022/11/python-rpa/","path":"2022/11/python-rpa/","title":"5 个自动化生活的 Python 项目：从初学者到高级"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>5 个自动化生活的 Python 项目：从初学者到高级 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2022%E5%B9%B4%E4%BD%A0%E5%BA%94%E8%AF%A5%E8%A7%A3%E5%86%B3%E7%9A%84%E5%85%A8%E6%96%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">2022年你应该解决的全新自动化项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%87%AA%E5%8A%A8%E5%8C%96-Microsoft-Word%EF%BC%88%E5%88%9D%E5%AD%A6%E8%80%85%E9%A1%B9%E7%9B%AE%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">1. 自动化 Microsoft Word（初学者项目）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6%EF%BC%88%E5%88%9D%E5%AD%A6%E8%80%85%E9%A1%B9%E7%9B%AE%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">2. 自动发送电子邮件（初学者项目）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%87%AA%E5%8A%A8%E5%A1%AB%E5%86%99-Web-%E8%A1%A8%E5%8D%95%EF%BC%88%E4%B8%AD%E7%BA%A7%E9%A1%B9%E7%9B%AE%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">3. 自动填写 Web 表单（中级项目）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E8%87%AA%E5%8A%A8%E5%8C%96%E7%81%AB%E7%A7%8D%EF%BC%88%E9%AB%98%E7%BA%A7%E9%A1%B9%E7%9B%AE%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">4. 自动化火种（高级项目）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%9C%A8%E5%B7%A5%E4%BD%9C%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BD%A0%E8%87%AA%E5%B7%B1%E7%9A%84%E4%BB%BB%E5%8A%A1%EF%BC%88%E8%B6%85%E7%BA%A7%E9%AB%98%E7%BA%A7%E9%A1%B9%E7%9B%AE%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">5. 在工作中自动化你自己的任务（超级高级项目）</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2022/11/python-rpa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="5 个自动化生活的 Python 项目：从初学者到高级 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          5 个自动化生活的 Python 项目：从初学者到高级
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-23 14:29:30" itemprop="dateCreated datePublished" datetime="2022-11-23T14:29:30+08:00">2022-11-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="2022年你应该解决的全新自动化项目"><a href="#2022年你应该解决的全新自动化项目" class="headerlink" title="2022年你应该解决的全新自动化项目"></a>2022年你应该解决的全新自动化项目</h2><p>如果你正在学习 Python，你应该尝试自动化你的日常任务。</p>
+<p>您不仅可以通过实现您已经知道的知识来学习更多 Python，而且最终，您可以看到所有的辛勤工作是如何得到回报的。</p>
+<span id="more"></span>
+
+<p>最近，由于我没有时间，我经常将任务自动化。多亏了这一点，我有了 5 个新项目，我将它们分为初级、中级和高级。</p>
+<p>您将找到解决每个项目的完整脚本和教程的链接。另外，我给他们每个人留下一个挑战来测试你的 Python 技能。</p>
+<h2 id="1-自动化-Microsoft-Word（初学者项目）"><a href="#1-自动化-Microsoft-Word（初学者项目）" class="headerlink" title="1. 自动化 Microsoft Word（初学者项目）"></a>1. 自动化 Microsoft Word（初学者项目）</h2><p>您必须使用 Word 多少次来创建求职信、合同协议、简历或报告？</p>
+<p>如果你数不清，这个项目是给你的。</p>
+<p>在这个项目中，我们将使用 Python 和一个名为<code>docxtpl</code>. 为此，我们需要一个要自动化的文档模板。在模板中，我们必须在以后要替换的每个单词上引入占位符。我们使用<code>&#123;&#123;&#125;&#125;</code>占位符的符号。</p>
+<p>为了让事情变得更容易，我已经为求职信创建了一个模板。这是我们将使用的模板的外观。</p>
+<p>为了让这个项目对初学者友好，我们只需要使用 Python 和<code>docxtpl</code>.</p>
+<p>在下面的视频中，您可以下载此模板，获取脚本，然后按照步骤解决此项目。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly95b3V0dS5iZS9IOEFyczE1d0dSTQ==">视频地址<i class="fa fa-external-link-alt"></i></span></p>
+<p><strong>挑战</strong>：如果您想将此项目提升到一个新的水平，请尝试从 Excel 文件中提取数据并将其引入 Word 模板中。</p>
+<p>上面教程的第二部分有一个如下表所示的 Excel 文件。</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+--------+-----+------------+----------------+ </span><br><span class="line">|<span class="string"> 姓名   </span>|<span class="string"> ... </span>|<span class="string"> 地址       </span>|<span class="string"> 工作      </span>|<span class="string"> </span></span><br><span class="line"><span class="string">+--------+-----+------------+----------------+ </span></span><br><span class="line"><span class="string"></span>|<span class="string"> 弗兰克 </span>|<span class="string"> ... </span>|<span class="string"> 123 大道   </span>|<span class="string"> 数据科学家 </span>|<span class="string"> </span></span><br><span class="line"><span class="string"></span>|<span class="string"> ...   </span>|<span class="string"> ... </span>|<span class="string"> ...       </span>|<span class="string"> ...       </span>|<span class="string"> </span></span><br><span class="line"><span class="string"></span>|<span class="string"> 约翰   </span>|<span class="string"> ... </span>|<span class="string"> XYZ 大道   </span>|<span class="string"> 网页开发者 </span>|<span class="string"> </span></span><br><span class="line"><span class="string">+--------+-----+------------+----------------+</span></span><br></pre></td></tr></table></figure>
+
+<p>您应该为表格的每一行生成一个新文档。</p>
+<h2 id="2-自动发送电子邮件（初学者项目）"><a href="#2-自动发送电子邮件（初学者项目）" class="headerlink" title="2. 自动发送电子邮件（初学者项目）"></a>2. 自动发送电子邮件（初学者项目）</h2><p>我以前在工作中做的最无聊的任务之一就是发送电子邮件。</p>
+<p>重要的电子邮件应该被仔细阅读和回复，但是作为日常生活一部分的电子邮件应该是自动化的！这就是这个初学者项目的全部内容。我们将使用 Python 自动发送电子邮件。</p>
+<p>如何自动化这个任务？我们只需要使用内置模块<code>smtplib</code>和<code>email</code>. 我们需要<code>smtplib</code>使用简单邮件传输协议 (SMTP) 发送电子邮件，以及<code>email</code>读取、写入和发送更复杂的 MIME 消息的包。</p>
+<p>下面是使用 Gmail 自动发送电子邮件的分步教程。以下是它涵盖的内容：</p>
+<ul>
+<li>如何打开两步验证以便能够在 Python 中使用 Gmail</li>
+<li>如何使用 Python 发送普通电子邮件</li>
+<li>如何处理您可能遇到的 SSL 错误</li>
+</ul>
+<p><span class="exturl" data-url="aHR0cHM6Ly95b3V0dS5iZS9nX2o2SUxULVgwaw==">视频地址<i class="fa fa-external-link-alt"></i></span></p>
+<p><strong>挑战</strong>：如果您想让这个项目更具挑战性，请尝试将图像附加到您的电子邮件中。为此，您需要使用该<code>imghdr</code>库。</p>
+<h2 id="3-自动填写-Web-表单（中级项目）"><a href="#3-自动填写-Web-表单（中级项目）" class="headerlink" title="3. 自动填写 Web 表单（中级项目）"></a>3. 自动填写 Web 表单（中级项目）</h2><p>互联网上最繁琐的任务之一是填写网络表格。</p>
+<p>我的意思是！一遍又一遍地填写你的姓名、电话号码、地址和更多信息很无聊。当您必须拿出虚假数据来填写调查时，情况会变得更糟。</p>
+<p>在这个中间项目中，我们将使用 Python 将假数据填充到 Web 表单中。如何自动化这个任务？我们将使用一个 Web 自动化库，它允许我们执行 Web 操作，例如访问网站、输入文本和单击按钮。</p>
+<p>下面有一个关于如何使用 Python 自动执行这项繁琐任务的分步教程。以下是它涵盖的内容：</p>
+<ul>
+<li>如何在一个表格中填写数据</li>
+<li>如何使用 faker 库生成虚假数据</li>
+<li>如何填写多个网络表格</li>
+</ul>
+<p><span class="exturl" data-url="aHR0cHM6Ly95b3V0dS5iZS9MUTByX3ZzZHFRdw==">视频地址<i class="fa fa-external-link-alt"></i></span></p>
+<p><strong>挑战</strong>：我们在本教程中填写的表格具有简单的元素。如果您想让这个项目更具挑战性，请在表单中添加高级元素，例如下拉菜单和多项选择题。然后尝试自动化这个高级表单。</p>
+<h2 id="4-自动化火种（高级项目）"><a href="#4-自动化火种（高级项目）" class="headerlink" title="4. 自动化火种（高级项目）"></a>4. 自动化火种（高级项目）</h2><p>在约会应用程序上向右滑动非常耗时，以至于一旦你找到匹配项，你就会在网上约会最重要的部分变得懒惰——将匹配项转换为实际约会！</p>
+<p>这个高级项目包括创建一个适合您滑动的机器人，以便您以后可以处理您的取货线路并提高您的转化率。</p>
+<p>是什么让这个项目如此先进？很多东西。仅举几例：</p>
+<ul>
+<li>登录：无论您使用什么登录选项（Google、Facebook），Tinder 都会向您的电话号码发送一个代码。您需要使用此代码登录 Tinder。为了轻松解决这个问题，我们需要保持 Google Chrome 会话处于活动状态，然后使用 Selenium 控制它。</li>
+<li>棘手的按钮：如果您使用该<code>.click</code>方法单击“赞”按钮，有时可能会出错。对于这个特定的网站，我们需要使用替代方案。</li>
+<li>弹出窗口：向右滑动时，您可能会遇到不同的弹出窗口。你必须摆脱它们。</li>
+</ul>
+<p>下面有一个教程可以帮助您处理所有这些问题。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly95b3V0dS5iZS9OSlROZVhvZmJwcw==">视频地址<i class="fa fa-external-link-alt"></i></span></p>
+<p><strong>挑战：</strong>让您的机器人向您的比赛发送随机接送线路。</p>
+<p>但这只是为了这个项目！如果您想获得更多回复，请不要自动发送消息。我试过了，它不如自己发送高质量的消息有效。</p>
+<h2 id="5-在工作中自动化你自己的任务（超级高级项目）"><a href="#5-在工作中自动化你自己的任务（超级高级项目）" class="headerlink" title="5. 在工作中自动化你自己的任务（超级高级项目）"></a>5. 在工作中自动化你自己的任务（超级高级项目）</h2><p>毫无疑问，将工作中繁琐的任务自动化是您能做的最具挑战性的事情。</p>
+<p>为什么？很可能没有分步教程来指导您，您必须考虑需要使用什么库以及自动化它的最佳方法。</p>
+<p>要找出要自动化的内容，请问自己以下问题：</p>
+<ol>
+<li>我会一遍又一遍地做哪些任务？</li>
+<li>我可以使用 Python 自动化哪些特定部分？</li>
+<li>我应该使用哪些 Python 库来自动化这个项目？</li>
+</ol>
+<p>如果您知道问题 #3 的答案，即使您没有找到有关如何自动执行特定任务的教程，您也可以查看文档或阅读指南以开始使用该库。</p>
+<p>在评论中让我知道您现在正在自动化什么任务！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/python-practice/" rel="prev" title="每个 Python 开发人员都应该具备的 6 个实用技巧">
+                  <i class="fa fa-angle-left"></i> 每个 Python 开发人员都应该具备的 6 个实用技巧
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/career-web-dev/" rel="next" title="改变我开发者职业生涯的一个小日常实践">
+                  改变我开发者职业生涯的一个小日常实践 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"471e641439ad9b663b16b34c3ab43ec3"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

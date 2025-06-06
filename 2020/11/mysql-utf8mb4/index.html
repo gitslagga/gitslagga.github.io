@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="1. utf8 与 utf8mb4 异同先看 官方手册 https:&#x2F;&#x2F;dev.mysql.com&#x2F;doc&#x2F;refman&#x2F;5.6&#x2F;en&#x2F;charset-unicode-utf8mb4.html 的说明">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql 使用 utf8mb4 经验">
+<meta property="og:url" content="https://slagga.top/2020/11/mysql-utf8mb4/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="1. utf8 与 utf8mb4 异同先看 官方手册 https:&#x2F;&#x2F;dev.mysql.com&#x2F;doc&#x2F;refman&#x2F;5.6&#x2F;en&#x2F;charset-unicode-utf8mb4.html 的说明">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-21T11:23:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.929Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Charset">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2020/11/mysql-utf8mb4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2020/11/mysql-utf8mb4/","path":"2020/11/mysql-utf8mb4/","title":"Mysql 使用 utf8mb4 经验"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Mysql 使用 utf8mb4 经验 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-utf8-%E4%B8%8E-utf8mb4-%E5%BC%82%E5%90%8C"><span class="nav-number">1.</span> <span class="nav-text">1. utf8 与 utf8mb4 异同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-utf8mb4unicodeci-%E4%B8%8E-utf8mb4generalci-%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9"><span class="nav-number">2.</span> <span class="nav-text">2. utf8mb4unicodeci 与 utf8mb4generalci 如何选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%80%8E%E4%B9%88%E4%BB%8Eutf8%E8%BD%AC%E6%8D%A2%E4%B8%BAutf8mb4"><span class="nav-number">3.</span> <span class="nav-text">3. 怎么从utf8转换为utf8mb4</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E2%80%9C%E4%BC%AA%E2%80%9D%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1 “伪”转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-character-set-server"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2 character-set-server</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-key-768-long-%E9%94%99%E8%AF%AF"><span class="nav-number">4.</span> <span class="nav-text">4. key 768 long 错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-C-C-%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E5%88%86%E9%85%8D%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">5. C&#x2F;C 内存空间分配问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-java%E9%A9%B1%E5%8A%A8%E4%BD%BF%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">6. java驱动使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E6%8A%A5%E9%94%99"><span class="nav-number">7.</span> <span class="nav-text">7. 主从复制报错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-join-%E6%9F%A5%E8%AF%A2%E9%97%AE%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text">8. join 查询问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E5%8F%82%E8%80%83"><span class="nav-number">9.</span> <span class="nav-text">9. 参考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2020/11/mysql-utf8mb4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Mysql 使用 utf8mb4 经验 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mysql 使用 utf8mb4 经验
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-21 19:23:30" itemprop="dateCreated datePublished" datetime="2020-11-21T19:23:30+08:00">2020-11-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="1-utf8-与-utf8mb4-异同"><a href="#1-utf8-与-utf8mb4-异同" class="headerlink" title="1. utf8 与 utf8mb4 异同"></a>1. utf8 与 utf8mb4 异同</h2><p>先看 官方手册 <span class="exturl" data-url="aHR0cHM6Ly9kZXYubXlzcWwuY29tL2RvYy9yZWZtYW4vNS42L2VuL2NoYXJzZXQtdW5pY29kZS11dGY4bWI0Lmh0bWw=">https://dev.mysql.com/doc/refman/5.6/en/charset-unicode-utf8mb4.html<i class="fa fa-external-link-alt"></i></span> 的说明</p>
+<span id="more"></span>
+
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">The <span class="keyword">character</span> <span class="built_in">set</span> named utf8 uses <span class="keyword">a</span> maximum <span class="keyword">of</span> <span class="literal">three</span> <span class="keyword">bytes</span> per <span class="keyword">character</span> <span class="keyword">and</span> <span class="keyword">contains</span> only BMP <span class="keyword">characters</span>. The utf8mb4 <span class="keyword">character</span> <span class="built_in">set</span> uses <span class="keyword">a</span> maximum <span class="keyword">of</span> <span class="literal">four</span> <span class="keyword">bytes</span> per <span class="keyword">character</span> supports supplementary <span class="keyword">characters</span>:</span><br><span class="line"></span><br><span class="line">For <span class="keyword">a</span> BMP <span class="keyword">character</span>, utf8 <span class="keyword">and</span> utf8mb4 have identical storage characteristics: same code values, same encoding, same <span class="built_in">length</span>.</span><br><span class="line">For <span class="keyword">a</span> supplementary <span class="keyword">character</span>, utf8 cannot store <span class="keyword">the</span> <span class="keyword">character</span> <span class="keyword">at</span> all, whereas utf8mb4 requires <span class="literal">four</span> <span class="keyword">bytes</span> <span class="built_in">to</span> store <span class="keyword">it</span>. Because utf8 cannot store <span class="keyword">the</span> <span class="keyword">character</span> <span class="keyword">at</span> all, you have no supplementary <span class="keyword">characters</span> <span class="keyword">in</span> utf8 columns <span class="keyword">and</span> need <span class="keyword">not</span> worry about converting <span class="keyword">characters</span> <span class="keyword">or</span> losing data when upgrading utf8 data <span class="built_in">from</span> older versions <span class="keyword">of</span> MySQL.</span><br></pre></td></tr></table></figure>
+
+<p>MySQL在 5.5.3 之后增加了 utf8mb4 字符编码，mb4即 most bytes 4。简单说 utf8mb4 是 utf8 的超集并完全兼容utf8，能够用四个字节存储更多的字符。</p>
+<p>但抛开数据库，标准的 UTF-8 字符集编码是可以用 1~4 个字节去编码21位字符，这几乎包含了是世界上所有能看见的语言了。然而在MySQL里实现的utf8最长使用3个字节，也就是只支持到了 Unicode 中的 基本多文本平面（U 0000至U FFFF），包含了控制符、拉丁文，中、日、韩等绝大多数国际字符，但并不是所有，最常见的就算现在手机端常用的表情字符 emoji和一些不常用的汉字，如 “墅” ，这些需要四个字节才能编码出来。</p>
+<p>注：QQ里面的内置的表情不算，它是通过特殊映射到的一个gif图片。一般输入法自带的就是。</p>
+<p>也就是当你的数据库里要求能够存入这些表情或宽字符时，可以把字段定义为 utf8mb4，同时要注意连接字符集也要设置为utf8mb4，否则在 严格模式 下会出现 Incorrect string value: &#x2F;xF0&#x2F;xA1&#x2F;x8B&#x2F;xBE&#x2F;xE5&#x2F;xA2… for column ‘name’这样的错误，非严格模式下此后的数据会被截断。</p>
+<p>提示：另外一种能够存储emoji的方式是，不关心数据库表字符集，只要连接字符集使用 latin1，但相信我，你绝对不想这个干，一是这种字符集混用管理极不规范，二是存储空间被放大（读者可以想下为什么）。</p>
+<h2 id="2-utf8mb4unicodeci-与-utf8mb4generalci-如何选择"><a href="#2-utf8mb4unicodeci-与-utf8mb4generalci-如何选择" class="headerlink" title="2. utf8mb4unicodeci 与 utf8mb4generalci 如何选择"></a>2. utf8mb4unicodeci 与 utf8mb4generalci 如何选择</h2><p>字符除了需要存储，还需要排序或比较大小，涉及到与编码字符集对应的 排序字符集（collation）。ut8mb4对应的排序字符集常用的有 utf8mb4_unicode_ci、utf8mb4_general_ci，到底采用哪个在 stackoverflow 上有个讨论，What’s the difference between utf8_general_ci and utf8_unicode_ci</p>
+<p>主要从排序准确性和性能两方面看：</p>
+<pre><code>准确性
+    utf8mb4_unicode_ci 是基于标准的Unicode来排序和比较，能够在各种语言之间精确排序
+    utf8mb4_general_ci 没有实现Unicode排序规则，在遇到某些特殊语言或字符是，排序结果可能不是所期望的。
+    但是在绝大多数情况下，这种特殊字符的顺序一定要那么精确吗。比如Unicode把ß、Œ当成ss和OE来看；而general会把它们当成s、e，再如ÀÁÅåāă各自都与 A 相等。
+
+性能
+    utf8mb4_general_ci 在比较和排序的时候更快
+    utf8mb4_unicode_ci 在特殊情况下，Unicode排序规则为了能够处理特殊字符的情况，实现了略微复杂的排序算法。
+    但是在绝大多数情况下，不会发生此类复杂比较。general理论上比Unicode可能快些，但相比现在的CPU来说，它远远不足以成为考虑性能的因素，索引涉及、SQL设计才是。 我个人推荐是 utf8mb4_unicode_ci，将来 8.0 里也极有可能使用变为默认的规则。相比选择哪一种collation，使用者应该更关心字符集与排序规则在db里要统一就好。
+    这也从另一个角度告诉我们，不要可能产生乱码的字段作为主键或唯一索引。我遇到过一例，以 url 来作为唯一索引，但是它记录的有可能是乱码，导致后来想把它们修复就特别麻烦。
+</code></pre>
+<h2 id="3-怎么从utf8转换为utf8mb4"><a href="#3-怎么从utf8转换为utf8mb4" class="headerlink" title="3. 怎么从utf8转换为utf8mb4"></a>3. 怎么从utf8转换为utf8mb4</h2><h4 id="3-1-“伪”转换"><a href="#3-1-“伪”转换" class="headerlink" title="3.1 “伪”转换"></a>3.1 “伪”转换</h4><p>如果你的表定义和连接字符集都是utf8，那么直接在你的表上执行</p>
+<pre><code>ALTER TABLE tbl_name CONVERT TO CHARACTER SET utf8mb4;
+</code></pre>
+<p>则能够该表上所有的列的character类型变成 utf8mb4，表定义的默认字符集也会修改。连接的时候需要使用set names utf8mb4便可以插入四字节字符。（如果依然使用 utf8 连接，只要不出现四字节字符则完全没问题）。</p>
+<p>上面的 convert 有两个问题，一是它不能ONLINE，也就是执行之后全表禁止修改，有关这方面的讨论见 mysql 5.6 原生Online DDL解析；二是，它可能会自动该表字段类型定义，如 VARCHAR 被转成 MEDIUMTEXT，可以通过 MODIFY 指定类型为原类型。</p>
+<p>另外 ALTER TABLE tbl_name DEFAULT CHARACTER SET utf8mb4 这样的语句就不要随便执行了，特别是当表原本不是utf8时，除非表是空的或者你确认表里只有拉丁字符，否则正常和乱的就混在一起了。</p>
+<p>最重要的是，你连接时使用的latin1字符集写入了历史数据，表定义是latin1或utf8，不要期望通过 ALTER … CONVERT … 能够让你达到用utf8读取历史中文数据的目的，没卵用，老老实实做逻辑dump。所以我才叫它“伪”转换</p>
+<h4 id="3-2-character-set-server"><a href="#3-2-character-set-server" class="headerlink" title="3.2 character-set-server"></a>3.2 character-set-server</h4><p>一旦你决定使用utf8mb4，强烈建议你要修改服务端 character-set-server&#x3D;utf8mb4，不同的语言对它的处理方法不一样，c , php, python可以设置character-set，但java驱动依赖于 character-set-server 选项，后面有介绍。</p>
+<p>同时还要谨慎一些特殊选项，如 遇到腾讯云CDB连接字符集设置一个坑。个人不建议设置全局 init_connect。</p>
+<h2 id="4-key-768-long-错误"><a href="#4-key-768-long-错误" class="headerlink" title="4. key 768 long 错误"></a>4. key 768 long 错误</h2><p>字符集从utf8转到utf8mb4之后，最容易引起的就是索引键超长的问题。</p>
+<p>对于表行格式是 COMPACT或 REDUNDANT，InnoDB有单个索引最大字节数 768 的限制，而字段定义的是能存储的字符数，比如 VARCHAR(200) 代表能够存200个汉字，索引定义是字符集类型最大长度算的，即 utf8 maxbytes&#x3D;3, utf8mb4 maxbytes&#x3D;4，算下来utf8和utf8mb4两种情况的索引长度分别为600 bytes和800bytes，后者超过了768，导致出错：Error 1071: Specified key was too long; max key length is 767 bytes。</p>
+<p>COMPRESSED和DYNAMIC格式不受限制，但也依然不建议索引太长，太浪费空间和cpu搜索资源。</p>
+<p>如果已有定义超过这个长度的，可加上前缀索引，如果暂不能加上前缀索引（像唯一索引），可把该字段的字符集改回utf8或latin1。但是，（ 敲黑板啦，很重要 ），要防止出现 Illegal mix of collations (utf8_general_ci,IMPLICIT) and (utf8mb4_general_ci,COERCIBLE) for operation ‘&#x3D;’ 错误：连接字符集使用utf8mb4，但 SELECT&#x2F;UPDATE where条件有utf8类型的列，且条件右边存在不属于utf8字符，就会触发该异常。表示踩过这个坑。</p>
+<p>再多加一个友好提示：EXPLAIN 结果里面的 keylen 指的搜索索引长度，单位是bytes，而且是以字符集支持的单字符最大字节数算的，这也是为什么 INDEXLENGTH 膨胀厉害的一个原因。</p>
+<h2 id="5-C-C-内存空间分配问题"><a href="#5-C-C-内存空间分配问题" class="headerlink" title="5. C&#x2F;C 内存空间分配问题"></a>5. C&#x2F;C 内存空间分配问题</h2><p>这是我们这边的开发遇到的一个棘手的问题。C或C 连接MySQL使用的是linux系统上的 libmysqlclient 动态库，程序获取到数据之后根据自定义的一个网络协议，按照mysql字段定义的固定字节数来传输数据。从utf8转utf8mb4之后，c 里面针对character单字符内存空间分配，从3个增加到4个，引起异常。</p>
+<p>这个问题其实是想说明，使用utf8mb4之后，官方建议尽量用 varchar 代替 char，这样可以减少固定存储空间浪费（关于char与varchar的选择，可参考 这里）。但开发设计表时 varchar 的大小不能随意加大，它虽然是变长的，但客户端在定义变量来获取数据时，是以定义的为准，而非实际长度。按需分配，避免程序使用过多的内存。</p>
+<h2 id="6-java驱动使用"><a href="#6-java驱动使用" class="headerlink" title="6. java驱动使用"></a>6. java驱动使用</h2><p>Java语言里面所实现的UTF-8编码就是支持4字节的，所以不需要配置 mb4 这样的字眼，但如果从MySQL读写emoji，MySQL驱动版本要在 5.1.13 及以上版本，数据库连接依然是 characterEncoding&#x3D;UTF-8 。</p>
+<p>但还没完，遇到一个大坑。官方手册 里还有这么一段话：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Connector/J did <span class="keyword">not</span> support utf8mb4 <span class="keyword">for</span> servers <span class="number">5.5</span><span class="number">.2</span> <span class="keyword">and</span> newer.</span><br><span class="line"></span><br><span class="line">Connector/J now auto-detects servers configured <span class="keyword">with</span> character_set_server=utf8mb4 <span class="keyword">or</span> treats <span class="keyword">the</span> Java encoding utf<span class="number">-8</span> passed</span><br><span class="line">  <span class="keyword">using</span> characterEncoding=... <span class="keyword">as</span> utf8mb4 <span class="keyword">in</span> <span class="keyword">the</span> SET NAMES= calls <span class="keyword">it</span> makes when establishing <span class="keyword">the</span> connection. (Bug <span class="comment">#54175)</span></span><br></pre></td></tr></table></figure>
+<p>意思是，java驱动会自动检测服务端 character_set_server 的配置，如果为utf8mb4，驱动在建立连接的时候设置 SET NAMES utf8mb4。然而其他语言没有依赖于这样的特性。</p>
+<h2 id="7-主从复制报错"><a href="#7-主从复制报错" class="headerlink" title="7. 主从复制报错"></a>7. 主从复制报错</h2><p>这个问题没有遇到，只是看官方文档有提到，曾经也看到过类似的技术文章。大概就是从库的版本比主库的版本低，导致有些字符集不支持；或者人工修改了从库上的表或字段的字符集定义，都有可能引起异常。</p>
+<h2 id="8-join-查询问题"><a href="#8-join-查询问题" class="headerlink" title="8. join 查询问题"></a>8. join 查询问题</h2><p>有资料说 MySQL 表字段字符集不同导致的索引失效问题，自己也验证了一下，的确会有问题：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> TABLE <span class="symbol">`t1`</span> (</span><br><span class="line"><span class="symbol">`id`</span> int(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line"><span class="symbol">`name`</span> varchar(<span class="number">20</span>) DEFAULT <span class="literal">NULL</span>,</span><br><span class="line"><span class="symbol">`code`</span> varchar(<span class="number">50</span>) DEFAULT <span class="literal">NULL</span>,</span><br><span class="line"><span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (<span class="symbol">`id`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="symbol">`idx_code`</span> (<span class="symbol">`code`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="symbol">`idx_name`</span> (<span class="symbol">`name`</span>)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=<span class="number">6</span> DEFAULT CHARSET=utf8</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> TABLE <span class="symbol">`t2`</span> (</span><br><span class="line"><span class="symbol">`id`</span> int(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line"><span class="symbol">`name`</span> varchar(<span class="number">20</span>) DEFAULT <span class="literal">NULL</span>,</span><br><span class="line"><span class="symbol">`code`</span> varchar(<span class="number">50</span>) DEFAULT <span class="literal">NULL</span>,</span><br><span class="line"><span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (<span class="symbol">`id`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="symbol">`idx_code`</span> (<span class="symbol">`code`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="symbol">`idx_name`</span> (<span class="symbol">`name`</span>)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=<span class="number">6</span> DEFAULT CHARSET=utf8mb4</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t1 (<span class="symbol">`name`</span>,<span class="symbol">`code`</span>) <span class="keyword">values</span>(<span class="string">&#x27;aaa&#x27;</span>,<span class="string">&#x27;aaa&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t1 (<span class="symbol">`name`</span>,<span class="symbol">`code`</span>) <span class="keyword">values</span>(<span class="string">&#x27;bbb&#x27;</span>,<span class="string">&#x27;bbb&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t1 (<span class="symbol">`name`</span>,<span class="symbol">`code`</span>) <span class="keyword">values</span>(<span class="string">&#x27;ddd&#x27;</span>,<span class="string">&#x27;ddd&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t1 (<span class="symbol">`name`</span>,<span class="symbol">`code`</span>) <span class="keyword">values</span>(<span class="string">&#x27;eee&#x27;</span>,<span class="string">&#x27;eee&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t2 (<span class="symbol">`name`</span>,<span class="symbol">`code`</span>) <span class="keyword">values</span>(<span class="string">&#x27;aaa&#x27;</span>,<span class="string">&#x27;aaa&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t2 (<span class="symbol">`name`</span>,<span class="symbol">`code`</span>) <span class="keyword">values</span>(<span class="string">&#x27;bbb&#x27;</span>,<span class="string">&#x27;bbb&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t2 (<span class="symbol">`name`</span>,<span class="symbol">`code`</span>) <span class="keyword">values</span>(<span class="string">&#x27;ddd&#x27;</span>,<span class="string">&#x27;ddd&#x27;</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t2 (<span class="symbol">`name`</span>,<span class="symbol">`code`</span>) <span class="keyword">values</span>(<span class="string">&#x27;eee&#x27;</span>,<span class="string">&#x27;eee&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>查看执行计划：</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">explain <span class="keyword">select</span> * <span class="keyword">from</span> t2 left <span class="keyword">join</span> t1 <span class="keyword">on</span> t1.code = t2.code <span class="keyword">where</span> t2.name = <span class="comment">&#x27;dddd&#x27;</span></span><br><span class="line">******************* <span class="number">1</span>. row ****************</span><br><span class="line"><span class="symbol">id:</span> <span class="number">1</span></span><br><span class="line"><span class="symbol">select_type:</span> SIMPLE</span><br><span class="line"><span class="symbol">table:</span> t2</span><br><span class="line"><span class="symbol">partitions:</span> NULL</span><br><span class="line"><span class="symbol">type:</span> ref</span><br><span class="line"><span class="symbol">possible_keys:</span> idx_name</span><br><span class="line"><span class="symbol">key:</span> idx_name</span><br><span class="line"><span class="symbol">key_len:</span> <span class="number">83</span></span><br><span class="line"><span class="symbol">ref:</span> <span class="keyword">const</span></span><br><span class="line"><span class="symbol">rows:</span> <span class="number">1</span></span><br><span class="line"><span class="symbol">filtered:</span> <span class="number">100.00</span></span><br><span class="line"><span class="symbol">Extra:</span> NULL</span><br><span class="line">****************** <span class="number">2</span>. row **************</span><br><span class="line"><span class="symbol">id:</span> <span class="number">1</span></span><br><span class="line"><span class="symbol">select_type:</span> SIMPLE</span><br><span class="line"><span class="symbol">table:</span> t1</span><br><span class="line"><span class="symbol">partitions:</span> NULL</span><br><span class="line"><span class="symbol">type:</span> ALL</span><br><span class="line"><span class="symbol">possible_keys:</span> NULL</span><br><span class="line"><span class="symbol">key:</span> NULL</span><br><span class="line"><span class="symbol">key_len:</span> NULL</span><br><span class="line"><span class="symbol">ref:</span> NULL</span><br><span class="line"><span class="symbol">rows:</span> <span class="number">5</span></span><br><span class="line"><span class="symbol">filtered:</span> <span class="number">100.00</span></span><br><span class="line"><span class="symbol">Extra:</span> <span class="keyword">Using</span> <span class="keyword">where</span>; <span class="keyword">Using</span> <span class="keyword">join</span> buffer (Block Nested <span class="keyword">Loop</span>)</span><br><span class="line"><span class="number">2</span> rows <span class="keyword">in</span> <span class="keyword">set</span>, <span class="number">1</span> warning (<span class="number">0.01</span> sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="9-参考"><a href="#9-参考" class="headerlink" title="9. 参考"></a>9. 参考</h2><p><span class="exturl" data-url="aHR0cHM6Ly9kZXYubXlzcWwuY29tL2RvYy9yZWZtYW4vOC4wL2VuL2NoYXJzZXQtdW5pY29kZS1jb252ZXJzaW9uLmh0bWw=">https://dev.mysql.com/doc/refman/8.0/en/charset-unicode-conversion.html<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cDovL2ZvcnVtcy5teXNxbC5jb20vcmVhZC5waHA/MTAzLDE4NzA0OCwxODg3NDgjbXNnLTE4ODc0OA==">http://forums.mysql.com/read.php?103,187048,188748#msg-188748<i class="fa fa-external-link-alt"></i></span></p>
+<p>Why are we using utf8mb4_general_ci and not utf8mb4_unicode_ci?<br>How to support full Unicode in MySQL databases</p>
+<p>10分钟学会理解和解决MySQL乱码问题 <span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tL3MvbnM5ZVJ4alhaZlVQTlNwZmdHQTdVQQ==">https://mp.weixin.qq.com/s/ns9eRxjXZfUPNSpfgGA7UA<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Charset/" rel="tag"># Charset</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/algorithm-rsa/" rel="prev" title="RSA 算法原理">
+                  <i class="fa fa-angle-left"></i> RSA 算法原理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/fibonacci-sequence/" rel="next" title="什么是斐波那契数列，还有优化？">
+                  什么是斐波那契数列，还有优化？ <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"1d1095b0a8624c53a783c470cbade649"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

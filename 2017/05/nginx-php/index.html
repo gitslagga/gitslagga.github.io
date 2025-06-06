@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="概述CGI 全称是 “公共网关接口”(Common Gateway Interface)，HTTP 服务器与你的或其它机 器上的程序进行 “交谈” 的一种工具，其程序须运行在网络服务器上。 CGI 本身可以看成是一种协议标准，它可以用任何一种语言编写具体的符合该接口标准的 协议存在，只要这种语言具有标准输入、输出和环境变量。如 php,perl,tcl 等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx 服务器究竟是怎么执行 Php 项目">
+<meta property="og:url" content="https://slagga.top/2017/05/nginx-php/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="概述CGI 全称是 “公共网关接口”(Common Gateway Interface)，HTTP 服务器与你的或其它机 器上的程序进行 “交谈” 的一种工具，其程序须运行在网络服务器上。 CGI 本身可以看成是一种协议标准，它可以用任何一种语言编写具体的符合该接口标准的 协议存在，只要这种语言具有标准输入、输出和环境变量。如 php,perl,tcl 等。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-05-26T07:51:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.899Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Blog, HTML, CSS, JavaScript, Python, PHP, Java, Go, Redis, MySQL, Node.js, React, Vuejs, Git, Programming, Web Development, Blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2017/05/nginx-php/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2017/05/nginx-php/","path":"2017/05/nginx-php/","title":"Nginx 服务器究竟是怎么执行 Php 项目"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Nginx 服务器究竟是怎么执行 Php 项目 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95-%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">方法 &#x2F; 步骤</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/05/nginx-php/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Nginx 服务器究竟是怎么执行 Php 项目 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Nginx 服务器究竟是怎么执行 Php 项目
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-05-26 15:51:30" itemprop="dateCreated datePublished" datetime="2017-05-26T15:51:30+08:00">2017-05-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Nginx/" itemprop="url" rel="index"><span itemprop="name">Nginx</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>CGI 全称是 “公共网关接口”(Common Gateway Interface)，HTTP 服务器与你的或其它机 器上的程序进行 “交谈” 的一种工具，其程序须运行在网络服务器上。</p>
+<p>CGI 本身可以看成是一种协议标准，它可以用任何一种语言编写具体的符合该接口标准的 协议存在，只要这种语言具有标准输入、输出和环境变量。如 php,perl,tcl 等。</p>
+<span id="more"></span>
+
+<h2 id="方法-步骤"><a href="#方法-步骤" class="headerlink" title="方法 &#x2F; 步骤"></a>方法 &#x2F; 步骤</h2><ol>
+<li><p>FastCGIFastCGI 像是一个常驻 (long-live) 型的 CGI，它可以一直执行着，只要激活后，不会每次 都要花费时间去 fork 一次（这是 CGI 最为人诟病的 fork-and-execute 模式）。它还支持分布式的运算，即 FastCGI 程序可以在网站服务器以外的主机上执行并且接受来自其它网站服务器来的请求。FastCGI 是语言无关的、可伸缩架构的 CGI 开放扩展，其主要行为是将 CGI 解释器进程保持 在内存中并因此获得较高的性能。众所周知，CGI 解释器的反复加载是 CGI 性能低下的主要原因，如果 CGI 解 释器保持在内存中并接受 FastCGI 进程管理器调度，则可以提供良好的性能、伸缩性、Fail- Over 特性等等 。FastCGI 也可以称为是一种协议标准，比如下面要说的 php-fpm 就是支持解析 php 的 一个 fastCGI 进程管理器 &#x2F; 引擎。</p>
+</li>
+<li><p>FastCGI 特点 FastCGI 具有语言无关性.FastCGI 在进程中的应用程序，独立于核心 web 服务器运行，提供了一 个比 API 更安全的环境。APIs 把应用程序的代码与核心的 web 服务器链接在一起，这意味着在一个错误的 API 的应用程序可能会损坏其他应用程序或核心服务器。 恶意的 API 的应用程序代码甚至可以窃取另一个应用 程序或核心服务器的密钥。FastCGI 技术目前支持语言有：C&#x2F;C++、Java、Perl、Tcl、Python、 SmallTalk、Ruby 等。相关模块在 Apache, ISS, Lighttpd 等流行的服务器上也是可用的。FastCGI 的不依赖于任何 Web 服务器的内部架构，因此即使服务器技术 的变化，FastCGI 依然稳定不变。</p>
+</li>
+<li><p>FastCGI 的工作原理 Web Server 启动时载入 FastCGI 进程管理器（IIS ISAPI 或 Apache Module) FastCGI 进程管理器自身初始化，启动多个 CGI 解释器进程 (可见多个 php-cgi) 并等待来自 Web Server 的连接。当客户端请求到达 Web Server 时，FastCGI 进程管理器选择并连接到一 个 CGI 解释器。Web server 将 CGI 环境变量和标准输入发送到 FastCGI 子进程 php-cgi。FastCGI 子进程完成处理后将标准输出和错误信息从同一连接返回 Web Server。当 FastCGI 子进程关闭连接时，请求便告处理完成。FastCGI 子进程接着等待并处理来自 FastCGI 进 程管理器 (运行在 Web Server 中) 的下一个连接。 在 CGI 模式中，php-cgi 在此便退出了。在上述情况中，你可以想象 CGI 通常有多慢。每一个 Web 请求 PHP 都必须重新解析 php.ini 、重新载入全部扩展并重初始化全部数据结构。使用 FastCGI，所有这些都只在进程启动时发生一次。一个 额外的好处是，持续数据库连接 (Persistent database connection) 可以工作。</p>
+</li>
+<li><p>FastCGI 的不足因为是多进程，所以比 CGI 多线程消耗更多的服务器内存，PHP-CGI 解释器每进程消耗 7 至 25 兆内存，将这个数字乘以 50 或 100 就是很大的内存数。Nginx 0.8.46+PHP 5.2.14 (FastCGI) 服务器在 3 万并发连接下，开启的 10 个 Nginx 进程消 耗 150M 内存（15M<em>10&#x3D;150M），开启的 64 个 php-cgi 进程消耗 1280M 内存（20M</em>64&#x3D;1280M），加上系统自身消 耗的内存，总共消耗不到 2GB 内存。如果服务器内存较小，完全可以只开启 25 个 php-cgi 进程，这样 php-cgi 消耗的总内存数才 500M。上面的数据摘自 Nginx 0.8.x + PHP 5.2.13 (FastCGI) 搭建胜过 Apache 十倍的 Web 服务器 (第 6 版)</p>
+</li>
+<li><p>PHP-CGIPHP-CGI 是 PHP 自带的 FastCGI 管理器。PHP-CGI 的不足：php-cgi 变更 php.ini 配置后需重启 php-cgi 才能让新的 php-ini 生效， 不可以平滑重启。直接杀死 php-cgi 进程，php 就不能运行了。(PHP-FPM 和 Spawn-FCGI 就 没有这个问题，守护进程会平滑从新生成新的子进程。）</p>
+</li>
+<li><p>PHP-FPMPHP-FPM 是一个 PHP FastCGI 管理器，是只用于 PHP 的，可以在 <span class="exturl" data-url="aHR0cDovL3BocC0v">http://php-<i class="fa fa-external-link-alt"></i></span> fpm.org&#x2F;download 下载得到。PHP-FPM 其实是 PHP 源代码的一个补丁，旨在将 FastCGI 进程管理整合进 PHP 包中。必须将 它 patch 到你的 PHP 源代码中，在编译安装 PHP 后才可以使用。现在我们可以在最新的 PHP 5.3.2 的源码树里下载得到直接整合了 PHP-FPM 的分支，据说下个版本会融合进 PHP 的主分支去。相对 Spawn-FCGI，PHP-FPM 在 CPU 和内存方面的控制都更胜一筹，而且前者很容易崩溃，必须用 crontab 进行监控，而 PHP-FPM 则没有这种烦恼。PHP5.3.3 已经集成 php-fpm 了，不再是第三方的包了。PHP-FPM 提供了更好的 PHP 进程管理 方式，可以有效控制内存和进程、可以平滑重载 PHP 配置，比 spawn-fcgi 具有更多有点，所以被 PHP 官方收 录了。在.&#x2F;configure 的时候带 –enable-fpm 参数即可开启 PHP-FPM。</p>
+</li>
+<li><p>Spawn-FCGISpawn-FCGI 是一个通用的 FastCGI 管理服务器，它是 lighttpd 中的一部份，很多人都用 Lighttpd 的 Spawn-FCGI 进行 FastCGI 模式下的管理工作，不过有不少缺点。而 PHP-FPM 的出现多少缓解了一些问题，但 PHP-FPM 有个缺点就是要重新编译，这对于一些已经运行的环境可能有不小的风险 (refer)，在 php 5.3.3 中可以直接使用 PHP-FPM 了。</p>
+<p>Spawn-FCGI 目前已经独成为一个项目，更加稳定一些，也给很多 Web 站点的配置带来便利。已经有不少站点将它与 nginx 搭配来解决动态网页。</p>
+</li>
+<li><p>PHP-FPM 与 spawn-CGI 对比 PHP-FPM 的使用非常方便，配置都是在 PHP-FPM.ini 的文件内，而启动、重启都可以从 php&#x2F;sbin&#x2F;PHP-FPM 中进行。更方便的是修改 php.ini 后可以直接使用 PHP-FPM reload 进行加载，无需杀掉进 程就可以完成 php.ini 的修改加载结果显示使用 PHP-FPM 可以使 php 有不小的性能提升。PHP-FPM 控制的进程 cpu 回收的速度比较慢，内存分配的 很均匀。Spawn-FCGI 控制的进程 CPU 下降的很快，而内存分配的比较不均匀。有很多进程似乎未分配到，而另外一些 却占用很高。可能是由于进程任务分配的不均匀导致的。而这也导致了总体响应速度的下降。而 PHP-FPM 合 理的分配，导致总体响应的提到以及任务的平均。</p>
+</li>
+<li><p>总结：fastCGI 是 nginx 和 php 之间的一个通信接口，该接口实际处理过程通过启动 php-fpm 进程来解 析 php 脚本，即 php-fpm 相 当于一个动态应用服务器，从而实现 nginx 动态解析 php。因此，如果 nginx 服务器需要支 持 php 解析，需要在 nginx.conf 中增加 php 的配置：将 php 脚本转发到 fastCGI 进程监听的 IP 地址和端口 （php-fpm.conf 中指定）。同时，php 安装的时候，需要开启支持 fastCGI 选项，并且编译安装 php-fpm 补丁 &#x2F; 扩展，同时，需要启动 php-fpm 进程，才可 以解析 nginx 通过 fastCGI 转发过来的 php 脚本。</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/05/php-image/" rel="prev" title="Php 缩略图生成类，支持 ImageMagick 及 gd 库两种处理">
+                  <i class="fa fa-angle-left"></i> Php 缩略图生成类，支持 ImageMagick 及 gd 库两种处理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/05/apache-php/" rel="next" title="Apache 运行 Php 的几种方式">
+                  Apache 运行 Php 的几种方式 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"0df0885e859368e6891c5e3efeebb3cf"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="35 - 数组在上一章中，我们研究了shell如何操纵字符串和数字。到目前为止，我们所研究的数据类型在计算机科学领域被称为标量变量；也就是说，它们是包含单个值的变量。 在本章中，我们将研究另一种称为数组的数据结构，它可以持有多个值。数组几乎是每种编程语言的特性。shell也支持数组，尽管以一种相当有限的方式。即便如此，它们在解决某些类型的编程问题时仍然非常有用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数组">
+<meta property="og:url" content="https://slagga.top/2024/05/35-arrays/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="35 - 数组在上一章中，我们研究了shell如何操纵字符串和数字。到目前为止，我们所研究的数据类型在计算机科学领域被称为标量变量；也就是说，它们是包含单个值的变量。 在本章中，我们将研究另一种称为数组的数据结构，它可以持有多个值。数组几乎是每种编程语言的特性。shell也支持数组，尽管以一种相当有限的方式。即便如此，它们在解决某些类型的编程问题时仍然非常有用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-05-10T04:10:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.958Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="TLCL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2024/05/35-arrays/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2024/05/35-arrays/","path":"2024/05/35-arrays/","title":"数组"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数组 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#35-%E6%95%B0%E7%BB%84"><span class="nav-number">1.</span> <span class="nav-text">35 - 数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E7%BB%84"><span class="nav-number">1.1.</span> <span class="nav-text">创建数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%99%E6%95%B0%E7%BB%84%E8%B5%8B%E5%80%BC"><span class="nav-number">1.2.</span> <span class="nav-text">给数组赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0"><span class="nav-number">1.3.</span> <span class="nav-text">访问数组元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E6%93%8D%E4%BD%9C"><span class="nav-number">1.4.</span> <span class="nav-text">数组操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%95%B0%E7%BB%84%E7%9A%84%E5%85%A8%E9%83%A8%E5%86%85%E5%AE%B9"><span class="nav-number">1.4.1.</span> <span class="nav-text">输出数组的全部内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9A%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%9A%84%E6%95%B0%E9%87%8F"><span class="nav-number">1.4.2.</span> <span class="nav-text">确定数组元素的数量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E6%95%B0%E7%BB%84%E4%BD%BF%E7%94%A8%E7%9A%84%E4%B8%8B%E6%A0%87"><span class="nav-number">1.4.3.</span> <span class="nav-text">查找数组使用的下标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%91%E6%95%B0%E7%BB%84%E6%9C%AB%E5%B0%BE%E6%B7%BB%E5%8A%A0%E5%85%83%E7%B4%A0"><span class="nav-number">1.4.4.</span> <span class="nav-text">向数组末尾添加元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E6%95%B0%E7%BB%84%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F"><span class="nav-number">1.4.5.</span> <span class="nav-text">对数组进行排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E7%BB%84"><span class="nav-number">1.4.6.</span> <span class="nav-text">删除数组</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E6%95%B0%E7%BB%84"><span class="nav-number">1.5.</span> <span class="nav-text">关联数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E9%98%85%E8%AF%BB"><span class="nav-number">1.7.</span> <span class="nav-text">进一步阅读</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2024/05/35-arrays/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数组 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数组
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-10 12:10:30" itemprop="dateCreated datePublished" datetime="2024-05-10T12:10:30+08:00">2024-05-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="35-数组"><a href="#35-数组" class="headerlink" title="35 - 数组"></a>35 - 数组</h2><p>在上一章中，我们研究了shell如何操纵字符串和数字。到目前为止，我们所研究的数据类型在计算机科学领域被称为<em>标量变量</em>；也就是说，它们是包含单个值的变量。</p>
+<p>在本章中，我们将研究另一种称为<em>数组</em>的数据结构，它可以持有多个值。数组几乎是每种编程语言的特性。shell也支持数组，尽管以一种相当有限的方式。即便如此，它们在解决某些类型的编程问题时仍然非常有用。</p>
+<span id="more"></span>
+
+<p><strong>什么是数组？</strong></p>
+<p>数组是一次可以持有多个值的变量。数组像一个表格一样被组织。让我们考虑一个电子表格作为例子。电子表格就像一个<em>二维数组</em>。它有行和列，电子表格中的一个单独单元格可以根据其行和列地址来定位。数组的行为方式相同。数组有称为<em>元素</em>的单元格，每个元素包含数据。使用一个称为<em>索引</em>或<em>下标</em>的地址来访问单个数组元素。</p>
+<p>大多数编程语言支持<em>多维数组</em>。电子表格是一个具有两个维度的多维数组的例子，宽度和高度。许多语言支持具有任意数量维度的数组，尽管二维和三维数组可能是最常用的。</p>
+<p>bash中的数组限于单一维度。我们可以将它们想象为只有单列的电子表格。即使有这个限制，它们仍有许多应用。数组支持首次出现在bash版本2中。原始的Unix shell程序sh根本不支持数组。</p>
+<h3 id="创建数组"><a href="#创建数组" class="headerlink" title="创建数组"></a>创建数组</h3><p>数组变量的命名就像其他bash变量一样，当它们被访问时自动创建。这里是一个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ a[1]=foo</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;a[1]&#125;</span></span><br><span class="line">foo</span><br></pre></td></tr></table></figure>
+
+<p>这里我们看到了数组元素的赋值和访问的例子。通过第一个命令，数组a的元素1被赋值为“foo”。第二个命令显示了元素1存储的值。在第二个命令中使用大括号是必需的，以防止shell试图对数组元素的名称进行路径名扩展。</p>
+<p>也可以使用declare命令创建数组。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">declare</span> -a a</span><br></pre></td></tr></table></figure>
+
+<p>使用-a选项，这个declare的例子创建了数组a。</p>
+<h3 id="给数组赋值"><a href="#给数组赋值" class="headerlink" title="给数组赋值"></a>给数组赋值</h3><p>可以通过两种方式中的一种来赋值。单个值可以使用以下语法赋值：</p>
+<blockquote>
+<p><em>name</em>[<em>subscript</em>]&#x3D;<em>value</em></p>
+</blockquote>
+<p>其中<em>name</em>是数组的名称，<em>subscript</em>是一个大于或等于零的整数（或算术表达式）。注意数组的第一个元素的下标是零，不是一。<em>value</em>是赋给数组元素的字符串或整数。</p>
+<p>可以使用以下语法赋多个值：</p>
+<blockquote>
+<p><em>name</em>&#x3D;(<em>value1</em> <em>value2</em> …)</p>
+</blockquote>
+<p>其中<em>name</em>是数组的名称，<em>value</em>占位符是顺序赋给数组元素的值，从元素零开始。例如，如果我们想将缩写的一周天赋给数组days，我们可以这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ days=(Sun Mon Tue Wed Thu Fri Sat)</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过为每个值指定下标来给特定元素赋值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ days=([0]=Sun [1]=Mon [2]=Tue [3]=Wed [4]=Thu</span><br><span class="line">[5]=Fri [6]=Sat)</span><br></pre></td></tr></table></figure>
+
+<h3 id="访问数组元素"><a href="#访问数组元素" class="headerlink" title="访问数组元素"></a>访问数组元素</h3><p>数组有什么用处呢？就像许多数据管理任务可以用电子表格程序执行一样，许多编程任务也可以用数组执行。</p>
+<p>让我们考虑一个简单的数据收集和呈现示例。我们将构建一个脚本，检查指定目录中文件的修改时间。根据这些数据，我们的脚本将输出一个表格，显示文件最后修改的一天中的哪个小时。这样的脚本可以用来确定系统何时最活跃。这个名为hours的脚本产生这样的结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ hours .</span><br><span class="line">小时 文件 小时 文件</span><br><span class="line">---- ----- ---- -----</span><br><span class="line">00 0 12 11</span><br><span class="line">01 1 13 7</span><br><span class="line">02 0 14 1</span><br><span class="line">03 0 15 7</span><br><span class="line">04 1 16 6</span><br><span class="line">05 1 17 5</span><br><span class="line">06 6 18 4</span><br><span class="line">07 3 19 4</span><br><span class="line">08 1 20 1</span><br><span class="line">09 14 21 0</span><br><span class="line">10 2 22 0</span><br><span class="line">11 5 23 0</span><br><span class="line">总文件数 = 80</span><br></pre></td></tr></table></figure>
+
+<p>我们执行hours程序，指定当前目录为目标。它产生一个表格，显示一天中的每个小时（0-23），最后修改的文件有多少。产生这个结果的代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># hours: 脚本用于按修改时间计算文件</span></span><br><span class="line">  <span class="function"><span class="title">usage</span></span> () &#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;用法: <span class="variable">$&#123;0##*/&#125;</span> 目录&quot;</span> &gt;&amp;2</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 检查参数是否为目录</span></span><br><span class="line"><span class="keyword">if</span> [[ ! -d <span class="string">&quot;<span class="variable">$1</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">  usage</span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="comment"># 初始化数组</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;0..23&#125;; <span class="keyword">do</span> hours[i]=0; <span class="keyword">done</span></span><br><span class="line"><span class="comment"># 收集数据</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">stat</span> -c %y <span class="string">&quot;<span class="variable">$1</span>&quot;</span>/* | <span class="built_in">cut</span> -c 12-13); <span class="keyword">do</span></span><br><span class="line">  j=<span class="string">&quot;<span class="variable">$&#123;i#0&#125;</span>&quot;</span></span><br><span class="line">  ((++hours[j]))</span><br><span class="line">  ((++count))</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment"># 显示数据</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;小时\t文件\t小时\t文件&quot;</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;----\t-----\t----\t-----&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;0..11&#125;; <span class="keyword">do</span></span><br><span class="line">  j=$((i + <span class="number">12</span>))</span><br><span class="line">  <span class="built_in">printf</span> <span class="string">&quot;%02d\t%d\t%02d\t%d\n&quot;</span> \</span><br><span class="line">    <span class="string">&quot;<span class="variable">$i</span>&quot;</span> \</span><br><span class="line">    <span class="string">&quot;<span class="variable">$&#123;hours[i]&#125;</span>&quot;</span> \</span><br><span class="line">    <span class="string">&quot;<span class="variable">$j</span>&quot;</span> \</span><br><span class="line">    <span class="string">&quot;<span class="variable">$&#123;hours[j]&#125;</span>&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;\n总文件数 = %d\n&quot;</span> <span class="variable">$count</span></span><br></pre></td></tr></table></figure>
+
+<p>脚本由一个函数（usage）和四个部分的主体组成。在第一部分，我们检查是否有命令行参数并且它是否是一个目录。如果不是，我们显示用法消息并退出。</p>
+<p>第二部分初始化数组hours。通过为每个元素赋值为零来实现这一点。没有特殊的要求预先准备数组，但我们的脚本需要确保没有元素为空。注意循环是如何有趣地构建的。通过使用大括号扩展（{0..23}），我们能够轻松生成一系列单词供for命令使用。</p>
+<p>下一部分通过在目录中的每个文件上运行stat程序来收集数据。我们使用cut提取结果中的两位小时数。在循环内部，我们需要删除小时字段的前导零，因为shell将尝试（并最终失败）将00到09的值解释为八进制数（见表34-2）。接下来，我们增加与一天中的小时相对应的数组元素的值。最后，我们增加一个计数器（count）来跟踪目录中的总文件数。</p>
+<p>脚本的最后一部分显示数组的内容。我们首先输出几个标题行，然后进入一个循环，产生四列输出。最后，我们输出文件的最终总数。</p>
+<h3 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h3><p>有许多常见的数组操作。删除数组、确定它们的大小、排序等等，在脚本中有很多应用。</p>
+<h4 id="输出数组的全部内容"><a href="#输出数组的全部内容" class="headerlink" title="输出数组的全部内容"></a>输出数组的全部内容</h4><p>可以使用下标*和@来访问数组中的每个元素。与位置参数一样，@表示法是这两个中更有用的一个。这里是一个演示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ animals=(<span class="string">&quot;a dog&quot;</span> <span class="string">&quot;a cat&quot;</span> <span class="string">&quot;a fish&quot;</span>)</span><br><span class="line">[me@linuxbox ~]$ <span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$&#123;animals[*]&#125;</span>; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>; <span class="keyword">done</span></span><br><span class="line">a</span><br><span class="line">dog</span><br><span class="line">a</span><br><span class="line"><span class="built_in">cat</span></span><br><span class="line">a</span><br><span class="line">fish</span><br><span class="line">[me@linuxbox ~]$ <span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$&#123;animals[@]&#125;</span>; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>; <span class="keyword">done</span></span><br><span class="line">a</span><br><span class="line">dog</span><br><span class="line">a</span><br><span class="line"><span class="built_in">cat</span></span><br><span class="line">a</span><br><span class="line">fish</span><br><span class="line">[me@linuxbox ~]$ <span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;animals[*]&#125;</span>&quot;</span>; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>; <span class="keyword">done</span></span><br><span class="line">a dog a <span class="built_in">cat</span> a fish</span><br><span class="line">[me@linuxbox ~]$ <span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;animals[@]&#125;</span>&quot;</span>; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>; <span class="keyword">done</span></span><br><span class="line">a dog</span><br><span class="line">a <span class="built_in">cat</span></span><br><span class="line">a fish</span><br></pre></td></tr></table></figure>
+
+<p>我们创建了数组animals并为其分配了三个两字字符串。然后我们执行四个循环，看看单词分割对数组内容的影响。在被引用时，<code>$&#123;animals[*]&#125;和$</code>{animals[@]}的行为是相同的。*表示法结果是一个包含数组内容的单个单词，而@表示法结果是三个两字字符串，这与数组的“真实”内容相匹配。</p>
+<h4 id="确定数组元素的数量"><a href="#确定数组元素的数量" class="headerlink" title="确定数组元素的数量"></a>确定数组元素的数量</h4><p>使用参数扩展，我们可以确定数组中元素的数量，就像查找字符串的长度一样。这里是一个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ a[100]=foo</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;#a[@]&#125;</span> <span class="comment"># 数组元素的数量</span></span><br><span class="line">1</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;#a[100]&#125;</span> <span class="comment"># 元素100的长度</span></span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<p>我们创建数组a并将字符串foo赋给元素100。接下来，我们使用参数扩展来检查数组的长度，使用@表示法。最后，我们查看包含字符串foo的元素100的长度。值得注意的是，虽然我们将字符串赋给了元素100，bash只报告数组中有一个元素。这与一些其他语言的行为不同，在那些语言中，数组的未使用元素（元素0-99）将被初始化为空值并被计数。在bash中，只有被赋值的数组元素才存在，无论它们的下标是什么。</p>
+<h4 id="查找数组使用的下标"><a href="#查找数组使用的下标" class="headerlink" title="查找数组使用的下标"></a>查找数组使用的下标</h4><p>由于bash允许数组在下标的赋值中存在“间隙”，有时确定哪些元素实际存在是很有用的。这可以通过使用以下形式的参数扩展来完成：</p>
+<blockquote>
+<p>${!<em>array</em>[*]}</p>
+<p>${!<em>array</em>[@]}</p>
+</blockquote>
+<p>其中<em>array</em>是数组变量的名称。像使用*和@的其他扩展一样，引号中的@形式是最有用的，因为它扩展成单独的单词。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ foo=([2]=a [4]=b [6]=c)</span><br><span class="line">[me@linuxbox ~]$ <span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;foo[@]&#125;</span>&quot;</span>; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>; <span class="keyword">done</span></span><br><span class="line">a</span><br><span class="line">b</span><br><span class="line">c</span><br><span class="line">[me@linuxbox ~]$ <span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;!foo[@]&#125;</span>&quot;</span>; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>; <span class="keyword">done</span></span><br><span class="line">2</span><br><span class="line">4</span><br><span class="line">6</span><br></pre></td></tr></table></figure>
+
+<h4 id="向数组末尾添加元素"><a href="#向数组末尾添加元素" class="headerlink" title="向数组末尾添加元素"></a>向数组末尾添加元素</h4><p>知道数组中元素的数量对我们追加值到数组末尾没有帮助，因为*和@表示法返回的值并不告诉我们正在使用的最大数组索引。幸运的是，shell为我们提供了一个解决方案。通过使用+&#x3D;赋值操作符，我们可以自动将值追加到数组的末尾。这里，我们给数组foo赋予三个值，然后追加三个更多的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ foo=(a b c)</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;foo[@]&#125;</span></span><br><span class="line">a b c</span><br><span class="line">[me@linuxbox ~]$ foo+=(d e f)</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;foo[@]&#125;</span></span><br><span class="line">a b c d e f</span><br></pre></td></tr></table></figure>
+
+<h4 id="对数组进行排序"><a href="#对数组进行排序" class="headerlink" title="对数组进行排序"></a>对数组进行排序</h4><p>就像电子表格一样，经常需要对数据列中的值进行排序。shell没有直接的方法来做这件事，但用一点编码就不难实现。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># array-sort: 对数组进行排序</span></span><br><span class="line">a=(f e d c b a)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;原始数组: <span class="variable">$&#123;a[@]&#125;</span>&quot;</span></span><br><span class="line">a_sorted=($(<span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;a[@]&#125;</span>&quot;</span>; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span>; <span class="keyword">done</span> | <span class="built_in">sort</span>))</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;排序后的数组: <span class="variable">$&#123;a_sorted[@]&#125;</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行时，脚本产生这样的结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ array-sort</span><br><span class="line">原始数组: f e d c b a</span><br><span class="line">排序后的数组: a b c d e f</span><br></pre></td></tr></table></figure>
+
+<p>脚本通过复制原始数组（a）到第二个数组（a_sorted）中的内容，用一个巧妙的命令替换来操作。这种基本技术可以用来对数组执行许多种类的操作，通过改变管道的设计。</p>
+<h4 id="删除数组"><a href="#删除数组" class="headerlink" title="删除数组"></a>删除数组</h4><p>要删除数组，使用unset命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ foo=(a b c d e f)</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;foo[@]&#125;</span></span><br><span class="line">a b c d e f</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">unset</span> foo</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;foo[@]&#125;</span></span><br><span class="line">[me@linuxbox ~]$</span><br></pre></td></tr></table></figure>
+
+<p>unset也可以用来删除单个数组元素。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ foo=(a b c d e f)</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;foo[@]&#125;</span></span><br><span class="line">a b c d e f</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">unset</span> <span class="string">&#x27;foo[2]&#x27;</span></span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;foo[@]&#125;</span></span><br><span class="line">a b d e f</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们删除了数组的第三个元素，下标2。记住，数组是从下标零开始的，不是一！也请注意，数组元素必须被引用，以防止shell执行路径名扩展。</p>
+<p>有趣的是，赋给数组一个空值并不会清空其内容。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ foo=(a b c d e f)</span><br><span class="line">[me@linuxbox ~]$ foo=</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;foo[@]&#125;</span></span><br><span class="line">b c d e f</span><br></pre></td></tr></table></figure>
+
+<p>任何没有下标的数组变量引用都指向数组的元素零。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ foo=(a b c d e f)</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;foo[@]&#125;</span></span><br><span class="line">a b c d e f</span><br><span class="line">[me@linuxbox ~]$ foo=A</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;foo[@]&#125;</span></span><br><span class="line">A b c d e f</span><br></pre></td></tr></table></figure>
+
+<h3 id="关联数组"><a href="#关联数组" class="headerlink" title="关联数组"></a>关联数组</h3><p>bash 4.0及更高版本支持<em>关联数组</em>。关联数组使用字符串而不是整数作为数组索引。这种能力允许管理数据的新方法。例如，我们可以创建一个叫做colors的数组，并使用颜色名称作为索引。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">declare</span> -A colors</span><br><span class="line">colors[<span class="string">&quot;red&quot;</span>]=<span class="string">&quot;#ff0000&quot;</span></span><br><span class="line">colors[<span class="string">&quot;green&quot;</span>]=<span class="string">&quot;#00ff00&quot;</span></span><br><span class="line">colors[<span class="string">&quot;blue&quot;</span>]=<span class="string">&quot;#0000ff&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>与整数索引数组不同，后者仅通过引用它们即可创建，关联数组必须使用带有新-A选项的declare命令创建。关联数组元素的访问方式与整数索引数组大致相同。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;colors[&quot;blue&quot;]&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>在下一章中，我们将研究一个利用关联数组产生有趣报告的脚本。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>如果我们在bash手册页中搜索单词<em>array</em>，我们会发现bash在许多地方使用了数组变量。这些大多数是相当晦涩的，但在一些特殊情况下它们可能偶尔有用。实际上，数组的整个主题在shell编程中使用得相当少，主要是因为传统的Unix shell程序（如sh）完全不支持数组。这种缺乏流行是不幸的，因为在其他编程语言中广泛使用数组，并为解决许多类型的编程问题提供了强大的工具。</p>
+<p>数组和循环有着天然的亲和力，经常被一起使用。下面这种形式的循环特别适合计算数组下标：for ((<em>expr</em>; <em>expr</em>; <em>expr</em>))</p>
+<h3 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h3><ul>
+<li><p>关于本章中找到的数据结构的几篇Wikipedia文章：</p>
+<p><span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9TY2FsYXJfKGNvbXB1dGluZyk=">http://en.wikipedia.org/wiki/Scalar_(computing)<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9Bc3NvY2lhdGl2ZV9hcnJheQ==">http://en.wikipedia.org/wiki/Associative_array<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TLCL/" rel="tag"># TLCL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/34-strings-and-numbers/" rel="prev" title="字符串和数字">
+                  <i class="fa fa-angle-left"></i> 字符串和数字
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/05/36-exotica/" rel="next" title="新奇事物">
+                  新奇事物 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"c5a9f33800499125edb97de0a2c0b5a7"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="第4部分 - 编写Shell脚本24 - 编写你的第一个脚本在前面的章节中，我们已经集合了一系列命令行工具。虽然这些工具可以解决许多种类的计算问题，但我们仍然局限于在命令行上一次一个地手动使用它们。如果我们能让shell做更多的工作不是很好吗？我们可以做到。通过将我们的工具组合成我们自己设计的程序，shell可以自己完成复杂的任务序列。我们可以通过编写shell脚本来使它做到这一点。 什么是She">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编写你的第一个脚本">
+<meta property="og:url" content="https://slagga.top/2024/04/24-writing-your-first-script/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="第4部分 - 编写Shell脚本24 - 编写你的第一个脚本在前面的章节中，我们已经集合了一系列命令行工具。虽然这些工具可以解决许多种类的计算问题，但我们仍然局限于在命令行上一次一个地手动使用它们。如果我们能让shell做更多的工作不是很好吗？我们可以做到。通过将我们的工具组合成我们自己设计的程序，shell可以自己完成复杂的任务序列。我们可以通过编写shell脚本来使它做到这一点。 什么是She">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-29T08:50:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.955Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="TLCL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2024/04/24-writing-your-first-script/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2024/04/24-writing-your-first-script/","path":"2024/04/24-writing-your-first-script/","title":"编写你的第一个脚本"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编写你的第一个脚本 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC4%E9%83%A8%E5%88%86-%E7%BC%96%E5%86%99Shell%E8%84%9A%E6%9C%AC"><span class="nav-number">1.</span> <span class="nav-text">第4部分 - 编写Shell脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#24-%E7%BC%96%E5%86%99%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%84%9A%E6%9C%AC"><span class="nav-number">1.1.</span> <span class="nav-text">24 - 编写你的第一个脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AAShell%E8%84%9A%E6%9C%AC"><span class="nav-number">1.1.1.</span> <span class="nav-text">如何编写一个Shell脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.2.</span> <span class="nav-text">脚本文件格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%9D%83%E9%99%90"><span class="nav-number">1.1.3.</span> <span class="nav-text">可执行权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE"><span class="nav-number">1.1.4.</span> <span class="nav-text">脚本文件位置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E7%9A%84%E5%A5%BD%E4%BD%8D%E7%BD%AE"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">脚本的好位置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%8A%80%E5%B7%A7"><span class="nav-number">1.1.5.</span> <span class="nav-text">更多格式化技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%95%BF%E9%80%89%E9%A1%B9%E5%90%8D%E7%A7%B0"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">长选项名称</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%A9%E8%BF%9B%E5%92%8C%E8%A1%8C%E7%BB%A7%E7%BB%AD"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">缩进和行继续</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-vim-%E7%94%A8%E4%BA%8E%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99"><span class="nav-number">1.1.6.</span> <span class="nav-text">配置 vim 用于脚本编写</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#syntax-on"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">:syntax on</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-hlsearch"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">:set hlsearch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-tabstop-4"><span class="nav-number">1.1.6.3.</span> <span class="nav-text">:set tabstop&#x3D;4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-autoindent"><span class="nav-number">1.1.6.4.</span> <span class="nav-text">:set autoindent</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.1.7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E9%98%85%E8%AF%BB"><span class="nav-number">1.1.8.</span> <span class="nav-text">进一步阅读</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2024/04/24-writing-your-first-script/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编写你的第一个脚本 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编写你的第一个脚本
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-29 16:50:30" itemprop="dateCreated datePublished" datetime="2024-04-29T16:50:30+08:00">2024-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="第4部分-编写Shell脚本"><a href="#第4部分-编写Shell脚本" class="headerlink" title="第4部分 - 编写Shell脚本"></a>第4部分 - 编写Shell脚本</h1><h2 id="24-编写你的第一个脚本"><a href="#24-编写你的第一个脚本" class="headerlink" title="24 - 编写你的第一个脚本"></a>24 - 编写你的第一个脚本</h2><p>在前面的章节中，我们已经集合了一系列命令行工具。虽然这些工具可以解决许多种类的计算问题，但我们仍然局限于在命令行上一次一个地手动使用它们。如果我们能让shell做更多的工作不是很好吗？我们可以做到。通过将我们的工具组合成我们自己设计的程序，shell可以自己完成复杂的任务序列。我们可以通过编写<em>shell脚本</em>来使它做到这一点。</p>
+<p><strong>什么是Shell脚本？</strong></p>
+<span id="more"></span>
+
+<p>简单来说，shell脚本是一个包含一系列命令的文件。shell读取这个文件并执行命令，就好像它们已经直接在命令行上输入一样。</p>
+<p>shell在某种意义上是独一无二的，因为它既是系统的强大命令行界面，也是脚本语言解释器。我们将看到，大多数在命令行上可以做的事情都可以在脚本中完成，而大多数在脚本中可以做的事情都可以在命令行上完成。</p>
+<p>我们已经介绍了许多shell特性，但我们关注的是那些最常在命令行上直接使用的特性。shell还提供了一组通常（但不总是）在编写程序时使用的特性。</p>
+<h3 id="如何编写一个Shell脚本"><a href="#如何编写一个Shell脚本" class="headerlink" title="如何编写一个Shell脚本"></a>如何编写一个Shell脚本</h3><p>要成功创建和运行一个shell脚本，我们需要做三件事。</p>
+<ol>
+<li><p><strong>编写脚本。</strong> Shell脚本是普通文本文件。所以，我们需要一个文本编辑器来编写它们。最好的文本编辑器将提供<em>语法高亮</em>，让我们能够看到脚本元素的颜色编码视图。语法高亮将帮助我们发现某些类型的常见错误。vim, gedit, kate和许多其他编辑器都是编写脚本的好候选。</p>
+</li>
+<li><p><strong>使脚本可执行。</strong> 系统对于不允许任何旧文本文件被当作程序处理非常挑剔，这是有充分理由的！我们需要设置脚本文件的权限以允许执行。</p>
+</li>
+<li><p><strong>将脚本放在shell可以找到的地方。</strong> 当没有指定显式路径名时，shell会自动搜索某些目录中的可执行文件。为了最大的便利，我们将把我们的脚本放在这些目录中。</p>
+</li>
+</ol>
+<h3 id="脚本文件格式"><a href="#脚本文件格式" class="headerlink" title="脚本文件格式"></a>脚本文件格式</h3><p>遵循编程传统，我们将创建一个“Hello World”程序来演示一个极其简单的脚本。让我们启动文本编辑器并输入以下脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 这是我们的第一个脚本。</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Hello World!&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们脚本的最后一行非常熟悉；它只是一个带有字符串参数的echo命令。第二行也很熟悉。它看起来像是我们在许多我们已经检查和编辑的配置文件中看到的注释。关于shell脚本中的注释的一件事是，它们也可以出现在行尾，前提是它们前面至少有一个空白字符，像这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Hello World!&#x27;</span> <span class="comment"># 这也是一条注释</span></span><br></pre></td></tr></table></figure>
+
+<p>行中从#符号开始的所有内容都被忽略。</p>
+<p>像许多事情一样，这在命令行上也有效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="string">&#x27;Hello World!&#x27;</span> <span class="comment"># 这也是一条注释</span></span><br><span class="line">Hello World!</span><br></pre></td></tr></table></figure>
+
+<p>虽然在命令行上注释没有太大用处，但它们会起作用。</p>
+<p>我们脚本的第一行有点神秘。它看起来应该是一个注释，因为它是以#开头的，但它看起来太有目的性了，仅仅是那样。#!字符序列实际上是一个特殊构造，称为<em>shebang</em>。shebang用于告诉内核应该用哪个解释器来执行后面的脚本。每个shell脚本都应该包括这作为其第一行。</p>
+<p>让我们将我们的脚本文件保存为hello_world。</p>
+<h3 id="可执行权限"><a href="#可执行权限" class="headerlink" title="可执行权限"></a>可执行权限</h3><p>我们接下来要做的事情是使我们的脚本可执行。这很容易使用chmod完成。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l hello_world</span><br><span class="line">-rw-r--r-- 1 me me 63 2009-03-07 10:10 hello_world</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">chmod</span> 755 hello_world</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l hello_world</span><br><span class="line">-rwxr-xr-x 1 me me 63 2009-03-07 10:10 hello_world</span><br></pre></td></tr></table></figure>
+
+<p>对于脚本有两种常见的权限设置：755表示每个人都可以执行的脚本，和700表示只有所有者可以执行的脚本。注意，脚本必须是可读的才能被执行。</p>
+<h3 id="脚本文件位置"><a href="#脚本文件位置" class="headerlink" title="脚本文件位置"></a>脚本文件位置</h3><p>设置了权限后，我们现在可以执行我们的脚本了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ ./hello_world</span><br><span class="line">Hello World!</span><br></pre></td></tr></table></figure>
+
+<p>要运行脚本，我们必须在脚本名称前加上显式路径。如果我们不这样做，我们会得到这样的结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ hello_world</span><br><span class="line">bash: hello_world: 命令未找到</span><br></pre></td></tr></table></figure>
+
+<p>这是为什么呢？是什么让我们的脚本与其他程序不同？事实证明，没有什么不同。我们的脚本没问题。问题在于它的位置。在第11章中，我们讨论了PATH环境变量及其对系统搜索可执行程序方式的影响。简而言之，如果没有指定显式路径，系统每次需要找到可执行程序时都会搜索一系列目录。这就是当我们在命令行中输入ls时，系统知道执行&#x2F;bin&#x2F;ls的原因。&#x2F;bin目录是系统自动搜索的目录之一。目录列表保存在名为PATH的环境变量中。PATH变量包含一个用冒号分隔的目录列表。我们可以查看PATH的内容。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line">/home/me/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:</span><br><span class="line">/bin:/usr/games</span><br></pre></td></tr></table></figure>
+
+<p>这里我们看到了我们的目录列表。如果我们的脚本位于列表中的任何目录中，我们的问题就解决了。注意列表中的第一个目录&#x2F;home&#x2F;me&#x2F;bin。大多数Linux发行版都配置了PATH变量，包含用户主目录中的bin目录，以允许用户执行他们自己的程序。因此，如果我们创建bin目录并将我们的脚本放入其中，它应该开始像其他程序一样工作。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">mkdir</span> bin</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">mv</span> hello_world bin</span><br><span class="line">[me@linuxbox ~]$ hello_world</span><br><span class="line">Hello World!</span><br></pre></td></tr></table></figure>
+
+<p>果然如此。</p>
+<p>如果PATH变量不包含该目录，我们可以通过在我们的.bashrc文件中包含这行来轻松添加它：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=~/bin:<span class="string">&quot;<span class="variable">$PATH</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>此更改完成后，它将在每个新的终端会话中生效。要将更改应用到当前终端会话，我们必须让shell重新读取.bashrc文件。这可以通过“源”它来完成。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ . .bashrc</span><br></pre></td></tr></table></figure>
+
+<p>点（.）命令是source命令的同义词，source命令是一个shell内置命令，它读取指定的包含shell命令的文件，并将其视为来自键盘的输入。</p>
+<p>**注意：**Ubuntu（和大多数其他基于Debian的发行版）如果在用户的.bashrc文件执行时<del>&#x2F;bin目录存在，则会自动将</del>&#x2F;bin目录添加到PATH变量中。因此，在Ubuntu系统上，如果我们创建了~&#x2F;bin目录，然后登出并再次登录，一切都会正常工作。</p>
+<h4 id="脚本的好位置"><a href="#脚本的好位置" class="headerlink" title="脚本的好位置"></a>脚本的好位置</h4><p>~&#x2F;bin目录是放置个人使用的脚本的好地方。如果我们编写了一个系统上的每个人都被允许使用的脚本，传统的位置是&#x2F;usr&#x2F;local&#x2F;bin。面向系统管理员使用的脚本通常位于&#x2F;usr&#x2F;local&#x2F;sbin。在大多数情况下，无论是脚本还是编译程序，本地提供的软件都应该放在&#x2F;usr&#x2F;local层次结构中，而不是在&#x2F;bin或&#x2F;usr&#x2F;bin中。这些目录由Linux文件系统层次结构标准指定，仅包含由Linux发行商提供和维护的文件。</p>
+<h3 id="更多格式化技巧"><a href="#更多格式化技巧" class="headerlink" title="更多格式化技巧"></a>更多格式化技巧</h3><p>认真编写脚本的关键目标之一是易于<em>维护</em>，即脚本的作者或其他人可以轻松修改脚本以适应不断变化的需求的程度。使脚本易于阅读和理解是促进易于维护的一种方式。</p>
+<h4 id="长选项名称"><a href="#长选项名称" class="headerlink" title="长选项名称"></a>长选项名称</h4><p>我们研究的许多命令都具有短选项和长选项名称。例如，ls 命令有许多选项可以用短形式或长形式表示。例如，以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -ad</span><br></pre></td></tr></table></figure>
+
+<p>等同于此命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> --all --directory</span><br></pre></td></tr></table></figure>
+
+<p>为了减少打字，当在命令行输入选项时，短选项是首选的，但是在编写脚本时，长选项可以提供更好的可读性。</p>
+<h4 id="缩进和行继续"><a href="#缩进和行继续" class="headerlink" title="缩进和行继续"></a>缩进和行继续</h4><p>使用长命令时，可以通过将命令分布在几行上来增强可读性。在第17章中，我们看了 find 命令的一个特别长的例子。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find playground \( -<span class="built_in">type</span> f -not -perm 0600 -<span class="built_in">exec</span> <span class="built_in">chmod</span> 0600 ‘&#123;&#125;’ ‘;’ \) -or \( -<span class="built_in">type</span> d -not -perm 0700 -<span class="built_in">exec</span> <span class="built_in">chmod</span> 0700 ‘&#123;&#125;’ ‘;’ \)</span><br></pre></td></tr></table></figure>
+
+<p>显然，这个命令一眼看上去有点难以理解。在脚本中，如果这样写，这个命令可能更容易理解：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">find playground \</span><br><span class="line">\( \</span><br><span class="line">-<span class="built_in">type</span> f \</span><br><span class="line">-not -perm 0600 \</span><br><span class="line">-<span class="built_in">exec</span> <span class="built_in">chmod</span> 0600 ‘&#123;&#125;’ ‘;’ \</span><br><span class="line">\) \</span><br><span class="line">-or \</span><br><span class="line">\( \</span><br><span class="line">-<span class="built_in">type</span> d \</span><br><span class="line">-not -perm 0700 \</span><br><span class="line">-<span class="built_in">exec</span> <span class="built_in">chmod</span> 0700 ‘&#123;&#125;’ ‘;’ \</span><br><span class="line">\)</span><br></pre></td></tr></table></figure>
+
+<p>通过使用行继续（反斜杠-换行序列）和缩进，这个复杂命令的逻辑对读者描述得更清晰了。这种技术也可以在命令行上使用，尽管很少使用，因为输入和编辑都很尴尬。脚本和命令行之间的一个区别是脚本可以使用制表符实现缩进，而命令行不能，因为制表符用于激活完成。</p>
+<h3 id="配置-vim-用于脚本编写"><a href="#配置-vim-用于脚本编写" class="headerlink" title="配置 vim 用于脚本编写"></a>配置 vim 用于脚本编写</h3><p>vim 文本编辑器有很多配置设置。有几个常用选项可以方便脚本编写。</p>
+<p>以下命令开启语法高亮：</p>
+<h4 id="syntax-on"><a href="#syntax-on" class="headerlink" title=":syntax on"></a><strong>:syntax on</strong></h4><p>通过这个设置，查看脚本时，shell 语法的不同元素将以不同颜色显示。这有助于识别某些类型的编程错误。它看起来也很酷。注意，要使此功能工作，您必须安装完整版本的 vim，并且您正在编辑的文件必须有一个指示该文件是 shell 脚本的 shebang。如果您对前一个命令有困难，尝试使用 <strong>:set syntax&#x3D;sh</strong> 代替。</p>
+<p>以下命令开启高亮搜索结果的选项：</p>
+<h4 id="set-hlsearch"><a href="#set-hlsearch" class="headerlink" title=":set hlsearch"></a><strong>:set hlsearch</strong></h4><p>假设我们搜索单词 echo。开启这个选项后，每个实例都会被高亮显示。</p>
+<p>以下设置制表符占据的列数：</p>
+<h4 id="set-tabstop-4"><a href="#set-tabstop-4" class="headerlink" title=":set tabstop&#x3D;4"></a><strong>:set tabstop&#x3D;4</strong></h4><p>默认是八列。将值设置为 4（这是一个常见的做法）可以让长行更容易适应屏幕。</p>
+<p>以下开启“自动缩进”功能：</p>
+<h4 id="set-autoindent"><a href="#set-autoindent" class="headerlink" title=":set autoindent"></a><strong>:set autoindent</strong></h4><p>这会导致 vim 将新行缩进与刚刚输入的行相同的量。这在许多类型的编程结构上加快了打字速度。要停止缩进，按 Ctrl-d。</p>
+<p>通过将这些命令（不带前导冒号字符）添加到您的 ~&#x2F;.vimrc 文件中，可以使这些更改变为永久性。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在这第一章关于脚本的内容中，我们看了如何编写脚本并使其在我们的系统上轻松执行。我们还看到了如何使用</p>
+<p>各种格式化技术来提高脚本的可读性（从而提高可维护性）。在未来的章节中，易于维护将一次又一次地作为良好脚本编写中的一个核心原则出现。</p>
+<h3 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h3><ul>
+<li><p>关于各种编程语言中的“Hello World”程序和示例，请见：<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9IZWxsb193b3JsZA==">http://en.wikipedia.org/wiki/Hello_world<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>这篇维基百科文章更多地讨论了 shebang 机制：<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9TaGViYW5nXyhVbml4KQ==">http://en.wikipedia.org/wiki/Shebang_(Unix)<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TLCL/" rel="tag"># TLCL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/23-compiling-programs/" rel="prev" title="编译程序">
+                  <i class="fa fa-angle-left"></i> 编译程序
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/25-starting-a-project/" rel="next" title="启动一个项目">
+                  启动一个项目 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"ea69f058f28803a72c2c6d06ff98c308"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

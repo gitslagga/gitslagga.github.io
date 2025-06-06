@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="什么是 GPU 编程？GPU 计算是使用图形处理单元 (graphics processing unit) 来执行曾经由中央处理单元 (central processing unit) 处理的高度并行的独立计算。 GPU 编程是一种在 GPU 加速器上运行高度并行的通用计算的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GPU 编程：CUDA 和 Python 中的实际示例">
+<meta property="og:url" content="https://slagga.top/2022/11/python-cuda/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="什么是 GPU 编程？GPU 计算是使用图形处理单元 (graphics processing unit) 来执行曾经由中央处理单元 (central processing unit) 处理的高度并行的独立计算。 GPU 编程是一种在 GPU 加速器上运行高度并行的通用计算的方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-21T06:29:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.936Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="CUDA">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2022/11/python-cuda/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2022/11/python-cuda/","path":"2022/11/python-cuda/","title":"GPU 编程：CUDA 和 Python 中的实际示例"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GPU 编程：CUDA 和 Python 中的实际示例 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-GPU-%E7%BC%96%E7%A8%8B%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是 GPU 编程？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU-%E4%B8%8E-GPU-%E8%AE%A1%E7%AE%97%E5%B7%AE%E5%BC%82"><span class="nav-number">2.</span> <span class="nav-text">CPU 与 GPU 计算差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPU-%E7%BC%96%E7%A8%8B-API"><span class="nav-number">3.</span> <span class="nav-text">GPU 编程 API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CUDA"><span class="nav-number">3.1.</span> <span class="nav-text">CUDA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenCL"><span class="nav-number">3.2.</span> <span class="nav-text">OpenCL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenACC"><span class="nav-number">3.3.</span> <span class="nav-text">OpenACC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-CUDA-%E5%92%8C-Python-%E8%BF%9B%E8%A1%8C-GPU-%E7%BC%96%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">使用 CUDA 和 Python 进行 GPU 编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CUDA-%E7%94%A8%E4%BA%8E%E4%B8%93%E4%B8%9A%E5%BA%93"><span class="nav-number">4.1.</span> <span class="nav-text">CUDA 用于专业库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CUDA-%E5%81%9A%E4%B8%BA%E7%9B%B4%E6%8E%A5%E6%9B%BF%E4%BB%A3%E5%93%81"><span class="nav-number">4.2.</span> <span class="nav-text">CUDA 做为直接替代品</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CUDA-%E5%81%9A%E4%B8%BA-C-C-%E6%89%A9%E5%B1%95"><span class="nav-number">4.3.</span> <span class="nav-text">CUDA 做为 C&#x2F;C++ 扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8-Ubuntu-20-04-%E4%B8%8A%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8-CUDA-for-Python%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">如何在 Ubuntu 20.04 上开始使用 CUDA for Python？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-Ubuntu-20-04-%E4%B8%8A%E5%AE%89%E8%A3%85-CUDA"><span class="nav-number">5.1.</span> <span class="nav-text">在 Ubuntu 20.04 上安装 CUDA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-CuPy-%E5%BA%93"><span class="nav-number">5.2.</span> <span class="nav-text">安装 CuPy 库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E8%84%9A%E6%9C%AC%E6%9D%A5%E6%AF%94%E8%BE%83-CPU-%E5%92%8C-GPU"><span class="nav-number">5.3.</span> <span class="nav-text">编写脚本来比较 CPU 和 GPU</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2022/11/python-cuda/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GPU 编程：CUDA 和 Python 中的实际示例 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GPU 编程：CUDA 和 Python 中的实际示例
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-21 14:29:30" itemprop="dateCreated datePublished" datetime="2022-11-21T14:29:30+08:00">2022-11-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="什么是-GPU-编程？"><a href="#什么是-GPU-编程？" class="headerlink" title="什么是 GPU 编程？"></a>什么是 GPU 编程？</h2><p>GPU 计算是使用图形处理单元 (graphics processing unit) 来执行曾经由中央处理单元 (central processing unit) 处理的高度并行的独立计算。</p>
+<p>GPU 编程是一种在 GPU 加速器上运行高度并行的通用计算的方法。</p>
+<span id="more"></span>
+
+<p>虽然过去的 GPU 专为计算机图形设计，但如今它们也被广泛用于通用计算。除了图形渲染，GPU 驱动的并行计算现在还用于科学建模、机器学习和其他需要并行化的工作。</p>
+<h2 id="CPU-与-GPU-计算差异"><a href="#CPU-与-GPU-计算差异" class="headerlink" title="CPU 与 GPU 计算差异"></a>CPU 与 GPU 计算差异</h2><p>中央处理器 (CPU) 是延迟优化的通用处理器，旨在按顺序处理各种不同的任务，而图形处理单元 (GPU) 是吞吐量优化的专用处理器，专为高端并行设计计算。</p>
+<p>您是否需要 GPU 加速器的问题归结为您要解决的问题的具体情况。CPU 和 GPU都有不同的优势领域，了解它们的局限性会让你在决定是否为你的项目使用 GPU 编程时做得更好。</p>
+<h2 id="GPU-编程-API"><a href="#GPU-编程-API" class="headerlink" title="GPU 编程 API"></a>GPU 编程 API</h2><p>GPU 根据图元理解计算问题。如今，有多种可用的编程框架可以在幕后为您操作这些原语，因此您可以专注于更高级别的计算概念。</p>
+<h3 id="CUDA"><a href="#CUDA" class="headerlink" title="CUDA"></a>CUDA</h3><p>计算统一设备架构 (CUDA) 是 Nvidia 于 2006 年创建的并行计算平台和应用程序编程接口 (API)，可直接访问 GPU 的虚拟指令集以执行计算内核。</p>
+<p>内核是在 GPU 上运行的函数。当我们启动内核时，它做为一组线程执行。每个线程都映射到 GPU 上的单个 CUDA 内核，并对数据子集执行相同的操作。根据<span class="exturl" data-url="aHR0cHM6Ly93d3cuY2hlcnJ5c2VydmVycy5jb20vYmxvZy9ldmVyeXRoaW5nLXlvdS1uZWVkLXRvLWtub3ctYWJvdXQtZ3B1LWFyY2hpdGVjdHVyZQ==">Flynn 的分类法<i class="fa fa-external-link-alt"></i></span>，它是一种单指令多数据 (SIMD) 计算。</p>
+<p>线程被分组为块，当内核启动时，它们被映射到一组相应的 CUDA 内核。块进一步分组为网格，每次内核启动都会创建一个网格。</p>
+<p>CUDA 编程模型允许软件工程师使用支持 CUDA 的 GPU 在 C&#x2F;C++ 和 Fortran 中进行通用处理，<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubnZpZGlhLmNvbS9sYW5ndWFnZS1zb2x1dGlvbnM=">第三方包装器<i class="fa fa-external-link-alt"></i></span>也可用于 Python、Java、R 和其他几种编程语言。CUDA 兼容从 G8x 系列开始的所有 Nvidia GPU，以及大多数标准操作系统。</p>
+<h3 id="OpenCL"><a href="#OpenCL" class="headerlink" title="OpenCL"></a>OpenCL</h3><p>虽然 CUDA 是专有框架，但 OpenCL 是由 Khronos Group 创建的跨异构平台并行编程的开放标准。OpenCL 与中央处理器 (CPU)、图形处理单元 (GPU)、数字信号处理器、现场可编程门阵列 (FPGA) 和其他处理器或硬件加速器协同工作。</p>
+<p>OpenCL 用途极为广泛，已被科技行业巨头成功采用，包括 AMD、Apple、IBM、Intel、Nvidia、Qualcomm、Samsung 等。它基于 C&#x2F;C++ 语言，<span class="exturl" data-url="aHR0cHM6Ly9zdHJlYW1ocGMuY29tL2tub3dsZWRnZS9mb3ItZGV2ZWxvcGVycy9vcGVuY2wtd3JhcHBlcnMv">第三方包装器<i class="fa fa-external-link-alt"></i></span>也可用于 Python、Java、R、GO、JavaScript 等。</p>
+<h3 id="OpenACC"><a href="#OpenACC" class="headerlink" title="OpenACC"></a>OpenACC</h3><p>OpenACC 是一种用户驱动的基于指令的并行编程标准，专为有兴趣将其代码移植到各种异构高性能计算 (HPC) 硬件平台的科学家和工程师而设计。该标准是由用户为用户设计的。</p>
+<p>OpenACC 旨在简化异构 CPU&#x2F;GPU 硬件平台和架构的并行编程，其编程工作量比低级模型所需的工作量少得多。它支持 C&#x2F;C++ 和 Fortran 编程语言。</p>
+<h2 id="使用-CUDA-和-Python-进行-GPU-编程"><a href="#使用-CUDA-和-Python-进行-GPU-编程" class="headerlink" title="使用 CUDA 和 Python 进行 GPU 编程"></a>使用 CUDA 和 Python 进行 GPU 编程</h2><p>开始构建 GPU 加速程序有多种标准和多种编程语言，但我们选择了 CUDA 和 Python 来说明我们的示例。CUDA 是最容易上手的框架，Python 在科学、工程、数据分析和深度学习领域非常流行——所有这些都严重依赖并行计算。</p>
+<p>即使在 Python 中，您也可以在不同的抽象层上进行 GPU 编程。如果您不需要较低抽象层可以提供的额外自定义和控制功能，那么从满足您的应用程序的最高抽象层开始是合理的。</p>
+<p>让我们回顾一下在 Python 中使用 CUDA 的方法，从最高抽象级别开始一直到最低级别。</p>
+<h3 id="CUDA-用于专业库"><a href="#CUDA-用于专业库" class="headerlink" title="CUDA 用于专业库"></a>CUDA 用于专业库</h3><p>如果您只想使用神经网络或任何其他深度学习算法，那么 Tensorflow 或 PyTorch 等专业深度学习库可能是您的正确选择。这些库可以在后台为您自动在 CPU 和 GPU 处理之间切换。</p>
+<h3 id="CUDA-做为直接替代品"><a href="#CUDA-做为直接替代品" class="headerlink" title="CUDA 做为直接替代品"></a>CUDA 做为直接替代品</h3><p>如果您是使用 NumPy 和 SciPy 的科学家，优化 GPU 计算代码的最简单方法是使用 CuPy。它模仿大多数 NumPy 函数，并允许您简单地插入 NumPy 代码并将其替换为在 GPU 而不是 CPU 上处理的 CuPy 函数。<br>CUDA 用于自定义算法。</p>
+<p>当您需要使用自定义算法时，您不可避免地需要深入抽象层次结构并使用 NUMBA。它绑定到 CUDA 并允许您在 Python 中编写自己的 CUDA 内核。通过这种方式，您可以仅使用 Python 非常接近 CUDA C&#x2F;C++，而无需自己分配内存。</p>
+<h3 id="CUDA-做为-C-C-扩展"><a href="#CUDA-做为-C-C-扩展" class="headerlink" title="CUDA 做为 C&#x2F;C++ 扩展"></a>CUDA 做为 C&#x2F;C++ 扩展</h3><p>如果您想要对硬件进行最高级别的控制，例如手动内存分配、动态并行性或纹理内存管理，那么使用 C&#x2F;C++ 是没有办法的。对于 Python 应用程序，最方便的方法是使用 PyCUDA 扩展，它允许您在 Python 字符串中编写 CUDA C&#x2F;C++ 代码。</p>
+<h2 id="如何在-Ubuntu-20-04-上开始使用-CUDA-for-Python？"><a href="#如何在-Ubuntu-20-04-上开始使用-CUDA-for-Python？" class="headerlink" title="如何在 Ubuntu 20.04 上开始使用 CUDA for Python？"></a>如何在 Ubuntu 20.04 上开始使用 CUDA for Python？</h2><h3 id="在-Ubuntu-20-04-上安装-CUDA"><a href="#在-Ubuntu-20-04-上安装-CUDA" class="headerlink" title="在 Ubuntu 20.04 上安装 CUDA"></a>在 Ubuntu 20.04 上安装 CUDA</h3><p>首先，您需要在具有支持 CUDA 的 GPU 的机器上<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubnZpZGlhLmNvbS9jdWRhLWRvd25sb2Fkcw==">安装 CUDA<i class="fa fa-external-link-alt"></i></span>。要使用本地安装程序在 Ubuntu 20.04 上安装 CUDA 驱动程序，请按照以下说明操作：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">wget</span> https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin</span><br><span class="line"><span class="attribute">sudo</span> mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-<span class="number">600</span></span><br><span class="line"><span class="attribute">wget</span> https://developer.download.nvidia.com/compute/cuda/<span class="number">11</span>.<span class="number">4</span>.<span class="number">2</span>/local_installers/cuda-repo-ubuntu2004-<span class="number">11</span>-<span class="number">4</span>-local_11.<span class="number">4</span>.<span class="number">2</span>-<span class="number">470</span>.<span class="number">57</span>.<span class="number">02</span>-<span class="number">1</span>_amd64.deb  </span><br><span class="line"><span class="attribute">sudo</span> dpkg -i cuda-repo-ubuntu2004-<span class="number">11</span>-<span class="number">4</span>-local_11.<span class="number">2</span>-<span class="number">470</span>.<span class="number">57</span>.<span class="number">02</span>-<span class="number">1</span>_amd64.deb  </span><br><span class="line"><span class="attribute">sudo</span> apt-key add /var/cuda-repo-ubuntu2004-<span class="number">11</span>-<span class="number">4</span>-local/<span class="number">7</span>fa2af80.pub </span><br><span class="line"><span class="attribute">sudo</span> apt-get update  </span><br><span class="line"><span class="attribute">sudo</span> apt-get -y install cuda</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="安装-CuPy-库"><a href="#安装-CuPy-库" class="headerlink" title="安装 CuPy 库"></a>安装 CuPy 库</h3><p>接下来，我们需要安装一个 Python 库来使用 CUDA。如上所述，有许多方法可以在不同的抽象级别在 Python 中使用 CUDA。由于 NumPy 是 Python 数据科学生态系统的骨干库，我们将选择对其进行加速以进行本次演示。</p>
+<p>使用 NumPy 的最简单方法是使用名为 CuPy 的插入式替换库，它在 GPU 上复制 NumPy 函数。您可以通过 pip 安装稳定版的 CuPy 源码包：</p>
+<p><code>pip install cupy</code></p>
+<h3 id="编写脚本来比较-CPU-和-GPU"><a href="#编写脚本来比较-CPU-和-GPU" class="headerlink" title="编写脚本来比较 CPU 和 GPU"></a>编写脚本来比较 CPU 和 GPU</h3><p>最后，您要确保 CuPy 在您的系统上运行良好，以及它能在多大程度上提高您的性能。为此，让我们编写一个简单的脚本来实现这一目的。</p>
+<p>让我们导入 NumPy 和 CuPy 库，以及我们将用于基准处理单元的时间库。</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cupy <span class="keyword">as</span> cp  </span><br><span class="line"><span class="title">from</span> time <span class="keyword">import</span> time</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>接下来，让我们定义一个将用于基准测试的函数。</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def benchmark_processor(arr, func, argument):  </span><br><span class="line">    start_time = <span class="built_in">time</span>()    </span><br><span class="line">    func(arr, argument) <span class="comment"># your argument will be broadcasted into a matrix automatically</span></span><br><span class="line">    finish_time = <span class="built_in">time</span>()</span><br><span class="line">    elapsed_time = finish_time – start_time    </span><br><span class="line"><span class="built_in">    return</span> elapsed_time</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后需要实例化两个矩阵：一个用于 CPU，一个用于 GPU。我们将为我们的矩阵选择 9999 x 9999 的形状。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># load a matrix to global memory</span></span><br><span class="line"><span class="attribute">array_cpu</span> = np.random.randint(<span class="number">0</span>, <span class="number">255</span>, size=(<span class="number">9999</span>, <span class="number">9999</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># load the same matrix to GPU memory</span></span><br><span class="line"><span class="attribute">array_gpu</span> = cp.asarray(array_cpu)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>最后，我们要运行一个简单的加法函数来确定 CPU 与 GPU 处理器的性能差异。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># benchmark matrix addition on CPU by using a NumPy addition function</span></span><br><span class="line"><span class="attribute">cpu_time</span> = benchmark_processor(array_cpu, np.add, <span class="number">999</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># you need to run a pilot iteration on a GPU first to compile and cache the function kernel on a GPU</span></span><br><span class="line"><span class="attribute">benchmark_processor</span>(array_gpu, cp.add, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># benchmark matrix addition on GPU by using CuPy addition function</span></span><br><span class="line"><span class="attribute">gpu_time</span> = benchmark_processor(array_gpu, cp.add, <span class="number">999</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># determine how much is GPU faster</span></span><br><span class="line"><span class="attribute">faster_processor</span> = (gpu_time - cpu_time) / gpu_time * <span class="number">100</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>并将结果打印到控制台。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;CPU time: <span class="subst">&#123;cpu_time&#125;</span> seconds\nGPU time: <span class="subst">&#123;gpu_time&#125;</span> seconds.\nGPU was <span class="subst">&#123;faster_processor&#125;</span> percent faster&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><span class="exturl" data-url="aHR0cHM6Ly93d3cuY2hlcnJ5c2VydmVycy5jb20vZGVkaWNhdGVkLWdwdS1zZXJ2ZXJz">在配备来自Cherry Servers GPU Cloud<i class="fa fa-external-link-alt"></i></span>的 Nvidia Geforce GT1030 GPU 加速器的 Intel Xeon 1240v3 机器上运行此脚本后，我们确认整数加法在 GPU 上的运行速度快了许多倍。例如，当使用 10000x10000 矩阵时，GPU 运行整数加法的速度要快 1294 倍。</p>
+<p>事实上，矩阵越大，您期望的性能提升就越高。</p>
+<p>cuda-gpu-基准测试</p>
+<p><strong>图 1</strong> – <em>GPU 性能提升。</em></p>
+<p>我们通过对 100x100、500x500、1000x1000、7500x7500 和 10000x10000 二维矩阵使用整数加法，比较了 CPU 与 GPU 的性能（以秒为单位）。当使用足够大的矩阵时，GPU 开始明显超过 CPU。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubnZpZGlhLmNvbS8=">Nvidia 开发者官网<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYWxpeXVuLmNvbS9taW5pc2l0ZS9nb29kcz91c2VyQ29kZT02OWhpdmlpbg==">Aliyun Servers GPU 服务器<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY2hlcnJ5c2VydmVycy5jb20vP2FmZmlsaWF0ZT0xVE82N0lWTQ==">Cherry Servers GPU 服务器<i class="fa fa-external-link-alt"></i></span></li>
+</ol>
+<p>如果您正在处理可以并行处理的大量数据，那么深入研究 GPU 编程可能是值得的。如您所见，使用 GPU 计算处理大型矩阵时性能显着提高。到一天结束时，如果您的应用程序可以利用并行计算，它可能会为您节省宝贵的时间和资源。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CUDA/" rel="tag"># CUDA</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/python-3.11.0/" rel="prev" title="Python 3.11.0 发布 —— 对数据科学和工程的影响">
+                  <i class="fa fa-angle-left"></i> Python 3.11.0 发布 —— 对数据科学和工程的影响
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/python-practice/" rel="next" title="每个 Python 开发人员都应该具备的 6 个实用技巧">
+                  每个 Python 开发人员都应该具备的 6 个实用技巧 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"4c065b4a8b8bab54ae171f0717be02fc"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

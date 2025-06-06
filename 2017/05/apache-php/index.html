@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="概述apache php的几种运行方式, by 5lulu.com PHP 的所有应用程序都是通过 WEB 服务器 (如 IIS 或 Apache) 和 PHP 引擎程序解释执行完成的，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apache 运行 Php 的几种方式">
+<meta property="og:url" content="https://slagga.top/2017/05/apache-php/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="概述apache php的几种运行方式, by 5lulu.com PHP 的所有应用程序都是通过 WEB 服务器 (如 IIS 或 Apache) 和 PHP 引擎程序解释执行完成的，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-05-26T08:48:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.898Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Blog, HTML, CSS, JavaScript, Python, PHP, Java, Go, Redis, MySQL, Node.js, React, Vuejs, Git, Programming, Web Development, Blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2017/05/apache-php/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2017/05/apache-php/","path":"2017/05/apache-php/","title":"Apache 运行 Php 的几种方式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Apache 运行 Php 的几种方式 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">工作过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%A8%A1%E5%9D%97%E5%8A%A0%E8%BD%BD%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="nav-number">2.0.1.</span> <span class="nav-text">1 模块加载运行方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-CGI-%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="nav-number">2.0.2.</span> <span class="nav-text">2 CGI 运行方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-FastCGI-%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="nav-number">2.0.3.</span> <span class="nav-text">3 FastCGI 运行方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-ISAPI-%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="nav-number">2.0.4.</span> <span class="nav-text">4 ISAPI 运行方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-cli-%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="nav-number">2.0.5.</span> <span class="nav-text">5 cli 运行方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#php-%E5%9C%A8-apache-%E4%B8%AD%E4%B8%80%E5%85%B1%E6%9C%89%E4%B8%89%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F%EF%BC%9ACGI-%E6%A8%A1%E5%BC%8F%E3%80%81Apache-%E6%A8%A1%E5%9D%97-DLL%E3%80%81FastCGI-%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">php 在 apache 中一共有三种工作方式：CGI 模式、Apache 模块 DLL、FastCGI 模式)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-CGI-%E6%A8%A1%E5%BC%8F%E4%B8%8E%E6%A8%A1%E5%9D%97%E6%A8%A1%E5%BC%8F%E6%AF%94%E8%BE%83%EF%BC%9A"><span class="nav-number">3.0.1.</span> <span class="nav-text">1. CGI 模式与模块模式比较：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-FastCGI-%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F%E5%88%86%E6%9E%90%EF%BC%9A"><span class="nav-number">3.0.2.</span> <span class="nav-text">2. FastCGI 运行模式分析：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8-FastCGI%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%A4%9A%E7%BA%BF%E7%A8%8B-CGI-%E8%A7%A3%E9%87%8A%E5%99%A8%EF%BC%9F"><span class="nav-number">3.0.3.</span> <span class="nav-text">3. 为什么要使用 FastCGI，而不是多线程 CGI 解释器？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-FastCGI-%E6%A8%A1%E5%BC%8F%E8%BF%90%E8%A1%8C-PHP-%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-number">3.0.4.</span> <span class="nav-text">4. FastCGI 模式运行 PHP 的优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-FastCGI-%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BC%BA%E7%82%B9%EF%BC%9A"><span class="nav-number">3.0.5.</span> <span class="nav-text">5. FastCGI 模式的一些缺点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Php-%E5%9C%A8-nginx-%E4%B8%AD%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F-nginx-PHP-FPM-%E7%9B%AE%E5%89%8D%E7%90%86%E6%83%B3%E9%80%89%E6%8B%A9"><span class="nav-number">3.0.6.</span> <span class="nav-text">Php 在 nginx 中运行模式 (nginx+PHP-FPM) 目前理想选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IIS-ISAPI-%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.0.7.</span> <span class="nav-text">IIS + ISAPI 模式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/05/apache-php/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Apache 运行 Php 的几种方式 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Apache 运行 Php 的几种方式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-05-26 16:48:30" itemprop="dateCreated datePublished" datetime="2017-05-26T16:48:30+08:00">2017-05-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Apache/" itemprop="url" rel="index"><span itemprop="name">Apache</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>apache php的几种运行方式, by 5lulu.com</p>
+<p>PHP 的所有应用程序都是通过 WEB 服务器 (如 IIS 或 Apache) 和 PHP 引擎程序解释执行完成的，</p>
+<span id="more"></span>
+
+
+<h2 id="工作过程"><a href="#工作过程" class="headerlink" title="工作过程"></a>工作过程</h2><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(1)</span> 当用户在浏览器地址中输入要访问的 PHP 页面文件名，然后回车就会触发这个 PHP 请求，并将请求传送化支持 PHP 的 WEB 服务器。</span><br><span class="line"><span class="comment">(2)</span> WEB 服务器接受这个请求，并根据其后缀进行判断如果是一个 PHP 请求，WEB 服务器从硬盘或内存中取出用户要访问的 PHP 应用程序，并将其发送给 PHP 引擎程序。</span><br><span class="line"><span class="comment">(3)</span> PHP 引擎程序将会对 WEB 服务器传送过来的文件从头到尾进行扫描并根据命令从后台读取，处理数据，并动态地生成相应的 HTML 页面。</span><br><span class="line"><span class="comment">(4)</span> PHP 引擎将生成 HTML 页面返回给 WEB 服务器。WEB 服务器再将 HTML 页面返回给客户端浏览器。</span><br></pre></td></tr></table></figure>
+
+<p>php 本身是一个 php 代码的脚本执行程序，运行方式是指其运行的方法。整理归纳为一下五种方法：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">模块加载运行方式 （Apache）</span><br><span class="line">CGI 运行方式 （Apache）</span><br><span class="line">FastCGI 运行方式 （几乎通用 Apache nginx lighttp）</span><br><span class="line">ISAPI 运行方式 （<span class="keyword">window</span> 下 Apache）</span><br><span class="line"><span class="keyword">cli</span> 运行方式 （就是命令行）</span><br></pre></td></tr></table></figure>
+
+<p>前四种是提供给 web 服务器来处理 php 代码文件，其中模块加载的方式其实是最快的的，但 FastCGI 配合 nginx WEB 服务是目前的主流，下面主要配合 Apache 做说明。</p>
+<h4 id="1-模块加载运行方式"><a href="#1-模块加载运行方式" class="headerlink" title="1 模块加载运行方式"></a>1 模块加载运行方式</h4><p>以模块加载的方式运行，其实就是将 PHP 集成到 web 服务器，以同一个进程运行。</p>
+<p>此运行模式在使用 apache 服务器经常使用，通过加载模块 (linux SO,window DLL) 中，PHP 是与 Web 服务器 (Apache) 一起启动并运行的，是 apache 在 CGI 的基础上进行的一种扩展，加快 PHP 的运行效率。</p>
+<p>以 linux 为例编译 PHP, 在.&#x2F;configure 步骤需要指定 –with-apxs2&#x3D;&#x2F;path&#x2F;to&#x2F;apache&#x2F;bin&#x2F;apxs 表示告诉编译器通过 Apache 的 mod_php5&#x2F;apxs 来提供对 PHP5 的解析。</p>
+<p>在 make install 的时候我们会看到将动态链接库 libphp5.so (Apache 模块) 拷贝到 apache2 的安装目录的 modules 目录下（编译 Apache 时要带 –enable-modules&#x3D;so，不实际编译模块但允许加载模块），然后在 httpd.conf 配置文件中添加 LoadModule 语句来动态将 libphp5.so 模块加载进来，从而实现 Apache 对 php 的支持。</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LoadModule php5_module /path/<span class="keyword">to</span>/<span class="keyword">module</span>/modules/libphp5.so<span class="comment">//windows 下载 PHP 一般为 php5apache2_2.dll PHPinidir &quot;/path/to/php.ini&quot;</span></span><br><span class="line">DirectoryIndex <span class="keyword">index</span>.html <span class="keyword">index</span>.php</span><br><span class="line">AddType application/x-httpd-php .php</span><br></pre></td></tr></table></figure>
+
+<p>PHP 作为 Apache 模块，Apache 服务器在系统启动后，预先生成多个进程副本驻留在内存中，一旦有请求出现，就立即使用这些空余的子进程进行处理，这样就不存在生成子进程造成的延迟了。这些服务器副本在处理完一次 HTTP 请求之后并不立即退出，而是停留在计算机中等待下次请求。对于客户浏览器的请求反应更快，性能较高。</p>
+<h4 id="2-CGI-运行方式"><a href="#2-CGI-运行方式" class="headerlink" title="2 CGI 运行方式"></a>2 CGI 运行方式</h4><p>CGI 即通用网关接口 (Common Gateway Interface)，它是一段程序，通俗的讲 CGI 就象是一座桥，把网页和 WEB 服务器中的执行程序连接起来，它把 HTML 接收的指令传递给服务器的执行程序，再把服务器执行程序的结果返还给 HTML 页。CGI 的跨平台性能极佳，几乎可以在任何操作系统上实现。</p>
+<p>CGI 方式在遇到连接请求（用户 请求）先要创建 cgi 的子进程，激活一个 CGI 进程，然后处理请求，处理完后结束这个子进程。这就是 fork-and-execute 模式。所以用 cgi 方式的服务器有多少连接请求就会有多少 cgi 子进程，子进程反复加载是 cgi 性能低下的主要原因。都会当用户请求数量非常多时，会大量挤占系统的资源如内 存，CPU 时间等，造成效能低下。</p>
+<p>修改 PHP 配置 php.ini</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">cgi</span>.force_redirect = <span class="number">0</span> // 本来是 <span class="number">1</span> 并且去掉注释符号；</span><br></pre></td></tr></table></figure>
+
+<p>修改 apache 的配置，去掉原来的模块配置</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">AddType</span> application/x-httpd-php .php</span><br><span class="line"><span class="attribute">LoadModule</span> php5_module <span class="string">&quot;C:/php5/php5apache2_2.dll&quot;</span></span><br><span class="line"><span class="attribute">PHPinidir</span> <span class="string">&quot;C:/php5/php.ini&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>加入以下配置</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AddHandler cgi-<span class="keyword">script</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在网站 cgi-bin 目录下新建一个 cgi 文件 test.cgi 编写如下代码：</p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/path/to/php/php-cgi(.exe)</span></span><br><span class="line">&lt;?</span><br><span class="line">php php phpinfo();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在上述情况中，你可以想象 CGI 通常有多慢。每一个 Web 请求 PHP 都必须重新解析 php.ini、重新载入全部扩展并重初始化全部数据结构。</p>
+<h4 id="3-FastCGI-运行方式"><a href="#3-FastCGI-运行方式" class="headerlink" title="3 FastCGI 运行方式"></a>3 FastCGI 运行方式</h4><p>fast-cgi 是 cgi 的升级版本，FastCGI 像是一个常驻 (long-live) 型的 CGI，它可以一直执行着，只要激活后，不会每次都要花费时间去 fork 一 次。PHP 使用 PHP-FPM (FastCGI Process Manager)，全称 PHP FastCGI 进程管理器进行管理。</p>
+<p>php 5.3.29 之后自带 FPM，编译时带 –enable-fpm，之前需另外加载模块。</p>
+<p>PHP 的 fastcig 方式运行，如果是 Apache 服务器首先需要去下载 fastcgi 模块，默认是没有带这个模块的，而 cgi 是自带的；下载地址 <span class="exturl" data-url="aHR0cDovL2h0dHBkLmFwYWNoZS5vcmcvbW9kX2ZjZ2lkLyVFRiVCQyU5QiVFOCVBNyVBMyVFNSU4RSU4QiVFNSVBNCU4RCVFNSU4OCVCNiVFNSU4NSVCNiVFNCVCOCVBRCVFNyU5QSU4NA==">http://httpd.apache.org/mod_fcgid/；解压复制其中的<i class="fa fa-external-link-alt"></i></span> mod_fcgid.so 和 mod_fcgid.pdb，接下来做如下的配置：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LoadModule fcgid_module modules/mod_fcgid.so//<span class="type">line</span> <span class="number">128</span> 追加</span><br><span class="line">FcgidInitialEnv PHPRC &quot;c:/php5&quot; //php 配置文件 <span class="type">line</span> <span class="number">129</span> 追加 AddHandler</span><br><span class="line">fcgid-script .php// 添加句柄 即后缀 什么样的文件需要 fastcgi 解释 <span class="type">line</span> <span class="number">407</span> 追加 FcgidWrapper</span><br><span class="line">&quot;c:/php5/php-cgi.exe&quot; .php// 解释器路径 <span class="type">line</span> <span class="number">408</span> <span class="keyword">Options</span> Indexes</span><br><span class="line">FollowSymLinks ExecCGI //<span class="type">line</span> <span class="number">221</span> 追加 ExecCGI 意思是目录允许执行 CGI 脚本</span><br></pre></td></tr></table></figure>
+
+<p>使用 FastCGI，所有这些都只在进程启动时发生一次。一个额外的 好处是，持续数据库连接 (Persistent database connection) 可以工作。</p>
+<h4 id="4-ISAPI-运行方式"><a href="#4-ISAPI-运行方式" class="headerlink" title="4 ISAPI 运行方式"></a>4 ISAPI 运行方式</h4><p>ISAPI 即 Internet Server Application Program Interface，是微软提供的一套面向 Internet 服务的 API 接口，一个 ISAPI 的 DLL，可以在被用户请求激活后长驻内存，等待用户的另一个请求，还可以在一个 DLL 里设置多个用户请求处理函数，此外，ISAPI 的 DLL 应用程序和 WWW 服务器处于同一个进程中，效率要显著高于 CGI。（由于微软的排他性，只能运行于 windows 环境)</p>
+<h4 id="5-cli-运行方式"><a href="#5-cli-运行方式" class="headerlink" title="5 cli 运行方式"></a>5 cli 运行方式</h4><p>cli 是 php 的命令行运行模式，大家经常会使用它，但是可能并没有注意到（例如：我们在 linux 下经常使用 “php -m” 查找 PHP 安装了那些扩展就是 PHP 命令行运行模式；有兴趣的同学可以输入 php -h 去深入研究该运行模式）</p>
+<p>一。可以配置 Apache 将 PHP 解释器作为 CGI 脚本，或者作为 Apache 本身的一个模块 (mod_php)，还有就是 FastCGI 模式来运行。</p>
+<p>CGI 是比较原始的方式，Apache 默认是以第二种方式运行 PHP 的，而配置 FastCGI 模式需要下载安装相关的包。</p>
+<p>性能上，CGI 模式每一次接到请求会调用 php.exe，解析 php.ini，加载 DLL 等，速度自然慢。</p>
+<p>后两种方式会在 Web 程序启动时就作为启动，等待请求；其中 FastCGI 下，实现了类似连接池的技术特性，保持了对后台的连接，请求到来即可使用，结束即断开准备与下一个请求连接。</p>
+<p>实际中，有人认为 FastCGI 比 mod_php 模式慢，有认为前者是后者性能的 80% 的，还有人测试后认为：对于匿名访问，前者约为后者性能的 63%，认证访问时也低了 18%。一般认为，FastCGI 是适用于高并发使用场景下的，同时使用 FastCGI 可以使得程序在 Web Server 产品与代码两端都具有更好的选择自由度。 </p>
+<p>二。Nginx 默认不支持 CGI 模式，它是以 FastCGI 方式运行的。所以使用 Nginx+PHP 就是直接配置为 FastCGI 模式。</p>
+<p>For the most part, lack of CGI support in Nginx is not an issue and actually has an important side-benefit: because Nginx cannot directly execute external programs (CGI), a malicious person can’t trick your system into uploading and executing an arbitrary script. </p>
+<h2 id="php-在-apache-中一共有三种工作方式：CGI-模式、Apache-模块-DLL、FastCGI-模式"><a href="#php-在-apache-中一共有三种工作方式：CGI-模式、Apache-模块-DLL、FastCGI-模式" class="headerlink" title="php 在 apache 中一共有三种工作方式：CGI 模式、Apache 模块 DLL、FastCGI 模式)"></a>php 在 apache 中一共有三种工作方式：CGI 模式、Apache 模块 DLL、FastCGI 模式)</h2><p>以下分别比较：</p>
+<h4 id="1-CGI-模式与模块模式比较："><a href="#1-CGI-模式与模块模式比较：" class="headerlink" title="1. CGI 模式与模块模式比较："></a>1. CGI 模式与模块模式比较：</h4><p>php 在 apache 中两种工作方式的区别 (CGI 模式、Apache 模块 DLL)</p>
+<p>这两种工作方式的安装：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">PHP</span> 在 Apache <span class="number">2</span>.<span class="number">0</span> 中的 CGI 方式</span><br><span class="line"><span class="attribute">ScriptAlias</span> /php/ <span class="string">&quot;c:/php/&quot;</span></span><br><span class="line"><span class="attribute">AddType</span> application/x-httpd-php .php</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对 PHP 4 用这行</span></span><br><span class="line"><span class="attribute">Action</span> application/x-httpd-php <span class="string">&quot;/php/php.exe&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对 PHP 5 用这行</span></span><br><span class="line"><span class="attribute">Action</span> application/x-httpd-php <span class="string">&quot;/php/php-cgi.exe&quot;</span></span><br><span class="line"><span class="attribute">PHP</span> 在 Apache <span class="number">2</span>.<span class="number">0</span> 中的模块方式</span><br><span class="line"><span class="comment"># 对 PHP 4 用这两行：</span></span><br><span class="line"><span class="attribute">LoadModule</span> php4_module <span class="string">&quot;c:/php/php4apache2.dll&quot;</span></span><br><span class="line"><span class="comment"># 别忘了从 sapi 目录中把 php4apache2.dll 拷贝出来！</span></span><br><span class="line"><span class="attribute">AddType</span> application/x-httpd-php .php</span><br><span class="line"><span class="comment"># 对 PHP 5 用这两行：</span></span><br><span class="line"><span class="attribute">LoadModule</span> php5_module <span class="string">&quot;c:/php/php5apache2.dll&quot;</span></span><br><span class="line"><span class="attribute">AddType</span> application/x-httpd-php .php</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 php.ini 的路径</span></span><br><span class="line"><span class="attribute">PHPIniDir</span> <span class="string">&quot;C:/php&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这两种工作方式的区别：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在 <span class="built_in">CGI</span> 模式下，如果客户机请求一个 php 文件，Web 服务器就调用 php.exe 去解释这个文件，然后再把解释的结果以网页的形式返回给客户机；</span><br><span class="line">而在模块化 (DLL) 中，PHP 是与 Web 服务器一起启动并运行的。</span><br><span class="line">所以从某种角度上来说，以 apache 模块方式安装的 PHP4 有着比 <span class="built_in">CGI</span> 模式更好的安全性以及更好的执行效率和速度。</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-FastCGI-运行模式分析："><a href="#2-FastCGI-运行模式分析：" class="headerlink" title="2. FastCGI 运行模式分析："></a>2. FastCGI 运行模式分析：</h4><p>FastCGI 的工作原理是：</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(1)</span>、Web Server 启动时载入 FastCGI 进程管理器【PHP 的 FastCGI 进程管理器是 PHP-FPM <span class="comment">(php-FastCGI Process Manager)</span>】（IIS ISAPI 或 Apache Module);</span><br><span class="line"><span class="comment">(2)</span>、FastCGI 进程管理器自身初始化，启动多个 CGI 解释器进程 <span class="comment">(在任务管理器中可见多个 php-cgi.exe)</span> 并等待来自 Web Server 的连接。</span><br><span class="line"><span class="comment">(3)</span>、当客户端请求到达 Web Server 时，FastCGI 进程管理器选择并连接到一个 CGI 解释器。Web server 将 CGI 环境变量和标准输入发送到 FastCGI 子进程 php-cgi.exe。 </span><br><span class="line"><span class="comment">(4)</span>、FastCGI 子进程完成处理后将标准输出和错误信息从同一连接返回 Web Server。当 FastCGI 子进程关闭连接时，请求便告处理完成。FastCGI 子进程接着等待并处理来自 FastCGI 进程管理器（运行在 WebServer 中）的下一个连接。 在正常的 CGI 模式中，php-cgi.exe 在此便退出了。</span><br></pre></td></tr></table></figure>
+
+<p>在上述情况中，你可以想象 CGI 通常有多慢。每一个 Web 请求 PHP 都必须重新解析 php.ini、重新载入全部 dll 扩展并重初始化全部数据结构。使用 FastCGI，所有这些 都只在进程启动时发生一次。一个额外的好处是，持续数据库连接 (Persistent database connection) 可以工作。 </p>
+<h4 id="3-为什么要使用-FastCGI，而不是多线程-CGI-解释器？"><a href="#3-为什么要使用-FastCGI，而不是多线程-CGI-解释器？" class="headerlink" title="3. 为什么要使用 FastCGI，而不是多线程 CGI 解释器？"></a>3. 为什么要使用 FastCGI，而不是多线程 CGI 解释器？</h4><p>这可能出于多方面的考虑，例如：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">1</span>)、你无论如何也不能在 windows 平台上稳定的使用多线程 <span class="built_in">CGI</span> 解释器，无论是 IIS ISAPI 方式还是 APACHE Module 方式，它们总是运行一段时间就崩溃了。奇怪么？但是确实存在这样的情况！</span><br><span class="line">当然，也有很多时候你能够稳定的使用多线程 <span class="built_in">CGI</span> 解释器，但是，你有可能发现网页有时候会出现错误，无论如何也找不到原因，而换用 FastCGI 方式 时这种错误的概率会大大的降低。我也不清楚这是为什么，我想独立地址空间的 <span class="built_in">CGI</span> 解释器可能终究比共享地址空间的形式来得稳定一点点。</span><br><span class="line">(<span class="number">2</span>)、性能！性能？可能么，难道 FastCGI 比多线程 <span class="built_in">CGI</span> 解释器更快？但有时候确实是这样，只有测试一下你的网站，才能最后下结论。原因嘛，我觉得 很难讲，但有资料说在 Zend WinEnabler 的时代，Zend 原来也是建议在 Windows 平台下使用 FastCGI 而不是 IIS ISAPI 或 Apache Module，不过现在 Zend 已经不做这个产品了。 </span><br></pre></td></tr></table></figure>
+
+<h4 id="4-FastCGI-模式运行-PHP-的优点"><a href="#4-FastCGI-模式运行-PHP-的优点" class="headerlink" title="4. FastCGI 模式运行 PHP 的优点"></a>4. FastCGI 模式运行 PHP 的优点</h4><p>以 FastCGI 模式运行 PHP 有几个主要的好处。首先就是 PHP 出错的时候不会搞垮 Apache，只是 PHP 自己的进程当掉（但 FastCGI 会立即重新启动一个新 PHP 进程来代替当掉的进程）。其次 FastCGI 模式运行 PHP 比 ISAPI 模式性能更好（我本来用 ApacheBench 进行了测试，但忘了保存结果，大家有兴趣可以自己测试）。</p>
+<p>最后，就是可以同时运行 PHP5 和 PHP4。参考下面的配置文件，分别建立了两个虚拟主机，其中一个使用 PHP5，另一个使用 PHP4。 </p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">LoadModule</span> fastcgi_module modules/mod_fastcgi-<span class="number">2</span>.<span class="number">4</span>.<span class="number">2</span>-AP13.dll</span><br><span class="line"><span class="attribute">ScriptAlias</span> /fcgi-php5/ <span class="string">&quot;d:/usr/local/php-5.0.4/&quot;</span></span><br><span class="line"><span class="attribute">FastCgiServer</span> <span class="string">&quot;d:/usr/local/php-5.0.4/php-cgi.exe&quot;</span> -processes <span class="number">3</span></span><br><span class="line"><span class="attribute">ScriptAlias</span> /fcgi-php4/ <span class="string">&quot;d:/usr/local/php-4.3.11/&quot;</span></span><br><span class="line"><span class="attribute">FastCgiServer</span> <span class="string">&quot;d:/usr/local/php-4.3.11/php.exe&quot;</span></span><br><span class="line"><span class="attribute">Listen</span> <span class="number">80</span></span><br><span class="line"><span class="attribute">NameVirtualHost</span> *:<span class="number">80</span></span><br><span class="line"><span class="attribute">DocumentRoot</span> d:/www</span><br><span class="line"><span class="attribute">Options</span> Indexes FollowSymlinks MultiViews</span><br><span class="line"><span class="attribute">ServerName</span> php5.localhost</span><br><span class="line"><span class="attribute">AddType</span> application/x-httpd-fastphp5 .php</span><br><span class="line"><span class="attribute">Action</span> application/x-httpd-fastphp5 <span class="string">&quot;/fcgi-php5/php-cgi.exe&quot;</span></span><br><span class="line"> </span><br><span class="line"><span class="attribute">IndexOptions</span> FancyIndexing FoldersFirst</span><br><span class="line"><span class="attribute">Options</span> Indexes FollowSymLinks MultiViews</span><br><span class="line"><span class="attribute">AllowOverride</span> None</span><br><span class="line"><span class="attribute">Order</span> <span class="literal">allow</span>,<span class="literal">deny</span></span><br><span class="line"><span class="attribute">Allow</span> from <span class="literal">all</span></span><br><span class="line"> </span><br><span class="line"><span class="attribute">Listen</span> <span class="number">8080</span></span><br><span class="line"><span class="attribute">NameVirtualHost</span> *:<span class="number">8080</span></span><br><span class="line"> </span><br><span class="line"><span class="attribute">DocumentRoot</span> d:/www</span><br><span class="line"><span class="attribute">Options</span> Indexes FollowSymlinks MultiViews</span><br><span class="line"><span class="attribute">ServerName</span> php4.localhost</span><br><span class="line"><span class="attribute">AddType</span> application/x-httpd-fastphp4 .php</span><br><span class="line"><span class="attribute">Action</span> application/x-httpd-fastphp4 <span class="string">&quot;/fcgi-php4/php.exe&quot;</span></span><br><span class="line"> </span><br><span class="line"><span class="attribute">Options</span> Indexes FollowSymLinks MultiViews</span><br><span class="line"><span class="attribute">AllowOverride</span> None</span><br><span class="line"><span class="attribute">Order</span> <span class="literal">allow</span>,<span class="literal">deny</span></span><br><span class="line"><span class="attribute">Allow</span> from <span class="literal">all</span></span><br></pre></td></tr></table></figure>
+
+<p>使用上面的配置，访问 <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdC8=">http://localhost/<i class="fa fa-external-link-alt"></i></span> 就使用 PHP5，而访问 <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo4MDgwLw==">http://localhost:8080/<i class="fa fa-external-link-alt"></i></span> 就使用 PHP4。所以只要合理配置，就可以让不同的虚拟主机使用不同版本的 PHP。</p>
+<h4 id="5-FastCGI-模式的一些缺点："><a href="#5-FastCGI-模式的一些缺点：" class="headerlink" title="5. FastCGI 模式的一些缺点："></a>5. FastCGI 模式的一些缺点：</h4><p>说完了好处，也来说说缺点。从我的实际使用来看，用 FastCGI 模式更适合生产环境的服务器。但对于开发用机器来说就不太合适。因为当使用 Zend Studio 调试程序时，由于 FastCGI 会认为 PHP 进程超时，从而在页面返回 500 错误。这一点让人非常恼火，所以我在开发机器上还是换回了 ISAPI 模式。</p>
+<p>最后，在 Windows 中以 FastCGI 模式存在潜在的安  </p>
+<h4 id="Php-在-nginx-中运行模式-nginx-PHP-FPM-目前理想选择"><a href="#Php-在-nginx-中运行模式-nginx-PHP-FPM-目前理想选择" class="headerlink" title="Php 在 nginx 中运行模式 (nginx+PHP-FPM) 目前理想选择"></a>Php 在 nginx 中运行模式 (nginx+PHP-FPM) 目前理想选择</h4><p>使用 FastCGI 方式现在常见的有两种 stack：ligthttpd+spawn-fcgi; 另外一种是 nginx+PHP-FPM (也可以用 spawn-fcgi) 。</p>
+<p>(1) 如上面所说该两种结构都采用 FastCGI 对 PHP 支持，因此 HTTPServer 完全解放出来，可以更好地进行响应和并发处理。因此 lighttpd 和 nginx 都有 small, but powerful 和 efficient 的美誉。 </p>
+<p>(2) 该两者还可以分出一个好坏来，spawn-fcgi 由于是 lighttpd 的一部分，因此安装了 lighttpd 一般就会使用 spawn-fcgi 对 php 支持，但是目前有用户说 ligttpd 的 spwan-fcgi 在高并发访问的时候，会出现上面说的内存泄漏甚至自动重启 fastcgi。即：PHP 脚本处理器当机，这个时候如果用户访问的话，可能就会出现白页 (即 PHP 不能被解析或者出错)。 </p>
+<p>另一个：首先 nginx 不像 lighttpd 本身含带了 fastcgi (spawn-fcgi)，因此它完全是轻量级的，必须借助第三方的 FastCGI 处理器才可以对 PHP 进行解析，因此其实这样看来 nginx 是非常灵活的，它可以和任何第三方提供解析的处理器实现连接从而实现对 PHP 的解析 (在 nginx.conf 中很容易设置)。 </p>
+<p>nginx 可以使用 spwan-fcgi (需要一同安装 lighttpd，但是需要为 nginx 避开端口，一些较早的 blog 有这方面安装的教程)，但是由于 spawn-fcgi 具有上面所述的用户逐渐发现的缺陷，现在慢慢减少使用 nginx+spawn-fcgi 组合了。</p>
+<p> c. 由于 spawn-fcgi 的缺陷，现在出现了新的第三方 (目前还是，听说正在努力不久将来加入到 PHP core 中) 的 PHP 的 FastCGI 处理器，叫做 PHP-FPM (具体可以 google)。它和 spawn-fcgi 比较起来有如下优点： </p>
+<p>由于它是作为 PHP 的 patch 补丁来开发的，安装的时候需要和 php 源码一起编译，也就是说编译到 php core 中了，因此在性能方面要优秀一些；</p>
+<p>同时它在处理高并发方面也优于 spawn-fcgi，至少不会自动重启 fastcgi 处理器。具体采用的算法和设计可以 google 了解。 </p>
+<p>因此，如上所说由于 nginx 的轻量和灵活性，因此目前性能优越，越来越多人逐渐使用这个组合：nginx+PHP&#x2F;PHP-FPM</p>
+<h4 id="IIS-ISAPI-模式"><a href="#IIS-ISAPI-模式" class="headerlink" title="IIS + ISAPI 模式"></a>IIS + ISAPI 模式</h4><p>这种模式适合开发环境中， 生产环境中用的较少。  </p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>目前在 HTTPServer 这块基本可以看到有三种 stack 比较流行：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">（1）Apache+mod_php5</span><br><span class="line">（2）lighttp+spawn-fcgi</span><br><span class="line">（3）nginx+PHP-FPM</span><br></pre></td></tr></table></figure>
+
+<p>三者后两者性能可能稍优，但是 Apache 由于有丰富的模块和功能，目前来说仍旧是老大。有人测试 nginx+PHP-FPM 在高并发情况下可能会达到 Apache+mod_php5 的 5~10 倍，现在 nginx+PHP-FPM 使用的人越来越多。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/05/nginx-php/" rel="prev" title="Nginx 服务器究竟是怎么执行 Php 项目">
+                  <i class="fa fa-angle-left"></i> Nginx 服务器究竟是怎么执行 Php 项目
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/05/phpstorm-laravel/" rel="next" title="基于 PHPStorm 编辑器的 Laravel 开发">
+                  基于 PHPStorm 编辑器的 Laravel 开发 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"b24115489799f20e9307a7a0a55cfeb9"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

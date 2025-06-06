@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="1、尽量减少 HTTP 请求次数终端用户响应的时间中，有 80% 用于下载各项内容。这部分时间包括下载页面中的图像、样式表、脚本、Flash 等。通过减少页面中的元素可以减少 HTTP 请求的次数。这是提高网页速度的关键步骤。  减少页面组件的方法其实就是简化页面设计。那么有没有一种方法既能保持页面内容的丰富性又能达到加快响应时间的目的呢？这里有几条减少 HTTP 请求次数同时又可能保持页面内容丰">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Yahoo 团队经验：网站性能优化的 34 条黄金法则">
+<meta property="og:url" content="https://slagga.top/2017/07/yahoo-team/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="1、尽量减少 HTTP 请求次数终端用户响应的时间中，有 80% 用于下载各项内容。这部分时间包括下载页面中的图像、样式表、脚本、Flash 等。通过减少页面中的元素可以减少 HTTP 请求的次数。这是提高网页速度的关键步骤。  减少页面组件的方法其实就是简化页面设计。那么有没有一种方法既能保持页面内容的丰富性又能达到加快响应时间的目的呢？这里有几条减少 HTTP 请求次数同时又可能保持页面内容丰">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-07-20T14:03:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.902Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Blog, HTML, CSS, JavaScript, Python, PHP, Java, Go, Redis, MySQL, Node.js, React, Vuejs, Git, Programming, Web Development, Blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2017/07/yahoo-team/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2017/07/yahoo-team/","path":"2017/07/yahoo-team/","title":"Yahoo 团队经验：网站性能优化的 34 条黄金法则"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Yahoo 团队经验：网站性能优化的 34 条黄金法则 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E5%B0%BD%E9%87%8F%E5%87%8F%E5%B0%91-HTTP-%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">1、尽量减少 HTTP 请求次数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%87%8F%E5%B0%91-DNS-%E6%9F%A5%E6%89%BE%E6%AC%A1%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">2、减少 DNS 查找次数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E9%81%BF%E5%85%8D%E8%B7%B3%E8%BD%AC"><span class="nav-number">3.</span> <span class="nav-text">3、避免跳转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%8F%AF%E7%BC%93%E5%AD%98%E7%9A%84-AJAX"><span class="nav-number">4.</span> <span class="nav-text">4、可缓存的 AJAX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E6%8E%A8%E8%BF%9F%E5%8A%A0%E8%BD%BD%E5%86%85%E5%AE%B9"><span class="nav-number">5.</span> <span class="nav-text">5、推迟加载内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81%E9%A2%84%E5%8A%A0%E8%BD%BD"><span class="nav-number">6.</span> <span class="nav-text">6、预加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81%E5%87%8F%E5%B0%91-DOM-%E5%85%83%E7%B4%A0%E6%95%B0%E9%87%8F"><span class="nav-number">7.</span> <span class="nav-text">7、减少 DOM 元素数量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8%E3%80%81%E6%A0%B9%E6%8D%AE%E5%9F%9F%E5%90%8D%E5%88%92%E5%88%86%E9%A1%B5%E9%9D%A2%E5%86%85%E5%AE%B9"><span class="nav-number">8.</span> <span class="nav-text">8、根据域名划分页面内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9%E3%80%81%E4%BD%BF-iframe-%E7%9A%84%E6%95%B0%E9%87%8F%E6%9C%80%E5%B0%8F"><span class="nav-number">9.</span> <span class="nav-text">9、使 iframe 的数量最小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10%E3%80%81%E4%B8%8D%E8%A6%81%E5%87%BA%E7%8E%B0-404-%E9%94%99%E8%AF%AF"><span class="nav-number">10.</span> <span class="nav-text">10、不要出现 404 错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11%E3%80%81%E4%BD%BF%E7%94%A8%E5%86%85%E5%AE%B9%E5%88%86%E5%8F%91%E7%BD%91%E7%BB%9C"><span class="nav-number">11.</span> <span class="nav-text">11、使用内容分发网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12%E3%80%81%E4%B8%BA%E6%96%87%E4%BB%B6%E5%A4%B4%E6%8C%87%E5%AE%9A-Expires-%E6%88%96-Cache-Control"><span class="nav-number">12.</span> <span class="nav-text">12、为文件头指定 Expires 或 Cache-Control</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13%E3%80%81Gzip-%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="nav-number">13.</span> <span class="nav-text">13、Gzip 压缩文件内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14%E3%80%81%E9%85%8D%E7%BD%AE-ETag"><span class="nav-number">14.</span> <span class="nav-text">14、配置 ETag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15%E3%80%81%E5%B0%BD%E6%97%A9%E5%88%B7%E6%96%B0%E8%BE%93%E5%87%BA%E7%BC%93%E5%86%B2"><span class="nav-number">15.</span> <span class="nav-text">15、尽早刷新输出缓冲</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16%E3%80%81%E4%BD%BF%E7%94%A8-GET-%E6%9D%A5%E5%AE%8C%E6%88%90-AJAX-%E8%AF%B7%E6%B1%82"><span class="nav-number">16.</span> <span class="nav-text">16、使用 GET 来完成 AJAX 请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17%E3%80%81%E6%8A%8A%E6%A0%B7%E5%BC%8F%E8%A1%A8%E7%BD%AE%E4%BA%8E%E9%A1%B6%E9%83%A8"><span class="nav-number">17.</span> <span class="nav-text">17、把样式表置于顶部</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18%E3%80%81%E9%81%BF%E5%85%8D%E4%BD%BF%E7%94%A8-CSS-%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%88Expression%EF%BC%89"><span class="nav-number">18.</span> <span class="nav-text">18、避免使用 CSS 表达式（Expression）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19%E3%80%81%E4%BD%BF%E7%94%A8%E5%A4%96%E9%83%A8-JavaScript-%E5%92%8C-CSS"><span class="nav-number">19.</span> <span class="nav-text">19、使用外部 JavaScript 和 CSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20%E3%80%81%E5%89%8A%E5%87%8F-JavaScript-%E5%92%8C-CSS"><span class="nav-number">20.</span> <span class="nav-text">20、削减 JavaScript 和 CSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#21%E3%80%81%E7%94%A8-%E4%BB%A3%E6%9B%BF-import"><span class="nav-number">21.</span> <span class="nav-text">21、用  代替 @import</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22%E3%80%81%E9%81%BF%E5%85%8D%E4%BD%BF%E7%94%A8%E6%BB%A4%E9%95%9C"><span class="nav-number">22.</span> <span class="nav-text">22、避免使用滤镜</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23%E3%80%81%E6%8A%8A%E8%84%9A%E6%9C%AC%E7%BD%AE%E4%BA%8E%E9%A1%B5%E9%9D%A2%E5%BA%95%E9%83%A8"><span class="nav-number">23.</span> <span class="nav-text">23、把脚本置于页面底部</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#24%E3%80%81%E5%89%94%E9%99%A4%E9%87%8D%E5%A4%8D%E8%84%9A%E6%9C%AC"><span class="nav-number">24.</span> <span class="nav-text">24、剔除重复脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#25%E3%80%81%E5%87%8F%E5%B0%91-DOM-%E8%AE%BF%E9%97%AE"><span class="nav-number">25.</span> <span class="nav-text">25、减少 DOM 访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#26%E3%80%81%E5%BC%80%E5%8F%91%E6%99%BA%E8%83%BD%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F"><span class="nav-number">26.</span> <span class="nav-text">26、开发智能事件处理程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#27%E3%80%81%E5%87%8F%E5%B0%8F-Cookie-%E4%BD%93%E7%A7%AF"><span class="nav-number">27.</span> <span class="nav-text">27、减小 Cookie 体积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#28%E3%80%81%E5%AF%B9%E4%BA%8E%E9%A1%B5%E9%9D%A2%E5%86%85%E5%AE%B9%E4%BD%BF%E7%94%A8%E6%97%A0-coockie-%E5%9F%9F%E5%90%8D"><span class="nav-number">28.</span> <span class="nav-text">28、对于页面内容使用无 coockie 域名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#29%E3%80%81%E4%BC%98%E5%8C%96%E5%9B%BE%E5%83%8F"><span class="nav-number">29.</span> <span class="nav-text">29、优化图像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#30%E3%80%81%E4%BC%98%E5%8C%96-CSS-Spirite"><span class="nav-number">30.</span> <span class="nav-text">30、优化 CSS Spirite</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#31%E3%80%81%E4%B8%8D%E8%A6%81%E5%9C%A8-HTML-%E4%B8%AD%E7%BC%A9%E6%94%BE%E5%9B%BE%E5%83%8F"><span class="nav-number">31.</span> <span class="nav-text">31、不要在 HTML 中缩放图像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#32%E3%80%81favicon-ico-%E8%A6%81%E5%B0%8F%E8%80%8C%E4%B8%94%E5%8F%AF%E7%BC%93%E5%AD%98"><span class="nav-number">32.</span> <span class="nav-text">32、favicon.ico 要小而且可缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#33%E3%80%81%E4%BF%9D%E6%8C%81%E5%8D%95%E4%B8%AA%E5%86%85%E5%AE%B9%E5%B0%8F%E4%BA%8E-25K"><span class="nav-number">33.</span> <span class="nav-text">33、保持单个内容小于 25K</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#34%E3%80%81%E6%89%93%E5%8C%85%E7%BB%84%E4%BB%B6%E6%88%90%E5%A4%8D%E5%90%88%E6%96%87%E6%9C%AC"><span class="nav-number">34.</span> <span class="nav-text">34、打包组件成复合文本</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2017/07/yahoo-team/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Yahoo 团队经验：网站性能优化的 34 条黄金法则 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Yahoo 团队经验：网站性能优化的 34 条黄金法则
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-07-20 22:03:30" itemprop="dateCreated datePublished" datetime="2017-07-20T22:03:30+08:00">2017-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Website/" itemprop="url" rel="index"><span itemprop="name">Website</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="1、尽量减少-HTTP-请求次数"><a href="#1、尽量减少-HTTP-请求次数" class="headerlink" title="1、尽量减少 HTTP 请求次数"></a>1、尽量减少 HTTP 请求次数</h2><p>终端用户响应的时间中，有 80% 用于下载各项内容。这部分时间包括下载页面中的图像、样式表、脚本、Flash 等。通过减少页面中的元素可以减少 HTTP 请求的次数。这是提高网页速度的关键步骤。 </p>
+<p>减少页面组件的方法其实就是简化页面设计。那么有没有一种方法既能保持页面内容的丰富性又能达到加快响应时间的目的呢？这里有几条减少 HTTP 请求次数同时又可能保持页面内容丰富的技术。 </p>
+<span id="more"></span>
+
+<p>合并文件是通过把所有的脚本放到一个文件中来减少 HTTP 请求的方法，如可以简单地把所有的 CSS 文件都放入一个样式表中。当脚本或者样式表在不同页面中使用时需要做不同的修改，这可能会相对麻烦点，但即便如此也要把这个方法作为改善页面性能的重要一步。 </p>
+<p>CSS Sprites 是减少图像请求的有效方法。把所有的背景图像都放到一个图片文件中，然后通过 CSS 的 background-image 和 background-position 属性来显示图片的不同部分； </p>
+<p>图片地图是把多张图片整合到一张图片中。虽然文件的总体大小不会改变，但是可以减少 HTTP 请求次数。图片地图只有在图片的所有组成部分在页面中是紧挨在 一起的时候才能使用，如导航栏。确定图片的坐标和可能会比较繁琐且容易出错，同时使用图片地图导航也不具有可读性，因此不推荐这种方法； </p>
+<p>内联图像是使用 data:URL scheme 的方法把图像数据加载页面中。这可能会增加页面的大小。把内联图像放到样式表（可缓存）中可以减少 HTTP 请求同时又避免增加页面文件的大小。但是内联图像现在还没有得到主流浏览器的支持。 </p>
+<p>减少页面的 HTTP 请求次数是你首先要做的一步。这是改进首次访问用户等待时间的最重要的方法。如同 Tenni Theurer 的他的博客 Browser Cahe Usage – Exposed! 中所说，HTTP 请求在无缓存情况下占去了 40% 到 60% 的响应时间。让那些初次访问你网站的人获得更加快速的体验吧！ </p>
+<h2 id="2、减少-DNS-查找次数"><a href="#2、减少-DNS-查找次数" class="headerlink" title="2、减少 DNS 查找次数"></a>2、减少 DNS 查找次数</h2><p>域名系统（DNS）提供了域名和 IP 的对应关系，就像电话本中人名和他们的电话号码的关系一样。当你在浏览器地址栏中输入 <span class="exturl" data-url="aHR0cDovL3d3dy5kdWRvLm9yZy8=">www.dudo.org<i class="fa fa-external-link-alt"></i></span> 时，DNS 解析服务器就会返回这个域名对应的 IP 地址。DNS 解析的过程同样也是需要时间的。一般情况下返回给定域名对应的 IP 地址会花费 20 到 120 毫 秒的时间。而且在这个过程中浏览器什么都不会做直到 DNS 查找完毕。 </p>
+<p>缓存 DNS 查找可以改善页面性能。这种缓存需要一个特定的缓存服务器，这种服务器一般属于用户的 ISP 提供商或者本地局域网控制，但是它同样会在用户使用 的计算机上产生缓存。DNS 信息会保留在操作系统的 DNS 缓存中（微软 Windows 系统中 DNS Client Service）。大多数浏览器有独立于操作系统以外的自己的缓存。由于浏览器有自己的缓存记录，因此在一次请求中它不会受到操作系统的影响。 </p>
+<p>Internet Explorer 默认情况下对 DNS 查找记录的缓存时间为 30 分钟，它在注册表中的键值为 DnsCacheTimeout。Firefox 对 DNS 的查找 记录缓存时间为 1 分钟，它在配置文件中的选项为 network.dnsCacheExpiration（Fasterfox 把这个选项改为了 1 小时）。 </p>
+<p>当客户端中的 DNS 缓存都为空时（浏览器和操作系统都为空），DNS 查找的次数和页面中主机名的数量相同。这其中包括页面中 URL、图片、脚本文件、样式表、Flash 对象等包含的主机名。减少主机名的数量可以减少 DNS 查找次数。 </p>
+<p>减少主机名的数量还可以减少页面中并行下载的数量。减少 DNS 查找次数可以节省响应时间，但是减少并行下载却会增加响应时间。我的指导原则是把这些页面中 的内容分割成至少两部分但不超过四部分。这种结果就是在减少 DNS 查找次数和保持较高程度并行下载两者之间的权衡了。 </p>
+<h2 id="3、避免跳转"><a href="#3、避免跳转" class="headerlink" title="3、避免跳转"></a>3、避免跳转</h2><p>跳转是使用 301 和 302 代码实现的。下面是一个响应代码为 301 的 HTTP 头：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">HTTP/1.1</span> <span class="number">301</span> Moved Permanently </span><br><span class="line"><span class="attribute">Location</span><span class="punctuation">: </span>http://example.com/newuri </span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>text/html </span><br></pre></td></tr></table></figure>
+
+<p>浏览器会把用户指向到 Location 中指定的 URL。头文件中的所有信息在一次跳转中都是必需的，内容部分可以为空。不管他们的名称，301 和 302 响应都不会被缓存除非增加一个额外的头选项，如 Expires 或者 Cache-Control 来指定它缓存。<code>&lt;meat /&gt;</code> 元素的刷新标签和 JavaScript 也可以实现 URL 的跳转，但是如果你必须要跳转的时候，最好的方法就是使用标准的 3XXHTTP 状态代 码，这主要是为了确保 “后退” 按钮可以正确地使用。 </p>
+<p>但是要记住跳转会降低用户体验。在用户和 HTML 文档中间增加一个跳转，会拖延页面中所有元素的显示，因为在 HTML 文件被加载前任何文件（图像、 Flash 等）都不会被下载。 </p>
+<p>有一种经常被网页开发者忽略却往往十分浪费响应时间的跳转现象。这种现象发生在当 URL 本该有斜杠（&#x2F;）却被忽略掉时。例如，当我们要访问 http: &#x2F;&#x2F;astrology.yahoo.com&#x2F;astrology 时，实际上返回的是一个包含 301 代码的跳转，它指向的是 <span class="exturl" data-url="aHR0cDovL2FzdHJvbG9neS55YWhvby5jb20vYXN0cm9sb2d5Lw==">http://astrology.yahoo.com/astrology/<i class="fa fa-external-link-alt"></i></span> （注意末尾的斜杠）。在 Apache 服务器中可以使用 Alias 或者 mod_rewrite 或者 the DirectorySlash 来避免。 </p>
+<p>连接新网站和旧网站是跳转功能经常被用到的另一种情况。这种情况下往往要连接网站的不同内容然后根据用户的不同类型（如浏览器类型、用户账号所属类型）来 进行跳转。使用跳转来实现两个网站的切换十分简单，需要的代码量也不多。尽管使用这种方法对于开发者来说可以降低复杂程度，但是它同样降低用户体验。一个 可替代方法就是如果两者在同一台服务器上时使用 Alias 和 mod_rewrite 和实现。如果是因为域名的不同而采用跳转，那么可以通过使用 Alias 或者 mod_rewirte 建立 CNAME（保存一个域名和另外一个域名之间关系的 DNS 记录）来替代。 </p>
+<h2 id="4、可缓存的-AJAX"><a href="#4、可缓存的-AJAX" class="headerlink" title="4、可缓存的 AJAX"></a>4、可缓存的 AJAX</h2><p>Ajax 经常被提及的一个好处就是由于其从后台服务器传输信息的异步性而为用户带来的反馈的即时性。但是，使用 Ajax 并不能保证用户不会在等待异 步的 JavaScript 和 XML 响应上花费时间。在很多应用中，用户是否需要等待响应取决于 Ajax 如何来使用。例如，在一个基于 Web 的 Email 客户端 中，用户必须等待 Ajax 返回符合他们条件的邮件查询结果。记住一点，“异步” 并不异味着 “即时”，这很重要。 </p>
+<p>为了提高性能，优化 Ajax 响应是很重要的。提高 Ajxa 性能的措施中最重要的方法就是使响应具有可缓存性，具体的讨论可以查看 Add an Expires or a Cache-Control Header。其它的几条规则也同样适用于 Ajax： </p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Gizp 压缩文件 </span><br><span class="line">减少 DNS 查找次数 </span><br><span class="line">精简 <span class="keyword">JavaScript </span></span><br><span class="line">避免跳转 </span><br><span class="line">配置 ETags</span><br></pre></td></tr></table></figure>
+
+<p>让我们来看一个例子：一个 Web2.0 的 Email 客户端会使用 Ajax 来自动完成对用户地址薄的下载。如果用户在上次使用过 Email web 应用程序后没有对地址薄作任何的修改，而且 Ajax 响应通过 Expire 或者 Cacke-Control 头来实现缓存，那么就可以直接从上一次的缓 存中读取地址薄了。必须告知浏览器是使用缓存中的地址薄还是发送一个新的请求。这可以通过为读取地址薄的 Ajax URL 增加一个含有上次编辑时间的时间戳来实现，例如，&amp;t&#x3D;11900241612 等。如果地址薄在上次下载后没有被编辑过，时间戳就不变，则 从浏览器的缓存中加载从而减少了一次 HTTP 请求过程。如果用户修改过地址薄，时间戳就会用来确定新的 URL 和缓存响应并不匹配，浏览器就会重要请求更新 地址薄。 </p>
+<p>即使你的 Ajxa 响应是动态生成的，哪怕它只适用于一个用户，那么它也应该被缓存起来。这样做可以使你的 Web2.0 应用程序更加快捷。 </p>
+<h2 id="5、推迟加载内容"><a href="#5、推迟加载内容" class="headerlink" title="5、推迟加载内容"></a>5、推迟加载内容</h2><p>你可以仔细看一下你的网页，问问自己 “哪些内容是页面呈现时所必需首先加载的？哪些内容和结构可以稍后再加载？ </p>
+<p>把整个过程按照 onload 事件分隔成两部分，JavaScript 是一个理想的选择。例如，如果你有用于实现拖放和动画的 JavaScript，那么它 就以等待稍后加载，因为页面上的拖放元素是在初始化呈现之后才发生的。其它的例如隐藏部分的内容（用户操作之后才显现的内容）和处于折叠部分的图像也可以 推迟加载 </p>
+<p>工具可以节省你的工作量：YUI Image Loader 可以帮你推迟加载折叠部分的图片，YUI Get utility 是包含 JS 和 CSS 的便捷方法。比如你可以打开 Firebug 的 Net 选项卡看一下 Yahoo 的首页。 </p>
+<p>当性能目标和其它网站开发实践一致时就会相得益彰。这种情况下，通过程序提高网站性能的方法告诉我们，在支持 JavaScript 的情况下，可以先去除用 户体验，不过这要保证你的网站在没有 JavaScript 也可以正常运行。在确定页面运行正常后，再加载脚本来实现如拖放和动画等更加花哨的效果。 </p>
+<h2 id="6、预加载"><a href="#6、预加载" class="headerlink" title="6、预加载"></a>6、预加载</h2><p>预加载和后加载看起来似乎恰恰相反，但实际上预加载是为了实现另外一种目标。预加载是在浏览器空闲时请求将来可能会用到的页面内容（如图像、样式表和脚 本）。使用这种方法，当用户要访问下一个页面时，页面中的内容大部分已经加载到缓存中了，因此可以大大改善访问速度。 </p>
+<p>下面提供了几种预加载方法：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">无条件加载：触发 onload 事件时，直接加载额外的页面内容。以 Google<span class="selector-class">.com</span> 为例，你可以看一下它的 spirit image 图像是怎样在 onload 中加载的。这个 spirit image 图像在 google<span class="selector-class">.com</span> 主页中是不需要的，但是却可以在搜索结果页面中用到它。 </span><br><span class="line">有条件加载：根据用户的操作来有根据地判断用户下面可能去往的页面并相应的预加载页面内容。在 search<span class="selector-class">.yahoo</span><span class="selector-class">.com</span> 中你可以看到如何在你输入内容时加载额外的页面内容。 </span><br><span class="line">有预期的加载：载入重新设计过的页面时使用预加载。这种情况经常出现在页面经过重新设计后用户抱怨 “新的页面看起来很酷，但是却比以前慢”。问题可能出在 用户对于你的旧站点建立了完整的缓存，而对于新站点却没有任何缓存内容。因此你可以在访问新站之前就加载一部内容来避免这种结果的出现。在你的旧站中利用 浏览器的空余时间加载新站中用到的图像的和脚本来提高访问速度。 </span><br></pre></td></tr></table></figure>
+
+
+<h2 id="7、减少-DOM-元素数量"><a href="#7、减少-DOM-元素数量" class="headerlink" title="7、减少 DOM 元素数量"></a>7、减少 DOM 元素数量</h2><p>一个复杂的页面意味着需要下载更多数据，同时也意味着 JavaScript 遍历 DOM 的效率越慢。比如当你增加一个事件句柄时在 500 和 5000 个 DOM 元素中循环效果肯定是不一样的。 </p>
+<p>大量的 DOM 元素的存在意味着页面中有可以不用移除内容只需要替换元素标签就可以精简的部分。你在页面布局中使用表格了吗？你有没有仅仅为了布局而引入更多的 <code>&lt;div&gt;</code> 元素呢？也许会存在一个适合或者在语意是更贴切的标签可以供你使用。 </p>
+<p>YUI CSS utilities 可以给你的布局带来巨大帮助：grids.css 可以帮你实现整体布局，font.css 和 reset.css 可以帮助你移除浏览器默 认格式。它提供了一个重新审视你页面中标签的机会，比如只有在语意上有意义时才使用 <code>&lt;div&gt;</code>，而不是因为它具有换行效果才使用它。 </p>
+<p>DOM 元素数量很容易计算出来，只需要在 Firebug 的控制台内输入： </p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.getElementsByTagName(‘*’).<span class="built_in">length</span></span><br></pre></td></tr></table></figure>
+
+<p>那么多少个 DOM 元素算是多呢？这可以对照有很好标记使用的类似页面。比如 Yahoo! 主页是一个内容非常多的页面，但是它只使用了 700 个元素（HTML 标签）。 </p>
+<h2 id="8、根据域名划分页面内容"><a href="#8、根据域名划分页面内容" class="headerlink" title="8、根据域名划分页面内容"></a>8、根据域名划分页面内容</h2><p>把页面内容划分成若干部分可以使你最大限度地实现平行下载。由于 DNS 查找带来的影响你首先要确保你使用的域名数量在 2 个到 4 个之间。例如，你可以 把用到的 HTML 内容和动态内容放在 <span class="exturl" data-url="aHR0cDovL3d3dy5leGFtcGxlLm9yZy8=">www.example.org<i class="fa fa-external-link-alt"></i></span> 上，而把页面各种组件（图片、脚本、CSS) 分别存放在 statics1.example.org 和 statics.example.org 上。 </p>
+<p>你可在 Tenni Theurer 和 Patty Chi 合写的文章 Maximizing Parallel Downloads in the Carpool Lane 找到更多相关信息。 </p>
+<h2 id="9、使-iframe-的数量最小"><a href="#9、使-iframe-的数量最小" class="headerlink" title="9、使 iframe 的数量最小"></a>9、使 iframe 的数量最小</h2><p>ifrmae 元素可以在父文档中插入一个新的 HTML 文档。了解 iframe 的工作理然后才能更加有效地使用它，这一点很重要。 </p>
+<p><code>&lt;iframe&gt;</code> 优点： </p>
+<figure class="highlight csp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">解决加载缓慢的第三方内容如图标和广告等的加载问题 </span><br><span class="line">Security <span class="keyword">sandbox</span> </span><br><span class="line">并行加载脚本</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;iframe&gt;</code> 的缺点：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">即时内容为空，加载也需要时间 </span><br><span class="line">会阻止页面加载 </span><br><span class="line">没有语意 </span><br></pre></td></tr></table></figure>
+
+
+<h2 id="10、不要出现-404-错误"><a href="#10、不要出现-404-错误" class="headerlink" title="10、不要出现 404 错误"></a>10、不要出现 404 错误</h2><p>HTTP 请求时间消耗是很大的，因此使用 HTTP 请求来获得一个没有用处的响应（例如 404 没有找到页面）是完全没有必要的，它只会降低用户体验而不会有一点好处。 </p>
+<p>有些站点把 404 错误响应页面改为 “你是不是要找 ***”，这虽然改进了用户体验但是同样也会浪费服务器资源（如数据库等）。最糟糕的情况是指向外部 JavaScript 的链接出现问题并返回 404 代码。首先，这种加载会破坏并行加载；其次浏览器会把试图在返回的 404 响应内容中找到可能有用的部分当 作 JavaScript 代码来执行。 </p>
+<h2 id="11、使用内容分发网络"><a href="#11、使用内容分发网络" class="headerlink" title="11、使用内容分发网络"></a>11、使用内容分发网络</h2><p>用户与你网站服务器的接近程度会影响响应时间的长短。把你的网站内容分散到多个、处于不同地域位置的服务器上可以加快下载速度。但是首先我们应该做些什么呢？ </p>
+<p>按地域布置网站内容的第一步并不是要尝试重新架构你的网站让他们在分发服务器上正常运行。根据应用的需求来改变网站结构，这可能会包括一些比较复杂的任 务，如在服务器间同步 Session 状态和合并数据库更新等。要想缩短用户和内容服务器的距离，这些架构步骤可能是不可避免的。 </p>
+<p>要记住，在终端用户的响应时间中有 80% 到 90% 的响应时间用于下载图像、样式表、脚本、Flash 等页面内容。这就是网站性能黄金守则。和重新设计你的 应用程序架构这样比较困难的任务相比，首先来分布静态内容会更好一点。这不仅会缩短响应时间，而且对于内容分发网络来说它更容易实现。 </p>
+<p>内容分发网络（Content Delivery Network，CDN）是由一系列分散到各个不同地理位置上的 Web 服务器组成的，它提高了网站内容的传输速度。用于向用户传输内容的服务器主要是根据 和用户在网络上的靠近程度来指定的。例如，拥有最少网络跳数（network hops）和响应速度最快的服务器会被选定。 </p>
+<p>一些大型的网络公司拥有自己的 CDN，但是使用像 Akamai Technologies，Mirror Image Internet， 或者 Limelight Networks 这样的 CDN 服务成本却非常高。对于刚刚起步的企业和个人网站来说，可能没有使用 CDN 的成本预算，但是随着目标用户群的不断扩大和更加 全球化，CDN 就是实现快速响应所必需的了。以 Yahoo 来说，他们转移到 CDN 上的网站程序静态内容节省了终端用户 20% 以上的响应时间。使用 CDN 是 一个只需要相对简单地修改代码实现显著改善网站访问速度的方法。 </p>
+<h2 id="12、为文件头指定-Expires-或-Cache-Control"><a href="#12、为文件头指定-Expires-或-Cache-Control" class="headerlink" title="12、为文件头指定 Expires 或 Cache-Control"></a>12、为文件头指定 Expires 或 Cache-Control</h2><p>这条守则包括两方面的内容： </p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">对于静态内容：设置文件头过期时间 Expires 的值为 “<span class="built_in">Never</span> expire”（永不过期） </span><br><span class="line">对于动态内容：使用恰当的 Cache-Control 文件头来帮助浏览器进行有条件的请求 </span><br></pre></td></tr></table></figure>
+
+<p>网页内容设计现在越来越丰富，这就意味着页面中要包含更多的脚本、样式表、图片和 Flash。第一次访问你页面的用户就意味着进行多次的 HTTP 请求，但 是通过使用 Expires 文件头就可以使这样内容具有缓存性。它避免了接下来的页面访问中不必要的 HTTP 请求。Expires 文件头经常用于图像文件， 但是应该在所有的内容都使用他，包括脚本、样式表和 Flash 等。 </p>
+<p>浏览器（和代理）使用缓存来减少 HTTP 请求的大小和次数以加快页面访问速度。Web 服务器在 HTTP 响应中使用 Expires 文件头来告诉客户端内容需 要缓存多长时间。下面这个例子是一个较长时间的 Expires 文件头，它告诉浏览器这个响应直到 2010 年 4 月 15 日才过期。 </p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Expires</span>: Thu, <span class="number">15</span> Apr <span class="number">2010</span> <span class="number">20</span>:<span class="number">00</span>:<span class="number">00</span> GMT </span><br></pre></td></tr></table></figure>
+
+<p>如果你使用的是 Apache 服务器，可以使用 ExpiresDefault 来设定相对当前日期的过期时间。下面这个例子是使用 ExpiresDefault 来设定请求时间后 10 年过期的文件头： </p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExpiresDefault “<span class="keyword">access</span> plus <span class="number">10</span> years” </span><br></pre></td></tr></table></figure>
+
+<p>要切记，如果使用了 Expires 文件头，当页面内容改变时就必须改变内容的文件名。依 Yahoo! 来说我们经常使用这样的步骤：在内容的文件名中加上版本号，如 yahoo_2.0.6.js。 </p>
+<p>使用 Expires 文件头只有会在用户已经访问过你的网站后才会起作用。当用户首次访问你的网站时这对减少 HTTP 请求次数来说是无效的，因为浏览器的缓 存是空的。因此这种方法对于你网站性能的改进情况要依据他们 “预缓存” 存在时对你页面的点击频率（“预缓存” 中已经包含了页面中的所有内容）。 Yahoo! 建立了一套测量方法，我们发现所有的页面浏览量中有 75~85% 都有 “预缓存”。通过使用 Expires 文件头，增加了缓存在浏览器中内容的 数量，并且可以在用户接下来的请求中再次使用这些内容，这甚至都不需要通过用户发送一个字节的请求。 </p>
+<h2 id="13、Gzip-压缩文件内容"><a href="#13、Gzip-压缩文件内容" class="headerlink" title="13、Gzip 压缩文件内容"></a>13、Gzip 压缩文件内容</h2><p>网络传输中的 HTTP 请求和应答时间可以通过前端机制得到显著改善。的确，终端用户的带宽、互联网提供者、与对等交换点的靠近程度等都不是网站开发者所能决定的。但是还有其他因素影响着响应时间。通过减小 HTTP 响应的大小可以节省 HTTP 响应时间。 </p>
+<p>从 HTTP&#x2F;1.1 开始，web 客户端都默认支持 HTTP 请求中有 Accept-Encoding 文件头的压缩格式： </p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Accept</span>-Encoding: gzip, deflate </span><br></pre></td></tr></table></figure>
+
+<p>如果 web 服务器在请求的文件头中检测到上面的代码，就会以客户端列出的方式压缩响应内容。Web 服务器把压缩方式通过响应文件头中的 Content- Encoding 来返回给浏览器。 </p>
+<figure class="highlight csp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Content-Encoding</span>: gzip</span><br></pre></td></tr></table></figure>
+
+<p>Gzip 是目前最流行也是最有效的压缩方式。这是由 GNU 项目开发并通过 RFC 1952 来标准化的。另外仅有的一个压缩格式是 deflate，但是它的使用范围有限效果也稍稍逊色。 </p>
+<p>Gzip 大概可以减少 70% 的响应规模。目前大约有 90% 通过浏览器传输的互联网交换支持 gzip 格式。如果你使用的是 Apache，gzip 模块配置和你的版本有关：Apache 1.3 使用 mod_zip，而 Apache 2.x 使用 moflate。 </p>
+<p>浏览器和代理都会存在这样的问题：浏览器期望收到的和实际接收到的内容会存在不匹配的现象。幸好，这种特殊情况随着旧式浏览器使用量的减少在减少。 Apache 模块会通过自动添加适当的 Vary 响应文件头来避免这种状况的出现。 </p>
+<p>服务器根据文件类型来选择需要进行 gzip 压缩的文件，但是这过于限制了可压缩的文件。大多数 web 服务器会压缩 HTML 文档。对脚本和样式表进行压缩同 样也是值得做的事情，但是很多 web 服务器都没有这个功能。实际上，压缩任何一个文本类型的响应，包括 XML 和 JSON，都值得的。图像和 PDF 文件由于 已经压缩过了所以不能再进行 gzip 压缩。如果试图 gizp 压缩这些文件的话不但会浪费 CPU 资源还会增加文件的大小。 </p>
+<p>Gzip 压缩所有可能的文件类型是减少文件体积增加用户体验的简单方法。 </p>
+<h2 id="14、配置-ETag"><a href="#14、配置-ETag" class="headerlink" title="14、配置 ETag"></a>14、配置 ETag</h2><p>Entity tags（ETags）（实体标签）是 web 服务器和浏览器用于判断浏览器缓存中的内容和服务器中的原始内容是否匹配的一种机制（“实体” 就是所说的 “内 容”，包括图片、脚本、样式表等）。增加 ETag 为实体的验证提供了一个比使用 “last-modified date（上次编辑时间）” 更加灵活的机制。Etag 是一个识别内容版本号的唯一字符串。唯一的格式限制就是它必须包含在双引号内。原始服务器通过含有 ETag 文件头的响应指定页面内容的 ETag。 </p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">HTTP</span>/<span class="number">1</span>.<span class="number">1</span> <span class="number">200</span> OK </span><br><span class="line"><span class="attribute">Last</span>-Modified: Tue, <span class="number">12</span> Dec <span class="number">2006</span> <span class="number">03</span>:<span class="number">03</span>:<span class="number">59</span> GMT </span><br><span class="line"><span class="attribute">ETag</span>: “<span class="number">10</span>c24bc-<span class="number">4</span>ab-<span class="number">457</span>e1c1f” </span><br><span class="line"><span class="attribute">Content</span>-Length: <span class="number">12195</span> </span><br></pre></td></tr></table></figure>
+
+<p>稍后，如果浏览器要验证一个文件，它会使用 If-None-Match 文件头来把 ETag 传回给原始服务器。在这个例子中，如果 ETag 匹配，就会返回一 个 304 状态码，这就节省了 12195 字节的响应。 GET &#x2F;i&#x2F;yahoo.gif HTTP&#x2F;1.1 </p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Host</span>: us.yimg.com </span><br><span class="line"><span class="attribute">If</span>-Modified-Since: Tue, <span class="number">12</span> Dec <span class="number">2006</span> <span class="number">03</span>:<span class="number">03</span>:<span class="number">59</span> GMT </span><br><span class="line"><span class="attribute">If</span>-None-Match: “<span class="number">10</span>c24bc-<span class="number">4</span>ab-<span class="number">457</span>e1c1f” </span><br><span class="line"><span class="attribute">HTTP</span>/<span class="number">1</span>.<span class="number">1</span> <span class="number">304</span> Not Modified </span><br></pre></td></tr></table></figure>
+
+<p>ETag 的问题在于，它是根据可以辨别网站所在的服务器的具有唯一性的属性来生成的。当浏览器从一台服务器上获得页面内容后到另外一台服务器上进行验证时 ETag 就会不匹配，这种情况对于使用服务器组和处理请求的网站来说是非常常见的。默认情况下，Apache 和 IIS 都会把数据嵌入 ETag 中，这会显著 减少多服务器间的文件验证冲突。 </p>
+<p>Apache 1.3 和 2.x 中的 ETag 格式为 inode-size-timestamp。即使某个文件在不同的服务器上会处于相同的目录下，文件大小、权限、时间戳等都完全相同，但是在不同服务器上他们的内码也是不同的。 </p>
+<p>IIS 5.0 和 IIS 6.0 处理 ETag 的机制相似。IIS 中的 ETag 格式为 Filetimestamp:ChangeNumber。用 ChangeNumber 来跟踪 IIS 配置的改变。网站所用的不同 IIS 服务器间 ChangeNumber 也不相同。 不同的服务器上的 Apache 和 IIS 即使对于完全相同的内容产生的 ETag 在也不相同，用户并不会接收到一个小而快的 304 响应；相反他们会接收一个正 常的 200 响应并下载全部内容。如果你的网站只放在一台服务器上，就不会存在这个问题。但是如果你的网站是架设在多个服务器上，并且使用 Apache 和 IIS 产生默认的 ETag 配置，你的用户获得页面就会相对慢一点，服务器会传输更多的内容，占用更多的带宽，代理也不会有效地缓存你的网站内容。即使你的 内容拥有 Expires 文件头，无论用户什么时候点击 “刷新” 或者 “重载” 按钮都会发送相应的 GET 请求。 </p>
+<p>如果你没有使用 ETag 提供的灵活的验证模式，那么干脆把所有的 ETag 都去掉会更好。Last-Modified 文件头验证是基于内容的时间戳的。去掉 ETag 文件头会减少响应和下次请求中文件的大小。微软的这篇支持文稿讲述了如何去掉 ETag。在 Apache 中，只需要在配置文件中简单添加下面一行代 码就可以了： </p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">FileETag</span> <span class="literal">none</span> </span><br></pre></td></tr></table></figure>
+
+
+<h2 id="15、尽早刷新输出缓冲"><a href="#15、尽早刷新输出缓冲" class="headerlink" title="15、尽早刷新输出缓冲"></a>15、尽早刷新输出缓冲</h2><p>当用户请求一个页面时，无论如何都会花费 200 到 500 毫秒用于后台组织 HTML 文件。在这期间，浏览器会一直空闲等待数据返回。在 PHP 中，你可 以使用 flush () 方法，它允许你把已经编译的好的部分 HTML 响应文件先发送给浏览器，这时浏览器就会可以下载文件中的内容（脚本等）而后台同时处理剩余的 HTML 页面。这样做的效果会在后台烦恼或者前台较空闲时更加明显。 </p>
+<p>输出缓冲应用最好的一个地方就是紧跟在 <code>&lt;head /&gt;</code> 之后，因为 HTML 的头部分容易生成而且头部往往包含 CSS 和 JavaScript 文件，这样浏览器就可以在后台编译剩余 HTML 的同时并行下载它们。 例子： </p>
+<figure class="highlight bnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">… <span class="attribute">&lt;!– css, js –&gt;</span> </span><br><span class="line"><span class="attribute">&lt;/head&gt;</span> </span><br><span class="line"><span class="attribute">&lt;body&gt;</span> </span><br><span class="line">… <span class="attribute">&lt;!– content –&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>为了证明使用这项技术的好处，Yahoo! 搜索率先研究并完成了用户测试。 </p>
+<h2 id="16、使用-GET-来完成-AJAX-请求"><a href="#16、使用-GET-来完成-AJAX-请求" class="headerlink" title="16、使用 GET 来完成 AJAX 请求"></a>16、使用 GET 来完成 AJAX 请求</h2><p>Yahoo!Mail 团队发现，当使用 XMLHttpRequest 时，浏览器中的 POST 方法是一个 “两步走” 的过程：首先发送文件头，然后才发 送数 据。因此使用 GET 最为恰当，因为它只需发送一个 TCP 包（除非你有很多 cookie）。IE 中 URL 的最大长度为 2K，因此如果你要发送一个超过 2K 的 数据时就不能使用 GET 了。 </p>
+<p>一个有趣的不同就是 POST 并不像 GET 那样实际发送数据。根据 HTTP 规范，GET 意味着 “获取” 数据，因此当你仅仅获取数据时使用 GET 更加有意义（从语意上讲也是如此），相反，发送并在服务端保存数据时使用 POST。 </p>
+<h2 id="17、把样式表置于顶部"><a href="#17、把样式表置于顶部" class="headerlink" title="17、把样式表置于顶部"></a>17、把样式表置于顶部</h2><p>在研究 Yahoo! 的性能表现时，我们发现把样式表放到文档的 <code>&lt;head /&gt;</code> 内部似乎会加快页面的下载速度。这是因为把样式表放到 &lt; head &#x2F;&gt; 内会使页面有步骤的加载显示。 </p>
+<p>注重性能的前端服务器往往希望页面有秩序地加载。同时，我们也希望浏览器把已经接收到内容尽可能显示出来。这对于拥有较多内容的页面和网速较慢的用户来说 特别重要。向用户返回可视化的反馈，比如进程指针，已经有了较好的研究并形成了正式文档。在我们的研究中 HTML 页面就是进程指针。当浏览器有序地加载文 件头、导航栏、顶部的 logo 等对于等待页面加载的用户来说都可以作为可视化的反馈。这从整体上改善了用户体验。 </p>
+<p>把样式表放在文档底部的问题是在包括 Internet Explorer 在内的很多浏览器中这会中止内容的有序呈现。浏览器中止呈现是为了避免样式改变引起的页面元素重绘。用户不得不面对一个空白页面。 </p>
+<p>HTML 规范清楚指出样式表要放包含在页面的 <code>&lt;head /&gt;</code> 区域内：“和 &lt; a &#x2F;&gt; 不同，<code>&lt;link /&gt;</code> 只能出现在文档的 <code>&lt;head /&gt;</code> 区域内，尽管它可以多次使用它”。无论是引起白屏还是出现没有样式化的内容都不值得去尝试。最好的方案就是按照 HTML 规范在文 档 <code>&lt;head /&gt;</code> 内加载你的样式表。 </p>
+<h2 id="18、避免使用-CSS-表达式（Expression）"><a href="#18、避免使用-CSS-表达式（Expression）" class="headerlink" title="18、避免使用 CSS 表达式（Expression）"></a>18、避免使用 CSS 表达式（Expression）</h2><p>CSS 表达式是动态设置 CSS 属性的强大（但危险）方法。Internet Explorer 从第 5 个版本开始支持 CSS 表达式。下面的例子中，使用 CSS 表达式可以实现隔一个小时切换一次背景颜色： </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">background-color</span>: <span class="built_in">expression</span>( (new <span class="built_in">Date</span>()).<span class="built_in">getHours</span>()%<span class="number">2</span> ? “<span class="number">#B8D4FF</span>” : “<span class="number">#F08A00</span>″ ); </span><br></pre></td></tr></table></figure>
+
+<p>如上所示，expression 中使用了 JavaScript 表达式。CSS 属性根据 JavaScript 表达式的计算结果来设置。 expression 方法在其它浏览器中不起作用，因此在跨浏览器的设计中单独针对 Internet Explorer 设置时会比较有用。 </p>
+<p>表达式的问题就在于它的计算频率要比我们想象的多。不仅仅是在页面显示和缩放时，就是在页面滚动、乃至移动鼠标时都会要重新计算一次。给 CSS 表达式增加一个计数器可以跟踪表达式的计算频率。在页面中随便移动鼠标都可以轻松达到 10000 次以上的计算量。 </p>
+<p>一个减少 CSS 表达式计算次数的方法就是使用一次性的表达式，它在第一次运行时将结果赋给指定的样式属性，并用这个属性来代替 CSS 表达式。如果样式属性 必须在页面周期内动态地改变，使用事件句柄来代替 CSS 表达式是一个可行办法。如果必须使用 CSS 表达式，一定要记住它们要计算成千上万次并且可能会对你 页面的性能产生影响。 </p>
+<h2 id="19、使用外部-JavaScript-和-CSS"><a href="#19、使用外部-JavaScript-和-CSS" class="headerlink" title="19、使用外部 JavaScript 和 CSS"></a>19、使用外部 JavaScript 和 CSS</h2><p>很多性能规则都是关于如何处理外部文件的。但是，在你采取这些措施前你可能会问到一个更基本的问题：JavaScript 和 CSS 是应该放在外部文件中呢还是把它们放在页面本身之内呢？ </p>
+<p>在实际应用中使用外部文件可以提高页面速度，因为 JavaScript 和 CSS 文件都能在浏览器中产生缓存。内置在 HTML 文档中的 JavaScript 和 CSS 则会在每次请求中随 HTML 文档重新下载。这虽然减少了 HTTP 请求的次数，却增加了 HTML 文档的大小。从另一方面来说， 如果外部文件中的 JavaScript 和 CSS 被浏览器缓存，在没有增加 HTTP 请求次数的同时可以减少 HTML 文档的大小。 </p>
+<p>关键问题是，外部 JavaScript 和 CSS 文件缓存的频率和请求 HTML 文档的次数有关。虽然有一定的难度，但是仍然有一些指标可以一测量它。如果一 个会话中用户会浏览你网站中的多个页面，并且这些页面中会重复使用相同的脚本和样式表，缓存外部文件就会带来更大的益处。 </p>
+<p>许多网站没有功能建立这些指标。对于这些网站来说，最好的坚决方法就是把 JavaScript 和 CSS 作为外部文件引用。比较适合使用内置代码的例外就是 网站的主页，如 Yahoo! 主页和 My Yahoo!。主页在一次会话中拥有较少（可能只有一次）的浏览量，你可以发现内置 JavaScript 和 CSS 对于终端用户来说会加快响应时 间。 </p>
+<p>对于拥有较大浏览量的首页来说，有一种技术可以平衡内置代码带来的 HTTP 请求减少与通过使用外部文件进行缓存带来的好处。其中一个就是在首页中内置 JavaScript 和 CSS，但是在页面下载完成后动态下载外部文件，在子页面中使用到这些文件时，它们已经缓存到浏览器了。 </p>
+<h2 id="20、削减-JavaScript-和-CSS"><a href="#20、削减-JavaScript-和-CSS" class="headerlink" title="20、削减 JavaScript 和 CSS"></a>20、削减 JavaScript 和 CSS</h2><p>精简是指从去除代码不必要的字符减少文件大小从而节省下载时间。消减代码时，所有的注释、不需要的空白字符（空格、换行、tab 缩进）等都要去掉。 在 JavaScript 中，由于需要下载的文件体积变小了从而节省了响应时间。精简 JavaScript 中目前用到的最广泛的两个工具是 JSMin 和 YUI Compressor。YUI Compressor 还可用于精简 CSS。 </p>
+<p>混淆是另外一种可用于源代码优化的方法。这种方法要比精简复杂一些并且在混淆的过程更易产生问题。在对美国前 10 大网站的调查中发现，精简也可以缩小原来 代码体积的 21%，而混淆可以达到 25%。尽管混淆法可以更好地缩减代码，但是对于 JavaScript 来说精简的风险更小。 </p>
+<p>除消减外部的脚本和样式表文件外，<code>&lt;script&gt;</code> 和 <code>&lt;style&gt;</code> 代码块也可以并且应该进行消减。即使你用 Gzip 压缩过脚本 和样式表，精简这些文件仍然可以节省 5% 以上的空间。由于 JavaScript 和 CSS 的功能和体积的增加，消减代码将会获得益处。 </p>
+<h2 id="21、用-代替-import"><a href="#21、用-代替-import" class="headerlink" title="21、用  代替 @import"></a>21、用 <link> 代替 @import</h2><p>前面的最佳实现中提到 CSS 应该放置在顶端以利于有序加载呈现。 </p>
+<p>在 IE 中，页面底部 @import 和使用 <code>&lt;link&gt;</code> 作用是一样的，因此最好不要使用它。 </p>
+<h2 id="22、避免使用滤镜"><a href="#22、避免使用滤镜" class="headerlink" title="22、避免使用滤镜"></a>22、避免使用滤镜</h2><p>IE 独有属性 AlphaImageLoader 用于修正 7.0 以下版本中显示 PNG 图片的半透明效果。这个滤镜的问题在于浏览器加载图片时它会终止内容的 呈现并且冻结浏览器。在每一个元素（不仅仅是图片）它都会运算一次，增加了内存开支，因此它的问题是多方面的。 </p>
+<p>完全避免使用 AlphaImageLoader 的最好方法就是使用 PNG8 格式来代替，这种格式能在 IE 中很好地工作。如果你确实需要使用  AlphaImageLoader，请使用下划线_filter 又使之对 IE7 以上版本的用户无效。 </p>
+<h2 id="23、把脚本置于页面底部"><a href="#23、把脚本置于页面底部" class="headerlink" title="23、把脚本置于页面底部"></a>23、把脚本置于页面底部</h2><p>脚本带来的问题就是它阻止了页面的平行下载。HTTP&#x2F;1.1 规范建议，浏览器每个主机名的并行下载内容不超过两个。如果你的图片放在多个主机名上，你可以在每个并行下载中同时下载 2 个以上的文件。但是当下载脚本 时，浏览器就不会同时下载其它文件了，即便是主机名不相同。 </p>
+<p>在某些情况下把脚本移到页面底部可能不太容易。比如说，如果脚本中使用了 document.write 来插入页面内容，它就不能被往下移动了。这里可能还会有作用域的问题。很多情况下，都会遇到这方面的问题。 </p>
+<p>一个经常用到的替代方法就是使用延迟脚本。DEFER 属性表明脚本中没有包含 document.write，它告诉浏览器继续显示。不幸的 是，Firefox 并不支持 DEFER 属性。在 Internet Explorer 中，脚本可能会被延迟但效果也不会像我们所期望的那样。如果脚本可以被延迟，那么它就可以移到页面的底部。这会让你的页面加载的快一点。 </p>
+<h2 id="24、剔除重复脚本"><a href="#24、剔除重复脚本" class="headerlink" title="24、剔除重复脚本"></a>24、剔除重复脚本</h2><p>在同一个页面中重复引用 JavaScript 文件会影响页面的性能。你可能会认为这种情况并不多见。对于美国前 10 大网站的调查显示其中有两家存在 重复引 用脚本的情况。有两种主要因素导致一个脚本被重复引用的奇怪现象发生：团队规模和脚本数量。如果真的存在这种情况，重复脚本会引起不必要的 HTTP 请求和 无用的 JavaScript 运算，这降低了网站性能。 </p>
+<p>在 Internet Explorer 中会产生不必要的 HTTP 请求，而在 Firefox 却不会。在 Internet Explorer 中，如果一个脚本被引用两次而且它又不可缓存，它就会在页面加载过程中产生两次 HTTP 请求。即时脚本可以缓存，当用户重载页面时也会产 生额外的 HTTP 请求。 </p>
+<p>除增加额外的 HTTP 请求外，多次运算脚本也会浪费时间。在 Internet Explorer 和 Firefox 中不管脚本是否可缓存，它们都存在重复运算 JavaScript 的问题。 </p>
+<p>一个避免偶尔发生的两次引用同一脚本的方法是在模板中使用脚本管理模块引用脚本。在 HTML 页面中使用 <code>&lt;script /&gt;</code> 标签引用脚本的最常见方法就是： </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">”text/javascript”</span> <span class="attr">src</span>=<span class="string">”menu_1.0.17.js”</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>在 PHP 中可以通过创建名为 insertScript 的方法来替代： </p>
+<p>为了防止多次重复引用脚本，这个方法中还应该使用其它机制来处理脚本，如检查所属目录和为脚本文件名中增加版本号以用于 Expire 文件头等。 </p>
+<h2 id="25、减少-DOM-访问"><a href="#25、减少-DOM-访问" class="headerlink" title="25、减少 DOM 访问"></a>25、减少 DOM 访问</h2><p>使用 JavaScript 访问 DOM 元素比较慢，因此为了获得更多的应该页面，应该做到： </p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">缓存已经访问过的有关元素 </span><br><span class="line">线下更新完节点之后再将它们添加到文档树中 </span><br><span class="line">避免使用 <span class="keyword">JavaScript </span>来修改页面布局 </span><br></pre></td></tr></table></figure>
+
+<p>有关此方面的更多信息请查看 Julien Lecomte 在 YUI 专题中的文章 “高性能 Ajax 应该程序”。 </p>
+<h2 id="26、开发智能事件处理程序"><a href="#26、开发智能事件处理程序" class="headerlink" title="26、开发智能事件处理程序"></a>26、开发智能事件处理程序</h2><p>有时候我们会感觉到页面反应迟钝，这是因为 DOM 树元素中附加了过多的事件句柄并且些事件句病被频繁地触发。这就是为什么说使用 event delegation（事件代理）是一种好方法了。如果你在一个 div 中有 10 个按钮，你只需要在 div 上附加一次事件句柄就可以了，而不用去为每一个按 钮增加一个句柄。事件冒泡时你可以捕捉到事件并判断出是哪个事件发出的。 </p>
+<p>你同样也不用为了操作 DOM 树而等待 onload 事件的发生。你需要做的就是等待树结构中你要访问的元素出现。你也不用等待所有图像都加载完毕。 </p>
+<p>你可能会希望用 DOMContentLoaded 事件来代替 事件应用程序中的 onAvailable 方法。 </p>
+<h2 id="27、减小-Cookie-体积"><a href="#27、减小-Cookie-体积" class="headerlink" title="27、减小 Cookie 体积"></a>27、减小 Cookie 体积</h2><p>HTTP coockie 可以用于权限验证和个性化身份等多种用途。coockie 内的有关信息是通过 HTTP 文件头来在 web 服务器和浏览器之间进行交流的。因此保持 coockie 尽可能的小以减少用户的响应时间十分重要。 </p>
+<p>有关更多信息可以查看 Tenni Theurer 和 Patty Chi 的文章 “When the Cookie Crumbles”。这们研究中主要包括： </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">去除不必要的 coockie </span><br><span class="line">使 coockie 体积尽量小以减少对用户响应的影响 </span><br><span class="line">注意在适应级别的域名上设置 coockie 以便使子域名不受影响 </span><br><span class="line">设置合理的过期时间。较早地 Expire 时间和不要过早去清除 coockie，都会改善用户的响应时间。 </span><br></pre></td></tr></table></figure>
+
+
+<h2 id="28、对于页面内容使用无-coockie-域名"><a href="#28、对于页面内容使用无-coockie-域名" class="headerlink" title="28、对于页面内容使用无 coockie 域名"></a>28、对于页面内容使用无 coockie 域名</h2><p>当浏览器在请求中同时请求一张静态的图片和发送 coockie 时，服务器对于这些 coockie 不会做任何地使用。因此他们只是因为某些负面因素而创建的 网络传输。所有你应该确定对于静态内容的请求是无 coockie 的请求。创建一个子域名并用他来存放所有静态内容。 </p>
+<p>如果你的域名是 <span class="exturl" data-url="aHR0cDovL3d3dy5leGFtcGxlLm9yZyzkvaDlj6/ku6XlnKgv">www.example.org，你可以在<i class="fa fa-external-link-alt"></i></span> static.example.org 上存在静态内容。但是，如果你不是在 <span class="exturl" data-url="aHR0cDovL3d3dy5leGFtcGxlLm9yZy8=">www.example.org<i class="fa fa-external-link-alt"></i></span> 上而是在顶级域名 example.org 设置了 coockie，那么所有对于 static.example.org 的请求都包含 coockie。在这种情 况下，你可以再重新购买一个新的域名来存在静态内容，并且要保持这个域名是无 coockie 的。Yahoo! 使用的是 ymig.com，YouTube 使用的是 ytimg.com，Amazon 使用的是 images-anazon.com 等等。 </p>
+<p>使用无 coockie 域名存在静态内容的另外一个好处就是一些代理（服务器）可能会拒绝对 coockie 的内容请求进行缓存。一个相关的建议就是，如果你 想确定应该使用 example.org 还是 <span class="exturl" data-url="aHR0cDovL3d3dy5leGFtcGxlLm9yZy8=">www.example.org<i class="fa fa-external-link-alt"></i></span> 作为你的一主页，你要考虑到 coockie 带来的影响。忽略掉 www 会使你除了把 coockie 设置到 <em>.example.org（</em> 是泛域名解析，代表 了所有子域名译者 dudo 注）外没有其它选择，因此出于性能方面的考虑最好是使用带有 www 的子域名并且在它上面设置 coockie。 </p>
+<h2 id="29、优化图像"><a href="#29、优化图像" class="headerlink" title="29、优化图像"></a>29、优化图像</h2><p>设计人员完成对页面的设计之后，不要急于将它们上传到 web 服务器，这里还需要做几件事： </p>
+<p>你可以检查一下你的 GIF 图片中图像颜色的数量是否和调色板规格一致。 使用 imagemagick 中下面的命令行很容易检查： </p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">identify -<span class="built_in">verbose</span> <span class="built_in">image</span>.gif </span><br></pre></td></tr></table></figure>
+
+<p>如果你发现图片中只用到了 4 种颜色，而在调色板的中显示的 256 色的颜色槽，那么这张图片就还有压缩的空间。 </p>
+<p>尝试把 GIF 格式转换成 PNG 格式，看看是否节省空间。大多数情况下是可以压缩的。由于浏览器支持有限，设计者们往往不太乐意使用 PNG 格式的图片，不过这 都是过去的事情了。现在只有一个问题就是在真彩 PNG 格式中的 alpha 通道半透明问题，不过同样的，GIF 也不是真彩格式也不支持半透明。因此 GIF 能 做到的，PNG（PNG8）同样也能做到（除了动画）。下面这条简单的命令可以安全地把 GIF 格式转换为 PNG 格式： </p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">convert</span> <span class="built_in">image</span>.gif <span class="built_in">image</span>.png</span><br></pre></td></tr></table></figure>
+
+<p>“我们要说的是：给 PNG 一个施展身手的机会吧！”</p>
+<p>在所有的 PNG 图片上运行 pngcrush（或者其它 PNG 优化工具）。例如： </p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pngcrush <span class="built_in">image</span>.png -<span class="built_in">rem</span> alla -reduce -brute result.png</span><br></pre></td></tr></table></figure>
+
+<p>在所有的 JPEG 图片上运行 jpegtran。这个工具可以对图片中的出现的锯齿等做无损操作，同时它还可以用于优化和清除图片中的注释以及其它无用信息（如 EXIF 信息）： </p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">jpegtran </span>-copy none -optimize -perfect src.<span class="keyword">jpg </span>dest.<span class="keyword">jpg </span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="30、优化-CSS-Spirite"><a href="#30、优化-CSS-Spirite" class="headerlink" title="30、优化 CSS Spirite"></a>30、优化 CSS Spirite</h2><p>在 Spirite 中水平排列你的图片，垂直排列会稍稍增加文件大小； </p>
+<p>Spirite 中把颜色较近的组合在一起可以降低颜色数，理想状况是低于 256 色以便适用 PNG8 格式； </p>
+<p>便于移动，不要在 Spirite 的图像中间留有较大空隙。这虽然不大会增加文件大小但对于用户代理来说它需要更少的内存来把图片解压为像素地图。100×100 的图片为 1 万像素，而 1000×1000 就是 100 万像素。 </p>
+<h2 id="31、不要在-HTML-中缩放图像"><a href="#31、不要在-HTML-中缩放图像" class="headerlink" title="31、不要在 HTML 中缩放图像"></a>31、不要在 HTML 中缩放图像</h2><p>不要为了在 HTML 中设置长宽而使用比实际需要大的图片。如果你需要：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img <span class="attribute">width</span>=”100″ <span class="attribute">height</span>=”100″ <span class="attribute">src</span>=”mycat.jpg” <span class="attribute">alt</span>=”My Cat” /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>那么你的图片（mycat.jpg）就应该是 100×100 像素而不是把一个 500×500 像素的图片缩小使用。 </p>
+<h2 id="32、favicon-ico-要小而且可缓存"><a href="#32、favicon-ico-要小而且可缓存" class="headerlink" title="32、favicon.ico 要小而且可缓存"></a>32、favicon.ico 要小而且可缓存</h2><p>favicon.ico 是位于服务器根目录下的一个图片文件。它是必定存在的，因为即使你不关心它是否有用，浏览器也会对它发出请求，因此最好不要 返回一 个 404 Not Found 的响应。由于是在同一台服务器上，它每被请求一次 coockie 就会被发送一次。这个图片文件还会影响下载顺序，例如在 IE 中当你在 onload 中请求额外的文件时，favicon 会在这些额外内容被加载前下载。</p>
+<p>因此，为了减少 favicon.ico 带来的弊端，要做到： </p>
+<p>文件尽量地小，最好小于 1K </p>
+<p>在适当的时候（也就是你不要打算再换 favicon.ico 的时候，因为更换新文件时不能对它进行重命名）为它设置 Expires 文件头。你可以很安全地把 Expires 文件头设置为未来的几个月。你可以通过核对当前 favicon.ico 的上次编辑时间来作出判断。 </p>
+<p>Imagemagick 可以帮你创建小巧的 favicon。 </p>
+<h2 id="33、保持单个内容小于-25K"><a href="#33、保持单个内容小于-25K" class="headerlink" title="33、保持单个内容小于 25K"></a>33、保持单个内容小于 25K</h2><p>这条限制主要是因为 iPhone 不能缓存大于 25K 的文件。注意这里指的是解压缩后的大小。由于单纯 gizp 压缩可能达不要求，因此精简文件就显得十分重要。 </p>
+<p>查看更多信息，请参阅 Wayne Shea 和 Tenni Theurer 的文件 “Performance Research, Part 5: iPhone Cacheability – Making it Stick”。 </p>
+<h2 id="34、打包组件成复合文本"><a href="#34、打包组件成复合文本" class="headerlink" title="34、打包组件成复合文本"></a>34、打包组件成复合文本</h2><p>把页面内容打包成复合文本就如同带有多附件的 Email，它能够使你在一个 HTTP 请求中取得多个组件（切记：HTTP 请求是很奢侈的）。当你使用这条规则时，首先要确定用户代理是否支持（iPhone 就不支持）。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/06/laravel-email/" rel="prev" title="Laravel5.1 邮件发送报错 Swift_TransportException">
+                  <i class="fa fa-angle-left"></i> Laravel5.1 邮件发送报错 Swift_TransportException
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/07/linux-crontab/" rel="next" title="Crontab 详解">
+                  Crontab 详解 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"cc521a6dd38c09e7f3fa417ad9cb24d4"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

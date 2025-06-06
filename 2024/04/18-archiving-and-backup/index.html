@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="18章 – 归档与备份计算机系统管理员的主要任务之一是保护系统数据的安全。实现这一目标的一种方法是及时备份系统文件。即使你不是系统管理员，制作副本以及在不同地点和设备之间移动大量文件集合通常也是非常有用的。 在本章中，我们将介绍几个常用于管理文件集合的常见程序。这些是文件压缩程序：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="归档与备份">
+<meta property="og:url" content="https://slagga.top/2024/04/18-archiving-and-backup/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="18章 – 归档与备份计算机系统管理员的主要任务之一是保护系统数据的安全。实现这一目标的一种方法是及时备份系统文件。即使你不是系统管理员，制作副本以及在不同地点和设备之间移动大量文件集合通常也是非常有用的。 在本章中，我们将介绍几个常用于管理文件集合的常见程序。这些是文件压缩程序：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-23T02:29:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.952Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="TLCL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2024/04/18-archiving-and-backup/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2024/04/18-archiving-and-backup/","path":"2024/04/18-archiving-and-backup/","title":"归档与备份"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>归档与备份 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#18%E7%AB%A0-%E2%80%93-%E5%BD%92%E6%A1%A3%E4%B8%8E%E5%A4%87%E4%BB%BD"><span class="nav-number">1.</span> <span class="nav-text">18章 – 归档与备份</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">压缩文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#gzip"><span class="nav-number">1.1.1.</span> <span class="nav-text">gzip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bzip2"><span class="nav-number">1.1.2.</span> <span class="nav-text">bzip2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E8%BF%87%E5%BA%A6%E5%8E%8B%E7%BC%A9"><span class="nav-number">1.2.</span> <span class="nav-text">不要过度压缩</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#gzip-picture-jpg"><span class="nav-number">1.2.1.</span> <span class="nav-text">$ gzip picture.jpg</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%92%E6%A1%A3%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.</span> <span class="nav-text">归档文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tar"><span class="nav-number">1.3.1.</span> <span class="nav-text">tar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zip"><span class="nav-number">1.3.2.</span> <span class="nav-text">zip</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95"><span class="nav-number">1.4.</span> <span class="nav-text">同步文件和目录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-rsync-%E8%BF%9B%E8%A1%8C%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93"><span class="nav-number">1.4.1.</span> <span class="nav-text">使用 rsync 进行网络传输</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E9%98%85%E8%AF%BB"><span class="nav-number">1.6.</span> <span class="nav-text">进一步阅读</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2024/04/18-archiving-and-backup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="归档与备份 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          归档与备份
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-23 10:29:30" itemprop="dateCreated datePublished" datetime="2024-04-23T10:29:30+08:00">2024-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="18章-–-归档与备份"><a href="#18章-–-归档与备份" class="headerlink" title="18章 – 归档与备份"></a>18章 – 归档与备份</h2><p>计算机系统管理员的主要任务之一是保护系统数据的安全。实现这一目标的一种方法是及时备份系统文件。即使你不是系统管理员，制作副本以及在不同地点和设备之间移动大量文件集合通常也是非常有用的。</p>
+<p>在本章中，我们将介绍几个常用于管理文件集合的常见程序。这些是文件压缩程序：</p>
+<span id="more"></span>
+
+<ul>
+<li>gzip – 压缩或扩展文件</li>
+<li>bzip2 – 一个块排序文件压缩器</li>
+</ul>
+<p>这些是归档程序：</p>
+<ul>
+<li>tar – 磁带归档工具</li>
+<li>zip – 打包和压缩文件</li>
+</ul>
+<p>这是文件同步程序：</p>
+<ul>
+<li>rsync – 远程文件和目录同步</li>
+</ul>
+<h3 id="压缩文件"><a href="#压缩文件" class="headerlink" title="压缩文件"></a>压缩文件</h3><p>在计算的整个历史中，一直存在着如何将最多的数据存储在最小的可用空间中的挑战，无论这个空间是内存、存储设备还是网络带宽。我们今天理所当然的许多数据服务，如移动电话服务、高清电视或宽带互联网，都得益于有效的<em>数据压缩</em>技术。</p>
+<p>数据压缩是从数据中去除<em>冗余</em>的过程。让我们考虑一个假设的例子。假设我们有一个100像素乘以100像素的完全黑色的图片文件。在数据存储方面（假设每像素24位，或3字节），这张图片将占用30,000字节的存储空间。</p>
+<p>100 * 100 * 3 &#x3D; 30,000</p>
+<p>一个完全是一种颜色的图像包含完全冗余的数据。如果我们足够聪明，我们可以以这样的方式编码数据：仅仅描述我们有一个10,000个黑色像素的块。所以，与其存储包含30,000个零（黑色在图像文件中通常表示为零）的数据块，我们可以将数据压缩为数字10,000，后跟一个零来表示我们的数据。这种数据压缩方案称为<em>游程长度编码</em>，是最基本的压缩技术之一。今天的技术更加先进和复杂，但基本目标仍然相同——去除冗余数据。</p>
+<p><em>压缩算法</em>（用于执行压缩的数学技术）分为两个大类。</p>
+<ul>
+<li><em>无损</em>：无损压缩保留了原始文件中包含的所有数据。这意味着当一个文件从压缩版本恢复时，恢复的文件与原始的未压缩版本完全相同。</li>
+<li><em>有损</em>：另一方面，有损压缩在执行压缩时移除数据，以便应用更多的压缩。当一个有损文件恢复时，它并不与原始版本相匹配；相反，它是一个接近的近似。有损压缩的例子包括 JPEG（用于图像）和 MP3（用于音乐）。</li>
+</ul>
+<p>在我们的讨论中，我们将专门讨论无损压缩，因为大多数计算机上的数据不能容忍任何数据丢失。</p>
+<h4 id="gzip"><a href="#gzip" class="headerlink" title="gzip"></a>gzip</h4><p>gzip 程序用于压缩一个或多个文件。执行时，它会用原始文件的压缩版本替换原始文件。相应的 gunzip 程序用于将压缩文件恢复到它们原始的未压缩形式。这里有一个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l /etc &gt; foo.txt</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l foo.*</span><br><span class="line">-rw-r--r-- 1 me me 15738 2018-10-14 07:15 foo.txt</span><br><span class="line">[me@linuxbox ~]$ gzip foo.txt</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l foo.*</span><br><span class="line">-rw-r--r-- 1 me me 3230 2018-10-14 07:15 foo.txt.gz</span><br><span class="line">[me@linuxbox ~]$ gunzip foo.txt</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l foo.*</span><br><span class="line">-rw-r--r-- 1 me me 15738 2018-10-14 07:15 foo.txt</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们从目录列表创建了一个名为 foo.txt 的文本文件。接下来，我们运行 gzip，它用一个名为 foo.txt.gz 的压缩版本替换了原始文件。在 foo.* 的目录列表中，我们看到原始文件已被压缩版本替换，且压缩版本的大小大约是原始文件的五分之一。我们还可以看到，压缩文件与原始文件具有相同的权限和时间戳。</p>
+<p>接下来，我们运行 gunzip 程序以解压文件。之后，我们可以看到压缩版本的文件已被原始文件替换，同时保留了权限和时间戳。</p>
+<p>gzip 有许多选项，如表 18-1 所描述。</p>
+<p><em>表 18-1:</em> <em>gzip 选项</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>选项</strong></th>
+<th><strong>长选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-c</td>
+<td>–stdout–to-stdout</td>
+<td>将输出写入标准输出，并保留原始文件。</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>–decompress–uncompress</td>
+<td>解压。这会使 gzip 表现得像 gunzip。</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>–force</td>
+<td>即使原始文件的压缩版本已存在，也强制进行压缩。</td>
+</tr>
+<tr>
+<td>-h</td>
+<td>–help</td>
+<td>显示使用信息。</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>–list</td>
+<td>列出每个压缩文件的压缩统计信息。</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>–recursive</td>
+<td>如果命令行上的一个或多个参数是目录，则递归压缩其中包含的文件。</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>–test</td>
+<td>测试压缩文件的完整性。</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>–verbose</td>
+<td>在压缩时显示详细信息。</td>
+</tr>
+<tr>
+<td>-<em>number</em></td>
+<td></td>
+<td>设置压缩量。<em>number</em> 是范围在 1（最快，压缩最少）到 9（最慢，压缩最多）的整数。1 和 9 的值也可以分别表示为 –fast 和 –best。默认值是 6。</td>
+</tr>
+</tbody></table>
+<p>让我们回到我们之前的例子。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ gzip foo.txt</span><br><span class="line">[me@linuxbox ~]$ gzip -tv foo.txt.gz</span><br><span class="line">foo.txt.gz: OK</span><br><span class="line">[me@linuxbox ~]$ gzip -d foo.txt.gz</span><br></pre></td></tr></table></figure>
+
+<p>这里，我们用名为 foo.txt.gz 的压缩版本替换了 foo.txt 文件。接下来，我们使用 -t 和 -v 选项测试了压缩版本的完整性。最后，我们将文件解压到其原始形式。</p>
+<p>gzip 还可以通过标准输入和输出以有趣的方式使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l /etc | gzip &gt; foo.txt.gz</span><br></pre></td></tr></table></figure>
+
+<p>这个命令创建了目录列表的压缩版本。</p>
+<p>gunzip 程序，用于解压 gzip 文件，假定文件名以 .gz 扩展名结束，所以只要指</p>
+<p>定的名称不与现有的未压缩文件冲突，就不必指定它。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ gunzip foo.txt</span><br></pre></td></tr></table></figure>
+
+<p>如果我们的目标仅仅是查看压缩文本文件的内容，我们可以这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ gunzip -c foo.txt | less</span><br></pre></td></tr></table></figure>
+
+<p>或者，gzip 附带了一个叫做 zcat 的程序，等同于带有 -c 选项的 gunzip。它可以像 cat 命令一样用于 gzip 压缩的文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ zcat foo.txt.gz | less</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong> 也有一个 zless 程序。它执行与上一个管道相同的功能。</p>
+<h4 id="bzip2"><a href="#bzip2" class="headerlink" title="bzip2"></a>bzip2</h4><p>bzip2 程序由 Julian Seward 开发，与 gzip 类似，但使用了不同的压缩算法，以牺牲压缩速度为代价实现更高水平的压缩。在大多数方面，它的工作方式与 gzip 相同。用 bzip2 压缩的文件以 .bz2 为扩展名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l /etc &gt; foo.txt</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l foo.txt</span><br><span class="line">-rw-r--r-- 1 me me 15738 2018-10-17 13:51 foo.txt</span><br><span class="line">[me@linuxbox ~]$ bzip2 foo.txt</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l foo.txt.bz2</span><br><span class="line">-rw-r--r-- 1 me me 2792 2018-10-17 13:51 foo.txt.bz2</span><br><span class="line">[me@linuxbox ~]$ bunzip2 foo.txt.bz2</span><br></pre></td></tr></table></figure>
+
+<p>正如我们所见，bzip2 可以像 gzip 那样使用。所有我们之前为 gzip 讨论过的选项（除了 r）也适用于 bzip2。但请注意，压缩级别选项 (-<em>number</em>) 对 bzip2 来说有些不同的含义。bzip2 附带了 bunzip2 和 bzcat 来解压文件。</p>
+<p>bzip2 还配备了 bzip2recover 程序，用于尝试恢复受损的 .bz2 文件。</p>
+<h3 id="不要过度压缩"><a href="#不要过度压缩" class="headerlink" title="不要过度压缩"></a>不要过度压缩</h3><p>我偶尔会看到人们尝试对已经用有效的压缩算法压缩过的文件进行压缩，比如这样：</p>
+<h4 id="gzip-picture-jpg"><a href="#gzip-picture-jpg" class="headerlink" title="$ gzip picture.jpg"></a>$ <strong>gzip picture.jpg</strong></h4><p>别这么做。你可能只是在浪费时间和空间！如果对已经压缩的文件再次应用压缩，通常会得到一个更大的文件。这是因为所有压缩技术都涉及到一些开销，这些开销会被添加到文件中以描述压缩。如果你尝试压缩一个已经不包含冗余信息的文件，那么压缩最常见的结果不会有任何节省来抵消额外的开销。</p>
+<h3 id="归档文件"><a href="#归档文件" class="headerlink" title="归档文件"></a>归档文件</h3><p>与压缩结合使用的一个常见文件管理任务是<em>归档</em>。归档是将许多文件收集起来并将它们捆绑成一个大文件的过程。归档经常作为系统备份的一部分。当旧数据从系统移动到某种类型的长期存储时，也会使用归档。</p>
+<h4 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h4><p>在类 Unix 的软件世界中，tar 程序是归档文件的经典工具。它的名称，源于<em>tape archive</em>（磁带归档），揭示了它作为备份磁带工具的根源。虽然它仍然用于传统任务，但在其他存储设备上同样擅长。我们经常看到以 .tar 或 .tgz 为扩展名的文件名，分别表示“普通”tar 归档和 gzipped 归档。tar 归档可以由一组独立文件、一个或多个目录层次结构，或二者的混合体组成。命令语法如下：</p>
+<p><em><em>tar <strong><em><strong>mode</strong></em>[</strong></em>options</em>**] <em><strong>pathname</strong></em>…</p>
+<p>这里的 <em>mode</em> 是下表 18-2 中列出的以下操作模式之一（这里只显示了部分列表；完整列表请参见 tar 手册页）。</p>
+<p><em>表 18-2:</em> <em>tar 模式</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>模式</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>c</td>
+<td>从文件和&#x2F;或目录列表中创建归档。</td>
+</tr>
+<tr>
+<td>x</td>
+<td>提取归档。</td>
+</tr>
+<tr>
+<td>r</td>
+<td>将指定路径名追加到归档的末尾。</td>
+</tr>
+<tr>
+<td>t</td>
+<td>列出归档的内容。</td>
+</tr>
+</tbody></table>
+<p>tar 在表达选项方面有些奇特，因此我们需要一些示例来展示它的工作方式。首先，让我们重新创建上一章中的实验环境。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">mkdir</span> -p playground/dir-&#123;001..100&#125;</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">touch</span> playground/dir-&#123;001..100&#125;/file-&#123;A..Z&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，让我们创建整个实验环境的 tar 归档。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ tar cf playground.tar playground</span><br></pre></td></tr></table></figure>
+
+<p>这个命令创建了一个名为 playground.tar 的 tar 归档，包含了整个实验环境目录层次结构。我们可以看到，模式和 f 选项，用于指定 tar 归档的名称，可以合并在一起，且不需要前导破折号。但请注意，模式必须始终首先指定，然后才是其他选项。</p>
+<p>要列出归档的内容，我们可以这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ tar tf playground.tar</span><br></pre></td></tr></table></figure>
+
+<p>为了更详细的列表，我们可以添加 v（详细）选项。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ tar tvf playground.tar</span><br></pre></td></tr></table></figure>
+
+<p>现在，让我们在新位置提取实验环境。我们将通过创建一个名为 foo 的新目录，更改目录并提取 tar 归档来实现这一点。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">mkdir</span> foo</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">cd</span> foo</span><br><span class="line">[me@linuxbox foo]$ tar xf ../playground.tar</span><br><span class="line">[me@linuxbox foo]$ <span class="built_in">ls</span></span><br><span class="line">playground</span><br></pre></td></tr></table></figure>
+
+<p>如果我们检查 ~&#x2F;foo&#x2F;playground 的内容，我们会看到归档成功安装，精确地复制了原始文件。不过，有一个注意事项。除非我们作为超级用户操作，否则从归档中提取的文件和目录将采用执行恢复操作的用户的所有权，而不是原始所有者。</p>
+<p>tar 在归档中处理路径名的方式也很有趣。路径名的默认值是相对的，而不是绝对的。tar 通过在创建归档时简单地从路径名中删除任何前导斜杠来实现这一点。为了演示，我们将重新创建我们的归档，这次指定绝对路径名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox foo]$ <span class="built_in">cd</span></span><br><span class="line">[me@linuxbox ~]$ tar cf playground2.tar ~/playground</span><br></pre></td></tr></table></figure>
+
+<p>记住，~&#x2F;playground 将在我们按下 Enter 键时展开为 &#x2F;home&#x2F;me&#x2F;playground，因此我们将获得一个绝对路径名进行演示。接下来，我们像之前一样提取归档，并观察会发生什么。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">cd</span> foo</span><br><span class="line">[me@linuxbox foo]$ tar xf ../playground2.tar</span><br><span class="line">[me@linuxbox foo]$ <span class="built_in">ls</span></span><br><span class="line">home playground</span><br><span class="line">[me@linuxbox foo]$ <span class="built_in">ls</span> home</span><br><span class="line">me</span><br><span class="line">[me@linuxbox foo]$ <span class="built_in">ls</span> home/me</span><br><span class="line">playground</span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们可以看到当我们提取了第二个归档时，它相对于我们当前的工作目录 ~&#x2F;foo 而不是根目录重新创建了 home&#x2F;me&#x2F;playground 目录，就像绝对路径名的情况那样。这可能看起来像一种奇怪的工作方式，但实际上这种方式更有用，因为它允许我们将归档提取到任何位置，而不是被迫提取到它们的原始位置。重复这个练习并包含详细选项 (v) 将更清楚地展示正在发生的事情。</p>
+<p>让我们考虑一个假设性但实际的 tar 使用示例。假设我们想从一个系统复制 home 目录及其内容到另一个系统，并且我们有一个大的 USB 硬盘可以用于传输。在我们的现代 Linux 系统中，硬盘在 &#x2F;media 目录下“自动”挂载。假设我们连接它时，硬盘的卷标名称为 BigDisk。要制作 tar 归档，我们可以执行以下操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ sudo tar cf /media/BigDisk/home.tar /home</span><br></pre></td></tr></table></figure>
+
+<p>在 tar 文件写入后，我们卸载硬盘并将其连接到第二台计算机。再次，它被挂载在 &#x2F;media&#x2F;BigDisk。要提取归档，我们这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox2 ~]$ <span class="built_in">cd</span> /</span><br><span class="line">[me@linuxbox2 /]$ sudo tar xf /media/BigDisk/home.tar</span><br></pre></td></tr></table></figure>
+
+<p>重要的是要看到我们必须首先改变目录到 &#x2F;，这样提取操作就是相对于根目录，因为归档中的所有路径名都是相对的。</p>
+<p>在提取归档时，可以限制从归档中提取的内容。例如，如果我们想从归档中提取单个文件，可以这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar xf archive.tar pathname</span><br></pre></td></tr></table></figure>
+
+<p>通过在命令后添加尾随的 <em>pathname</em>，tar 将仅还原指定的文件。</p>
+<p>可以指定多个路径名。注意，路径名必须是归档中存储的完整、精确的相对路径名。在指定路径名时，通常不支持通配符；然而，GNU 版本的 tar（通常在 Linux 发行版中找到的版本）支持 –wildcards 选项。这是一个使用我们之前的 playground.tar 文件的示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">cd</span> foo</span><br><span class="line">[me@linuxbox foo]$ tar xf ../playground2.tar --wildcards <span class="string">&#x27;home/me/playground/dir-*/file-A&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个命令将只提取与指定路径名匹配的文件，包括通配符 dir-*。</p>
+<p>tar 经常与 find 一起使用来生成归档。在这个示例中，我们将使用 find 来生成一个要包含在归档中的文件集。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find playground -name <span class="string">&#x27;file-A&#x27;</span> -<span class="built_in">exec</span> tar rf playground.tar <span class="string">&#x27;&#123;&#125;&#x27;</span> <span class="string">&#x27;+&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我们使用 find 匹配 playground 中名为 file-A 的所有文件，然后使用 -exec 动作调用 tar 在追加模式 (r) 中将匹配的文件添加到 playground.tar 归档中。</p>
+<p>使用 tar 与 find 是创建目录树或整个系统的<em>增量备份</em>的好方法。通过使用 find 匹配比时间戳文件更新的文件，我们可以创建一个仅包含比上次归档更新的文件的归档，假设每次创建归档后都会更新时间戳文件。</p>
+<p>tar 还可以利用标准输入和输出。这是一个综合示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox foo]$ <span class="built_in">cd</span></span><br><span class="line">[me@linuxbox ~]$ find playground -name <span class="string">&#x27;file-A&#x27;</span> | tar cf - --filesfrom=- | gzip &gt; playground.tgz</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，我们使用 find 程序生成匹配文件的列表，并将它们管道传输到 tar 中。如果指定了文件名 -，它表示根据需要的标准输入或输出。（顺便说一句，许多其他程序也使用 - 来表示标准输入&#x2F;输出。）–files-from 选项（也可以指定为 -T）使 tar 从文件而不是命令行读取其路径名列表。最后，由 tar 生成的归档被管道传输到 gzip 中，以创建压缩的归档 playground.tgz。.tgz 扩展名是给 gzip 压缩的 tar 文件的传统扩展名。有时也使用 .tar.gz 扩展名。</p>
+<p>虽然我们使用外部的 gzip 程序生成我们的压缩归档，但现代版本的 GNU tar 直接支持 gzip 和 bzip2 压缩，分别使用 z 和 j 选项。使用我们之前的示例作为基础，我们可以简化它：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find playground -name <span class="string">&#x27;file-A&#x27;</span> | tar czf playground.tgz -T -</span><br></pre></td></tr></table></figure>
+
+<p>如果我们想创建一个 bzip2 压缩的归档，我们可以这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ find playground -name <span class="string">&#x27;file-A&#x27;</span> | tar cjf playground.tbz -T -</span><br></pre></td></tr></table></figure>
+
+<p>通过简单地将压缩选项从 z 更改为 j（并将输出文件的扩展名更改为 .tbz 以表示 bzip2 压缩的文件），我们启用了 bzip2 压缩。</p>
+<p>使用 tar 命令的标准输入和输出的另一个有趣用途涉及通过网络在系统之间传输文件。想象一下，我们有两台运行类 Unix 系统的机器，配备了 tar 和 ssh。在这种情况下，我们可以将一个目录从远程系统（在这个示例中命名为 remote-sys）传输到我们的本地系统。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">mkdir</span> remote-stuff</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">cd</span> remote-stuff</span><br><span class="line">[me@linuxbox remote-stuff]$ ssh remote-sys <span class="string">&#x27;tar cf - Documents&#x27;</span> | tar xf -</span><br><span class="line">me@remote-sys’s password:</span><br><span class="line">[me@linuxbox remote-stuff]$ <span class="built_in">ls</span></span><br><span class="line">Documents</span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们能够从远程系统 remote-sys 复制名为 Documents 的目录到本地系统上名为 remote-stuff 的目录中。我们是如何做到的？首先，我们使用 ssh 在远程系统上启动了 tar 程序。你会记得 ssh 允许我们在联网的计算机上远程执行程序，并在本地系统上“看到”结果——在远程系统上产生的标准输出被发送到本地系统进行查看。我们可以利用这一点，让 tar 创建一个归档（c 模式）并将其发送到标准输出，而不是文件（带有破折号参数的 f 选项），从而通过 ssh 提供的加密隧道将归档传输到本地系统。在本地系统上，我们执行 tar 并让它从标准输入（再次是带有破折号参数的 f 选项）展开归档。</p>
+<h4 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h4><p>zip 程序既是压缩工具，也是归档工具。该程序使用的文件格式对 Windows 用户来说很熟悉，因为它读写 .zip 文件。然而，在 Linux 中，gzip 是主要的压缩程序，bzip2 紧随其后。</p>
+<p>在最基本的用法中，zip 被这样调用：</p>
+<p>**zip **<em><strong>options</strong></em> zipfile file…</p>
+<p>例如，要制作我们实验环境的 zip 归档，我们会这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ zip -r playground.zip playground</span><br></pre></td></tr></table></figure>
+
+<p>除非我们包含 -r 选项进行递归，否则只有 playground 目录（但其内容不包括在内）会被存储。尽管 .zip 扩展名是自动添加的，但为了清晰起见，我们会包含文件扩展名。</p>
+<p>在创建 zip 归档时，zip 通常会显示如下一系列消息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">adding: playground/dir-020/file-Z (stored 0%)</span><br><span class="line">adding: playground/dir-020/file-Y (stored 0%)</span><br><span class="line">adding: playground/dir-020/file-X (stored 0%)</span><br><span class="line">adding: playground/dir-087/ (stored 0%)</span><br><span class="line">adding: playground/dir-087/file-S (stored 0%) </span><br></pre></td></tr></table></figure>
+
+<p>这些消息显示了添加到归档中的每个文件的状态。zip 将使用两种存储方法之一将文件添加到归档中：要么“存储”文件而不进行压缩，正如这里所示，要么“压缩”文件以进行压缩。显示在存储方法后的数字值表示实现的压缩量。由于我们的实验环境只包含空文件，因此其内容没有进行压缩。</p>
+<p>使用 unzip 程序提取 zip 文件的内容非常简单。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">cd</span> foo</span><br><span class="line">[me@linuxbox foo]$ unzip ../playground.zip</span><br></pre></td></tr></table></figure>
+
+<p>关于 zip（与 tar 相反）的一点需要注意的是，如果指定了现有的归档，则它会被更新而不是替换。这意味着现有归档被保留，但新文件被添加，匹配的文件被替换。</p>
+<p>可以通过指定文件来从 zip 归档中选择性地列出和提取文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ unzip -l playground.zip playground/dir-087/file-Z</span><br><span class="line">Archive: ../playground.zip</span><br><span class="line"> Length Date Time Name</span><br><span class="line"> -------- ---- ---- ----</span><br><span class="line"> 0 10-05-16 09:25 playground/dir-087/file-Z</span><br><span class="line"> -------- -------</span><br><span class="line"> 0 1 file</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">cd</span> foo</span><br><span class="line">[me@linuxbox foo]$ unzip ../playground.zip playground/dir-087/file-Z</span><br><span class="line">Archive: ../playground.zip</span><br><span class="line">replace playground/dir-087/file-Z? [y]es, [n]o, [A]ll, [N]one,</span><br><span class="line">[r]ename: y</span><br><span class="line"> extracting: playground/dir-087/file-Z </span><br></pre></td></tr></table></figure>
+
+<p>使用 -l 选项会使 unzip 仅列出归档的内容而不提取文件。如果没有指定文件，unzip 将列出归档中的所有文件。可以添加 -v 选项以增加列表的详细程度。请注意，当归档提取与现有文件冲突时，用户会在文件被替换前收到提示。</p>
+<p>与 tar 一样，zip 也可以使用标准输入和输出，尽管它的实现有些不太实用。可以通过 -@ 选项将文件名列表通过管道发送给 zip。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox foo]$ <span class="built_in">cd</span></span><br><span class="line">[me@linuxbox ~]$ find playground -name <span class="string">&quot;file-A&quot;</span> | zip -@ file-A.zip</span><br></pre></td></tr></table></figure>
+
+<p>这里我们使用 find 生成符合测试条件 -name “file-A” 的文件列表，然后将列表通过管道传输给 zip，zip 创建了包含选定文件的归档 file-A.zip。</p>
+<p>zip 也支持将其输出写入标准输出，但由于很少有程序可以使用该输出，因此使用受限。不</p>
+<p>幸的是，unzip 程序不接受标准输入。这阻止了 zip 和 unzip 被一起用来像 tar 那样执行网络文件复制。</p>
+<p>然而，zip 可以接受标准输入，因此可以用来压缩其他程序的输出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -l /etc/ | zip ls-etc.zip -</span><br><span class="line"> adding: - (deflated 80%)</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，我们将 ls 的输出通过管道传输给 zip。与 tar 一样，zip 将尾随的破折号解释为“使用标准输入作为输入文件”。</p>
+<p>unzip 程序允许在指定了 -p（表示管道）选项时将其输出发送到标准输出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ unzip -p ls-etc.zip | less</span><br></pre></td></tr></table></figure>
+
+<p>我们简要介绍了 zip&#x2F;unzip 能做的一些基本事情。它们都有很多选项增加了它们的灵活性，尽管有些选项是特定于其他系统的平台。zip 和 unzip 的手册页都相当好，包含有用的示例。然而，这些程序的主要用途是用于与 Windows 系统交换文件，而不是在 Linux 上执行压缩和归档，在 Linux 中，tar 和 gzip 更受欢迎。</p>
+<h3 id="同步文件和目录"><a href="#同步文件和目录" class="headerlink" title="同步文件和目录"></a>同步文件和目录</h3><p>维护系统备份副本的一个常见策略涉及将一个或多个目录与位于本地系统（通常是某种可移动存储设备）或远程系统上的另一个目录（或多个目录）保持同步。例如，我们可能有一个正在开发的网站的本地副本，并不时将其与远程 Web 服务器上的“实时”副本同步。</p>
+<p>在类 Unix 的世界中，执行此任务的首选工具是 rsync。该程序可以通过使用 <em>rsync 远程更新协议</em> 同步本地和远程目录，使 rsync 能够快速检测出两个目录之间的差异，并执行将它们同步所需的最小量复制。这使得 rsync 使用起来非常快速且经济，与其他类型的复制程序相比。rsync 的调用方式如下：</p>
+<p>**rsync <em><strong>options</strong></em> <em><strong>source</strong></em> **<em><strong>destination</strong></em></p>
+<p>其中 <em>source</em> 和 <em>destination</em> 可以是以下之一：</p>
+<ul>
+<li>本地文件或目录</li>
+<li>以 <em>[user@]host:path</em> 形式的远程文件或目录</li>
+<li>使用 URI <em>rsync:&#x2F;&#x2F;[user@]host[:port]&#x2F;path</em> 指定的远程 rsync 服务器</li>
+</ul>
+<p>请注意，源或目的地必须是本地文件。不支持远程到远程的复制。</p>
+<p>让我们在一些本地文件上试试 rsync。首先，让我们清理一下我们的 foo 目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">rm</span> -rf foo/*</span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们将用 rsync 同步 playground 目录和 foo 中的对应副本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ rsync -av playground foo</span><br></pre></td></tr></table></figure>
+
+<p>我们包含了 -a 选项（用于归档 - 导致递归和保留文件属性）和 -v 选项（详细输出），以在 foo 中制作 playground 目录的<em>镜像</em>。当命令运行时，我们会看到正在被复制的文件和目录的列表。最后，我们会看到这样的总结消息，指示进行的复制量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sent 135759 bytes received 57870 bytes 387258.00 bytes/sec</span><br><span class="line">total size is 3230 speedup is 0.02</span><br></pre></td></tr></table></figure>
+
+<p>如果我们再次运行命令，会看到不同的结果。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ rsync -av playground foo</span><br><span class="line">building file list ... <span class="keyword">done</span></span><br><span class="line">sent 22635 bytes received 20 bytes 45310.00 bytes/sec</span><br><span class="line">total size is 3230 speedup is 0.14</span><br></pre></td></tr></table></figure>
+
+<p>注意，没有文件列表。这是因为 rsync 检测到 ~&#x2F;playground 和 ~&#x2F;foo&#x2F;playground 之间没有差异，因此不需要复制任何内容。如果我们修改 playground 中的一个文件，然后再次运行 rsync：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">touch</span> playground/dir-099/file-Z</span><br><span class="line">[me@linuxbox ~]$ rsync -av playground foo</span><br><span class="line">building file list ... <span class="keyword">done</span></span><br><span class="line">playground/dir-099/file-Z</span><br><span class="line">sent 22685 bytes received 42 bytes 45454.00 bytes/sec</span><br><span class="line">total size is 3230 speedup is 0.14</span><br></pre></td></tr></table></figure>
+
+<p>我们会看到 rsync 检测到了更改，并且只复制了更新的文件。</p>
+<p>在指定 rsync 源时，有一个微妙但有用的功能。让我们考虑两个目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">source</span> destination</span><br></pre></td></tr></table></figure>
+
+<p>目录 source 包含一个名为 file1 的文件，目录 destination 为空。如果我们像这样执行 source 到 destination 的复制：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ rsync <span class="built_in">source</span> destination</span><br></pre></td></tr></table></figure>
+
+<p>那么 rsync 会将目录 source 复制到 destination。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> destination</span><br><span class="line"><span class="built_in">source</span></span><br></pre></td></tr></table></figure>
+
+<p>然而，如果我们在源目录名称后附加一个尾随的 &#x2F;，rsync 将只复制 source 目录的内容，</p>
+<p>而不是目录本身。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ rsync <span class="built_in">source</span>/ destination</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> destination</span><br><span class="line">file1</span><br></pre></td></tr></table></figure>
+
+<p>这很方便，如果我们只想复制目录的内容而不在目的地创建另一个目录层级。我们可以将其视为与 source&#x2F;* 的结果类似，但这种方法会复制 source 目录的所有内容，包括隐藏文件。</p>
+<p>作为一个实际示例，让我们考虑之前与 tar 一起使用的假想外部硬盘。如果我们将驱动器连接到我们的系统，它再次在 &#x2F;media&#x2F;BigDisk 下挂载，我们可以通过首先在外部驱动器上创建名为 &#x2F;backup 的目录，然后使用 rsync 将我们系统上最重要的东西复制到外部驱动器上，执行有用的系统备份。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">mkdir</span> /media/BigDisk/backup</span><br><span class="line">[me@linuxbox ~]$ sudo rsync -av --delete /etc /home /usr/local /media/BigDisk/backup</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，我们将 &#x2F;etc、&#x2F;home 和 &#x2F;usr&#x2F;local 目录从我们的系统复制到了我们的假想存储设备上。我们包括了 –delete 选项以删除可能已经存在于备份设备上但不再存在于源设备上的文件（第一次制作备份时这无关紧要，但在随后的复制中会有用）。重复连接外部驱动器并运行这个 rsync 命令的过程将是保持小型系统备份的一个有用（尽管不是理想的）方法。当然，这里也有一个别名会有帮助。我们可以创建一个别名并将其添加到我们的 .bashrc 文件中，以提供这个功能。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> backup=<span class="string">&#x27;sudo rsync -av --delete /etc /home /usr/local /media/BigDisk/backup&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>现在，我们所要做的就是连接我们的外部驱动器并运行 backup 命令来完成任务。</p>
+<h4 id="使用-rsync-进行网络传输"><a href="#使用-rsync-进行网络传输" class="headerlink" title="使用 rsync 进行网络传输"></a>使用 rsync 进行网络传输</h4><p>rsync 的真正美妙之处之一是它可以用来通过网络复制文件。毕竟，rsync 中的 r 代表“远程”。远程复制可以通过两种方式完成。第一种方式是使用已安装 rsync 的另一系统，以及像 ssh 这样的远程 shell 程序。假设我们在本地网络上有另一个系统，有大量可用的硬盘空间，我们想使用远程系统而不是外部驱动器来执行我们的备份操作。假设它已经有了一个名为 &#x2F;backup 的目录，我们可以将文件传送到那里，我们可以这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ sudo rsync -av --delete --rsh=ssh /etc /home /usr/local remote-sys:/backup</span><br></pre></td></tr></table></figure>
+
+<p>我们对命令进行了两处更改，以便进行网络复制。首先，我们添加了 –rsh&#x3D;ssh 选项，指示 rsync 使用 ssh 程序作为其远程 shell。</p>
+<p>这样，我们能够使用 ssh 加密隧道安全地将数据从本地系统传输到远程主机。其次，我们通过在目的地路径名前添加远程主机的名称（在这种情况下，远程主机被命名为 remote-sys）来指定远程主机。</p>
+<p>rsync 用于通过网络同步文件的第二种方式是使用 <em>rsync 服务器</em>。可以配置 rsync 作为守护进程运行，并监听传入的同步请求。这通常用于允许远程系统的镜像。例如，Red Hat 软件维护着其 Fedora 发行版正在开发中的大型软件包存储库。在发行周期的测试阶段，对软件测试人员而言，镜像此集合非常有用。由于存储库中的文件频繁更改（通常一天多次），通过定期同步而不是批量复制存储库来维护本地镜像是可取的。杜克大学保留了其中一个存储库；我们可以使用我们本地的 rsync 和他们的 rsync 服务器来镜像它，像这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">mkdir</span> fedora-devel</span><br><span class="line">[me@linuxbox ~]$ rsync -av --delete rsync://archive.linux.duke.edu/fedora/linux/development/rawhide/Everything/x86_64/os/ fedora-devel</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们使用了远程 rsync 服务器的 URI，它包括一个协议 (rsync:&#x2F;&#x2F;)，后跟远程主机名 (archive.linux.duke.edu)，然后是存储库的路径名。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>我们回顾了 Linux 和其他类 Unix 操作系统上常用的压缩和归档程序。对于归档文件，tar&#x2F;gzip 组合是类 Unix 系统上的首选方法，而 zip&#x2F;unzip 用于与 Windows 系统的互操作性。最后，我们看了 rsync 程序（个人最喜欢的），它对于高效同步跨系统的文件和目录非常方便。</p>
+<h3 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h3><ul>
+<li>这里讨论的所有命令的手册页都相当清晰，并包含有用的示例。此外，GNU 项目为其 tar 版本提供了一个很好的在线手册。可以在这里找到：<span class="exturl" data-url="aHR0cDovL3d3dy5nbnUub3JnL3NvZnR3YXJlL3Rhci9tYW51YWwvaW5kZXguaHRtbA==">http://www.gnu.org/software/tar/manual/index.html<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TLCL/" rel="tag"># TLCL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/17-searching-for-files/" rel="prev" title="查找文件">
+                  <i class="fa fa-angle-left"></i> 查找文件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/19-regular-expressions/" rel="next" title="正则表达式">
+                  正则表达式 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"cd780105fae7ef5cb42ea3f1ea7f9853"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

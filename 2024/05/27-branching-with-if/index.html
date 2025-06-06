@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="27 – 流程控制：使用if进行分支在上一章中，我们遇到了一个问题。我们如何使我们的报告生成脚本根据运行脚本的用户的权限来适应？解决这个问题将需要我们找到一种方法，在脚本中根据测试的结果“改变方向”。用编程术语来说，我们需要程序进行分支。 让我们考虑一个用伪代码表达的简单逻辑示例，伪代码是一种旨在供人阅读的计算机语言模拟。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流程控制：使用if进行分支">
+<meta property="og:url" content="https://slagga.top/2024/05/27-branching-with-if/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="27 – 流程控制：使用if进行分支在上一章中，我们遇到了一个问题。我们如何使我们的报告生成脚本根据运行脚本的用户的权限来适应？解决这个问题将需要我们找到一种方法，在脚本中根据测试的结果“改变方向”。用编程术语来说，我们需要程序进行分支。 让我们考虑一个用伪代码表达的简单逻辑示例，伪代码是一种旨在供人阅读的计算机语言模拟。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-05-02T04:56:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.956Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="TLCL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2024/05/27-branching-with-if/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2024/05/27-branching-with-if/","path":"2024/05/27-branching-with-if/","title":"流程控制：使用if进行分支"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>流程控制：使用if进行分支 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#27-%E2%80%93-%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%EF%BC%9A%E4%BD%BF%E7%94%A8if%E8%BF%9B%E8%A1%8C%E5%88%86%E6%94%AF"><span class="nav-number">1.</span> <span class="nav-text">27 – 流程控制：使用if进行分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#if"><span class="nav-number">1.1.</span> <span class="nav-text">if</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%80%E5%87%BA%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.1.</span> <span class="nav-text">退出状态</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#test"><span class="nav-number">1.2.</span> <span class="nav-text">test</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.2.1.</span> <span class="nav-text">文件表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.2.2.</span> <span class="nav-text">字符串表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B4%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.2.3.</span> <span class="nav-text">整数表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#test%E7%9A%84%E6%9B%B4%E7%8E%B0%E4%BB%A3%E7%89%88%E6%9C%AC"><span class="nav-number">1.2.4.</span> <span class="nav-text">test的更现代版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E6%95%B4%E6%95%B0%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.2.5.</span> <span class="nav-text">(( )) - 为整数设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.2.6.</span> <span class="nav-text">组合表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E7%A7%BB%E6%A4%8D%E6%80%A7%E6%98%AF%E5%B0%8F%E5%BF%83%E6%80%9D%E7%9A%84%E5%A6%96%E6%80%AA"><span class="nav-number">1.2.7.</span> <span class="nav-text">可移植性是小心思的妖怪</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%9A%E5%8F%A6%E4%B8%80%E7%A7%8D%E5%88%86%E6%94%AF%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.8.</span> <span class="nav-text">控制运算符：另一种分支方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.9.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E9%98%85%E8%AF%BB"><span class="nav-number">1.2.10.</span> <span class="nav-text">进一步阅读</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2024/05/27-branching-with-if/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="流程控制：使用if进行分支 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          流程控制：使用if进行分支
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-02 12:56:30" itemprop="dateCreated datePublished" datetime="2024-05-02T12:56:30+08:00">2024-05-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="27-–-流程控制：使用if进行分支"><a href="#27-–-流程控制：使用if进行分支" class="headerlink" title="27 – 流程控制：使用if进行分支"></a>27 – 流程控制：使用if进行分支</h2><p>在上一章中，我们遇到了一个问题。我们如何使我们的报告生成脚本根据运行脚本的用户的权限来适应？解决这个问题将需要我们找到一种方法，在脚本中根据测试的结果“改变方向”。用编程术语来说，我们需要程序进行<em>分支</em>。</p>
+<p>让我们考虑一个用<em>伪代码</em>表达的简单逻辑示例，伪代码是一种旨在供人阅读的计算机语言模拟。</p>
+<span id="more"></span>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">X = 5</span><br><span class="line">如果 X = 5, 那么:</span><br><span class="line">	说 “X 等于 5。”</span><br><span class="line">否则:</span><br><span class="line">	说 “X 不等于 5。”</span><br></pre></td></tr></table></figure>
+
+<p>这是一个分支的示例。基于条件，“X &#x3D; 5 吗？”做一件事，“说 X 等于 5”，否则做另一件事，“说 X 不等于 5”。</p>
+<h3 id="if"><a href="#if" class="headerlink" title="if"></a>if</h3><p>使用shell，我们可以如下编码前面的逻辑：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x=5</span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$x</span>&quot;</span> -eq 5 ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;x 等于 5。&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;x 不等于 5。&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>或者我们可以直接在命令行中输入（稍微简短一些）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ x=5</span><br><span class="line">[me@linuxbox ~]$ <span class="keyword">if</span> [ “<span class="variable">$x</span>” -eq 5 ]; <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">&quot;等于 5&quot;</span>; <span class="keyword">else</span> <span class="built_in">echo</span></span><br><span class="line"><span class="string">&quot;不等于 5&quot;</span>; <span class="keyword">fi</span></span><br><span class="line">等于 5</span><br><span class="line">[me@linuxbox ~]$ x=0</span><br><span class="line">[me@linuxbox ~]$ <span class="keyword">if</span> [ “<span class="variable">$x</span>” -eq 5 ]; <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">&quot;等于 5&quot;</span>; <span class="keyword">else</span> <span class="built_in">echo</span></span><br><span class="line"><span class="string">&quot;不等于 5&quot;</span>; <span class="keyword">fi</span></span><br><span class="line">不等于 5</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们执行了两次命令；一次，x的值设置为5，结果输出字符串“等于 5”，第二次x的值设置为0，结果输出字符串“不等于 5”。</p>
+<p>if语句有以下语法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> commands; <span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line">[<span class="keyword">elif</span> commands; <span class="keyword">then</span></span><br><span class="line">	commands...]</span><br><span class="line">[<span class="keyword">else</span></span><br><span class="line">	commands]</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<em>commands</em>是命令列表。这一点乍看之下有点令人困惑。但在我们可以澄清这一点之前，我们必须看看shell如何评估命令的成功或失败。</p>
+<h4 id="退出状态"><a href="#退出状态" class="headerlink" title="退出状态"></a><strong>退出状态</strong></h4><p>命令（包括我们编写的脚本和shell函数）在它们终止时向系统发出一个值，称为<em>退出状态</em>。这个值是一个0到255范围内的整数，指示命令执行的成功或失败。按照惯例，零值表示成功，任何其他值表示失败。shell提供了一个参数，我们可以用它来检查退出状态。这里我们看到它的作用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -d /usr/bin</span><br><span class="line">/usr/bin</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> $?</span><br><span class="line">0</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">ls</span> -d /bin/usr</span><br><span class="line"><span class="built_in">ls</span>: 无法访问 /bin/usr: 没有那个文件或目录</span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> $?</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，我们两次执行ls命令。第一次，命令成功执行。如果我们显示参数<code>$?的值，我们看到它是零。我们第二次执行ls命令（指定一个不存在的目录），产生一个错误，并再次检查参数$</code>?。这次它包含2，表示命令遇到了错误。一些命令使用不同的退出状态值来提供错误诊断，而许多命令在失败时简单地退出并返回值1。手册页通常包括一个名为“退出状态”的部分，描述了使用哪些代码。然而，零始终表示成功。</p>
+<p>shell提供了两个非常简单的内置命令，除了终止时带有0</p>
+<p>或1退出状态外，什么也不做。true命令总是成功执行，false命令总是执行失败。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="literal">true</span></span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> $?</span><br><span class="line">0</span><br><span class="line">[me@linuxbox ~]$ <span class="literal">false</span></span><br><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> $?</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p>我们可以使用这些命令来看看if语句是如何工作的。if语句真正做的是评估命令的成功或失败。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="keyword">if</span> <span class="literal">true</span>; <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">&quot;它是真的。&quot;</span>; <span class="keyword">fi</span></span><br><span class="line">它是真的。</span><br><span class="line">[me@linuxbox ~]$ <span class="keyword">if</span> <span class="literal">false</span>; <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">&quot;它是真的。&quot;</span>; <span class="keyword">fi</span></span><br><span class="line">[me@linuxbox ~]$</span><br></pre></td></tr></table></figure>
+
+<p>当if后面的命令成功执行时，命令echo “它是真的。”被执行，当if后面的命令没有成功执行时，不执行该命令。如果if后面跟着命令列表，列表中的最后一个命令被评估：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="keyword">if</span> <span class="literal">false</span>; <span class="literal">true</span>; <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">&quot;它是真的。&quot;</span>; <span class="keyword">fi</span></span><br><span class="line">它是真的。</span><br><span class="line">[me@linuxbox ~]$ <span class="keyword">if</span> <span class="literal">true</span>; <span class="literal">false</span>; <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">&quot;它是真的。&quot;</span>; <span class="keyword">fi</span></span><br><span class="line">[me@linuxbox ~]$ </span><br></pre></td></tr></table></figure>
+
+<h3 id="test"><a href="#test" class="headerlink" title="test"></a>test</h3><p>到目前为止，与if最频繁使用的命令是test。test命令执行各种检查和比较。它有两种等效的形式。第一种，如下所示：</p>
+<blockquote>
+<p>test <em>expression</em></p>
+</blockquote>
+<p>第二种，更受欢迎的形式，如下所示：</p>
+<blockquote>
+<p>[ <em>expression</em> ]</p>
+</blockquote>
+<p>其中<em>expression</em>是一个被评估为真或假的表达式。当表达式为真时，test命令返回退出状态0，当表达式为假时返回状态1。</p>
+<p>有趣的是，test和[实际上都是命令。在bash中它们是内置的，但它们也作为程序存在于&#x2F;usr&#x2F;bin中，供其他shell使用。表达式实际上只是它的参数，[命令要求]字符作为它的最后一个参数提供。</p>
+<p>test和[命令支持广泛的有用表达式和测试。</p>
+<h4 id="文件表达式"><a href="#文件表达式" class="headerlink" title="文件表达式"></a>文件表达式</h4><p>表27-1列出了用于评估文件状态的表达式。</p>
+<p><em>表27-1:</em> <em>test文件表达式</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>表达式</strong></th>
+<th><strong>为真如果：</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>file1</em> -ef <em>file2</em></td>
+<td><em>file1</em>和<em>file2</em>有相同的inode编号（两个文件名通过硬链接引用同一个文件）。</td>
+</tr>
+<tr>
+<td><em>file1</em> -nt <em>file2</em></td>
+<td><em>file1</em>比<em>file2</em>更新。</td>
+</tr>
+<tr>
+<td><em>file1</em> -ot <em>file2</em></td>
+<td><em>file1</em>比<em>file2</em>旧。</td>
+</tr>
+<tr>
+<td>-b <em>file</em></td>
+<td><em>file</em>存在且是一个块特殊（设备）文件。</td>
+</tr>
+<tr>
+<td>-c <em>file</em></td>
+<td><em>file</em>存在且是一个字符特殊（设备）文件。</td>
+</tr>
+<tr>
+<td>-d <em>file</em></td>
+<td><em>file</em>存在且是一个目录。</td>
+</tr>
+<tr>
+<td>-e <em>file</em></td>
+<td><em>file</em>存在。</td>
+</tr>
+<tr>
+<td>-f <em>file</em></td>
+<td><em>file</em>存在且是一个常规文件。</td>
+</tr>
+<tr>
+<td>-g <em>file</em></td>
+<td><em>file</em>存在且设置了组ID。</td>
+</tr>
+<tr>
+<td>-G <em>file</em></td>
+<td><em>file</em>存在且属于有效组ID。</td>
+</tr>
+<tr>
+<td>-k <em>file</em></td>
+<td><em>file</em>存在且设置了“粘滞位”。</td>
+</tr>
+<tr>
+<td>-L <em>file</em></td>
+<td><em>file</em>存在且是一个符号链接。</td>
+</tr>
+<tr>
+<td>-O <em>file</em></td>
+<td><em>file</em>存在且属于有效用户ID。</td>
+</tr>
+<tr>
+<td>-p <em>file</em></td>
+<td><em>file</em>存在且是一个命名管道。</td>
+</tr>
+<tr>
+<td>-r <em>file</em></td>
+<td><em>file</em>存在且可读（对有效用户有可读权限）。</td>
+</tr>
+<tr>
+<td>-s <em>file</em></td>
+<td><em>file</em>存在且长度大于零。</td>
+</tr>
+<tr>
+<td>-S <em>file</em></td>
+<td><em>file</em>存在且是一个网络套接字。</td>
+</tr>
+<tr>
+<td>-t <em>fd</em></td>
+<td><em>fd</em>是一个定向到&#x2F;来自终端的文件描述符。这可以用来确定标准输入&#x2F;输出&#x2F;错误是否被重定向。</td>
+</tr>
+<tr>
+<td>-u <em>file</em></td>
+<td><em>file</em>存在且是setuid。</td>
+</tr>
+<tr>
+<td>-w <em>file</em></td>
+<td><em>file</em>存在且可写（对有效用户有写权限）。</td>
+</tr>
+<tr>
+<td>-x <em>file</em></td>
+<td><em>file</em>存在且可执行（对有效用户有执行&#x2F;搜索权限）。</td>
+</tr>
+</tbody></table>
+<p>这里我们有一个演示一些文件表达式的脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test-file: 评估文件的状态</span></span><br><span class="line">FILE=~/.bashrc</span><br><span class="line"><span class="keyword">if</span> [ -e <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="keyword">if</span> [ -f <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 是一个常规文件。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">if</span> [ -d <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 是一个目录。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">if</span> [ -r <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 是可读的。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">if</span> [ -w <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span> </span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 是可写的。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">if</span> [ -x <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 是可执行/可搜索的。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 不存在&quot;</span></span><br><span class="line">	<span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+
+<p>这个脚本评估赋给常量FILE的文件，并在进行评估时显示其结果。关于这个脚本有两件有趣的事情需要注意。首先，注意参数<code>$FILE在表达式中是如何被引用的。这不是语法上完成表达式所必需的；而是防御参数为空或只包含空格的情况。如果$</code>FILE的参数扩展结果为空值，它会导致错误（操作符会被解释为非空字符串而不是操作符）。在参数周围使用引号确保操作符后面总是跟着一个字符串，即使字符串为空。其次，注意脚本接近末尾处的exit命令的存在。exit命令接受一个可选的单一参数，该参数成为脚本的退出状态。当没有传递参数时，退出状态默认为最后执行的命令的退出状态。以这种方式使用exit允许脚本在$FILE展开为不存在文件的名称时指示失败。出现在脚本最后一行的exit命令是一种形式上的存在。当脚本“运行到末尾”（达到文件末尾）时，它以最后执行的命令的退出状态终止。</p>
+<p>类似地，shell函数可以通过向return命令包含一个整数参数来返回一个退出状态。如果我们要将前面的脚本转换为一个shell函数以包含在一个更大的程序中，我们可以用return语句替换exit命令并获得所需的行为。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">test_file</span></span> () &#123;</span><br><span class="line"><span class="comment"># test-file: 评估文件的状态</span></span><br><span class="line">FILE=~/.bashrc</span><br><span class="line"><span class="keyword">if</span> [ -e <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="keyword">if</span> [ -f <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 是一个常规文件。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">if</span> [ -d <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 是一个目录。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">if</span> [ -r <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 是可读的。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">if</span> [ -w <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 是可写的。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">if</span> [ -x <span class="string">&quot;<span class="variable">$FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 是可执行/可搜索的。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 不存在&quot;</span></span><br><span class="line">  <span class="built_in">return</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="字符串表达式"><a href="#字符串表达式" class="headerlink" title="字符串表达式"></a>字符串表达式</h4><p>表27-2列出了用于评估字符串的表达式：</p>
+<p><em>表27-2:</em> <em>test字符串表达式</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>表达式</strong></th>
+<th><strong>为真如果…</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>string</em></td>
+<td><em>string</em>不为空。</td>
+</tr>
+<tr>
+<td>-n <em>string</em></td>
+<td><em>string</em>的长度大于零。</td>
+</tr>
+<tr>
+<td>-z <em>string</em></td>
+<td><em>string</em>的长度为零。</td>
+</tr>
+<tr>
+<td><em>string1</em> &#x3D; <em>string2 string1 &#x3D;&#x3D; string2</em></td>
+<td><em>string1</em>和<em>string2</em>相等。可以使用单个或双等号。使用双等号由bash支持并且通常是首选，但它不符合POSIX标准。</td>
+</tr>
+<tr>
+<td><em>string1</em> !&#x3D; <em>string2</em></td>
+<td><em>string1</em>和<em>string2</em>不相等。</td>
+</tr>
+<tr>
+<td><em>string1</em> &gt; <em>string2</em></td>
+<td><em>string1</em>在排序上位于<em>string2</em>之后。</td>
+</tr>
+<tr>
+<td><em>string1</em> &lt; <em>string2</em></td>
+<td><em>string1</em>在排序上位于<em>string2</em>之前。</td>
+</tr>
+</tbody></table>
+<p><strong>警告</strong>：当使用test时，&gt;和&lt;表达式操作符必须被引号引起来（或用反斜杠转义）。如果没有，它们将被shell解释为重定向操作符，可能会产生具有破坏性的结果。另外请注意，虽然bash文档称排序顺序符合当前区域设置的排序顺序，但实际上并不是。在bash的4.0及以下版本中使用的是ASCII（POSIX）顺序。这个问题在4.1版本中得到修复。</p>
+<p>这是一个包含字符串表达式的脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test-string: 评估字符串的值</span></span><br><span class="line">ANSWER=maybe</span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$ANSWER</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;没有答案。&quot;</span> &gt;&amp;2</span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$ANSWER</span>&quot;</span> = <span class="string">&quot;yes&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;答案是YES。&quot;</span></span><br><span class="line"><span class="keyword">elif</span> [ <span class="string">&quot;<span class="variable">$ANSWER</span>&quot;</span> = <span class="string">&quot;no&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;答案是NO。&quot;</span></span><br><span class="line"><span class="keyword">elif</span> [ <span class="string">&quot;<span class="variable">$ANSWER</span>&quot;</span> = <span class="string">&quot;maybe&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;答案是MAYBE。&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;答案是UNKNOWN。&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个脚本中，我们评估常量ANSWER。我们首先确定字符串是否为空。如果是，我们终止脚本并将退出状态设置为1。注意应用于echo命令的重定向。这将错误消息“没有答案。”重定向到标准错误，这是对错误消息应该做的处理。如果字符串不为空，我们评估字符串的值，看它是否等于“yes”、“no”或“maybe”。我们通过使用elif来做到这一点，它是“else if”的缩写。通过使用elif，我们能够构造更复杂的逻辑测试。</p>
+<h4 id="整数表达式"><a href="#整数表达式" class="headerlink" title="整数表达式"></a>整数表达式</h4><p>为了将值作为整数而不是字符串进行比较，我们可以使用表27-3中列出的表达式。</p>
+<p><em>表27-3:</em> <em>test整数表达式</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>表达式</strong></th>
+<th><strong>为真如果…</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>integer1</em> -eq <em>integer2</em></td>
+<td><em>integer1</em>等于<em>integer2</em>。</td>
+</tr>
+<tr>
+<td><em>integer1</em> -ne <em>integer2</em></td>
+<td><em>integer1</em>不等于<em>integer2</em>。</td>
+</tr>
+<tr>
+<td><em>integer1</em> -le <em>integer2</em></td>
+<td><em>integer1</em>小于或等于<em>integer2</em>。</td>
+</tr>
+<tr>
+<td><em>integer1</em> -lt <em>integer2</em></td>
+<td><em>integer1</em>小于<em>integer2</em>。</td>
+</tr>
+<tr>
+<td><em>integer1</em> -ge <em>integer2</em></td>
+<td><em>integer1</em>大于或等于<em>integer2</em>。</td>
+</tr>
+<tr>
+<td><em>integer1</em> -gt <em>integer2</em></td>
+<td><em>integer1</em>大于<em>integer2</em>。</td>
+</tr>
+</tbody></table>
+<p>这是一个演示它们的脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test-integer: 评估一个整数的值。</span></span><br><span class="line">INT=-5</span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;INT为空。&quot;</span> &gt;&amp;2</span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;INT为零。&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> -lt 0 ]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;INT为负。&quot;</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;INT为正。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">if</span> [ $((INT % <span class="number">2</span>)) -eq 0 ];</span><br><span class="line"></span><br><span class="line"> <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;INT为偶数。&quot;</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;INT为奇数。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>脚本有趣的部分是它如何确定一个整数是偶数还是奇数。通过对数字进行模2操作，将数字除以2并返回余数，它可以告诉数字是奇数还是偶数。</p>
+<h4 id="test的更现代版本"><a href="#test的更现代版本" class="headerlink" title="test的更现代版本"></a><strong>test的更现代版本</strong></h4><p>现代版本的bash包括一个作为test的增强替代品的复合命令。它使用以下语法：</p>
+<blockquote>
+<p>[[ <em>expression</em> ]]</p>
+</blockquote>
+<p>其中，像test一样，<em>expression</em>是一个评估为真或假结果的表达式。[[ ]]命令类似于test（它支持所有的表达式），但增加了一个重要的新字符串表达式。</p>
+<blockquote>
+<p><em>string1</em> &#x3D;~ <em>regex</em></p>
+</blockquote>
+<p>如果<em>string1</em>与扩展正则表达式<em>regex</em>匹配，则返回真。这为执行数据验证等任务打开了很多可能性。在我们早期的整数表达式示例中，如果常量INT包含除整数之外的任何内容，脚本将失败。脚本需要一种方法来验证常量是否包含一个整数。使用[[ ]]和&#x3D;~字符串表达式运算符，我们可以这样改进脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test-integer2: 评估一个整数的值。</span></span><br><span class="line">INT=-5</span><br><span class="line"><span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> =~ ^-?[0-9]+$ ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;INT为零。&quot;</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> -lt 0 ]; <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;INT为负。&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;INT为正。&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> [ $((INT % <span class="number">2</span>)) -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;INT为偶数。&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;INT为奇数。&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;INT不是一个整数。&quot;</span> &gt;&amp;2</span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>通过应用正则表达式，我们能够将INT的值限制为仅以一个可选的减号开头，后跟一个或多个数字的字符串。这个表达式还消除了空值的可能性。</p>
+<p>[[ ]]的另一个新增特性是&#x3D;&#x3D;运算符支持模式匹配，就像路径名展开一样。这是一个示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ FILE=foo.bar</span><br><span class="line">[me@linuxbox ~]$ <span class="keyword">if</span> [[ <span class="variable">$FILE</span> == foo.* ]]; <span class="keyword">then</span></span><br><span class="line">&gt; <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$FILE</span> 匹配模式 &#x27;foo.*&#x27;&quot;</span></span><br><span class="line">&gt; <span class="keyword">fi</span></span><br><span class="line">foo.bar 匹配模式 <span class="string">&#x27;foo.*&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这使得[[ ]]对于评估文件和路径名很有用。</p>
+<h4 id="为整数设计"><a href="#为整数设计" class="headerlink" title="(( )) - 为整数设计"></a><strong>(( )) - 为整数设计</strong></h4><p>除了[[ ]]复合命令外，bash还提供了(( ))复合命令，它对于操作整数很有用。它支持一整套算术评估，我们将在第34章“字符串和数字”中全面介绍。</p>
+<p>(( ))用于执行<em>算术真值测试</em>。如果算术评估的结果非零，则算术真值测试结果为真。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="keyword">if</span> ((<span class="number">1</span>)); <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">&quot;它是真的。&quot;</span>; <span class="keyword">fi</span></span><br><span class="line">它是真的。</span><br><span class="line">[me@linuxbox ~]$ <span class="keyword">if</span> ((<span class="number">0</span>)); <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">&quot;它是真的。&quot;</span>; <span class="keyword">fi</span></span><br><span class="line">[me@linuxbox ~]$ </span><br></pre></td></tr></table></figure>
+
+<p>使用(( ))，我们可以稍微简化test-integer2脚本，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test-integer2a: 评估一个整数的值。</span></span><br><span class="line">INT=-5</span><br><span class="line"><span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> =~ ^-?[0-9]+$ ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="keyword">if</span> ((INT == <span class="number">0</span>)); <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;INT为零。&quot;</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">if</span> ((INT &lt; <span class="number">0</span>)); <span class="keyword">then</span></span><br><span class="line">    	<span class="built_in">echo</span> <span class="string">&quot;INT为负。&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    	<span class="built_in">echo</span> <span class="string">&quot;INT为正。&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> (( ((INT % <span class="number">2</span>)) == 0)); <span class="keyword">then</span></span><br><span class="line">    	<span class="built_in">echo</span> <span class="string">&quot;INT为偶数。&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    	<span class="built_in">echo</span> <span class="string">&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">INT为奇数。&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;INT不是一个整数。&quot;</span> &gt;&amp;2</span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>注意我们使用了小于和大于符号，&#x3D;&#x3D;用于测试等价性。这是处理整数的更自然的语法。还请注意，因为复合命令(( ))是shell语法的一部分，而不是普通命令，并且它只处理整数，它能够通过名称识别变量，不需要执行展开。我们将在第34章进一步讨论(( ))和相关的算术展开。</p>
+<h4 id="组合表达式"><a href="#组合表达式" class="headerlink" title="组合表达式"></a><strong>组合表达式</strong></h4><p>也可以组合表达式以创建更复杂的评估。表达式通过使用逻辑运算符组合。我们在第17章“搜索文件”中看到了这些，当时我们学习了find命令。对于test和[[ ]]，有三种逻辑操作。它们是AND、OR和NOT。test和[[ ]]使用不同的运算符来表示这些操作：</p>
+<p><em>表27-4: 逻辑运算符</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>操作</strong></th>
+<th><strong>test</strong></th>
+<th><strong>[[ ]] 和</strong> <strong>(( ))</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AND</td>
+<td>-a</td>
+<td>&amp;&amp;</td>
+</tr>
+<tr>
+<td>OR</td>
+<td>-o</td>
+<td>||</td>
+</tr>
+<tr>
+<td>NOT</td>
+<td>!</td>
+<td>!</td>
+</tr>
+</tbody></table>
+<p>这是一个AND操作的示例。以下脚本确定一个整数是否在一定范围内：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test-integer3: 确定一个整数是否在指定范围内。</span></span><br><span class="line">MIN_VAL=1</span><br><span class="line">MAX_VAL=100</span><br><span class="line">INT=50</span><br><span class="line"><span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> =~ ^-?[0-9]+$ ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> -ge <span class="string">&quot;<span class="variable">$MIN_VAL</span>&quot;</span> &amp;&amp; <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> -le <span class="string">&quot;<span class="variable">$MAX_VAL</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">	  <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$INT</span> 在 <span class="variable">$MIN_VAL</span> 到 <span class="variable">$MAX_VAL</span> 范围内。&quot;</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$INT</span> 超出范围。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"> <span class="built_in">echo</span> <span class="string">&quot;INT 不是一个整数。&quot;</span> &gt;&amp;2</span><br><span class="line"> <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个脚本中，我们确定整数INT的值是否在MIN_VAL和MAX_VAL的值之间。这是通过单次使用[[ ]]完成的，其中包括两个由&amp;&amp;运算符分隔的表达式。我们也可以使用test来编码这个：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> -ge <span class="string">&quot;<span class="variable">$MIN_VAL</span>&quot;</span> -a <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> -le <span class="string">&quot;<span class="variable">$MAX_VAL</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$INT</span> 在 <span class="variable">$MIN_VAL</span> 到 <span class="variable">$MAX_VAL</span> 范围内。&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$INT</span> 超出范围。&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>!取反运算符反转表达式的结果。如果表达式为假，则返回真；如果表达式为真，则返回假。在下一个脚本中，我们修改了评估逻辑，以找到处于指定范围外的INT值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test-integer4: 确定一个整数是否在指定范围外。</span></span><br><span class="line">MIN_VAL=1</span><br><span class="line">MAX_VAL=100</span><br><span class="line">INT=50</span><br><span class="line"><span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> =~ ^-?[0-9]+$ ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="keyword">if</span> [[ ! (<span class="string">&quot;<span class="variable">$INT</span>&quot;</span> -ge <span class="string">&quot;<span class="variable">$MIN_VAL</span>&quot;</span> &amp;&amp; <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> -le <span class="string">&quot;<span class="variable">$MAX_VAL</span>&quot;</span>) ]]; <span class="keyword">then</span></span><br><span class="line">  	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$INT</span> 在 <span class="variable">$MIN_VAL</span> 到 <span class="variable">$MAX_VAL</span> 范围外。&quot;</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$INT</span> 在范围内。&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"> <span class="built_in">echo</span> <span class="string">&quot;INT 不是一个整数。&quot;</span> &gt;&amp;2</span><br><span class="line"> <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>我们还在表达式周围包括了括号，用于分组。如果不包括这些，取反将只应用于第一个表达式，而不是两个表达式的组合。使用test进行编码的方式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ ! \( <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> -ge <span class="string">&quot;<span class="variable">$MIN_VAL</span>&quot;</span> -a <span class="string">&quot;<span class="variable">$INT</span>&quot;</span> -le <span class="string">&quot;<span class="variable">$MAX_VAL</span>&quot;</span> \) ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$INT</span> 在 <span class="variable">$MIN_VAL</span> 到 <span class="variable">$MAX_VAL</span> 范围外。&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$INT</span> 在范围内。&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>由于test使用的所有表达式和运算符都被shell视为命令参数（不像[[ ]]和(( ))），对bash有特殊含义的字符，如&lt;、&gt;、(和)，必须被引号引起来或转义。</p>
+<p>鉴于test和[[ ]]大致做相同的事情，哪个更可取？test是传统的（并且是POSIX标准shell的一部分，这些shell通常用于运行系统启动脚本），而[[ ]]是特定于bash的（以及其他一些现代shell）。了解如何使用test很重要，因为它被广泛使用，但</p>
+<p>[[ ]]显然更有用，编码也更容易，因此它是现代脚本的首选。</p>
+<h4 id="可移植性是小心思的妖怪"><a href="#可移植性是小心思的妖怪" class="headerlink" title="可移植性是小心思的妖怪"></a><strong>可移植性是小心思的妖怪</strong></h4><p>如果你和“真正”的Unix人交谈，你很快会发现他们中的许多人不怎么喜欢Linux。他们认为它不纯洁、不干净。Unix用户的一个信条是一切都应该是“可移植的”。这意味着你写的任何脚本都应该能够在任何类Unix系统上不加修改地运行。</p>
+<p>Unix用户有充分的理由这样认为。看到命令和shell的专有扩展在POSIX之前对Unix世界做了什么，他们自然会对Linux对他们心爱的操作系统的影响保持警惕。</p>
+<p>但可移植性有一个严重的缺点。它阻碍了进步。它要求事情总是使用“最小公分母”技术来完成。在shell编程的情况下，这意味着使一切与sh，原始的Bourne shell兼容。</p>
+<p>专有软件供应商使用这个缺点作为借口来证明他们的专有扩展，只是他们称之为“创新”。但它们实际上只是锁定他们客户的设备。</p>
+<p>GNU工具，如bash，没有这样的限制。它们通过支持标准并且在几乎任何类型的系统上都可以无成本安装来鼓励可移植性，甚至包括Windows。所以请随意使用bash的所有功能。它是<em>真正</em>可移植的。</p>
+<h4 id="控制运算符：另一种分支方式"><a href="#控制运算符：另一种分支方式" class="headerlink" title="控制运算符：另一种分支方式"></a><strong>控制运算符：另一种分支方式</strong></h4><p>bash提供了两个可以执行分支的控制运算符。&amp;&amp;（AND）和||（OR）运算符的工作方式类似于[[ ]]复合命令中的逻辑运算符。</p>
+<blockquote>
+<p>这是&amp;&amp;的语法：<em>command1</em> &amp;&amp; <em>command2</em><br>以及这是||的语法：<em>command1</em> || <em>command2</em></p>
+</blockquote>
+<p>重要的是要理解这些的行为。使用&amp;&amp;运算符，<em>command1</em>被执行，<em>command2</em>被执行如果<em>且仅当</em>，<em>command1</em>成功。使用||运算符，<em>command1</em>被执行，<em>command2</em>被执行如果<em>且仅当</em>，<em>command1</em>不成功。</p>
+<p>实际上，这意味着我们可以做这样的事情：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">mkdir</span> temp &amp;&amp; <span class="built_in">cd</span> temp</span><br></pre></td></tr></table></figure>
+
+<p>这将创建一个名为temp的目录，如果成功，将把当前工作目录更改为temp。只有当mkdir命令成功时才尝试第二个命令。同样，像这样的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ [[ -d temp ]] || <span class="built_in">mkdir</span> temp</span><br></pre></td></tr></table></figure>
+
+<p>将测试temp目录是否存在，只有当测试失败时才创建目录。这种结构很适合在脚本中处理错误，我们将在后面的章节中更多地讨论这个话题。例如，我们可以在脚本中这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ -d temp ] || <span class="built_in">exit</span> 1</span><br></pre></td></tr></table></figure>
+
+<p>如果脚本需要temp目录而它不存在，那么脚本将以退出状态1终止。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h4><p>我们从一个问题开始这一章。我们如何使我们的sys_info_page脚本检测用户是否有权限读取所有家目录？有了if的知识，我们可以通过向report_home_space函数添加这段代码来解决问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">report_home_space</span></span> () &#123;</span><br><span class="line">  <span class="keyword">if</span> [[ <span class="string">&quot;<span class="subst">$(id -u)</span>&quot;</span> -eq 0 ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">cat</span> &lt;&lt;- <span class="string">_EOF_</span></span><br><span class="line"><span class="string">      &lt;h2&gt;Home Space Utilization (All Users)&lt;/h2&gt;</span></span><br><span class="line"><span class="string">      &lt;pre&gt;$(du -sh /home/*)&lt;/pre&gt;</span></span><br><span class="line"><span class="string">      _EOF_</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">cat</span> &lt;&lt;- <span class="string">_EOF_ </span></span><br><span class="line"><span class="string">      &lt;h2&gt;Home Space Utilization ($USER)&lt;/h2&gt;</span></span><br><span class="line"><span class="string">      &lt;pre&gt;$(du -sh $HOME)&lt;/pre&gt;</span></span><br><span class="line"><span class="string">      _EOF_</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们将评估 id 命令的输出。使用 -u 选项时，id 输出有效用户的数字用户 ID 号。超级用户始终是 ID 零，而其他用户的数字都大于零。知道这一点，我们可以构造两个不同的 here 文档，一个利用超级用户权限，另一个限制在用户自己的主目录中。</p>
+<p>我们将暂时离开 sys_info_page 程序，但不用担心。我们会回来的。与此同时，我们将覆盖一些在我们恢复工作时需要的主题。</p>
+<h4 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a><strong>进一步阅读</strong></h4><p>bash 手册页的几个部分提供了对本章覆盖主题的进一步详细信息：</p>
+<ul>
+<li><p>列表（涵盖控制操作符 || 和 &amp;&amp;）</p>
+</li>
+<li><p>复合命令（涵盖 [[ ]]、(( )) 和 if）</p>
+</li>
+<li><p>条件表达式</p>
+</li>
+</ul>
+<!---->
+
+<ul>
+<li>SHELL 内置命令（涵盖 test）</li>
+</ul>
+<p>此外，维基百科有一篇关于伪代码概念的好文章：<span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9Qc2V1ZG9jb2Rl">http://en.wikipedia.org/wiki/Pseudocode<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TLCL/" rel="tag"># TLCL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/26-top-down-design/" rel="prev" title="自顶向下设计">
+                  <i class="fa fa-angle-left"></i> 自顶向下设计
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/05/28-reading-keyboard-input/" rel="next" title="读取键盘输入">
+                  读取键盘输入 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"8a3d43bf8d494fb9d053424dc32c5afb"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

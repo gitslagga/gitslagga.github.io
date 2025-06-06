@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="Git 是一个强大的工具，当您知道如何使用它时，使用起来感觉很棒。多年来，我已经在多个团队和项目中使用 Git 的这些功能。我仍在围绕一些工作流程（比如压缩或不压缩）发表意见，但核心工具功能强大且灵活（并且可编写脚本！）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="像高级工程师一样使用 Git">
+<meta property="og:url" content="https://slagga.top/2022/12/devtools-git/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="Git 是一个强大的工具，当您知道如何使用它时，使用起来感觉很棒。多年来，我已经在多个团队和项目中使用 Git 的这些功能。我仍在围绕一些工作流程（比如压缩或不压缩）发表意见，但核心工具功能强大且灵活（并且可编写脚本！）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-03T06:29:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.938Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2022/12/devtools-git/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2022/12/devtools-git/","path":"2022/12/devtools-git/","title":"像高级工程师一样使用 Git"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>像高级工程师一样使用 Git | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-%E6%98%AF%E4%B8%80%E4%B8%AA%E5%BC%BA%E5%A4%A7%E7%9A%84%E5%B7%A5%E5%85%B7%EF%BC%8C%E5%BD%93%E6%82%A8%E7%9F%A5%E9%81%93%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%AE%83%E6%97%B6%EF%BC%8C%E4%BD%BF%E7%94%A8%E8%B5%B7%E6%9D%A5%E6%84%9F%E8%A7%89%E5%BE%88%E6%A3%92%E3%80%82"><span class="nav-number">1.</span> <span class="nav-text">Git 是一个强大的工具，当您知道如何使用它时，使用起来感觉很棒。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88-Git-%E6%97%A5%E5%BF%97"><span class="nav-number">2.</span> <span class="nav-text">浏览 Git 日志</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-%E6%97%A5%E5%BF%97%E6%98%AF%E5%9F%BA%E6%9C%AC%E7%9A%84"><span class="nav-number">2.1.</span> <span class="nav-text">git 日志是基本的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E6%9C%89%E6%9B%B4%E5%A4%9A%E5%8F%AF%E8%A7%81%E6%80%A7%E7%9A%84-git-%E6%97%A5%E5%BF%97"><span class="nav-number">2.2.</span> <span class="nav-text">具有更多可见性的 git 日志</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3%E7%89%B9%E5%AE%9A%E7%9A%84%E6%8F%90%E4%BA%A4"><span class="nav-number">3.</span> <span class="nav-text">了解特定的提交</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E7%9A%84%E6%91%98%E8%A6%81"><span class="nav-number">3.1.</span> <span class="nav-text">查看提交的摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E7%9A%84%E7%89%B9%E5%AE%9A%E6%96%87%E4%BB%B6%E6%9B%B4%E6%94%B9"><span class="nav-number">3.2.</span> <span class="nav-text">查看提交的特定文件更改</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E8%A1%8C%E6%9B%B4%E6%94%B9"><span class="nav-number">4.</span> <span class="nav-text">进行更改</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-merge-vs-git-rebase"><span class="nav-number">4.1.</span> <span class="nav-text">git merge vs git rebase</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B5%84%E6%BA%90"><span class="nav-number">5.</span> <span class="nav-text">资源</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2022/12/devtools-git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="像高级工程师一样使用 Git | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          像高级工程师一样使用 Git
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-03 14:29:30" itemprop="dateCreated datePublished" datetime="2022-12-03T14:29:30+08:00">2022-12-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DevTools/" itemprop="url" rel="index"><span itemprop="name">DevTools</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="Git-是一个强大的工具，当您知道如何使用它时，使用起来感觉很棒。"><a href="#Git-是一个强大的工具，当您知道如何使用它时，使用起来感觉很棒。" class="headerlink" title="Git 是一个强大的工具，当您知道如何使用它时，使用起来感觉很棒。"></a>Git 是一个强大的工具，当您知道如何使用它时，使用起来感觉很棒。</h1><p>多年来，我已经在多个团队和项目中使用 Git 的这些功能。我仍在围绕一些工作流程（比如压缩或不压缩）发表意见，但核心工具功能强大且灵活（并且可编写脚本！）。</p>
+<span id="more"></span>
+
+<h1 id="浏览-Git-日志"><a href="#浏览-Git-日志" class="headerlink" title="浏览 Git 日志"></a>浏览 Git 日志</h1><p>Git 日志是开箱即用的。</p>
+<h2 id="git-日志是基本的"><a href="#git-日志是基本的" class="headerlink" title="git 日志是基本的"></a>git 日志是基本的</h2><p>使用<code>git log</code>给你一些信息。但它的信息量很大，通常不是您想要的。</p>
+<p>让我们变得真实。这些日志没有给任何人留下深刻印象。他们很无聊。它们充满了你现在并不真正需要的信息。您正试图对项目中发生的事情有一个高层次的理解。</p>
+<p>有更好的方法。</p>
+<h2 id="具有更多可见性的-git-日志"><a href="#具有更多可见性的-git-日志" class="headerlink" title="具有更多可见性的 git 日志"></a>具有更多可见性的 git 日志</h2><p>使用<code>--graph</code>并且<code>--format</code>我们可以快速获得项目中 git 提交的摘要视图。</p>
+<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git log --graph --format=format:&#x27;<span class="built_in">%C</span>(bold blue)<span class="built_in">%h</span><span class="built_in">%C</span>(reset) - <span class="built_in">%C</span>(bold green)(<span class="built_in">%ar</span>)<span class="built_in">%C</span>(reset) <span class="built_in">%C</span>(white)<span class="built_in">%an</span><span class="built_in">%C</span>(reset)<span class="built_in">%C</span>(bold yellow)<span class="built_in">%d</span><span class="built_in">%C</span>(reset) <span class="built_in">%C</span>(dim white)- <span class="built_in">%s</span><span class="built_in">%C</span>(reset)&#x27; --all</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>哇！这些是一些好看的日志！旁边甚至还有一棵分枝的树。</p>
+<p>这些日志向您展示了谁一直在处理什么、何时进行了更改以及您的更改在哪里适合更大的图景。</p>
+<p><code>--graph</code>将树形图添加到左侧。它不是最时尚的图表，但它有助于可视化项目分支中的变化。（<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1sb2cjRG9jdW1lbnRhdGlvbi9naXQtbG9nLnR4dC0tLWdyYXBo">在这里阅读文档。<i class="fa fa-external-link-alt"></i></span>）</p>
+<p><code>--format</code>让您自定义日志的格式。有预设格式可供选择，或者您可以像本示例一样编写自己的格式。（<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1sb2cjX2NvbW1pdF9mb3JtYXR0aW5n">在这里阅读文档。<i class="fa fa-external-link-alt"></i></span>）</p>
+<p><code>--all</code>包括日志中的所有参考、标签和分支（包括远程分支）。您可能不想要_所有内容_，因此请根据需要进行调整。（<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1sb2cjRG9jdW1lbnRhdGlvbi9naXQtbG9nLnR4dC0tLWFsbA==">在这里阅读文档。<i class="fa fa-external-link-alt"></i></span>）</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1sb2c=">有关如何升级 git 日志的更多信息，请参阅 git-log 文档。→<i class="fa fa-external-link-alt"></i></span></p>
+<h1 id="了解特定的提交"><a href="#了解特定的提交" class="headerlink" title="了解特定的提交"></a>了解特定的提交</h1><p>您经常想了解特定提交发生了什么。<code>git show</code>可以向您显示提交中更改的高级视图，但它也可以让您查看对特定文件的更改。</p>
+<h2 id="查看提交的摘要"><a href="#查看提交的摘要" class="headerlink" title="查看提交的摘要"></a>查看提交的摘要</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">show</span> <span class="operator">&lt;</span><span class="keyword">commit</span><span class="operator">&gt;</span> <span class="comment">--stat</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用该<code>--stat</code>标志，您将看到提交摘要以及更改的文件和有关更改方式的详细信息。</p>
+<h2 id="查看提交的特定文件更改"><a href="#查看提交的特定文件更改" class="headerlink" title="查看提交的特定文件更改"></a>查看提交的特定文件更改</h2><p>当您想深入了解特定文件中的特定行更改时，请使用<code>git show</code>文件路径。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">show</span> <span class="operator">&lt;</span><span class="keyword">commit</span><span class="operator">&gt;</span> <span class="comment">-- &lt;filepath&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这为您的文件提供了特定的行更改。默认情况下，它将向您显示行更改以及两端的 3 行附加行，以提供更改行在文件中位置的上下文。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1zaG93">有关如何提升对 git commit 的理解的更多信息，请参阅 git-show 文档。→<i class="fa fa-external-link-alt"></i></span></p>
+<h1 id="进行更改"><a href="#进行更改" class="headerlink" title="进行更改"></a>进行更改</h1><p>您已经在项目上创建了一个分支，向您的分支提交了一些更改，并且您已准备好将这些更改合并回<code>main</code>. 自从您分支以来，另一位工程师对相同的文件进行了更改。😱</p>
+<p>如果您使用 GitHub 之类的服务，您的 PR 会告诉您是否存在合并冲突。</p>
+<p>将更改推送到<code>main</code>. 这很好，因为您不想破坏其他人所做的所有辛勤工作。</p>
+<p>要开始在本地解决此问题，您通常会采用以下两种路径之一：<code>merge</code>或<code>rebase</code>.</p>
+<h2 id="git-merge-vs-git-rebase"><a href="#git-merge-vs-git-rebase" class="headerlink" title="git merge vs git rebase"></a>git merge vs git rebase</h2><p>当<code>main</code>您想要将分支上的更改合并到您的分支中时，您可以_合并_更改或从不同的点重新设置分支的_基线。_</p>
+<p><strong>merge</strong>从一个分支获取更改，并在一次_合并提交_中将它们合并到另一个分支。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git merge <span class="keyword">origin/main </span>your-<span class="keyword">branch</span></span><br><span class="line"><span class="keyword"></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>rebase</strong>调整分支实际分支的点（即将分支从基础分支移动到新的起点）。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git rebase <span class="keyword">origin/main </span>your-<span class="keyword">branch</span></span><br><span class="line"><span class="keyword"></span></span><br></pre></td></tr></table></figure>
+
+<p>_通常_，当您想要上游分支的代码包含在您的分支时，您可以使用<code>rebase</code>命令。当您想要把您的分支代码放回上游分支时，您将使用 <code>merge</code> 命令。</p>
+<blockquote>
+<p>我曾经认为 squash commits 非常酷，然后我不得不整天、每天都使用它们。这就是为什么你应该避免……</p>
+</blockquote>
+<h1 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h1><ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1sb2c=">git 日志文档<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1zaG93">git 显示文档<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS9hLzgwNDE1Ng==">你什么时候使用 Git rebase 而不是 Git merge？（堆栈溢出）<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"># Git</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/12/devtools-web/" rel="prev" title="7 个网站将改变您进行 Web 开发的方式">
+                  <i class="fa fa-angle-left"></i> 7 个网站将改变您进行 Web 开发的方式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/12/devtools-github/" rel="next" title="17 个杀手级 GitHub 存储库！">
+                  17 个杀手级 GitHub 存储库！ <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"9f33eac61cd78447a648bfd5b19cf5c6"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

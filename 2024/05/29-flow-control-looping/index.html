@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="29 – 流控制：使用while &#x2F; until循环在上一章中，我们开发了一个菜单驱动的程序来生成各种系统信息。程序可以工作，但它仍然有一个重大的可用性问题。它只执行单个选择然后终止。更糟糕的是，如果做出了无效选择，程序会在没有给用户重新尝试的机会的情况下带着错误终止。如果我们能以某种方式构建程序，使其能够一次又一次地重复菜单显示和选择，直到用户选择退出程序，那会更好。 在这一章中，我们">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流控制：使用while &#x2F; until循环">
+<meta property="og:url" content="https://slagga.top/2024/05/29-flow-control-looping/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="29 – 流控制：使用while &#x2F; until循环在上一章中，我们开发了一个菜单驱动的程序来生成各种系统信息。程序可以工作，但它仍然有一个重大的可用性问题。它只执行单个选择然后终止。更糟糕的是，如果做出了无效选择，程序会在没有给用户重新尝试的机会的情况下带着错误终止。如果我们能以某种方式构建程序，使其能够一次又一次地重复菜单显示和选择，直到用户选择退出程序，那会更好。 在这一章中，我们">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-05-04T03:42:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.957Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="TLCL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2024/05/29-flow-control-looping/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2024/05/29-flow-control-looping/","path":"2024/05/29-flow-control-looping/","title":"流控制：使用while / until循环"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>流控制：使用while / until循环 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#29-%E2%80%93-%E6%B5%81%E6%8E%A7%E5%88%B6%EF%BC%9A%E4%BD%BF%E7%94%A8while-until%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.</span> <span class="nav-text">29 – 流控制：使用while &#x2F; until循环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.1.</span> <span class="nav-text">循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#while"><span class="nav-number">1.1.1.</span> <span class="nav-text">while</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%80%E5%87%BA%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.2.</span> <span class="nav-text">退出循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#until"><span class="nav-number">1.2.1.</span> <span class="nav-text">until</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%BE%AA%E7%8E%AF%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.</span> <span class="nav-text">使用循环读取文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E9%98%85%E8%AF%BB"><span class="nav-number">1.5.</span> <span class="nav-text">进一步阅读</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2024/05/29-flow-control-looping/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="流控制：使用while / until循环 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          流控制：使用while / until循环
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-04 11:42:30" itemprop="dateCreated datePublished" datetime="2024-05-04T11:42:30+08:00">2024-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="29-–-流控制：使用while-until循环"><a href="#29-–-流控制：使用while-until循环" class="headerlink" title="29 – 流控制：使用while &#x2F; until循环"></a>29 – 流控制：使用while &#x2F; until循环</h2><p>在上一章中，我们开发了一个菜单驱动的程序来生成各种系统信息。程序可以工作，但它仍然有一个重大的可用性问题。它只执行单个选择然后终止。更糟糕的是，如果做出了无效选择，程序会在没有给用户重新尝试的机会的情况下带着错误终止。如果我们能以某种方式构建程序，使其能够一次又一次地重复菜单显示和选择，直到用户选择退出程序，那会更好。</p>
+<p>在这一章中，我们将研究一个称为<em>循环</em>的编程概念，它可以用来使程序的某些部分重复。Shell提供了三个用于循环的复合命令。我们将在本章中查看其中的两个，第三个将在后面的章节中查看。</p>
+<span id="more"></span>
+
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p>日常生活中充满了重复的活动。每天去工作，遛狗和切萝卜都是涉及重复一系列步骤的任务。让我们考虑切萝卜。如果我们用伪代码表达这个活动，它可能看起来像这样：</p>
+<ol>
+<li>拿切菜板</li>
+<li>拿刀</li>
+<li>把萝卜放在切菜板上</li>
+<li>举起刀</li>
+<li>推进萝卜</li>
+<li>切萝卜</li>
+<li>如果整个萝卜切完了，那么退出；否则回到第4步</li>
+</ol>
+<p>第4步到第7步形成一个<em>循环</em>。循环内的动作重复，直到达到“整个萝卜切片”这个条件为止。</p>
+<h4 id="while"><a href="#while" class="headerlink" title="while"></a>while</h4><p>bash可以表达类似的想法。假设我们想要顺序显示从1到5的五个数字。一个bash脚本可以这样构建：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># while-count: 显示一系列数字</span></span><br><span class="line">count=1</span><br><span class="line"><span class="keyword">while</span> [[ <span class="string">&quot;<span class="variable">$count</span>&quot;</span> -le 5 ]]; <span class="keyword">do</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$count</span>&quot;</span></span><br><span class="line">	count=$((count + <span class="number">1</span>))</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;完成。&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行此脚本时，将显示以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ while-count</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">完成。</span><br></pre></td></tr></table></figure>
+
+<p>while命令的语法如下：</p>
+<blockquote>
+<p>while <em>commands</em>; do <em>commands</em>; done</p>
+</blockquote>
+<p>像if一样，while评估一系列命令的退出状态。只要退出状态为零，它就执行循环内的命令。在前面的脚本中，变量count被创建并赋予了初始值1。while命令评估[[]]复合命令的退出状态。只要[[]]命令返回一个退出状态为零，循环内的命令就会被执行。在每个周期结束时，[[]]命令会被重复。经过五次循环迭代后，count的值增加到6，[[]]命令不再返回退出状态为零，循环终止。程序继续执行循环后的下一个语句。</p>
+<p>我们可以使用<em>while循环</em>来改进上一章的read-menu程序。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># while-menu: 一个菜单驱动的系统信息程序</span></span><br><span class="line">DELAY=3 <span class="comment"># 显示结果的秒数</span></span><br><span class="line"><span class="keyword">while</span> [[ <span class="string">&quot;<span class="variable">$REPLY</span>&quot;</span> != 0 ]]; <span class="keyword">do</span></span><br><span class="line">  clear</span><br><span class="line">  <span class="built_in">cat</span> &lt;&lt;- <span class="string">_EOF_</span></span><br><span class="line"><span class="string">    请选择：</span></span><br><span class="line"><span class="string">    1. 显示系统信息</span></span><br><span class="line"><span class="string">    2. 显示磁盘空间</span></span><br><span class="line"><span class="string">    3. 显示家目录空间利用率</span></span><br><span class="line"><span class="string">    0. 退出</span></span><br><span class="line"><span class="string">  _EOF_</span></span><br><span class="line">  <span class="built_in">read</span> -p <span class="string">&quot;输入选择 [0-3] &gt; &quot;</span></span><br><span class="line">  <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$REPLY</span>&quot;</span> =~ ^[0-3]$ ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="variable">$REPLY</span> == 1 ]]; <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">echo</span></span><br><span class="line"></span><br><span class="line"> <span class="string">&quot;主机名: <span class="variable">$HOSTNAME</span>&quot;</span></span><br><span class="line">      <span class="built_in">uptime</span></span><br><span class="line">      <span class="built_in">sleep</span> <span class="string">&quot;<span class="variable">$DELAY</span>&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$REPLY</span>&quot;</span> == 2 ]]; <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">df</span> -h</span><br><span class="line">      <span class="built_in">sleep</span> <span class="string">&quot;<span class="variable">$DELAY</span>&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$REPLY</span>&quot;</span> == 3 ]]; <span class="keyword">then</span></span><br><span class="line">      <span class="keyword">if</span> [[ <span class="string">&quot;<span class="subst">$(id -u)</span>&quot;</span> -eq 0 ]]; <span class="keyword">then</span></span><br><span class="line">      	<span class="built_in">echo</span> <span class="string">&quot;家目录空间利用率（所有用户）&quot;</span></span><br><span class="line">      	<span class="built_in">du</span> -sh /home/*</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;家目录空间利用率（<span class="variable">$USER</span>）&quot;</span></span><br><span class="line">        <span class="built_in">du</span> -sh <span class="string">&quot;<span class="variable">$HOME</span>&quot;</span></span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">    	<span class="built_in">sleep</span> <span class="string">&quot;<span class="variable">$DELAY</span>&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;无效输入。&quot;</span></span><br><span class="line">    <span class="built_in">sleep</span> <span class="string">&quot;<span class="variable">$DELAY</span>&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;程序终止。&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>通过将菜单包含在一个while循环中，我们能够让程序在每次选择后重复菜单显示。只要REPLY不等于0，循环就会继续，并且菜单将被重新显示，给用户机会进行另一次选择。在每个操作结束后，执行sleep命令，以便程序暂停几秒钟，允许在清屏并重新显示菜单之前看到选择的结果。一旦REPLY等于0，表示选择了“退出”，循环终止，执行继续进行到done之后的行。</p>
+<h3 id="退出循环"><a href="#退出循环" class="headerlink" title="退出循环"></a>退出循环</h3><p>bash提供了两个内置命令，可以用来在循环内控制程序流。break命令立即终止循环，程序控制继续执行循环后的下一个语句。continue命令导致循环的其余部分被跳过，程序控制继续执行循环的下一次迭代。这里我们看到一个版本的while-menu程序，结合了break和continue：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># while-menu2: 一个菜单驱动的系统信息程序</span></span><br><span class="line">DELAY=3 <span class="comment"># 显示结果的秒数</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">  clear</span><br><span class="line">  <span class="built_in">cat</span> &lt;&lt;- <span class="string">_EOF_</span></span><br><span class="line"><span class="string">  	请选择：</span></span><br><span class="line"><span class="string">    1. 显示系统信息</span></span><br><span class="line"><span class="string">    2. 显示磁盘空间</span></span><br><span class="line"><span class="string">    3. 显示家目录空间利用率</span></span><br><span class="line"><span class="string">    0. 退出</span></span><br><span class="line"><span class="string">  _EOF_</span></span><br><span class="line">  <span class="built_in">read</span> -p <span class="string">&quot;输入选择 [0-3] &gt; &quot;</span></span><br><span class="line">  <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$REPLY</span>&quot;</span> =~ ^[0-3]$ ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$REPLY</span>&quot;</span> == 1 ]]; <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;主机名: <span class="variable">$HOSTNAME</span>&quot;</span></span><br><span class="line">      <span class="built_in">uptime</span></span><br><span class="line">      <span class="built_in">sleep</span> <span class="string">&quot;<span class="variable">$DELAY</span>&quot;</span></span><br><span class="line">      <span class="built_in">continue</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$REPLY</span>&quot;</span> == 2 ]]; <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">df</span> -h</span><br><span class="line">      <span class="built_in">sleep</span> <span class="string">&quot;<span class="variable">$DELAY</span>&quot;</span></span><br><span class="line">      <span class="built_in">continue</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$REPLY</span>&quot;</span> == 3 ]]; <span class="keyword">then</span></span><br><span class="line">      <span class="keyword">if</span> [[ <span class="string">&quot;<span class="subst">$(id -u)</span>&quot;</span> -eq 0 ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;家目录空间利用率（所有用户）&quot;</span></span><br><span class="line">        <span class="built_in">du</span> -sh /home/*</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;家目录空间利用率（<span class="variable">$USER</span>）&quot;</span></span><br><span class="line">        <span class="built_in">du</span> -sh <span class="string">&quot;<span class="variable">$HOME</span>&quot;</span></span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">      <span class="built_in">sleep</span> <span class="string">&quot;<span class="variable">$DELAY</span>&quot;</span></span><br><span class="line">      <span class="built_in">continue</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$REPLY</span>&quot;</span> == 0 ]]; <span class="keyword">then</span></span><br><span class="line">    	<span class="built_in">break</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;无效输入。&quot;</span></span><br><span class="line">    <span class="built_in">sleep</span> <span class="string">&quot;<span class="variable">$DELAY</span>&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;程序终止。&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个版本的脚本中，我们通过使用true命令为while提供退出状态来设置一个<em>无限循环</em>（永远不会自行终止的循环）。由于true总是以退出状态为零退出，循环永远不会结束。这是一个令人惊讶的常见脚本技巧。由于循环永远不会自行结束，因此程序员有责任在合适的时候提供某种方式来跳出循环。在这个脚本中，当选择0时使用break命令退出循环。在其他脚本选择的末尾包含了continue命令，以允许更有效的执行。通过使用continue，脚本将跳过不需要的代码。例如，如果选择了1并被识别，那么测试其他选择的原因就</p>
+<p>没有了。</p>
+<h4 id="until"><a href="#until" class="headerlink" title="until"></a>until</h4><p>until命令很像while，除了它在遇到非零退出状态时不退出循环，它做相反的事情。<em>until循环</em>会一直继续，直到它接收到一个零退出状态。在我们的while-count脚本中，我们继续循环，只要count变量的值小于或等于5。我们可以通过使用until对脚本进行编码来获得相同的结果。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># until-count: 显示一系列数字</span></span><br><span class="line">count=1</span><br><span class="line"><span class="keyword">until</span> [[ <span class="string">&quot;<span class="variable">$count</span>&quot;</span> -gt 5 ]]; <span class="keyword">do</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$count</span>&quot;</span></span><br><span class="line">  count=$((count + <span class="number">1</span>))</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;完成。&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>通过将测试表达式改为$count -gt 5，until将在正确的时间终止循环。选择使用while或until循环通常是选择哪一个允许编写最清晰的测试的问题。</p>
+<h3 id="使用循环读取文件"><a href="#使用循环读取文件" class="headerlink" title="使用循环读取文件"></a>使用循环读取文件</h3><p>while和until可以处理标准输入。这允许使用while和until循环处理文件。在以下示例中，我们将显示之前章节中使用的distros.txt文件的内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># while-read: 从文件中读取行</span></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> distro version release; <span class="keyword">do</span></span><br><span class="line">  <span class="built_in">printf</span> <span class="string">&quot;发行版: %s\t版本: %s\t发布: %s\n&quot;</span> \</span><br><span class="line">    <span class="string">&quot;<span class="variable">$distro</span>&quot;</span> \</span><br><span class="line">    <span class="string">&quot;<span class="variable">$version</span>&quot;</span> \</span><br><span class="line">    <span class="string">&quot;<span class="variable">$release</span>&quot;</span></span><br><span class="line"><span class="keyword">done</span> &lt; distros.txt</span><br></pre></td></tr></table></figure>
+
+<p>要将文件重定向到循环中，我们将重定向操作符放在done语句之后。循环将使用read从重定向的文件中输入字段。read命令在读取每行后退出，退出状态为零，直到到达文件末尾。那时，它将以非零退出状态退出，从而终止循环。也可以将标准输入管道到循环中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># while-read2: 从文件中读取行</span></span><br><span class="line"><span class="built_in">sort</span> -k 1,1 -k 2n distros.txt | <span class="keyword">while</span> <span class="built_in">read</span> distro version release; <span class="keyword">do</span></span><br><span class="line">  <span class="built_in">printf</span> <span class="string">&quot;发行版: %s\t版本: %s\t发布: %s\n&quot;</span> \</span><br><span class="line">    <span class="string">&quot;<span class="variable">$distro</span>&quot;</span> \</span><br><span class="line">    <span class="string">&quot;<span class="variable">$version</span>&quot;</span> \</span><br><span class="line">    <span class="string">&quot;<span class="variable">$release</span>&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我们取sort命令的输出并显示文本流。然而，重要的是要记住，由于管道会在子shell中执行循环，循环中创建或分配的任何变量在循环终止时都会丢失。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>随着循环的引入以及我们之前遇到的分支、子程序和序列，我们已经涵盖了程序中使用的主要流控制类型。bash还有更多技巧，但它们都是对这些基本概念的完善。</p>
+<h3 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h3><ul>
+<li><p>来自Linux文档项目的<em>初学者Bash指南</em>有更多关于while循环的示例：</p>
+<p><span class="exturl" data-url="aHR0cDovL3RsZHAub3JnL0xEUC9CYXNoLUJlZ2lubmVycy1HdWlkZS9odG1sL3NlY3RfMDlfMDIuaHRtbA==">http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_09_02.html<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>维基百科有关于循环的文章，它是关于流控制更大文章的一部分：</p>
+<p><span class="exturl" data-url="aHR0cDovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9Db250cm9sX2Zsb3cjTG9vcHM=">http://en.wikipedia.org/wiki/Control_flow#Loops<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TLCL/" rel="tag"># TLCL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/28-reading-keyboard-input/" rel="prev" title="读取键盘输入">
+                  <i class="fa fa-angle-left"></i> 读取键盘输入
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/05/30-troubleshooting/" rel="next" title="故障排除">
+                  故障排除 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"19564637fd2a90fcba5fe5305dff0f7a"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

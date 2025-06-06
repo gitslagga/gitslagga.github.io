@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="升级原因 模版 theme-next 最后版本是 7.8.0，几月未更新。现在迁移到 hexo-theme 最后版本是 8.13.2，目前为止。 hexo-theme 可以模版可以放在 themes 文件下面，也可以使用 npm 安装。 hexo 从版本 5.0.0 升级到 6.3.0。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo 博客升级">
+<meta property="og:url" content="https://slagga.top/2022/11/hexo-blog-upgrade/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="升级原因 模版 theme-next 最后版本是 7.8.0，几月未更新。现在迁移到 hexo-theme 最后版本是 8.13.2，目前为止。 hexo-theme 可以模版可以放在 themes 文件下面，也可以使用 npm 安装。 hexo 从版本 5.0.0 升级到 6.3.0。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-15T08:22:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:19:18.157Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Next">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2022/11/hexo-blog-upgrade/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2022/11/hexo-blog-upgrade/","path":"2022/11/hexo-blog-upgrade/","title":"Hexo 博客升级"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Hexo 博客升级 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">升级原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">升级步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%8D%87%E7%BA%A7-node-%E5%92%8C-hexo-%E5%88%B0%E5%BD%93%E5%89%8D%E6%96%B0%E7%89%88%E6%9C%AC"><span class="nav-number">3.</span> <span class="nav-text">1. 升级 node 和 hexo 到当前新版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8D%9A%E5%AE%A2%E7%9B%AE%E5%BD%95"><span class="nav-number">4.</span> <span class="nav-text">2. 初始化博客目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%AE%89%E8%A3%85-hexo-theme-%E6%A8%A1%E7%89%88"><span class="nav-number">5.</span> <span class="nav-text">3. 安装 hexo-theme 模版</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%A4%8D%E5%88%B6%E5%B7%B2%E5%88%9B%E4%BD%9C%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0-source"><span class="nav-number">6.</span> <span class="nav-text">4. 复制已创作的博客文章 source</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E4%BF%AE%E6%94%B9%E4%B8%AA%E4%BA%BA%E9%85%8D%E7%BD%AE%EF%BC%8C%E6%B7%BB%E5%8A%A0%E6%A8%A1%E7%89%88%E9%85%8D%E7%BD%AE"><span class="nav-number">7.</span> <span class="nav-text">5. 修改个人配置，添加模版配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%AE%89%E8%A3%85%E5%8D%9A%E5%AE%A2%E5%8A%9F%E8%83%BD%E6%8F%92%E4%BB%B6"><span class="nav-number">8.</span> <span class="nav-text">6. 安装博客功能插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E6%9B%B4%E6%8D%A2%E4%BB%93%E5%BA%93%EF%BC%8C%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81"><span class="nav-number">9.</span> <span class="nav-text">7. 更换仓库，提交代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Github-Page-%E6%8E%A8%E9%80%81"><span class="nav-number">10.</span> <span class="nav-text">8. Github Page 推送</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99%E4%BC%98%E5%8C%96"><span class="nav-number">11.</span> <span class="nav-text">9. 博客网站优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-%E6%B7%BB%E5%8A%A0-Google-%E9%85%8D%E7%BD%AE"><span class="nav-number">12.</span> <span class="nav-text">10. 添加 Google 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">13.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2022/11/hexo-blog-upgrade/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Hexo 博客升级 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hexo 博客升级
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-15 16:22:30" itemprop="dateCreated datePublished" datetime="2022-11-15T16:22:30+08:00">2022-11-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:19:18" itemprop="dateModified" datetime="2025-06-06T14:19:18+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Website/" itemprop="url" rel="index"><span itemprop="name">Website</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="升级原因"><a href="#升级原因" class="headerlink" title="升级原因"></a>升级原因</h2><ol>
+<li>模版 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0">theme-next<i class="fa fa-external-link-alt"></i></span> 最后版本是 <code>7.8.0</code>，几月未更新。现在迁移到 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL25leHQtdGhlbWUvaGV4by10aGVtZS1uZXh0">hexo-theme<i class="fa fa-external-link-alt"></i></span> 最后版本是 <code>8.13.2</code>，目前为止。</li>
+<li><code>hexo-theme</code> 可以模版可以放在 <code>themes</code> 文件下面，也可以使用 <code>npm</code> 安装。</li>
+<li><code>hexo</code> 从版本 <code>5.0.0</code> 升级到 <code>6.3.0</code>。</li>
+</ol>
+<span id="more"></span>
+
+<h2 id="升级步骤"><a href="#升级步骤" class="headerlink" title="升级步骤"></a>升级步骤</h2><h2 id="1-升级-node-和-hexo-到当前新版本"><a href="#1-升级-node-和-hexo-到当前新版本" class="headerlink" title="1. 升级 node 和 hexo 到当前新版本"></a>1. 升级 <code>node</code> 和 <code>hexo</code> 到当前新版本</h2><p>升级 <code>node</code> 版本，目前是 <code>18.12.1</code></p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ nvm install <span class="comment">--lts</span></span><br><span class="line">$ nvm <span class="keyword">use</span> <span class="comment">--lts</span></span><br></pre></td></tr></table></figure>
+<p>升级 <code>hexo</code> 版本，目前是 <code>6.3.0</code></p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm uninstall -g hexo-<span class="keyword">cli</span></span><br><span class="line">$ npm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
+<p><span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mv">官网<i class="fa fa-external-link-alt"></i></span> 有 <code>hexo</code> 需要的最低 <code>node</code> 版本要求。</p>
+<h2 id="2-初始化博客目录"><a href="#2-初始化博客目录" class="headerlink" title="2. 初始化博客目录"></a>2. 初始化博客目录</h2><p>在这里，我没有在旧仓库中基础上开发升级，而是创建一个新的项目，升级完成后进行覆盖。因为包依赖版本有所不同，模版文件也不同。<br>博客项目初始化。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> hexo init &lt;folder&gt;</span><br><span class="line"><span class="variable">$</span> <span class="built_in">cd</span> &lt;folder&gt;</span><br><span class="line"><span class="variable">$</span> npm install</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-安装-hexo-theme-模版"><a href="#3-安装-hexo-theme-模版" class="headerlink" title="3. 安装 hexo-theme 模版"></a>3. 安装 <code>hexo-theme</code> 模版</h2><p>使用 <code>npm</code> 安装 <code>hexo-theme</code> 模版。</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>npm install hexo-theme-<span class="keyword">next</span></span><br></pre></td></tr></table></figure>
+<p>或者存放在仓库中，安装到 <code>hexo-theme</code> 模版到 <code>themes</code> 目录。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https:<span class="regexp">//gi</span>thub.com<span class="regexp">/next-theme/</span>hexo-theme-<span class="keyword">next</span> themes/<span class="keyword">next</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-复制已创作的博客文章-source"><a href="#4-复制已创作的博客文章-source" class="headerlink" title="4. 复制已创作的博客文章 source"></a>4. 复制已创作的博客文章 <code>source</code></h2><p>删除新目录自带的 <code>Hello World</code> 文章，复制之前的博客文章到新的目录下。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">rm</span> -rf <span class="built_in">source</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> ..</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cp</span> -r &lt;old-folder&gt;/source</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-修改个人配置，添加模版配置"><a href="#5-修改个人配置，添加模版配置" class="headerlink" title="5. 修改个人配置，添加模版配置"></a>5. 修改个人配置，添加模版配置</h2><p>修改博客网站配置文件 <code>_config.yml</code>， 大部分内容没有变化，有些自定的配置需要修改。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Site</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">计算机那些事</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">如果它不应该发生，它就不会发生</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">计算机那些事</span> <span class="bullet">-</span> <span class="string">个人博客网站，涵盖领域包括IT技术、区块链技术、技术观点等</span></span><br><span class="line"><span class="attr">keywords:</span> <span class="string">Blog,</span> <span class="string">HTML,</span> <span class="string">CSS,</span> <span class="string">JavaScript,</span> <span class="string">Python,</span> <span class="string">Php,</span> <span class="string">Java,</span> <span class="string">Go,</span> <span class="string">Redis,</span> <span class="string">MySQL,</span> <span class="string">Node.js,</span> <span class="string">React,</span> <span class="string">Vuejs,</span> <span class="string">Git,</span> <span class="string">Programming,</span> <span class="string">Web</span> <span class="string">Development,</span> <span class="string">Blockchain</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">Slagga</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shanghai</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://gitslagga.github.com</span></span><br><span class="line"></span><br><span class="line"><span class="string">......</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/one-command-deployment</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:gitslagga/gitslagga.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+<p>添加模版配置文件 <code>_config.next.yml</code>。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="attr">since:</span> <span class="number">2015</span></span><br><span class="line"></span><br><span class="line"><span class="attr">scheme:</span> <span class="string">Pisces</span></span><br><span class="line"></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-th</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br><span class="line"></span><br><span class="line"><span class="attr">menu_settings:</span></span><br><span class="line">  <span class="attr">icons:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">badges:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">https://avatars.githubusercontent.com/u/19620432</span></span><br><span class="line">  <span class="attr">rounded:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">rotated:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="attr">GitHub:</span> <span class="string">https://github.com/gitslagga</span> <span class="string">||</span> <span class="string">fab</span> <span class="string">fa-github</span></span><br><span class="line">  <span class="attr">E-Mail:</span> <span class="string">mailto:slagga@duck.com</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-envelope</span></span><br><span class="line"></span><br><span class="line"><span class="attr">codeblock:</span></span><br><span class="line">  <span class="attr">copy_button:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">style:</span> <span class="string">mac</span></span><br><span class="line"></span><br><span class="line"><span class="attr">back2top:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">scrollpercent:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">github_banner:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">permalink:</span> <span class="string">&#x27;https://github.com/gitslagga&#x27;</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">&#x27;Follow me on GitHub&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">font:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">global:</span></span><br><span class="line">    <span class="attr">external:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">family:</span> <span class="string">Monda</span></span><br><span class="line"></span><br><span class="line"><span class="attr">comments:</span></span><br><span class="line">  <span class="attr">active:</span> <span class="string">gitalk</span></span><br><span class="line"></span><br><span class="line"><span class="attr">gitalk:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">github_id:</span> <span class="string">gitslagga</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">gitslagga.github.io</span></span><br><span class="line">  <span class="attr">client_id:</span> <span class="string">******</span></span><br><span class="line">  <span class="attr">client_secret:</span> <span class="string">******</span></span><br><span class="line">  <span class="attr">admin_user:</span> <span class="string">gitslagga</span> </span><br><span class="line">  <span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"></span><br><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-安装博客功能插件"><a href="#6-安装博客功能插件" class="headerlink" title="6. 安装博客功能插件"></a>6. 安装博客功能插件</h2><ul>
+<li>安装文章搜索插件<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm <span class="keyword">install</span> hexo-generator-searchdb</span><br></pre></td></tr></table></figure></li>
+<li>安装远程仓库推送插件<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm <span class="keyword">install</span> hexo-deployer-git</span><br></pre></td></tr></table></figure></li>
+<li>安装 <code>gitalk</code> 文章评论插件<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm <span class="keyword">install</span> gitalk</span><br></pre></td></tr></table></figure>
+<a href="%60https://hexo.io/plugins/%60"><code>Hexo</code> 官方插件列表</a>。</li>
+</ul>
+<h2 id="7-更换仓库，提交代码"><a href="#7-更换仓库，提交代码" class="headerlink" title="7. 更换仓库，提交代码"></a>7. 更换仓库，提交代码</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cp</span> ../&lt;old-site&gt;/.git .</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git add -A</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git commit -m <span class="string">&quot;update hexo and next version&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git push</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="8-Github-Page-推送"><a href="#8-Github-Page-推送" class="headerlink" title="8. Github Page 推送"></a>8. <code>Github Page</code> 推送</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo <span class="keyword">generate</span></span><br><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<h2 id="9-博客网站优化"><a href="#9-博客网站优化" class="headerlink" title="9. 博客网站优化"></a>9. 博客网站优化</h2><ol>
+<li>页面局部刷新使用 <code>pjax: true</code>。</li>
+<li>图像和视频支持使用 <code>fancybox: true</code>。</li>
+<li>为汉字和英文数字之间添加空格使用 <code>pangu: true</code>。</li>
+<li>部署后在 <code>Github</code> 中出现 <code>ReferenceError: velocity is not defined</code> 错误，网站无法访问。<br>需要在 <code>_config.next.yml</code> 中配置以下内容：<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">......</span></span><br><span class="line"></span><br><span class="line"><span class="attr">motion:</span></span><br><span class="line">  <span class="attr">async:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">vendors:</span></span><br><span class="line">  <span class="attr">internal:</span> <span class="string">cdnjs</span></span><br><span class="line">  <span class="attr">plugins:</span> <span class="string">cdnjs</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="10-添加-Google-配置"><a href="#10-添加-Google-配置" class="headerlink" title="10. 添加 Google 配置"></a>10. 添加 <code>Google</code> 配置</h2><p>使用 <code>Google Analytics</code>，申请地址是 <span class="exturl" data-url="aHR0cHM6Ly9hbmFseXRpY3MuZ29vZ2xlLmNvbS8=">谷歌分析<i class="fa fa-external-link-alt"></i></span>。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">google<span class="emphasis">_analytics:</span></span><br><span class="line"><span class="emphasis">  tracking_</span>id: G-<span class="strong">*****</span>*</span><br></pre></td></tr></table></figure>
+<p>合并重复的 <code>url</code> 链接。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">index_with_subtitle:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>所有外部链接都是跨链接。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">exturl:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>Google Webmasters</code>，申请地址是 <span class="exturl" data-url="aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS93ZWJtYXN0ZXJzL3Rvb2xz">谷歌站长工具<i class="fa fa-external-link-alt"></i></span>。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">google_site_verification: <span class="strong">*****</span><span class="strong">*-*</span><span class="strong">*****</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>整个过程还是比较繁琐，坚持就是胜利。</li>
+<li><code>Next</code> 的配置有一些变化，增加了些配置，消减了些配置，比如：<code>codeblock: highlight_theme</code>。</li>
+<li>我的 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==">Github<i class="fa fa-external-link-alt"></i></span>，欢迎 <code>Follow</code>。</li>
+<li><a target="_blank" rel="noopener" href="https://theme-next.js.org/">更多 <code>Next</code> 官方配置帮助文档</a></li>
+</ol>
+<p>Have a nice day, Happy Coding. </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+              <a href="/tags/Next/" rel="tag"># Next</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/web3-library/" rel="prev" title="19 个很棒的免费 Web3 资源，会让你大吃一惊">
+                  <i class="fa fa-angle-left"></i> 19 个很棒的免费 Web3 资源，会让你大吃一惊
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/hexo-blog-server/" rel="next" title="Hexo 博客部署">
+                  Hexo 博客部署 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"913f252aa8a06e02e850ea68f363fc9d"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

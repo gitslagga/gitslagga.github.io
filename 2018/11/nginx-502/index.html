@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+
+    <meta name="description" content="出现 502 bad gateway 错误的原因12341. php-fpm 进程数不够用2. Linux 内核打开文件数量小3. 脚本执行时间超时4. 缓存设置比较小">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网站出现 502 BAD GATEWAY 的解决办法">
+<meta property="og:url" content="https://slagga.top/2018/11/nginx-502/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="出现 502 bad gateway 错误的原因12341. php-fpm 进程数不够用2. Linux 内核打开文件数量小3. 脚本执行时间超时4. 缓存设置比较小">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-11-09T15:25:30.000Z">
+<meta property="article:modified_time" content="2025-06-06T06:13:40.919Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Blog, HTML, CSS, JavaScript, Python, PHP, Java, Go, Redis, MySQL, Node.js, React, Vuejs, Git, Programming, Web Development, Blockchain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://slagga.top/2018/11/nginx-502/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2018/11/nginx-502/","path":"2018/11/nginx-502/","title":"网站出现 502 BAD GATEWAY 的解决办法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>网站出现 502 BAD GATEWAY 的解决办法 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、定制和合作。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">229</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">78</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BA%E7%8E%B0-502-bad-gateway-%E9%94%99%E8%AF%AF%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">出现 502 bad gateway 错误的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http-%E9%83%A8%E5%88%86"><span class="nav-number">2.</span> <span class="nav-text">http 部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#server-%E9%83%A8%E5%88%86"><span class="nav-number">3.</span> <span class="nav-text">server 部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E4%BF%AE%E6%94%B9%E8%B6%85%E6%97%B6-%E5%8F%AA%E6%94%B9%E4%BA%86-http-%E9%83%A8%E5%88%86-%E7%BC%93%E5%86%B2%E5%9F%BA%E6%9C%AC%E4%B8%8A%E9%83%BD%E5%8A%A0%E4%BA%86%E5%87%A0%E5%80%8D"><span class="nav-number">4.</span> <span class="nav-text">第一步修改超时 只改了 http 部分 缓冲基本上都加了几倍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%E4%BF%AE%E6%94%B9-server-%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E8%B6%85%E6%97%B6"><span class="nav-number">5.</span> <span class="nav-text">第二步修改 server 代理服务超时</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/11/nginx-502/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="计算机那些事 - 个人博客网站，涉及的领域包括IT技术、区块链行业、产品思维、运营能力、个人观点等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="网站出现 502 BAD GATEWAY 的解决办法 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网站出现 502 BAD GATEWAY 的解决办法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-11-09 23:25:30" itemprop="dateCreated datePublished" datetime="2018-11-09T23:25:30+08:00">2018-11-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-06 14:13:40" itemprop="dateModified" datetime="2025-06-06T14:13:40+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Nginx/" itemprop="url" rel="index"><span itemprop="name">Nginx</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="出现-502-bad-gateway-错误的原因"><a href="#出现-502-bad-gateway-错误的原因" class="headerlink" title="出现 502 bad gateway 错误的原因"></a>出现 502 bad gateway 错误的原因</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1.</span> php-fpm 进程数不够用</span><br><span class="line"><span class="bullet">2.</span> Linux 内核打开文件数量小</span><br><span class="line"><span class="bullet">3.</span> 脚本执行时间超时</span><br><span class="line"><span class="bullet">4.</span> 缓存设置比较小</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>网站间歇性出现 502，第一反应不是程序的问题，而是 nginx 服务器的问题，因为这是代理服务器出现的问题，代理服务器并没有安装 php 排除第一中情况。</p>
+<p>于此想到的是可能是超时，所以我把超时修改了一些</p>
+<p>以下是服务器原配置 (重点配置)</p>
+<h2 id="http-部分"><a href="#http-部分" class="headerlink" title="http 部分"></a>http 部分</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">server_names_hash_bucket_size</span> <span class="number">64</span>;</span><br><span class="line"><span class="attribute">client_header_buffer_size</span> <span class="number">128</span>k;</span><br><span class="line"><span class="attribute">large_client_header_buffers</span> <span class="number">4</span> <span class="number">32</span>k;</span><br><span class="line"><span class="attribute">client_max_body_size</span> <span class="number">50</span>m;</span><br><span class="line"></span><br><span class="line"><span class="attribute">keepalive_timeout</span> <span class="number">60</span>;</span><br><span class="line"><span class="attribute">fastcgi_connect_timeout</span> <span class="number">60</span>;</span><br><span class="line"><span class="attribute">fastcgi_send_timeout</span> <span class="number">60</span>;</span><br><span class="line"><span class="attribute">fastcgi_read_timeout</span> <span class="number">600</span>;</span><br><span class="line"><span class="attribute">fastcgi_buffer_size</span> <span class="number">64</span>k;</span><br><span class="line"><span class="attribute">fastcgi_buffers</span> <span class="number">4</span> <span class="number">128</span>k;</span><br><span class="line"><span class="attribute">fastcgi_busy_buffers_size</span> <span class="number">128</span>k;</span><br><span class="line"><span class="attribute">fastcgi_temp_file_write_size</span> <span class="number">256</span>k;</span><br><span class="line"></span><br><span class="line"><span class="attribute">gzip_buffers</span> <span class="number">4</span> <span class="number">128</span>k;</span><br></pre></td></tr></table></figure>
+
+<h2 id="server-部分"><a href="#server-部分" class="headerlink" title="server 部分"></a>server 部分</h2><figure class="highlight tp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">upstream myweb &#123;</span><br><span class="line">server <span class="number">10</span><span class="number">.10</span><span class="number">.10</span><span class="number">.1</span>:<span class="number">80</span> max_fails=<span class="number">3</span> fail_timeout=<span class="number">30</span>s;</span><br><span class="line">server <span class="number">10</span><span class="number">.10</span><span class="number">.10</span><span class="number">.2</span>:<span class="number">80</span> max_fails=<span class="number">3</span> fail_timeout=<span class="number">30</span>s;</span><br><span class="line">ip_hash;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location / &#123;</span><br><span class="line">proxy_pass http:<span class="comment">//myweb;</span></span><br><span class="line">proxy_next_upstream error timeout invalid_header http_<span class="number">500</span> http_<span class="number">502</span> http_<span class="number">503</span>;</span><br><span class="line">proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">proxy_set_header <span class="keyword">X</span>-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">proxy_set_header <span class="keyword">X</span>-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">proxy_set_header <span class="keyword">X</span>-Forwarded-Proto https;</span><br><span class="line">proxy_redirect off;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第一步修改超时-只改了-http-部分-缓冲基本上都加了几倍"><a href="#第一步修改超时-只改了-http-部分-缓冲基本上都加了几倍" class="headerlink" title="第一步修改超时 只改了 http 部分 缓冲基本上都加了几倍"></a>第一步修改超时 只改了 http 部分 缓冲基本上都加了几倍</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">server_names_hash_bucket_size</span> <span class="number">512</span>;</span><br><span class="line"><span class="attribute">client_header_buffer_size</span> <span class="number">512</span>k;</span><br><span class="line"><span class="attribute">large_client_header_buffers</span> <span class="number">16</span> <span class="number">128</span>k;</span><br><span class="line"><span class="attribute">client_max_body_size</span> <span class="number">256</span>m;</span><br><span class="line"></span><br><span class="line"><span class="attribute">keepalive_timeout</span> <span class="number">600</span>;</span><br><span class="line"><span class="attribute">fastcgi_connect_timeout</span> <span class="number">600</span>;</span><br><span class="line"><span class="attribute">fastcgi_send_timeout</span> <span class="number">600</span>;</span><br><span class="line"><span class="attribute">fastcgi_read_timeout</span> <span class="number">600</span>;</span><br><span class="line"><span class="attribute">fastcgi_buffer_size</span> <span class="number">256</span>k;</span><br><span class="line"><span class="attribute">fastcgi_buffers</span> <span class="number">16</span> <span class="number">512</span>k;</span><br><span class="line"><span class="attribute">fastcgi_busy_buffers_size</span> <span class="number">512</span>k;</span><br><span class="line"><span class="attribute">fastcgi_temp_file_write_size</span> <span class="number">1024</span>k;</span><br><span class="line"></span><br><span class="line"><span class="attribute">gzip_buffers</span> <span class="number">16</span> <span class="number">512</span>k;</span><br></pre></td></tr></table></figure>
+
+<p>观察 nginx 出现 502 的频率并没有下降，还是和以前一样</p>
+<h2 id="第二步修改-server-代理服务超时"><a href="#第二步修改-server-代理服务超时" class="headerlink" title="第二步修改 server 代理服务超时"></a>第二步修改 server 代理服务超时</h2><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> / &#123;</span><br><span class="line"><span class="attribute">proxy_pass</span> http://myweb;</span><br><span class="line"><span class="attribute">proxy_next_upstream</span> <span class="literal">error</span> timeout invalid_header http_500 http_502 http_503;</span><br><span class="line"><span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span> X-Forwarded-Proto https;</span><br><span class="line"><span class="attribute">proxy_redirect</span> <span class="literal">off</span>;</span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_connect_timeout</span> <span class="number">300s</span>;</span><br><span class="line"><span class="attribute">proxy_send_timeout</span> <span class="number">300s</span>;</span><br><span class="line"><span class="attribute">proxy_read_timeout</span> <span class="number">300s</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>观察 nginx502 的频率有一点下降，没有达到预期效果于是更改代理的缓冲区</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> / &#123;</span><br><span class="line"><span class="attribute">proxy_pass</span> http://myweb;</span><br><span class="line"><span class="attribute">proxy_next_upstream</span> <span class="literal">error</span> timeout invalid_header http_500 http_502 http_503;</span><br><span class="line"><span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span> X-Forwarded-Proto http;</span><br><span class="line"><span class="attribute">proxy_redirect</span> <span class="literal">off</span>;</span><br><span class="line"><span class="attribute">proxy_connect_timeout</span> <span class="number">300s</span>;</span><br><span class="line"><span class="attribute">proxy_send_timeout</span> <span class="number">300s</span>;</span><br><span class="line"><span class="attribute">proxy_read_timeout</span> <span class="number">300s</span>;</span><br><span class="line"><span class="attribute">proxy_buffer_size</span> <span class="number">512k</span>;</span><br><span class="line"><span class="attribute">proxy_buffers</span> <span class="number">32</span> <span class="number">512k</span>;</span><br><span class="line"><span class="attribute">proxy_busy_buffers_size</span> <span class="number">512k</span>;</span><br><span class="line"><span class="attribute">proxy_temp_file_write_size</span> <span class="number">512k</span>;</span><br><span class="line"><span class="attribute">proxy_ignore_client_abort</span> <span class="literal">on</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>观察 nginx502 的频率和刚才一样，并没有明显效果。打开 nginx 的错误日志，观察错误状态，nginx 错误日志显示</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="built_in">error</span>] 20435#0: <span class="number">*3890606</span> <span class="literal">no</span> live upstreams <span class="keyword">while</span> connecting <span class="keyword">to</span> upstream, client:</span><br></pre></td></tr></table></figure>
+
+<p>意思是 nginx 发现没有存活的后端了，后端有两台服务器，这怎么可能</p>
+<p>猜想 nginx 在等待后端服务器返回的时候做了判断，如果后端服务器响应慢就有可能踢掉后端服务器，因此就可能把后端的两台服务器都踢掉</p>
+<p>所以问题是出在 upstream 配置，原来配置中的 <code>max_fails=3 fail_timeout=30s;</code> 是默认的配置</p>
+<p>我尝试修改 <code>max_fails=10 fail_timeout=60s;</code> 观察 nginx 出现 502 的频率下降了很多，但是如果出现 502 就时间比较久。以下是 upstream 最终配置</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream myweb &#123;<span class="built_in"></span></span><br><span class="line"><span class="built_in">server </span>10.10.10.1:80 <span class="attribute">max_fails</span>=60 <span class="attribute">fail_timeout</span>=10s;<span class="built_in"></span></span><br><span class="line"><span class="built_in">server </span>10.10.10.2:80 <span class="attribute">max_fails</span>=60 <span class="attribute">fail_timeout</span>=10s;</span><br><span class="line">ip_hash;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来可能的优化 调高调高 linux 内核打开文件数量备注一下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> ‘<span class="built_in">ulimit</span> -HSn 65536′ &gt;&gt; /etc/profile</span><br><span class="line"><span class="built_in">echo</span> ‘<span class="built_in">ulimit</span> -HSn 65536′ &gt;&gt; /etc/rc.local</span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/php-object-array/" rel="prev" title="PHP 简单对象与数组的转换">
+                  <i class="fa fa-angle-left"></i> PHP 简单对象与数组的转换
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/nodejs-async/" rel="next" title="Nodejs 中使用 Async/Await">
+                  Nodejs 中使用 Async/Await <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/motion.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/sidebar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/next-boot.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/pjax.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/search/local-search.min.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/fancybox.min.js"></script>
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"5a6a39f8a06d6e14cdcb7baaa286bccc"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/third-party/comments/gitalk.min.js"></script>
+
+</body>
+</html>

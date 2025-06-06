@@ -19,12 +19,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gitslagga.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
 
     <meta name="description" content="五类并发问题丢失更新（第一类丢失更新）撤销一个事务时，把其他事务已提交的更新数据覆盖（A 和 B 事务并发执行，A 事务执行更新后，提交；B 事务在 A 事务更新后，B 事务结束前也做了对该行数据的更新操作，然后回滚，则两次更新操作都丢失了）。这种并发问题是由于完全没有隔离事务造成的。只要设置隔离级别，数据库就能保证此类问题不发生。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库并发的五个问题及解决方案">
-<meta property="og:url" content="https://slagga.top/2018/04/mysql-transaction/index.html">
+<meta property="og:url" content="https://gitslagga.github.io/2018/04/mysql-transaction/index.html">
 <meta property="og:site_name" content="计算机那些事">
 <meta property="og:description" content="五类并发问题丢失更新（第一类丢失更新）撤销一个事务时，把其他事务已提交的更新数据覆盖（A 和 B 事务并发执行，A 事务执行更新后，提交；B 事务在 A 事务更新后，B 事务结束前也做了对该行数据的更新操作，然后回滚，则两次更新操作都丢失了）。这种并发问题是由于完全没有隔离事务造成的。只要设置隔离级别，数据库就能保证此类问题不发生。">
 <meta property="og:locale" content="zh_CN">
@@ -35,11 +35,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://slagga.top/2018/04/mysql-transaction/">
+<link rel="canonical" href="https://gitslagga.github.io/2018/04/mysql-transaction/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2018/04/mysql-transaction/","path":"2018/04/mysql-transaction/","title":"数据库并发的五个问题及解决方案"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gitslagga.github.io/2018/04/mysql-transaction/","path":"2018/04/mysql-transaction/","title":"数据库并发的五个问题及解决方案"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>数据库并发的五个问题及解决方案 | 计算机那些事</title>
@@ -206,7 +206,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2018/04/mysql-transaction/">
+    <link itemprop="mainEntityOfPage" href="https://gitslagga.github.io/2018/04/mysql-transaction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">

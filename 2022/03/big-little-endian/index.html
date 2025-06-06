@@ -19,30 +19,30 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gitslagga.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
 
     <meta name="description" content="引言计算机只理解二进制。这意味着 0 和 1 构成了计算机使用的语言。 一位是 0 或 1 。8 位组成一个字节。从这些简单的部分，我们可以构建极其复杂的连接计算机系统来渲染视频、显示来自世界各地的文本并计算极其复杂的算法。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="什么是字节序？ Big-Endian vs Little-Endian 举例说明">
-<meta property="og:url" content="https://slagga.top/2022/03/big-little-endian/index.html">
+<meta property="og:url" content="https://gitslagga.github.io/2022/03/big-little-endian/index.html">
 <meta property="og:site_name" content="计算机那些事">
 <meta property="og:description" content="引言计算机只理解二进制。这意味着 0 和 1 构成了计算机使用的语言。 一位是 0 或 1 。8 位组成一个字节。从这些简单的部分，我们可以构建极其复杂的连接计算机系统来渲染视频、显示来自世界各地的文本并计算极其复杂的算法。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://slagga.top/images/2022/up-fe28e0c2a824e027799ed6a3073e57738e8.webp">
-<meta property="og:image" content="https://slagga.top/images/2022/up-102fe8a780fd29a97b8532d8624b0e19107.webp">
+<meta property="og:image" content="https://gitslagga.github.io/images/2022/up-fe28e0c2a824e027799ed6a3073e57738e8.webp">
+<meta property="og:image" content="https://gitslagga.github.io/images/2022/up-102fe8a780fd29a97b8532d8624b0e19107.webp">
 <meta property="article:published_time" content="2022-03-06T11:28:25.000Z">
 <meta property="article:modified_time" content="2025-06-06T06:13:40.932Z">
 <meta property="article:author" content="Slagga">
 <meta property="article:tag" content="Programming, Web Development, Blockchain, Software Engineering, Computer Science, Technology, Open Source, Tutorials, Guides, Tips, Tricks, Reviews, News">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://slagga.top/images/2022/up-fe28e0c2a824e027799ed6a3073e57738e8.webp">
+<meta name="twitter:image" content="https://gitslagga.github.io/images/2022/up-fe28e0c2a824e027799ed6a3073e57738e8.webp">
 
 
-<link rel="canonical" href="https://slagga.top/2022/03/big-little-endian/">
+<link rel="canonical" href="https://gitslagga.github.io/2022/03/big-little-endian/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2022/03/big-little-endian/","path":"2022/03/big-little-endian/","title":"什么是字节序？ Big-Endian vs Little-Endian 举例说明"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gitslagga.github.io/2022/03/big-little-endian/","path":"2022/03/big-little-endian/","title":"什么是字节序？ Big-Endian vs Little-Endian 举例说明"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>什么是字节序？ Big-Endian vs Little-Endian 举例说明 | 计算机那些事</title>
@@ -209,7 +209,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2022/03/big-little-endian/">
+    <link itemprop="mainEntityOfPage" href="https://gitslagga.github.io/2022/03/big-little-endian/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">

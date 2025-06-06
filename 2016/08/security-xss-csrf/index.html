@@ -19,12 +19,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gitslagga.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
 
     <meta name="description" content="概述在那个年代，大家一般用拼接字符串的方式来构造动态 SQL 语句创建应用，于是 SQL 注入成了很流行的攻击方式。在这个年代， 参数化查询已 [1] 经成了普遍用法，我们已经离 SQL 注入很远了。但是，历史同样悠久的 XSS 和 CSRF 却没有远离我们。由于之前已经对 XSS 很熟悉了，所以我对用户输入的数据一直非常小心。如果输入的时候没有经过 Tidy 之类的过滤，我一定会在模板输出时候全">
 <meta property="og:type" content="article">
 <meta property="og:title" content="总结 XSS 与 CSRF 两种跨站攻击">
-<meta property="og:url" content="https://slagga.top/2016/08/security-xss-csrf/index.html">
+<meta property="og:url" content="https://gitslagga.github.io/2016/08/security-xss-csrf/index.html">
 <meta property="og:site_name" content="计算机那些事">
 <meta property="og:description" content="概述在那个年代，大家一般用拼接字符串的方式来构造动态 SQL 语句创建应用，于是 SQL 注入成了很流行的攻击方式。在这个年代， 参数化查询已 [1] 经成了普遍用法，我们已经离 SQL 注入很远了。但是，历史同样悠久的 XSS 和 CSRF 却没有远离我们。由于之前已经对 XSS 很熟悉了，所以我对用户输入的数据一直非常小心。如果输入的时候没有经过 Tidy 之类的过滤，我一定会在模板输出时候全">
 <meta property="og:locale" content="zh_CN">
@@ -36,11 +36,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://slagga.top/2016/08/security-xss-csrf/">
+<link rel="canonical" href="https://gitslagga.github.io/2016/08/security-xss-csrf/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2016/08/security-xss-csrf/","path":"2016/08/security-xss-csrf/","title":"总结 XSS 与 CSRF 两种跨站攻击"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gitslagga.github.io/2016/08/security-xss-csrf/","path":"2016/08/security-xss-csrf/","title":"总结 XSS 与 CSRF 两种跨站攻击"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>总结 XSS 与 CSRF 两种跨站攻击 | 计算机那些事</title>
@@ -207,7 +207,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2016/08/security-xss-csrf/">
+    <link itemprop="mainEntityOfPage" href="https://gitslagga.github.io/2016/08/security-xss-csrf/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">

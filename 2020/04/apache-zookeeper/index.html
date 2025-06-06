@@ -19,32 +19,32 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"slagga.top","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gitslagga.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.21.0/config.min.js"></script>
 
     <meta name="description" content="面试官心理分析现在聊的 topic 是分布式系统，面试官跟你聊完了 dubbo 相关的一些问题之后，已经确认你对分布式服务框架&#x2F;RPC框架基本都有一些认知了。那么他可能开始要跟你聊分布式相关的其它问题了。 分布式锁这个东西，很常用的，你做 Java系统开发，分布式系统，可能会有一些场景会用到。最常用的分布式锁就是基于 zookeeper 来实现的。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ZooKeeper 都有哪些使用场景？">
-<meta property="og:url" content="https://slagga.top/2020/04/apache-zookeeper/index.html">
+<meta property="og:url" content="https://gitslagga.github.io/2020/04/apache-zookeeper/index.html">
 <meta property="og:site_name" content="计算机那些事">
 <meta property="og:description" content="面试官心理分析现在聊的 topic 是分布式系统，面试官跟你聊完了 dubbo 相关的一些问题之后，已经确认你对分布式服务框架&#x2F;RPC框架基本都有一些认知了。那么他可能开始要跟你聊分布式相关的其它问题了。 分布式锁这个东西，很常用的，你做 Java系统开发，分布式系统，可能会有一些场景会用到。最常用的分布式锁就是基于 zookeeper 来实现的。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://slagga.top/images/2020/up-551a0f196e1f4c9fda9713c8e5f0752cf45.webp">
-<meta property="og:image" content="https://slagga.top/images/2020/up-4de830848ca1cfe8361db21d4d41330d121.webp">
-<meta property="og:image" content="https://slagga.top/images/2020/up-125260e383f5cf445c9cc989b9ea6d6db17.webp">
-<meta property="og:image" content="https://slagga.top/images/2020/up-05ead1ed36702139695e56038c46acc009a.webp">
+<meta property="og:image" content="https://gitslagga.github.io/images/2020/up-551a0f196e1f4c9fda9713c8e5f0752cf45.webp">
+<meta property="og:image" content="https://gitslagga.github.io/images/2020/up-4de830848ca1cfe8361db21d4d41330d121.webp">
+<meta property="og:image" content="https://gitslagga.github.io/images/2020/up-125260e383f5cf445c9cc989b9ea6d6db17.webp">
+<meta property="og:image" content="https://gitslagga.github.io/images/2020/up-05ead1ed36702139695e56038c46acc009a.webp">
 <meta property="article:published_time" content="2019-04-15T13:16:37.000Z">
 <meta property="article:modified_time" content="2025-06-06T06:13:40.927Z">
 <meta property="article:author" content="Slagga">
 <meta property="article:tag" content="ZooKeeper">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://slagga.top/images/2020/up-551a0f196e1f4c9fda9713c8e5f0752cf45.webp">
+<meta name="twitter:image" content="https://gitslagga.github.io/images/2020/up-551a0f196e1f4c9fda9713c8e5f0752cf45.webp">
 
 
-<link rel="canonical" href="https://slagga.top/2020/04/apache-zookeeper/">
+<link rel="canonical" href="https://gitslagga.github.io/2020/04/apache-zookeeper/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://slagga.top/2020/04/apache-zookeeper/","path":"2020/04/apache-zookeeper/","title":"ZooKeeper 都有哪些使用场景？"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gitslagga.github.io/2020/04/apache-zookeeper/","path":"2020/04/apache-zookeeper/","title":"ZooKeeper 都有哪些使用场景？"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>ZooKeeper 都有哪些使用场景？ | 计算机那些事</title>
@@ -211,7 +211,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://slagga.top/2020/04/apache-zookeeper/">
+    <link itemprop="mainEntityOfPage" href="https://gitslagga.github.io/2020/04/apache-zookeeper/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">

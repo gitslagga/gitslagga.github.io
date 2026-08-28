@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="E1ct36DyjSpaeX5NMAVsyzCjDs8-dQxGThgvw2i1yg0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Monda:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/6.1.14/fancybox/fancybox.css" integrity="sha256-mdaMxrItEW6hMIVJJNPKuX0B7KCSJQVEv3mVY4N2we4=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gitslagga.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.29.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.29.0/config.min.js" defer></script>
+
+    <meta name="description" content="如何实现一个超级域名网站要求：给每个用户分配唯一的二级域名，用户又可以创建三级域名 核心思路是：所有子域名都指向同一个入口，应用根据请求的 Host 判断当前用户和用户创建的站点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何实现一个超级域名网站">
+<meta property="og:url" content="https://gitslagga.github.io/2025/08/custom-2-3-domain/index.html">
+<meta property="og:site_name" content="计算机那些事">
+<meta property="og:description" content="如何实现一个超级域名网站要求：给每个用户分配唯一的二级域名，用户又可以创建三级域名 核心思路是：所有子域名都指向同一个入口，应用根据请求的 Host 判断当前用户和用户创建的站点。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-28T09:44:30.000Z">
+<meta property="article:modified_time" content="2026-08-28T08:24:31.460Z">
+<meta property="article:author" content="Slagga">
+<meta property="article:tag" content="Domain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://gitslagga.github.io/2025/08/custom-2-3-domain/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gitslagga.github.io/2025/08/custom-2-3-domain/","path":"2025/08/custom-2-3-domain/","title":"如何实现一个超级域名网站"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>如何实现一个超级域名网站 | 计算机那些事</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E2T2VNH5S"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-0E2T2VNH5S","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.29.0/third-party/analytics/google-analytics.min.js" defer></script>
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/6.1.14/fancybox/fancybox.umd.js" integrity="sha256-QnJV4HT5r8i89ovZGRD86iynZqHerEbT2xt69vDM36I=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/7.2.1/pangu.umd.js" integrity="sha256-kRsxecBnwG6mULFPe2E6UKnNm8XfDOuDwCOprjLZuX8=" crossorigin="anonymous" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.29.0/utils.min.js" defer></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.29.0/motion.min.js" defer></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.29.0/sidebar.min.js" defer></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.29.0/next-boot.min.js" defer></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.29.0/pjax.min.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.29.0/third-party/search/local-search.min.js" defer></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.29.0/third-party/fancybox.min.js" defer></script>
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">计算机那些事</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">软件开发、维护和升级</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">231</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">79</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">28</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E8%B6%85%E7%BA%A7%E5%9F%9F%E5%90%8D%E7%BD%91%E7%AB%99"><span class="nav-number">1.</span> <span class="nav-text">如何实现一个超级域名网站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">一、整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%85%8D%E7%BD%AE%E6%B3%9B%E5%9F%9F%E5%90%8D-DNS"><span class="nav-number">3.</span> <span class="nav-text">二、配置泛域名 DNS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81TLS-%E6%98%AF%E6%9C%80%E5%AE%B9%E6%98%93%E8%B8%A9%E5%9D%91%E7%9A%84%E9%83%A8%E5%88%86"><span class="nav-number">4.</span> <span class="nav-text">三、TLS 是最容易踩坑的部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%9C%A8-Next-js-%E4%B8%AD%E8%A7%A3%E6%9E%90%E5%9F%9F%E5%90%8D"><span class="nav-number">5.</span> <span class="nav-text">四、在 Next.js 中解析域名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81Next-js-Middleware-%E8%B7%AF%E7%94%B1%E9%87%8D%E5%86%99"><span class="nav-number">6.</span> <span class="nav-text">五、Next.js Middleware 路由重写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%88%9B%E5%BB%BA%E5%9F%9F%E5%90%8D%E6%97%B6%E7%9A%84%E6%A0%A1%E9%AA%8C"><span class="nav-number">7.</span> <span class="nav-text">六、创建域名时的校验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91"><span class="nav-number">8.</span> <span class="nav-text">七、本地开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E8%8D%90%E8%90%BD%E5%9C%B0%E6%96%B9%E6%A1%88"><span class="nav-number">9.</span> <span class="nav-text">推荐落地方案</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Slagga"
+      src="https://avatars.githubusercontent.com/u/19620432">
+  <p class="site-author-name" itemprop="name">Slagga</p>
+  <div class="site-description" itemprop="description">Computer Things - Software Development, Maintenance and Upgrade</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">231</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gitslagga"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnNsYWdnYUBkdWNrLmNvbQ==" title="E-Mail → mailto:slagga@duck.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gitslagga.github.io/2025/08/custom-2-3-domain/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/19620432">
+      <meta itemprop="name" content="Slagga">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机那些事">
+      <meta itemprop="description" content="Computer Things - Software Development, Maintenance and Upgrade">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="如何实现一个超级域名网站 | 计算机那些事">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何实现一个超级域名网站
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-08-28 17:44:30 / 修改时间：16:24:31" itemprop="dateCreated datePublished" datetime="2026-08-28T17:44:30+08:00">2026-08-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="如何实现一个超级域名网站"><a href="#如何实现一个超级域名网站" class="headerlink" title="如何实现一个超级域名网站"></a>如何实现一个超级域名网站</h2><p>要求：给每个用户分配唯一的二级域名，用户又可以创建三级域名</p>
+<p>核心思路是：所有子域名都指向同一个入口，应用根据请求的 <code>Host</code> 判断当前用户和用户创建的站点。</p>
+<span id="more"></span>
+
+<p>假设主域名为 <code>example.com</code>：</p>
+<ul>
+<li>用户域名：<code>alice.example.com</code></li>
+<li>用户创建的下级域名：<code>blog.alice.example.com</code></li>
+<li>管理域名：<code>admin.example.com</code></li>
+</ul>
+<h2 id="一、整体架构"><a href="#一、整体架构" class="headerlink" title="一、整体架构"></a>一、整体架构</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">*.example.com</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">CDN / Nginx / 负载均衡</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Next.js 应用</span><br><span class="line">        │</span><br><span class="line">        ├── 解析 Host</span><br><span class="line">        ├── 查找租户</span><br><span class="line">        ├── 鉴权与权限校验</span><br><span class="line">        └── 渲染对应网站</span><br></pre></td></tr></table></figure>
+
+<p>数据库可以这样设计：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tenants (</span><br><span class="line">  id uuid <span class="keyword">primary</span> key,</span><br><span class="line">  owner_id uuid <span class="keyword">not</span> <span class="keyword">null</span>,</span><br><span class="line">  slug <span class="type">varchar</span>(<span class="number">63</span>) <span class="keyword">unique</span> <span class="keyword">not</span> <span class="keyword">null</span>,</span><br><span class="line">  created_at <span class="type">timestamp</span> <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">default</span> now()</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tenant_subdomains (</span><br><span class="line">  id uuid <span class="keyword">primary</span> key,</span><br><span class="line">  tenant_id uuid <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">references</span> tenants(id),</span><br><span class="line">  slug <span class="type">varchar</span>(<span class="number">63</span>) <span class="keyword">not</span> <span class="keyword">null</span>,</span><br><span class="line">  created_at <span class="type">timestamp</span> <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">default</span> now(),</span><br><span class="line"></span><br><span class="line">  <span class="keyword">unique</span> (tenant_id, slug)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> sites (</span><br><span class="line">  id uuid <span class="keyword">primary</span> key,</span><br><span class="line">  tenant_id uuid <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">references</span> tenants(id),</span><br><span class="line">  subdomain_id uuid <span class="keyword">references</span> tenant_subdomains(id),</span><br><span class="line">  title text,</span><br><span class="line">  content jsonb</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tenants</span><br><span class="line">alice → alice.example.com</span><br><span class="line"></span><br><span class="line">tenant_subdomains</span><br><span class="line">alice + blog → blog.alice.example.com</span><br><span class="line">alice + shop → shop.alice.example.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、配置泛域名-DNS"><a href="#二、配置泛域名-DNS" class="headerlink" title="二、配置泛域名 DNS"></a>二、配置泛域名 DNS</h2><p>至少配置：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@    <span class="keyword">A</span>       服务器 IP</span><br><span class="line">*    <span class="keyword">CNAME</span>   example.com</span><br></pre></td></tr></table></figure>
+
+<p>如果 DNS 服务商支持更深层级的泛域名记录，可以增加：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*.*  <span class="keyword">CNAME</span>   example.com</span><br></pre></td></tr></table></figure>
+
+<p>但不同 DNS 服务商对多级泛域名支持不一致。更稳妥的方式是：</p>
+<ul>
+<li>所有请求先经过 Cloudflare等支持泛域名代理的入口；或者</li>
+<li>用户创建 <code>blog.alice.example.com</code> 时，通过 DNS 服务商 API 动态创建对应记录。</li>
+</ul>
+<p>例如创建：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blog.alice.example.com <span class="keyword">CNAME</span> origin.example.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、TLS-是最容易踩坑的部分"><a href="#三、TLS-是最容易踩坑的部分" class="headerlink" title="三、TLS 是最容易踩坑的部分"></a>三、TLS 是最容易踩坑的部分</h2><p>证书：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*.example.com</span><br></pre></td></tr></table></figure>
+
+<p>只覆盖：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alice.example.com</span><br><span class="line">bob.example.com</span><br></pre></td></tr></table></figure>
+
+<p>它不覆盖：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blog.alice.example.com</span><br></pre></td></tr></table></figure>
+
+<p>因此三级域名需要额外处理。常见方案有三种：</p>
+<ol>
+<li><p>用户创建域名时动态签发证书<br>为 <code>blog.alice.example.com</code> 创建 DNS 记录，然后通过 ACME&#x2F;Let’s Encrypt签发。</p>
+</li>
+<li><p>给每个用户签发泛域名证书<br>例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*.alice.example.com</span><br></pre></td></tr></table></figure>
+
+<p>这通常需要 DNS-01 验证，并且用户量大时要考虑签发速率和证书管理成本。</p>
+</li>
+<li><p>使用支持托管证书的平台<br>让 Cloudflare、Vercel、Caddy 或专门的证书服务管理动态证书。</p>
+</li>
+</ol>
+<p>生产环境中，推荐“Cloudflare&#x2F;CDN 入口 + 动态 DNS + 托管证书”。</p>
+<h2 id="四、在-Next-js-中解析域名"><a href="#四、在-Next-js-中解析域名" class="headerlink" title="四、在 Next.js 中解析域名"></a>四、在 Next.js 中解析域名</h2><p>不要完全相信客户端传来的域名，要在服务端解析并校验。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lib/hostname.ts</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">ROOT_DOMAIN</span> = process.<span class="property">env</span>.<span class="property">ROOT_DOMAIN</span> ?? <span class="string">&quot;example.com&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">RESERVED_NAMES</span> = <span class="keyword">new</span> <span class="title class_">Set</span>([</span><br><span class="line">  <span class="string">&quot;www&quot;</span>,</span><br><span class="line">  <span class="string">&quot;api&quot;</span>,</span><br><span class="line">  <span class="string">&quot;admin&quot;</span>,</span><br><span class="line">  <span class="string">&quot;app&quot;</span>,</span><br><span class="line">  <span class="string">&quot;mail&quot;</span>,</span><br><span class="line">  <span class="string">&quot;static&quot;</span>,</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">HostInfo</span> =</span><br><span class="line">  | &#123; <span class="attr">type</span>: <span class="string">&quot;root&quot;</span> &#125;</span><br><span class="line">  | &#123; <span class="attr">type</span>: <span class="string">&quot;tenant&quot;</span>; <span class="attr">tenant</span>: <span class="built_in">string</span> &#125;</span><br><span class="line">  | &#123; <span class="attr">type</span>: <span class="string">&quot;tenant-subdomain&quot;</span>; <span class="attr">tenant</span>: <span class="built_in">string</span>; <span class="attr">subdomain</span>: <span class="built_in">string</span> &#125;</span><br><span class="line">  | &#123; <span class="attr">type</span>: <span class="string">&quot;invalid&quot;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">parseHostname</span>(<span class="params">rawHost: <span class="built_in">string</span></span>): <span class="title class_">HostInfo</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> hostname = rawHost</span><br><span class="line">    .<span class="title function_">split</span>(<span class="string">&quot;:&quot;</span>)[<span class="number">0</span>]</span><br><span class="line">    .<span class="title function_">toLowerCase</span>()</span><br><span class="line">    .<span class="title function_">replace</span>(<span class="regexp">/\.$/</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (hostname === <span class="variable constant_">ROOT_DOMAIN</span> || hostname === <span class="string">`www.<span class="subst">$&#123;ROOT_DOMAIN&#125;</span>`</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="attr">type</span>: <span class="string">&quot;root&quot;</span> &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!hostname.<span class="title function_">endsWith</span>(<span class="string">`.<span class="subst">$&#123;ROOT_DOMAIN&#125;</span>`</span>)) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="attr">type</span>: <span class="string">&quot;invalid&quot;</span> &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> prefix = hostname.<span class="title function_">slice</span>(</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    -(<span class="variable constant_">ROOT_DOMAIN</span>.<span class="property">length</span> + <span class="number">1</span>),</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> parts = prefix.<span class="title function_">split</span>(<span class="string">&quot;.&quot;</span>).<span class="title function_">filter</span>(<span class="title class_">Boolean</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (parts.<span class="property">length</span> === <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> tenant = parts[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable constant_">RESERVED_NAMES</span>.<span class="title function_">has</span>(tenant)) &#123;</span><br><span class="line">      <span class="keyword">return</span> &#123; <span class="attr">type</span>: <span class="string">&quot;invalid&quot;</span> &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="attr">type</span>: <span class="string">&quot;tenant&quot;</span>, tenant &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (parts.<span class="property">length</span> === <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> [subdomain, tenant] = parts;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;tenant-subdomain&quot;</span>,</span><br><span class="line">      tenant,</span><br><span class="line">      subdomain,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123; <span class="attr">type</span>: <span class="string">&quot;invalid&quot;</span> &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意域名顺序：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">blog.alice.example.com</span><br><span class="line">│    │</span><br><span class="line">│    └── tenant = alice</span><br><span class="line">└─────── subdomain = blog</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、Next-js-Middleware-路由重写"><a href="#五、Next-js-Middleware-路由重写" class="headerlink" title="五、Next.js Middleware 路由重写"></a>五、Next.js Middleware 路由重写</h2><p>可以在 Middleware 中把域名路由重写成内部路径：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// middleware.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">NextRequest</span>, <span class="title class_">NextResponse</span> &#125; <span class="keyword">from</span> <span class="string">&quot;next/server&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; parseHostname &#125; <span class="keyword">from</span> <span class="string">&quot;./lib/hostname&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">middleware</span>(<span class="params">request: NextRequest</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> host = request.<span class="property">headers</span>.<span class="title function_">get</span>(<span class="string">&quot;host&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!host) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">NextResponse</span>(<span class="string">&quot;Invalid host&quot;</span>, &#123; <span class="attr">status</span>: <span class="number">400</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> info = <span class="title function_">parseHostname</span>(host);</span><br><span class="line">  <span class="keyword">const</span> url = request.<span class="property">nextUrl</span>.<span class="title function_">clone</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (info.<span class="property">type</span> === <span class="string">&quot;root&quot;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">NextResponse</span>.<span class="title function_">next</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (info.<span class="property">type</span> === <span class="string">&quot;tenant&quot;</span>) &#123;</span><br><span class="line">    url.<span class="property">pathname</span> = <span class="string">`/_sites/<span class="subst">$&#123;info.tenant&#125;</span><span class="subst">$&#123;url.pathname&#125;</span>`</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">NextResponse</span>.<span class="title function_">rewrite</span>(url);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (info.<span class="property">type</span> === <span class="string">&quot;tenant-subdomain&quot;</span>) &#123;</span><br><span class="line">    url.<span class="property">pathname</span> =</span><br><span class="line">      <span class="string">`/_sites/<span class="subst">$&#123;info.tenant&#125;</span>/<span class="subst">$&#123;info.subdomain&#125;</span><span class="subst">$&#123;url.pathname&#125;</span>`</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">NextResponse</span>.<span class="title function_">rewrite</span>(url);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">NextResponse</span>(<span class="string">&quot;Site not found&quot;</span>, &#123; <span class="attr">status</span>: <span class="number">404</span> &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> config = &#123;</span><br><span class="line">  <span class="attr">matcher</span>: [</span><br><span class="line">    <span class="string">&quot;/((?!_next/static|_next/image|favicon.ico).*)&quot;</span>,</span><br><span class="line">  ],</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对应页面：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">app/</span><br><span class="line">├── page.tsx</span><br><span class="line">└── _sites/</span><br><span class="line">    └── [tenant]/</span><br><span class="line">        ├── page.tsx</span><br><span class="line">        └── [subdomain]/</span><br><span class="line">            └── page.tsx</span><br></pre></td></tr></table></figure>
+
+<p>页面中必须再次查询数据库，不能只相信 URL 参数：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">TenantSitePage</span>(<span class="params">&#123;</span></span><br><span class="line"><span class="params">  params,</span></span><br><span class="line"><span class="params">&#125;: &#123;</span></span><br><span class="line"><span class="params">  params: <span class="built_in">Promise</span>&lt;&#123;</span></span><br><span class="line"><span class="params">    tenant: <span class="built_in">string</span>;</span></span><br><span class="line"><span class="params">    subdomain: <span class="built_in">string</span>;</span></span><br><span class="line"><span class="params">  &#125;&gt;;</span></span><br><span class="line"><span class="params">&#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; tenant, subdomain &#125; = <span class="keyword">await</span> params;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> site = <span class="keyword">await</span> db.<span class="property">site</span>.<span class="title function_">findFirst</span>(&#123;</span><br><span class="line">    <span class="attr">where</span>: &#123;</span><br><span class="line">      <span class="attr">tenant</span>: &#123; <span class="attr">slug</span>: tenant &#125;,</span><br><span class="line">      <span class="attr">subdomain</span>: &#123; <span class="attr">slug</span>: subdomain &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!site) &#123;</span><br><span class="line">    <span class="title function_">notFound</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">SiteRenderer</span> <span class="attr">site</span>=<span class="string">&#123;site&#125;</span> /&gt;</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="六、创建域名时的校验"><a href="#六、创建域名时的校验" class="headerlink" title="六、创建域名时的校验"></a>六、创建域名时的校验</h2><p>域名标签建议限制为：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="variable constant_">DOMAIN_LABEL</span> = <span class="regexp">/^[a-z0-9](?:[a-z0-9-]&#123;0,61&#125;[a-z0-9])?$/</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">validateDomainLabel</span>(<span class="params">value: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable constant_">DOMAIN_LABEL</span>.<span class="title function_">test</span>(value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还需要：</p>
+<ul>
+<li>转换为小写。</li>
+<li>长度不超过 63 个字符。</li>
+<li>禁止连续或首尾连字符。</li>
+<li>保留 <code>www</code>、<code>admin</code>、<code>api</code>、<code>mail</code> 等系统名称。</li>
+<li>数据库增加唯一约束，防止并发抢注。</li>
+<li>创建接口增加限流。</li>
+<li>禁止 Unicode 混淆字符，或先经过 IDNA&#x2F;Punycode 规范化。</li>
+<li>删除用户时不要立刻释放域名，避免钓鱼和账户冒充。</li>
+</ul>
+<p>创建三级域名时，后端应以当前登录用户确定 <code>tenant_id</code>：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> db.<span class="property">tenantSubdomain</span>.<span class="title function_">create</span>(&#123;</span><br><span class="line">  <span class="attr">data</span>: &#123;</span><br><span class="line">    <span class="attr">tenantId</span>: session.<span class="property">tenantId</span>,</span><br><span class="line">    <span class="attr">slug</span>: validatedSlug,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>不要允许前端自由提交其他人的 <code>tenantId</code>。</p>
+<h2 id="七、本地开发"><a href="#七、本地开发" class="headerlink" title="七、本地开发"></a>七、本地开发</h2><p>可以使用：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alice.localhost:3000</span><br><span class="line">blog.alice.localhost:3000</span><br></pre></td></tr></table></figure>
+
+<p>现代浏览器通常会把 <code>*.localhost</code> 指向本机。开发环境解析域名时，把根域名设置成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ROOT_DOMAIN=localhost</span><br></pre></td></tr></table></figure>
+
+<p>如果本地环境不支持多级 <code>localhost</code>，可以使用 <code>dnsmasq</code>，把：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*.test</span><br></pre></td></tr></table></figure>
+
+<p>统一解析到：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1</span><br></pre></td></tr></table></figure>
+
+<h2 id="推荐落地方案"><a href="#推荐落地方案" class="headerlink" title="推荐落地方案"></a>推荐落地方案</h2><p>如果用户规模还不大：</p>
+<ul>
+<li>Next.js 负责多租户路由。</li>
+<li>PostgreSQL 保存用户与子域名映射。</li>
+<li>Cloudflare 管理 DNS。</li>
+<li>用户创建三级域名时调用 Cloudflare API 创建具体记录。</li>
+<li>TLS 交给 Cloudflare或 Caddy 管理。</li>
+<li>Redis 缓存 <code>hostname → siteId</code>，减少每次请求查询数据库。</li>
+</ul>
+<p>真正困难的并不是页面路由，而是多级域名的 TLS、DNS 自动化、域名抢注和租户隔离。先把 <code>alice.example.com</code> 做稳定，再加入 <code>blog.alice.example.com</code>，会更容易控制复杂度。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Domain/" rel="tag"># Domain</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/36-exotica/" rel="prev" title="新奇事物">
+                  <i class="fa fa-angle-left"></i> 新奇事物
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/08/acme.sh-usage/" rel="next" title="acme.sh 如何使用">
+                  acme.sh 如何使用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Slagga</span>
+  </div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9waXNjZXMv">NexT.Pisces</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dpdHNsYWdnYQ==" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"gitslagga","repo":"gitslagga.github.io","client_id":"8b03c773267690e6d402","client_secret":"7b2ef82f50c632cdb14c98b7e5928357974cad97","admin_user":"gitslagga","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"fb9d082b90acc2f8cd38ad44fa129232"}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.29.0/third-party/comments/gitalk.min.js" defer></script>
+
+</body>
+</html>
